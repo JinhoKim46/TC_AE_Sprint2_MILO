@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MILO · Option C multi-page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1E1D1A}
+.frame{width:1280px;height:800px;box-sizing:border-box;background:#F6F5F1;display:flex;flex-direction:column}
+.card{background:#FFFFFF;border:1px solid #DEDBD2;border-radius:10px}
+.muted{color:#6E6B63;font-size:13px}
+.chip{display:inline-block;font-size:12px;padding:3px 8px;border-radius:999px;background:#EEF3F1;color:#2F6B5E}
+.warn{background:#FBF1E8;color:#8A4B1F;border-color:#E9CDB4}
+.tab{padding:14px 12px;font-size:14px;color:#6E6B63}
+</style>
+</helmet>
+<div class="frame">
+  <div style="height:56px;box-sizing:border-box;padding:0 20px;display:flex;align-items:center;gap:6px;background:#FFFFFF;border-bottom:1px solid #DEDBD2">
+    <strong style="font-size:16px;letter-spacing:.02em;margin-right:18px">MILO</strong>
+    <span class="tab" style="color:#1E1D1A;font-weight:600;border-bottom:2px solid #2F6B5E">Chat</span>
+    <span class="tab">Sources</span>
+    <span class="tab">Tools</span>
+    <span class="tab">Approvals <span class="chip warn" style="margin-left:4px">1</span></span>
+    <span class="tab">Traces</span>
+    <span style="flex-grow:1"></span>
+    <span class="chip" style="background:#6E6B63;color:#fff;margin-right:12px">Option C · multi-page</span>
+    <span class="muted">Dana R. · $0.00</span>
+  </div>
+  <div style="flex-grow:1;display:flex;flex-direction:column;align-items:center;padding:24px 0;box-sizing:border-box">
+    <div style="width:820px;flex-grow:1;display:flex;flex-direction:column;gap:14px">
+      <div style="align-self:flex-end;max-width:520px;padding:10px 14px;border-radius:12px;background:#E4E1D8;font-size:14px">Can I cancel my Thursday visit? It is AP-482913.</div>
+      <div style="max-width:680px;font-size:14px;line-height:1.5">Yes. I can cancel AP-482913 (Thu 24 Oct, 9:00, leaking kitchen tap). Cancelling needs your approval first.</div>
+      <div class="card warn" style="padding:14px;display:flex;align-items:center;gap:12px">
+        <div style="flex-grow:1;font-size:14px">Cancel appointment AP-482913 on Thu 24 Oct?</div>
+        <span class="chip" style="background:#2F6B5E;color:#fff;padding:6px 12px">Approve</span>
+        <span class="chip" style="background:#fff;color:#1E1D1A;padding:6px 12px;border:1px solid #DEDBD2">Keep it</span>
+      </div>
+      <div class="muted" style="font-size:13px">To see evidence, open Sources or Tools. Each is a separate page, so the answer and its evidence are never on one screen.</div>
+      <span style="flex-grow:1"></span>
+      <div class="card" style="padding:10px 12px;display:flex;gap:10px;align-items:center">
+        <span class="muted" style="flex-grow:1">Type a message</span>
+        <span class="chip" style="background:#2F6B5E;color:#fff;padding:6px 14px">Send</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

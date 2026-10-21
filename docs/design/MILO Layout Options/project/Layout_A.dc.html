@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MILO · Option A three-column workspace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1E1D1A}
+.frame{width:1280px;height:800px;box-sizing:border-box;background:#F6F5F1;display:flex;flex-direction:column}
+.card{background:#FFFFFF;border:1px solid #DEDBD2;border-radius:10px}
+.muted{color:#6E6B63;font-size:13px}
+.chip{display:inline-block;font-size:12px;padding:3px 8px;border-radius:999px;background:#EEF3F1;color:#2F6B5E}
+.warn{background:#FBF1E8;color:#8A4B1F;border-color:#E9CDB4}
+</style>
+</helmet>
+<div class="frame">
+  <div style="height:56px;box-sizing:border-box;padding:0 20px;display:flex;align-items:center;gap:16px;background:#FFFFFF;border-bottom:1px solid #DEDBD2">
+    <strong style="font-size:16px;letter-spacing:.02em">MILO</strong>
+    <span class="chip" style="background:#6E6B63;color:#fff">Option A · three-column workspace</span>
+    <span style="flex-grow:1"></span>
+    <span class="muted">Signed in: Dana R.</span>
+    <span class="muted">Session cost $0.00</span>
+  </div>
+  <div style="flex-grow:1;display:flex;min-height:0">
+    <aside style="width:220px;box-sizing:border-box;padding:16px;border-right:1px solid #DEDBD2;background:#FBFAF7;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:13px;font-weight:600">Threads</div>
+      <div class="card" style="padding:10px;font-size:13px;background:#EEF3F1">Thursday visit, AP-482913</div>
+      <div class="card" style="padding:10px;font-size:13px">Invoice BH-5521</div>
+      <div class="card" style="padding:10px;font-size:13px">Warranty on the boiler</div>
+      <span style="flex-grow:1"></span>
+      <div class="muted">+ New conversation</div>
+    </aside>
+    <main style="flex-grow:1;min-width:0;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px">
+      <div style="align-self:flex-end;max-width:520px;padding:10px 14px;border-radius:12px;background:#E4E1D8;font-size:14px">Can I cancel my Thursday visit? It is AP-482913.</div>
+      <div style="max-width:620px;font-size:14px;line-height:1.5">Yes. I can cancel AP-482913 (Thu 24 Oct, 9:00, leaking kitchen tap). Cancelling needs your approval first.</div>
+      <div class="card warn" style="padding:14px;display:flex;align-items:center;gap:12px">
+        <div style="flex-grow:1;font-size:14px">Cancel appointment AP-482913 on Thu 24 Oct?</div>
+        <span class="chip" style="background:#2F6B5E;color:#fff;padding:6px 12px">Approve</span>
+        <span class="chip" style="background:#fff;color:#1E1D1A;padding:6px 12px;border:1px solid #DEDBD2">Keep it</span>
+      </div>
+      <span style="flex-grow:1"></span>
+      <div class="card" style="padding:10px 12px;display:flex;gap:10px;align-items:center">
+        <span class="muted" style="flex-grow:1">Type a message</span>
+        <span class="chip" style="background:#2F6B5E;color:#fff;padding:6px 14px">Send</span>
+      </div>
+    </main>
+    <aside style="width:360px;box-sizing:border-box;padding:16px;border-left:1px solid #DEDBD2;background:#FBFAF7;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;font-size:12px">
+        <span class="chip" style="background:#2F6B5E;color:#fff">Sources</span>
+        <span class="chip" style="background:#fff;color:#1E1D1A;border:1px solid #DEDBD2">Tools</span>
+        <span class="chip" style="background:#fff;color:#1E1D1A;border:1px solid #DEDBD2">Policy</span>
+        <span class="chip" style="background:#fff;color:#1E1D1A;border:1px solid #DEDBD2">Progress</span>
+      </div>
+      <div class="card" style="padding:12px;font-size:13px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-weight:600">Sources for this answer</div>
+        <div>1. warranty-plumbing.md · section 2 · 0.82</div>
+        <div>2. scheduling-policy.md · section 1 · 0.77</div>
+      </div>
+      <div class="card" style="padding:12px;font-size:13px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-weight:600">Tool calls</div>
+        <div>get_appointment · read · ok</div>
+        <div>cancel_appointment · destructive · needs_approval</div>
+      </div>
+      <div class="muted" style="font-size:12px">Evidence lives only here. The conversation shows the answer and the approval banner.</div>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
