@@ -136,6 +136,8 @@ Git-ignored: `data/index/`, `data/milo.sqlite`, `logs/`, `.env`, `.venv/`, `eval
 
 - **D49 Demo companies:** two fictional companies drive the discovery demos and evaluations. Names, people, addresses and prices are invented.
 - **D50 Source of truth:** one catalogue, one rate card and one truth file per company. Every generated file derives from them. Generated files are never edited by hand; a fix goes into the source and the generator is run again.
+- **D53 Model approvals (owner, 2026-10-22):** local models may be used and downloaded. Installed Ollama models `qwen3:8b`, `qwen3:14b`, `llama3:8b-instruct-fp16` and `llama3:latest` may be used. Other models may be downloaded only from trusted providers (the Ollama library and the official Hugging Face organisations, for example BAAI for bge). Cloud models stay off (D18).
+- **D54 Course and checks (owner, 2026-10-22):** the course accepts Flask for M6, so the Streamlit conflict in section 14 is closed. The privacy check (AE `CLAUDE.md` line 63, `docs/repo-conventions.md` section 11) is run on MILO's own files for MILO commits, using its `scan(paths)` function. The generic rules pass on all MILO files on 2026-10-22. `.privacy-terms` is still missing; the owner creates it.
 - **D52 Prose drafted by the M0 data agent:** KB articles, owner messages, gold questions, the community post and the upload text are written by the M0 data agent (a fresh Fable agent, under the owner's instruction). No script calls a model API. ChatGPT is not used. Each drafted file is recorded in `data/prompts/generation-record.md` with model, date and the brief used. Structured files (gold, tool cases, attacks, MANIFEST) are produced by `scripts/build_data.py`, which reads the sources and writes deterministic output. The checks are the gate; `build_data.py --check` verifies that the structured files match their sources.
 - **D51 Larkspur data:** the existing Larkspur set in `sprint2/data/larkspur/` is not MILO content. It is used once as a smoke test of the M1 retrieval code, through a converter kept outside the repo (G8).
 
@@ -312,7 +314,7 @@ Verifiers run after each owner agent. A failed done-line gets up to 3 fix cycles
 - Kit README says `cd sprint2/project-kit`; the real kit is at `../../../project-kit`. MILO copies the kit files at S0.
 - Kit contract tests run in **contract mode** (D2). Discovery is the product mode and is tested separately. The owner confirms this split before the grade is reported.
 - Kit `RUBRIC.md` says "Four criteria" and has three tables. The reflection follows the three tables.
-- Kit M6 and README say Streamlit or Next.js. The owner accepted Flask (D13). The deviation is recorded in the M6 report and the README; confirm with the course before M6 is marked complete.
+- Kit M6 and README say Streamlit or Next.js. The owner accepted Flask (D13), and the course accepts Flask (D54). The deviation is recorded in the M6 report and the README.
 - Kit M5 names `ChatOpenAI` with a base URL. D4 uses that shape; the build never calls it.
 - Kit `thread_id` maps to the owner's single session (D35). Kit `threads` checks that two owners never share history.
 - Kit `abstains` forbids any model call on empty retrieval. Discovery's extraction call therefore runs only in discovery mode.
@@ -478,3 +480,4 @@ Each done-line uses a `make kit-<keyword>` target or a unit-test path. A milesto
 - v0.4.1 (2026-10-22): demo companies A and B, six scripted conversations, generation pipeline G0 to G8 and the Larkspur smoke test (section 3A, D49 to D51). Red-team round 2 on v0.4 still pending.
 - v0.4.2 (2026-10-22): prose drafted in ChatGPT outside the pipeline (D52). Source files added: `data/source/catalogue.yaml`, `data/pricing/rate_card.v1.yaml`, `data/demo/companies/a.yaml` and `b.yaml`, prompts in `data/prompts/chatgpt-prompts.md`.
 - v0.4.3 (2026-10-22): D52 changed: the M0 data agent drafts the prose instead of ChatGPT. Structured data is produced by `scripts/build_data.py` (M0-owned).
+- v0.4.4 (2026-10-22): owner approvals recorded (D53 models, D54 Flask and privacy-check scope). Spec and data inputs committed and pushed to origin/main.
