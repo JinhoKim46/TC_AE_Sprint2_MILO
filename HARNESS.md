@@ -1,6 +1,6 @@
 # MILO — Agent Harness
 
-Status: v0.5, matches `SPEC.md` v0.6. Read `SPEC.md` first. If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
+Status: v0.6, matches `SPEC.md` v0.7. Read `SPEC.md` first. If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
 
 ## 1. Roles
 
@@ -9,7 +9,7 @@ Every role below is a SPEC section 13 phase entry. The integrator is one role (i
 | Role | Phase | Writes | Never writes |
 |---|---|---|---|
 | Integrator | 0, 4 and merges | everything listed as (I) in Appendix A; `main`; `verify/*` merges; `docs/owner/CHECKPOINTS_PENDING.md` | owners' module bodies (it merges them, it does not rewrite them) |
-| Data (M0) | 1a | `data/**`, `protocols/**`, `scripts/build_data.py`, `tests/test_checker.py`, `tests/test_leakage.py` | `src/**`, `evals/**` |
+| Data (M0) | 1a | `data/**`, `protocols/**`, `scripts/build_data.py`, `tests/test_checker.py`, `tests/test_leakage.py` | `src/**`, `evals/**` (except `evals/agent/attacks_kb/**`, which M0 owns) |
 | Tools and pricing (M3) | 1a | `src/milo/tools/**`, `src/milo/pricing/{rate_card,estimator}.py`, `evals/agent/run_tools.py`, its tests and report | `security/**`, `llm/**` |
 | LLM and errors (M5a) | 1a | `src/milo/llm/**`, `tests/test_llm.py`, `tests/test_errors.py`, `docs/m5a_report.md` | `errors.py` (I), `app.py` (I) |
 | Store and auth (M5-store) | 1a | `src/milo/store/**`, `src/milo/auth/**`, `store/schema.sql`, `tests/test_store.py`, `tests/test_auth.py`, `tests/test_store_identity.py` | repositories' callers in `web/` |
@@ -43,7 +43,7 @@ The number of agents is not fixed. A role may be split into several agents with 
 3. **No secrets, no machine paths.** No keys, tokens, `.env` content or absolute home paths in code, data, logs, commits or verifier pastes. Verifiers replace `$HOME` with `~`.
 4. **Fictional identities only.** Companies, clients, people, addresses, prices and orders are invented. No real company or person is named, and no real domain is used.
 5. **Hidden names.** The owner's business project name, and the names of any other projects the owner keeps out of MILO, are never written into MILO files, commit messages or reports. The list of such names lives only in the untracked `.privacy-terms` file, and the privacy check enforces it.
-6. **Test split sealed.** Only `evals/common.py` names `gold.jsonl`. Only `make final-test` sets `MILO_FINAL=1`. A verifier checks the static rule in SPEC 10.1.
+6. **Test split sealed.** Among the code under `src/`, `evals/` and `tests/`, only `evals/common.py` names `gold.jsonl`. The two leakage tests and the builder are excluded, as SPEC 10.1 says. Only `make final-test` sets `MILO_FINAL=1`.
 7. **No self-approval.** An owner never writes into `docs/verify/` and never marks its own milestone done.
 8. **Contract files are read-only.** `contract/` is copied from the kit. A test that looks wrong gets a request, not an edit.
 9. **No silent skip.** `skip` and `xfail` are not allowed in a done-line. A test that needs a local model is marked `local` and is excluded from the default run. Running it is an explicit make target, and the report says which tests ran in that mode.
@@ -159,6 +159,7 @@ One owner per path. (I) marks integrator-owned. A path not listed belongs to nob
 | `evals/rag/labels.jsonl` | Labelling (M7) |
 | `evals/rag/**` (other) | M7 |
 | `evals/final/**` | (I), F2 only |
+| `evals/results/test_access.log` | (I), written only by `make final-test` |
 | `evals/results/<milestone>/**` | written only by the eval run that produced it, on that milestone's branch; never hand-edited |
 | `docs/m1_report.md` ... `docs/m7_report.md` (one per milestone) | the owner of that milestone |
 | `docs/m5a_report.md` | M5a |
