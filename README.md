@@ -4,7 +4,7 @@
 
 Every business has a story. MILO listens first.
 
-A domain chatbot built for the Sprint 2 project: retrieval-augmented answers, tool calls, input and policy checks, typed errors and a Streamlit UI that shows the sources and tool results behind every answer.
+A domain chatbot built for the Sprint 2 project: retrieval-augmented answers, tool calls, input and policy checks, typed errors and a Flask web UI that shows the sources and tool results behind every answer.
 
 ## Status
 
@@ -20,7 +20,7 @@ Pre-M0. The repository holds the project notes and this README. No application c
 | M3 | Domain tools with JSON schemas and risk tiers |
 | M4 | Domain security: input validation, policy in code, measured attack success rate |
 | M5 | LangChain integration on OpenRouter with typed errors and bounded retries |
-| M6 | Streamlit UI: chat, sources, tool calls, progress |
+| M6 | Flask web UI: chat, sources, tool calls, progress |
 | M7 | Evaluation and reflection (bonus) |
 
 Milestones run in order. Each one is done when its evidence is shown, not when the code exists.

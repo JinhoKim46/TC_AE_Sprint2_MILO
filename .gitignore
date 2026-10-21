@@ -1,3 +1,20 @@
+# Owner-only guideline files (business material, never published)
 docs/claude_guideline.md
 docs/guideline.md
 docs/project_guidelines.md
+
+# Layout previews are published separately
+docs/design/
+
+# Generated data and runtime state
+data/index/
+data/milo.sqlite
+logs/
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+evals/results/**/*.tmp
