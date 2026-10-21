@@ -1,0 +1,31 @@
+# Fictional rate card. Used by the pricing engine (SPEC D38) and the demo reports. Not a real price list.
+rate_card:
+  version: rate-card-v1-2026-10
+  currency: USD
+  base_monthly_usd:
+    phone-intake: 690
+    email-triage: 390
+    ticket-creation: 290
+    staff-assignment: 340
+    document-data-entry: 490
+    customer-status-updates: 240
+  setup_fee_usd:
+    per_module: 900
+  integration_surcharge_monthly_usd:
+    csv-export: 0
+    api-connector: 300
+    crm-connector: 450
+    export-only-tool: 250
+  volume_tiers_daily_requests:
+    - {up_to: 20, factor: 1.00}
+    - {up_to: 60, factor: 1.25}
+    - {up_to: 150, factor: 1.50}
+    - {up_to: null, factor: null, note: "above 150 per day: no automatic estimate; a person prices it"}
+  range:
+    low_factor: 0.90
+    base_factor: 1.00
+    high_factor: 1.20
+  max_modules_per_estimate: 6
+  notes:
+    - Prices exclude taxes, travel and any hardware.
+    - The estimate is indicative and non-binding.

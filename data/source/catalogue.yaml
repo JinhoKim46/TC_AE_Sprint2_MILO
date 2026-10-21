@@ -1,0 +1,54 @@
+# Source of truth for every KB article and prompt. Fictional. Hand-written; do not edit generated files instead.
+catalogue:
+  version: "2026.10"
+  company: MILO (fictional consultancy)
+  modules:
+    - id: phone-intake
+      name: AI phone intake
+      summary: Answers incoming calls out of hours and in peak times, records the request, and books or passes it on.
+      includes: [call answering, request capture, appointment booking, call transcript, handover to staff]
+      excludes: [outbound sales calls, medical or legal advice, card payments by phone]
+      integrations: [csv-export, api-connector]
+    - id: email-triage
+      name: Email triage
+      summary: Reads a shared inbox, labels each message by request type, and drafts a first reply for staff to approve.
+      includes: [labels, priority, draft replies, audit log]
+      excludes: [sending without approval, changing the mailbox rules, deleting mail]
+      integrations: [csv-export, api-connector]
+    - id: ticket-creation
+      name: Ticket creation
+      summary: Turns each accepted request into a ticket with the fields the team needs, and tracks its status.
+      includes: [ticket fields, duplicate check, status tracking, reminders to staff]
+      excludes: [closing tickets without a person, billing]
+      integrations: [csv-export, api-connector, crm-connector]
+    - id: staff-assignment
+      name: Staff assignment
+      summary: Suggests which staff member should take a ticket, using the skills and availability the owner has entered.
+      includes: [skill tags, availability, suggestion with reasons, override by staff]
+      excludes: [automatic payroll or shift changes, decisions about discipline]
+      integrations: [csv-export]
+    - id: document-data-entry
+      name: Document data entry
+      summary: Reads paper forms and scanned sheets and enters the fields into the system of record, flagging anything unclear.
+      includes: [field extraction, validation rules, flagged items for review, entry log]
+      excludes: [handwriting outside the agreed form types, signature verification]
+      integrations: [csv-export, export-only-tool]
+    - id: customer-status-updates
+      name: Customer status updates
+      summary: Sends customers a message when their request changes status, using the wording the owner approves.
+      includes: [status templates, approved wording, delivery log, opt-out handling]
+      excludes: [marketing messages, messages without an approved template]
+      integrations: [csv-export, api-connector]
+  integrations:
+    - id: csv-export
+      name: CSV export or import
+      notes: The customer's tool can export and import CSV files. No live connection.
+    - id: api-connector
+      name: API connector
+      notes: The customer's tool offers an API with an access key. Setup takes one working day.
+    - id: crm-connector
+      name: CRM connector
+      notes: A standard CRM connector with field mapping. Setup takes two working days.
+    - id: export-only-tool
+      name: Export-only tool
+      notes: The customer's tool can export data but cannot import. Results must be re-keyed or pushed through a file drop.

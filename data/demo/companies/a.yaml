@@ -1,0 +1,32 @@
+# Demo company A (fictional). Truth file: what the owner actually knows. Hand-written.
+company:
+  id: maple-and-paw-grooming
+  display_name: Maple & Paw Grooming
+  owner: {name: Lena Ortiz, role: Owner, email: lena@example.invalid}
+  industry: pet-services
+  employee_count: 9
+  locations: 2
+consent: {given: true, version: consent-v1}
+workflow:
+  request_channels: [phone, web form]
+  daily_request_volume: 35          # per business day, stated consistently
+  average_handling_minutes: 4       # per call
+  manual_entry_minutes: 2           # per request, spreadsheet entry
+  tools_in_use: [spreadsheet, booking widget with CSV export]
+  steps_in_process: [take request, write in spreadsheet, confirm by text, reminder by hand, mark done]
+  approval_steps: [owner approves refunds only]
+problems:
+  pain_points: [missed calls at peak times, reminders sent by hand, no-shows]
+  error_types: [missed, duplicated]
+  automation_goals: [booking intake, reminders]
+  main_goal: time
+constraints:
+  integrations_available: [csv-export]
+  personal_data_handled: true        # pet owners' phone numbers
+  urgent_requests_exist: false
+  budget_range: unknown
+  start_timeline: next-quarter
+traps:
+  - owner asks for the price in the first five messages
+  - owner answers in short phrases
+expected_end_state: indicative estimate after assessment
