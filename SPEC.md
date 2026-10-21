@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.5 draft. Supersedes v0.4.4. Red-team round 2 (on v0.4) is applied here. Round 3 on v0.5 is still to run.
+Status: v0.6 draft. Supersedes v0.5. Red-team round 3 (on v0.5) is applied here. Round 4 is still to run.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
@@ -23,11 +23,11 @@ recommended modules, an indicative cost range and next steps.
 | # | Area | Decision | Reason |
 |---|---|---|---|
 | D1 | Domain | Customer discovery for small and mid-size businesses | The owner's product |
-| D2 | Two modes | `build_app(chat, embeddings, tools, *, discovery=False, vector_store=None, db=None, min_score=0.30, sleep=None, system_prompt_extra=None)` is **contract mode**: retrieval, tool loop, one model call per turn (tool calls allowed), in-memory history keyed by `(user_id, thread_id)`, ephemeral stores. `create_app(settings=None, app=None, db=None)` runs **discovery mode** (`discovery=True`), persistent stores, and accepts a fake `App` for tests. Both modes share retrieval, tools, security and error codes | Kit tests assume a single-call app; discovery needs extra calls. Section 14 records the split |
+| D2 | Two modes | `build_app(chat, embeddings, tools, *, discovery=False, vector_store=None, db=None, min_score=0.30, sleep=None, system_prompt_extra=None)` is **contract mode**: validation, retrieval (threshold `min_score`), at most one model call before the tool loop (tool calls allowed), tool loop capped at 4 model calls in total, history per `(user_id, thread_id)` holding the raw user question and the assistant answer of each turn, traces and approvals in memory, no SQLite. It ignores `MILO_ADVANCED_RAG`. `build_discovery_app(chat, embeddings, tools)` = `build_app(..., discovery=True, db=":memory:")` with one session per `user_id` and `thread_id` mapped to it, used by `kit-discovery`. `create_app(settings=None, app=None, db=None)` runs discovery mode with persistent stores. A discovery turn makes at most 4 model calls: extract, one JSON retry, reply, one tool follow-up | Kit tests assume one model call before tools; section 14 records the split |
 | D3 | Chat model | `qwen3:8b` through Ollama's OpenAI-compatible endpoint, `temperature=0`, `seed=0`, thinking disabled (D23b). Used only in `evals/` and the running app, never in `tests/` | Local, free, reproducible |
 | D4 | Cloud model | `openai/gpt-5-mini` through OpenRouter with `ChatOpenAI(base_url=...)`. The class lives in `src/milo/llm/cloud.py` and is never instantiated in tests, evals or the default app | Cloud is off (D18) |
-| D5 | Embeddings | `BAAI/bge-small-en-v1.5` through `sentence-transformers`, 384 dimensions, cosine space, query prefix `Represent this sentence for searching relevant passages: `. Imported lazily; the model is loaded only in `evals/` and in `create_app` | Local; keeps `import milo.app` light |
-| D6 | Vector store | `build_app` uses `chromadb.EphemeralClient()` with a fresh uuid collection per app, cosine space. `create_app` uses `PersistentClient(data/index/)` | Contract tests must not share documents |
+| D5 | Embeddings | `BAAI/bge-small-en-v1.5` through `sentence-transformers`, 384 dimensions, cosine space. The query prefix `Represent this sentence for searching relevant passages: ` is added inside the bge embedder wrapper only, never by the retriever; the calibrated threshold is measured with the prefix applied the same way. Imported lazily | Local; keeps `import milo.app` light |
+| D6 | Vector store | `build_app`: `chromadb.EphemeralClient()` with a fresh uuid collection per app, cosine space, `embeddings=` always passed to add and query, `ANONYMIZED_TELEMETRY=False` set before `import chromadb`, abstain when `collection.count() == 0` before querying. Ephemeral clients may share one in-process system, so the uuid collection name is the isolation. `create_app`: `PersistentClient(data/index/)` | Contract tests must not share documents |
 | D7 | Retrieval baseline (M1) | **Dense only**, top 5 by cosine | One retriever in M1 |
 | D8 | Hybrid (M2 arm) | BM25 fused with dense by reciprocal rank fusion, k = 60. Reported as its own A/B row against M1 | Kit hard bonus needs an A/B row |
 | D9 | Chunking | Heading-aware, at most 800 characters with 100 overlap. Chunk id `<doc_id>#<index>` | Keeps sections intact |
@@ -35,7 +35,7 @@ recommended modules, an indicative cost range and next steps.
 | D11 | Self-query (M2) | JSON `{section?, product?, updated_after?}`, validated by Pydantic; invalid → unfiltered search. On only with D10 | Required fallback |
 | D12 | Reranking | Not in the baseline; only as an A/B arm | No unmeasured claims |
 | D13 | Web | Flask app factory, Jinja templates, vanilla JavaScript, no CDN at runtime. Turn events are polled from the database (D47). No HTMX | Owner and course accept Flask |
-| D14 | Persistence | SQLite (`data/milo.sqlite`) through repositories. Connection per thread, WAL mode. `build_app` uses `:memory:` | One file |
+| D14 | Persistence | Discovery mode: SQLite (`data/milo.sqlite`) through repositories, connection per thread, WAL mode. Contract mode: in memory, no SQLite file is opened | One file in the product; none in tests |
 | D15 | Trace | JSON lines in `logs/trace.jsonl` plus a `traces` table in discovery mode. One record per node, model call and policy decision. Customer text as hash and length | Kit traces, logging bonus |
 | D16 | Tests | pytest with `addopts = --disable-socket`. `tests/` uses only `contract/fakes.py` and MILO's own fakes. No test starts Ollama or loads a model | Kit rule: offline |
 | D17 | Lint and types | ruff over `src`, `tests`, `evals`, `scripts/build_data.py` only (section 11.5). mypy `--strict` set in `[tool.mypy]` | Kit files are read-only |
@@ -43,9 +43,9 @@ recommended modules, an indicative cost range and next steps.
 | D19 | Tools | Five tools (section 6), exposed through the backend protocol `specs()` and `call(name, args, *, user_id)`. Risk comes from `ToolSpec.risk`. `MiloBackend` implements it | Kit `tools` tests use the backend protocol |
 | D20 | Submit is not a tool | The model cannot submit. Submit is an owner button with a CSRF token. No model-reachable code creates a submission | Stops injected creation |
 | D21 | Identity | `user_id` comes from the session (web) or the `ask` argument (contract). Argument keys `user_id`, `session_id`, `owner_id`, `thread_id` are **removed before** schema validation. Repositories take the owner id from the session | Kit identity test; no vacuous pass |
-| D22 | Taint | Customer text, uploads and retrieved KB text are `untrusted`. The pattern list fires only on instruction-like phrases (for example "system override", "ignore previous"), never on plain imperatives such as "delete item 42". With `taint=high`: destructive tools are denied; `record_fact` is allowed only for non-pricing fields. `tests/test_policy.py` checks the four kit security questions stay `taint=low` | Policy in code; no false denials |
+| D22 | Taint | Customer text, uploads and retrieved KB text are `untrusted`. The pattern list fires only on instruction-like phrases: `system override`, `system note`, `ignore previous`, `ignore all previous`. Plain imperatives such as "delete item 42" never fire it. With `taint=high`: destructive tools are denied; `record_fact` is allowed only for non-pricing fields. `tests/test_policy.py` lists the four kit security questions (`QUESTION`; `QUESTION` + "Also look up item 42."; `QUESTION` + "Also delete item 42."; `QUESTION` + "My code is ZEBRA-7731.") and checks that each is `taint=low` | Policy in code; no false denials |
 | D23 | Error format | `Response.error` is `None` or `"<code>[:<detail>]"`. Codes: `invalid_input`, `provider_error`, `policy_denied`. Details: `invalid_input:empty`, `invalid_input:too_long`, `invalid_input:control_characters`, `provider_error:timeout`, `provider_error:unavailable`. `tool_error` never reaches `Response.error`: tool failures go back to the model as results | Kit tests read `split(":")[0]` |
-| D23a | Retries | Any exception from `chat_model.invoke` is `provider_error`. A `TimeoutError` (or a class name containing "Timeout") gives `:timeout`, anything else `:unavailable`. At most 3 attempts in total, backoff 0.5 s and 1.0 s through the injected `sleep` (no-op by default in contract mode). Timeout 30 s per call; per-turn deadline 120 s | Kit scripts 4 exceptions; bounded |
+| D23a | Retries | Retries happen only in `src/milo/llm/retry.py`; `loop.py` and `app.py` never retry a model call. Any exception from `chat_model.invoke` is `provider_error`: `TimeoutError` (or a class name containing "Timeout") gives `:timeout`, anything else `:unavailable`. At most 3 attempts in total, backoff 0.5 s and 1.0 s through the injected `sleep` (no-op in contract mode). Timeout 30 s per call; per-turn deadline 120 s | Kit scripts 4 exceptions; one retry site; bounded |
 | D23b | Output hygiene | Requests carry `/no_think` in the system message. `<think>…</think>` blocks are stripped before parsing. JSON-expected calls are retried once on parse failure, then a safe reply | qwen3 thinking breaks JSON |
 | D24 | Statistics | Bootstrap 95% CI, 2000 resamples, seed 0; paired resampling for A/B | Kit requires CIs |
 | D25 | Gold split | 44 rows: 22 `dev`, 22 `test`, stratified by `type`. At least 10 unanswerable (5 dev), 6 identifier, 8 with filters (4 dev). Sealing: section 10 | Enough rows to calibrate a threshold |
@@ -58,7 +58,7 @@ recommended modules, an indicative cost range and next steps.
 | D34 | Accounts | Invite only. `flask invite <email>` (operator) creates a one-time token stored hashed, valid 72 h. The invite page sets a password (Werkzeug scrypt). Login is email and password. Cookies HTTP-only, `SameSite=Lax`, 12 h idle timeout. Five failed logins lock the account for 15 min | Only invited owners reach the interview |
 | D35 | One session per owner | `sessions.user_id` UNIQUE, created at **sign-in** (not at page load). Every message is saved as sent. Sign-out is "save and leave". Discovery mode only | Owner's request |
 | D36 | Discovery protocol | `protocols/discovery.v1.yaml`, validated by `src/milo/protocol/schema.py` (section 5.1) | One format for all agents |
-| D37 | Fact status | `reported`, `confirmed`, `estimated`, `unknown`, `conflicting`. `confirmed` set only by code, when the reply answers the field's `confirm_question` | Evidence-aware |
+| D37 | Fact status | `reported`, `confirmed`, `estimated`, `unknown`, `conflicting`. `confirmed` is set only by code, when the reply answers the field's `confirm_question`. A field is **to be confirmed** when it is `conflicting`, or when it has `pricing: true` and the session is not yet `quote_ready` | Evidence-aware |
 | D38 | Pricing | `src/milo/pricing/` reads `data/pricing/rate_card.v1.yaml`, validated by `src/milo/pricing/schema.py` (section 5.2). Inputs: module ids, daily volume, integration ids. The model picks module ids only | Prices are arithmetic |
 | D39 | Estimate status | `scenario` (a required field missing; assumptions shown), `indicative` (all quote fields `reported` or `confirmed`, no conflict), `blocked` (a blocking conflict; no number) | Honest gating |
 | D40 | Report | Ten sections (section 7). Canonical JSON stored; HTML rendered from it. Indicative and non-binding | Decision support |
@@ -120,6 +120,20 @@ milo/                             repo root; submodule at AE/sprint2/project; or
 
 Git-ignored: `data/index/`, `data/milo.sqlite`, `logs/`, `.env`, `.venv/`, `evals/results/**/*.tmp`, `docs/design/`, `docs/project_guidelines.md`, `docs/guideline.md`, `docs/claude_guideline.md`. Owners of every path: `HARNESS.md` appendix A.
 
+## 2A. Wire types (contract between agents)
+
+Defined in `src/milo/types.py` (integrator, S0). They mirror `contract/fakes.py`.
+
+- `Usage(input_tokens: int, output_tokens: int)`
+- `ToolCall(call_id: str, name: str, args: dict)`
+- `ChatReply(content: str, tool_calls: list[ToolCall], usage: Usage)`
+- `ToolSpec(name: str, description: str, parameters: dict, risk: Literal["read", "write", "destructive"])`
+- Chat model: `invoke(messages: list[dict], tools: list[ToolSpec] | None) -> ChatReply`, where `messages` are `{"role", "content"}` dicts. Attribute `price_usd_per_mtok: tuple[float, float]`.
+- Conversion to OpenAI tool JSON happens only inside `llm/client.py`. The Ollama client uses `openai.OpenAI(base_url=...)` (not `ChatOpenAI`) and sets `price_usd_per_mtok = (0.0, 0.0)`.
+- Embeddings: `embed(texts: list[str]) -> list[list[float]]`. The bge prefix is applied inside the bge wrapper only.
+- Tools backend: `specs() -> list[ToolSpec]`; `call(name, args, *, user_id) -> Any`.
+- `Document(doc_id: str, text: str, metadata: dict)`; `Source(chunk_id, doc_id, score, text)`; `ToolResult(name, arguments, output, ok, policy_decision)`; `Response(answer, sources, tool_results, cost_usd, stopped, error)`.
+
 ## 3. Data (M0)
 
 - `data/kb/<section>/<name>.md`: 24 articles, 150 to 600 words, English. `doc_id` = the path without `.md` (for example `solutions/ai-phone-intake`). Front matter: `title`, `section`, `updated` (YYYY-MM-DD), `doc_id` (must equal the path), `product` (`general` or a module id). Sections: `solutions/` (six modules from `catalogue.yaml`), `pricing/`, `implementation/`, `cases/`, `consultation/`, `policies/`.
@@ -156,37 +170,20 @@ Git-ignored: `data/index/`, `data/milo.sqlite`, `logs/`, `.env`, `.venv/`, `eval
 2. `extract`: model call 1, JSON `{facts: [{field_id, value, unit, period, evidence_text}]}`, validated by Pydantic. Unknown ids are dropped and traced.
 3. `merge`: code checks type, range, unit and cross-field rules. A new value is `reported`. A contradicting value becomes `conflicting`, with both kept. `confirmed` is set only by code, when the reply answers the field's `confirm_question`.
 4. `protocol`: the engine lists missing fields, conflicts and the next question (highest priority, not yet asked). Question text comes from the YAML.
-5. `retrieve`: only when the owner asked about a module, process or price.
-6. `reply`: the tool loop, with the same policy, and at most 2 model calls in this step, so the 120 s deadline holds. The reply acknowledges the recorded facts, asks the next question verbatim, and explains retrieved material with sources.
+5. `retrieve`: only when the extract output sets `asks_about` to `module`, `process` or `price` (a validated enum).
+6. `reply`: one model call, then at most one tool follow-up under the same policy. A discovery turn makes at most 4 model calls in total, so the 120 s deadline holds.
 7. `estimate`: if the protocol allows, `estimate_cost` runs. Its numbers go to the `estimate_updated` event and the panel, **not** to the model.
 
 The model never sets a status, writes a fact directly, or decides that a field is complete. A JSON reply that fails to parse is retried once (D23b), then the turn asks the owner to repeat the last point.
 
-### 5.1 Protocol schema (`protocols/discovery.v1.yaml`)
+### 5.1 Protocol file (`protocols/discovery.v1.yaml`)
 
-```yaml
-version: 1
-fields:
-  - id: daily_request_volume        # snake_case, unique
-    group: workflow                 # owner, company, consent, workflow, problems, constraints
-    type: number                    # string | integer | number | boolean | list | enum
-    unit: requests_per_business_day # or null
-    min: 0                          # or null
-    max: null
-    values: null                    # list for enum or list types, else null
-    required_for: [assessment, quote]   # subset of [assessment, quote]
-    condition: null                 # e.g. {field: tools_in_use, op: in, value: spreadsheet}; op in eq, in, exists, gt, lt
-    question: How many requests do you get on a normal business day?
-    confirm_question: null          # asked only when a value is to be confirmed
-    priority: 90                    # 0 to 100
-    pricing: true                   # true when the value affects the rate card
-```
+The committed file is authoritative. `protocol/schema.py` (Pydantic) loads it. Top-level keys: `version`, `states`, `groups`, `fields`, `conversions`, `periods`, `blocking`, `allow_unknown`, `pii`, `conflict_question`. Each field has `id`, `group`, `type` (`string`, `integer`, `number`, `boolean`, `list`, `list_enum`, `enum`), `required_for` (a subset of `assessment` and `quote`), an optional `condition` of the form `{field, equals}`, a `question`, and an optional `confirm_question`. An unknown field referenced in a condition fails the load. A condition whose operand is unknown is false. Question order is defined by the file's `states` section.
 
-`protocol/schema.py` (Pydantic) validates this file. Unknown field references in conditions fail the load. A condition with an unknown operand is false.
+### 5.2 Rate card file (`data/pricing/rate_card.v1.yaml`)
 
-### 5.2 Rate card schema (`data/pricing/rate_card.v1.yaml`)
+The committed file is authoritative. `pricing/schema.py` (Pydantic) loads it. Top-level key `rate_card`, with `version`, `currency`, `base_monthly_usd` (module id to USD per month), `setup_fee_usd.per_module`, `integration_surcharge_monthly_usd` (integration id to USD per month), `volume_tiers_daily_requests` (list of `{up_to, factor}`; `up_to: null` means no automatic estimate), `range` (`low_factor`, `base_factor`, `high_factor`) and `max_modules_per_estimate`. The return estimate also needs `automated_minutes_per_request` and `eligible_share` for each module. These are not in the file yet. A data fix adds them before M5c starts. Until then the report marks the return estimate `unavailable`.
 
-`pricing/schema.py` (Pydantic) validates it. Fields: `version`, `currency`, `modules` (map of module id to `{setup_usd, monthly_usd, automated_minutes, eligible_share}`), `volume_tiers` (list of `{max_daily, factor}`, with `max_daily: null` meaning "no automatic estimate"), `integration_surcharge_usd` (map of integration id to monthly USD), `range_factors` (`{low, high}`), `max_modules_per_estimate`. The current file has the prices; `automated_minutes` and `eligible_share` are added to it by M0 (fictional values) so the return formula in section 7 has inputs.
 
 ## 6. Tools
 
@@ -194,8 +191,8 @@ fields:
 |---|---|---|---|
 | `search_knowledge` | read | `query` 3 to 200 chars; `product` enum or null | Top chunks with `chunk_id`, `doc_id`, `score`, `text` |
 | `get_session_spec` | read | none | Facts with status and evidence, for the session's owner |
-| `estimate_cost` | read | `module_ids` (max 6); `daily_request_volume` number or null; `integration_ids` list | Returns `{status, module_ids, assumptions}` only. Numbers go to events (section 5 step 7) |
-| `record_fact` | write | `field_id` (enum from the protocol), `value` typed per field, `unit` or null, `period` or null, `evidence_text` | Same merge path as step 3; denied for pricing fields when `taint=high` |
+| `estimate_cost` | read | `module_ids` only (max 6). Volume and integrations are read from the session facts in code, never from arguments | Returns `{status, module_ids, assumptions}`. Numbers go to events (section 5 step 7) |
+| `record_fact` | write | `field_id` (enum from the protocol); `value` declared as `anyOf: [string, number, boolean, array]` and checked per field in the merge; `unit` or null; `period` or null; `evidence_text` | Same merge path as step 3; denied for pricing fields when `taint=high` |
 | `withdraw_submission` | destructive | `submission_id` integer | Approval lifecycle (section 8). Sets `status=withdrawn` on the owner's own revision |
 
 `MiloBackend` in `tools/backend.py` implements `specs()` and `call()`. `tools/objects.json` holds the fictional owners' submissions and sessions for tests.
@@ -208,7 +205,7 @@ Ten sections, in order, with evidence references: summary; company profile; curr
 
 - **Validation** (`security/validate.py`, shipped in S0): strip, then reject empty; length 1 to 4000 (`invalid_input:too_long`); reject `\x00-\x08`, `\x0b`, `\x0c`, `\x0e-\x1f`, `\x7f`; tab, newline and carriage return are allowed. Uploads: MIME, 5 MB, UTF-8.
 - **Identity** (`security/identity.py`): identity keys are removed **before** schema validation (D21). The backend receives the session's or `ask`'s `user_id`.
-- **Policy** (`security/policy.py`): `read` → allowed. `write` → allowed for non-pricing fields; denied for pricing fields when `taint=high`. `destructive` → `needs_approval` when `taint=low`; denied when `taint=high`. Every decision is traced.
+- **Policy** (`security/policy.py`): `read` → allowed. `write` → allowed at `taint=low`; at `taint=high` allowed unless the tool is `record_fact` on a `pricing: true` field, which is denied. This rule covers every write tool, including the kit fakes. `destructive` → `needs_approval` when `taint=low`; denied when `taint=high`. Every decision is traced.
 - **Approval lifecycle** (D48), for `destructive` calls:
   1. The loop calls the `ApprovalStore` protocol. Contract mode uses an in-memory store; discovery mode uses the `approvals` table. The row binds (session or ask-scope, turn, tool, argument hash) and status `pending`, expires after 10 minutes. The reply returns `needs_approval` and `stopped=True`.
   2. `approve`: the tool runs once with the bound identity; one follow-up model call explains the result; status `used`.
@@ -236,10 +233,10 @@ Ten sections, in order, with evidence references: summary; company profile; curr
 
 ### 10.1 Sealing
 - `evals/common.py` is the **only** file that names `gold.jsonl`. It returns `dev` rows by default. It returns `test` rows only when `MILO_FINAL=1`, and only `make final-test` sets that variable. Each `test` load appends a line to `evals/results/test_access.log` with status `started`.
-- Static check (`tests/test_leakage.py`): no file under `src/`, `evals/` (except `evals/common.py`) or `tests/` contains `gold.jsonl`.
-- F2 checks that the SHA-256 of `data/gold.jsonl` equals `MANIFEST.json`.
+- Static check (`tests/test_leakage.py`): no file under `src/`, `evals/` (except `evals/common.py`) or `tests/` contains `gold.jsonl`. `tests/test_leakage.py` and `tests/test_checker.py` are excluded; they build the file name from parts.
+- F2 checks, through `common.gold_sha256()`, that the SHA-256 of `data/gold.jsonl` equals `MANIFEST.json`.
 - Known limit, stated in the report: the file is readable; sealing relies on the check, the verifier and the log.
-- Leakage on answers: `test_leakage` checks, with git, that the commit adding `data/gold.jsonl` predates any commit touching `src/milo/rag/`.
+- Leakage on answers: `test_leakage` checks, with git, that no commit on a branch named `agent/retrieval/*` predates the commit that added `data/gold.jsonl`. The retrieval agent starts after the data is merged.
 - F2 writes one line per attempt with its status; the verifier requires exactly one `ok` line.
 
 ### 10.2 Canary
@@ -247,7 +244,7 @@ Ten sections, in order, with evidence references: summary; company profile; curr
 
 ### 10.3 Provenance and replay
 - Every eval writes `evals/results/<milestone>/<name>.json` (D56). `inputs` hashes the data and prompt files; `rows` stores per-row outputs.
-- The verifier runs `make <target>-replay`, which recomputes every metric from the stored rows and must match exactly. It also reruns the **dense-only** M1 retrieval live and compares within 0.005.
+- The verifier runs `make <target>-replay`, which recomputes every metric from the stored rows and must match exactly. Dense-only M1 is also rerun live and compared within 0.005. Model-driven arms are reported, not failed (see the second bullet of this section).
 - Live reruns of model-driven arms (M2 rewrite and self-query, M4, M5, M7) are reported; they do not fail the verifier, because GPU output at temperature 0 is not bit-reproducible.
 
 ### 10.4 Discovery evaluation
@@ -262,30 +259,38 @@ Six scripted conversations (section 3A), measuring fact precision and recall, st
 
 1. `.python-version` = `3.12`. `pyproject.toml`: `requires-python = ">=3.12,<3.13"`; `[build-system]` hatchling; `[tool.hatch.build.targets.wheel] packages = ["src/milo"]`; `[tool.uv] package = true`.
 2. Runtime: `uv add openai langchain-core langchain-openai flask werkzeug pydantic jsonschema chromadb rank-bm25 sentence-transformers pyyaml`.
-   Dev: `uv add --dev pytest pytest-socket ruff mypy playwright types-PyYAML`.
-3. Torch CPU: `[tool.uv.index]` named `pytorch-cpu` with `explicit = true`; `[tool.uv.sources] torch = { index = "pytorch-cpu" }`. `uv sync` is sanctioned for every agent worktree.
+   Dev: `uv add --dev pytest pytest-socket ruff mypy playwright types-PyYAML types-jsonschema`.
+3. Torch CPU wheels: `[[tool.uv.index]]` named `pytorch-cpu` with `explicit = true`; `[tool.uv.sources] torch = { index = "pytorch-cpu" }`. `uv sync` is sanctioned for every agent worktree.
 4. `[tool.mypy] strict = true`; `[[tool.mypy.overrides]] module = ["rank_bm25.*", "sentence_transformers.*", "chromadb.*"] ignore_missing_imports = true`.
-5. `[tool.ruff] include = ["src", "tests", "evals", "scripts/build_data.py"]` and `extend-exclude = ["contract", "scripts/check_project_data.py"]`.
-6. `pytest.ini`: `testpaths = tests`, `addopts = --disable-socket`, `pythonpath = src`, markers `tools`, `security`, `errors`, `sources`, `abstains`, `threads`, `cost`.
-7. Root `conftest.py` (integrator): `pytest_collection_modifyitems` fails every item under `contract/` unless `PROJECT_APP` starts with `milo.`. Kit targets print `python -c "import milo.app; print(milo.app.__file__)"` before running, so the verifier sees the loaded module.
+5. `[tool.ruff] extend-exclude = ["contract", "scripts/check_project_data.py"]`. Lint scope is the default tree minus those paths. A `ruff check .` that checks zero files fails the gate.
+6. `pytest.ini`: `testpaths = tests`, `addopts = --disable-socket`, `pythonpath = src contract`, markers `tools`, `security`, `errors`, `sources`, `abstains`, `threads`, `cost`.
+7. Root `conftest.py` (integrator): `os.environ.setdefault("PROJECT_APP", "milo.app:build_app")`, so a plain `uv run pytest contract` tests MILO. `pytest_collection_modifyitems` raises `pytest.UsageError` unless `PROJECT_APP` starts with `milo.`, so the run exits non-zero (an xfail marker would exit 0). Kit targets print `python -c "import milo.app; print(milo.app.__file__)"` first.
 8. Model downloads (approved, D53), recorded with version and time in `docs/owner/CHECKPOINTS_PENDING.md`:
    - `uv run python -c "from sentence_transformers import SentenceTransformer as S; S('BAAI/bge-small-en-v1.5')"`
    - `uv run playwright install chromium`
 9. `.env.example`: `OLLAMA_BASE_URL`, `MILO_LIVE` (unset), `MILO_SPEND_LEDGER` (unset), `MILO_DB`, `MILO_SECRET_KEY` (no value), `MILO_ADVANCED_RAG` (`0`), `MILO_FINAL` (unset). The app sets `HF_HUB_OFFLINE=1` and `ANONYMIZED_TELEMETRY=False` in code before loading models.
-10. `Makefile` (S0 creates every target with its exact command; a target whose owner has not merged yet exits 1 with "not implemented"):
+10. `Makefile`: every target below is created in S0 with its command. A target whose owner has not merged yet still runs its command and fails, so no stub can pass.
 
 | target | command |
 |---|---|
 | `kit-<kw>` | `PROJECT_APP=milo.app:build_app MILO_ADVANCED_RAG=0 MILO_LIVE= uv run pytest contract -k <kw> -rA` |
-| `check` | `uv run ruff check && uv run ruff format --check && uv run mypy src/milo && uv run pytest && uv run python scripts/build_data.py --check && uv run python ../../../project-kit/scripts/check_project_data.py data` |
-| `eval-retrieval` | `uv run python evals/retrieval/run_retrieval.py --split dev` |
+| `check` | `uv run ruff check . && uv run ruff format --check . && uv run mypy src/milo && uv run pytest && { test ! -f data/gold.jsonl \|\| uv run python scripts/build_data.py --check; } && { test ! -f data/gold.jsonl \|\| uv run python scripts/check_project_data.py data; } && { ! git ls-files -z \| xargs -0 du -b \| awk '$1>2097152' \| grep -v m6_recording; }` |
+| `eval-retrieval` | `uv run python evals/retrieval/run_retrieval.py` |
 | `eval-retrieval-replay` | `uv run python evals/retrieval/run_retrieval.py --replay` |
 | `eval` | `uv run python evals/run_all_replay.py` |
 | `final-test` | `MILO_FINAL=1 uv run python evals/final/run_final.py` |
 | `record` | `uv run python evals/ui/record.py` |
 | `index` | `uv run python -m milo.rag.ingest data/kb` |
+| `kit-discovery` | `PROJECT_APP=milo.app:build_discovery_app uv run pytest contract -k <kw> -rA` for each keyword; prints the outcome table |
+| `eval-tools` | `uv run python evals/agent/run_tools.py --split dev` |
+| `eval-tools-replay` | `uv run python evals/agent/run_tools.py --replay` |
+| `eval-attacks` | `uv run python evals/agent/run_attacks.py --split dev` |
+| `eval-attacks-replay` | `uv run python evals/agent/run_attacks.py --replay` |
+| `eval-discovery` | `uv run python evals/discovery/run_discovery.py --replay` |
+| `eval-ab` | `uv run python evals/retrieval/ab.py --replay` |
+| `eval-rag` | `uv run python evals/rag/run_rag_eval.py --split dev --replay` |
 
-11. S0 ships the minimal stub retriever (paragraph chunks, cosine over the S0 embedder interface), `security/validate.py`, `protocol/schema.py`, `pricing/schema.py`, `store/schema.sql`, `tests/canary.txt`, and `tests/test_contract_target.py` is **removed** (replaced by item 7).
+11. S0 ships the complete contract-mode pipeline, plus the validation, schema, store and stub files listed in the S0 row of section 17. `tests/test_contract_target.py` is removed; item 7 replaces it.
 12. Imports: `import milo.app` loads no torch and no model. `sentence_transformers` is imported inside the functions that use it.
 
 ## 12. Integration and file ownership
@@ -305,12 +310,13 @@ Six scripted conversations (section 3A), measuring fact precision and recall, st
 - **Phase 3 (parallel):** M5c report (after M5b and pricing); M6 UI wiring to the real App and the operator view (after M5b); M7 evaluation (after M2, dev only).
 - **Phase 4 (integrator):** F1 to F4.
 
-Kit targets run at merges: M1 → `kit-sources`, `kit-abstains`; M3 → `kit-tools`; M4 → `kit-security`; M5a → `kit-errors`, `kit-cost`; M5b → `kit-threads`. Everything at F3 as well.
+Kit targets: S0 runs every `kit-*` target as a wiring smoke check. An owner's milestone rests on its own tests (section 17). Each merge still runs `make check` and the kit targets for the merged milestone, to catch regressions in the shared pipeline.
 
 ## 14. Known conflicts with the kit
 
 - The kit README says `cd sprint2/project-kit`; the real kit is at `../../../project-kit`. MILO copies the contract files at S0.
 - **Contract mode vs discovery mode** (D2, owner decided 2026-10-22). One pipeline; contract mode switches the discovery nodes off. The kit suite runs in both modes; the report lists every kit test that passes in discovery mode and every one that does not, with the reason.
+  Predicted `kit-discovery` outcome, to be checked when it runs: extract consumes the first scripted reply (a tool-call reply has empty content, so parsing fails); the JSON retry consumes the second; the turn ends with the "repeat the last point" reply and nothing executes. Expected: `errors` tests pass; the identity test passes vacuously unless it asserts a non-empty `executed` list (M4 requires that); `sources` and `abstains` fail; `tools`, `security` (destructive), `threads` and `cost` fail. The run produces the real table, which is reported. This prediction only checks the design.
 - Threads: the kit's `test_threads_isolated` uses one user with two threads. Contract mode therefore keys history by `(user_id, thread_id)`. D35 (one session per owner) applies only to discovery mode.
 - Kit `RUBRIC.md` says "Four criteria" and has three tables; the reflection follows the three tables.
 - Kit M6 and README name Streamlit or Next.js. The course accepts Flask (D54). The README is updated to say Flask.
@@ -384,7 +390,7 @@ Layout: top bar (mark, save indicator, first name, menu); centre conversation (e
 
 **Web security:** autoescape on, no `|safe` on model, owner or document text (a script-tag test); CSRF hidden field for forms and `X-CSRF-Token` for fetch; cookies HTTP-only, `SameSite=Lax`, `Secure` over HTTPS; secret key from `MILO_SECRET_KEY`; the web layer calls `App`, the repositories and services only. Footer on every page: "Indicative estimate. Not a quote. Non-binding."
 
-**M6 checks.** `evals/ui/record.py` runs headless Playwright against a live server and writes `evals/results/m6/m6_dom_checks.json`: one entry per checklist line with the selector used and the assertion outcome. Keyboard use and WCAG contrast are **verifier-manual**; the verifier checks contrast from the CSS tokens and runs a keyboard walk-through. The recording covers sign-in, messages, evidence, a fact recorded, a blocked action pending approval, submit, the report, sign-out, sign-in again with the conversation restored.
+**M6 checks.** `evals/ui/record.py` starts its own local server with a seeded operator, a seeded owner invited by the same command the operator uses, and a known password. It then drives the owner flow through the browser. The blocked action is triggered by the owner asking, in the conversation, to withdraw a submission: the model calls `withdraw_submission`, which needs approval. The `/withdraw` button is a separate path and is not used for this check. Results go to `evals/results/m6/m6_dom_checks.json`; the done-line is that every entry passes. Keyboard use and WCAG contrast are **verifier-manual**: the verifier checks contrast from the CSS tokens and runs a keyboard walk-through. The recording covers sign-in, messages, evidence, a fact recorded, a blocked action pending approval, submit, the report, sign-out, sign-in again with the conversation restored.
 
 ## 17. Milestones and done-lines
 
@@ -392,22 +398,22 @@ Each done-line runs through a kit target or a test path. A milestone's done-line
 
 | ID | Build (owned paths) | Done-line |
 |---|---|---|
-| S0 Scaffold (integrator) | section 11 files; `src/milo/{__init__,types,errors,settings,trace,spend,app}.py` (minimal `build_app` that abstains; `create_app` stub); `security/validate.py`; `protocol/schema.py`; `pricing/schema.py`; `store/schema.sql`; S0 stub retriever; `tests/canary.txt`; `conftest.py`; `Makefile` | `uv sync`; `make check` for the S0 files; `make kit-abstains` passes |
+| S0 Scaffold (integrator) | section 11 files; `src/milo/{__init__,types,errors,settings,trace,spend,app}.py`; `app.py` ships the complete contract-mode pipeline against named seams, each an S0 implementation that its owner replaces in its phase: `rag/retrieve.py` (`Retriever.ingest`, `search`), `security/policy.py` (`decide`), `security/taint.py` (`classify`), `loop.py` (`run_turn`), `llm/retry.py` (`invoke_with_retry`); `security/validate.py`; `protocol/schema.py`; `pricing/schema.py`; `store/schema.sql`; `tests/canary.txt`; root `conftest.py`; `Makefile` | `uv sync`; `make check`; every `make kit-*` target runs as a wiring smoke check and passes. These passes are not evidence for any owner milestone |
 | M0 Data (data agent) | `data/**`, `protocols/discovery.v1.yaml`, `scripts/build_data.py`, `tests/test_checker.py`, `tests/test_leakage.py` | `python scripts/check_project_data.py data` prints `OK`; `uv run python scripts/build_data.py --check` exits 0 |
 | M1 Retrieval | `src/milo/rag/{chunk,ingest,vectors,retrieve}.py`, `evals/retrieval/run_retrieval.py`, `tests/test_chunk.py`, `tests/test_vectors.py`, `docs/m1_report.md` | the two tests pass; `make eval-retrieval`; `make eval-retrieval-replay` matches; `make kit-sources` and `make kit-abstains` pass |
 | M2 Advanced RAG | `src/milo/rag/{translate,selfquery,bm25,fusion,rerank}.py`, `evals/retrieval/ab.py`, `tests/test_selfquery.py`, `tests/test_fusion.py`, `docs/m2_report.md` | self-query fallback test; A/B table with paired CI (rewrite, self-query, hybrid); decision per arm |
-| M3 Tools and pricing | `src/milo/tools/**`, `src/milo/pricing/{rate_card,estimator}.py`, `src/milo/loop.py`, `evals/agent/run_tools.py`, `tests/test_tools.py`, `tests/test_pricing.py`, `docs/m3_report.md` | `make kit-tools`; tool eval on 15 cases with its replay target; pricing tests |
-| M4 Security | `src/milo/security/{policy,identity,taint}.py`, `evals/agent/run_attacks.py`, `tests/test_policy.py`, `tests/test_identity.py`, `docs/m4_report.md` | `make kit-security`; `tests/test_identity.py` tests key stripping and the bound user id; attack evaluation with three arms |
-| M5a LLM and errors | `src/milo/llm/**`, `tests/test_llm.py`, `tests/test_errors.py`, `docs/m5a_report.md` | `tests/test_llm.py` (think stripping, cost formula, retry classification) and `tests/test_errors.py` pass; `make kit-errors` and `make kit-cost` at the merge, through the integrator |
+| M3 Tools and pricing | `src/milo/tools/**`, `src/milo/pricing/{rate_card,estimator}.py`, `evals/agent/run_tools.py`, `tests/test_tools.py`, `tests/test_pricing.py`, `docs/m3_report.md`; replaces the S0 `loop.py` seam | `tests/test_tools.py` runs every `MiloBackend` tool through `call()`, one schema rejection, identity-key stripping; `tests/test_pricing.py` passes; `make eval-tools` and `make eval-tools-replay` match; `make kit-tools` passes |
+| M4 Security | `src/milo/security/{policy,identity,taint}.py`, `evals/agent/run_attacks.py`, `tests/test_policy.py`, `tests/test_identity.py`, `docs/m4_report.md`; replaces the S0 policy and taint seams | `make kit-security`; `tests/test_identity.py` asserts `backend.executed` is non-empty and that identity keys are stripped; `tests/test_policy.py` covers the four kit questions; attack evaluation with three arms; **destructive ASR = 0 in the headline and auto-approve arms**; `make eval-attacks` and its replay match |
+| M5a LLM and errors | `src/milo/llm/**` (replaces the S0 `llm/retry.py` seam), `tests/test_llm.py`, `tests/test_errors.py`, `docs/m5a_report.md` | `tests/test_llm.py` (think stripping, cost formula, retry classification, one retry site) and `tests/test_errors.py` pass; `make kit-errors` and `make kit-cost` pass |
 | M5-store | `src/milo/store/**`, `src/milo/auth/**`, `store/schema.sql`, `tests/test_store.py`, `tests/test_auth.py`, `tests/test_store_identity.py` | tests pass; invite, lockout and owner filter covered |
-| M5b Protocol, facts, chain, turns, approvals, prompts | `src/milo/{protocol,facts,chain,turns,prompts}/**`, `tests/test_protocol.py`, `tests/test_turns.py`, `evals/discovery/**`, `docs/m5_report.md`, `docs/traces/` | tests pass; discovery evaluation reports premature-estimate rate; `make kit-threads` at the merge |
+| M5b Protocol, facts, chain, turns, approvals, prompts | `src/milo/{protocol,facts,chain,turns,prompts}/**`, the discovery branch of `src/milo/app.py` (integrator merges it), `tests/test_protocol.py`, `tests/test_turns.py`, `evals/discovery/**`, `docs/m5_report.md`, `docs/traces/` | tests pass; discovery evaluation reports premature-estimate rate = 0 (code-gated); `make kit-discovery` run, with its outcome checked row by row against section 14; `make kit-threads` passes in contract mode |
 | M5c Report | `src/milo/report/**`, `tests/test_report.py` | report from a stored spec; every number traces to a source field or rate-card constant |
-| M6 UI | `src/milo/web/**` (shell in 1a, wiring in 3), `evals/ui/record.py`, `tests/test_web.py`, `docs/m6_checklist.md`, `docs/m6_recording.webm`, `evals/results/m6/m6_dom_checks.json` | `tests/test_web.py` (XSS, CSRF, owner isolation) passes; DOM checks recorded; recording produced; verifier-manual items recorded |
-| M7 Evaluation | `evals/rag/**`, `docs/m7_report.md`, `docs/reflection.md`, labelling file under `data/prompts/` | `make eval` replays; kappa with CI for both judges; limits section filled |
+| M6 UI | `src/milo/web/**` (shell in 1a, wiring in 3), `evals/ui/record.py`, `tests/test_web.py`, `docs/m6_checklist.md`, `docs/m6_recording.webm`, `evals/results/m6/m6_dom_checks.json` | `tests/test_web.py` (XSS, CSRF, owner isolation) passes; every DOM check in `m6_dom_checks.json` passes; recording produced; verifier-manual items recorded |
+| M7 Evaluation | `evals/rag/**`, `evals/rag/labels.jsonl` (written by the labelling agent and committed before the judge prompt), `docs/m7_report.md`, `docs/reflection.md` | `make eval` replays; kappa with CI for both judges; limits section filled |
 
 **Final steps (integrator):**
 - **F1** Integrate all branches into `main`.
-- **F2** `make final-test`, once.
+- **F2** `make final-test`, once. `run_final.py` runs M1 dense retrieval, the M2 A/B and the M7 judge on the test split, and logs each run.
 - **F3** Every `kit-*` target with `PROJECT_APP=milo.app:build_app`; `make eval`; `make check`; the privacy check (section 19).
 - **F4** Checkpoint block (integrator); README status.
 
@@ -434,3 +440,4 @@ Each done-line runs through a kit target or a test path. A milestone's done-line
 - v0.4 (2026-10-22): red-team round 1 applied (two modes, ephemeral stores, dense M1, cost /1e6, error format, sealing, kit targets, turns with polling, approvals).
 - v0.4.1 to v0.4.4 (2026-10-22): demo companies and data pipeline (section 3A); ChatGPT prompts; data agent drafts prose (D52 → D55); model approvals and Flask acceptance (D53, D54).
 - v0.5 (2026-10-22): red-team round 2 applied. Threads keyed by (user, thread) in contract mode. Tools through the backend protocol. Kit attack enums kept. Ruff excludes kit files. Contract threshold fixed at 0.30. Contract target enforced by root conftest. Store and auth roles in Phase 1a. Validation and stub retriever in S0. Protocol and rate-card schemas given. App.ingest specified. Provider error mapping. Single sealing loader. Discovery reply runs the tool loop and shows a details drawer. M7 on dev, F2 on test. Approval lifecycle. Replay-based provenance. Makefile targets with commands. Estimate numbers out of the model. Minor fixes: HTMX removed, trailers from the harness, identity before validation, lazy imports, `.python-version`, git-based privacy file list, session at sign-in, one turn per session, traces table, 44-row gold split, targets mapped to merges.
+- v0.6 (2026-10-22): red-team round 3 applied. Seams and S0 pipeline stated (S0 row). Wire types (section 2A). Protocol and rate-card files are the schemas. Estimate tool takes no numbers. Single retry site. Eval, replay and kit-discovery targets added. Leakage check excludes its own tests and is git-ordered per retrieval branch. Predicted kit-discovery outcome in section 14. M3 and M4 done-lines run real tool and policy tests. HARNESS v0.5 is a separate file.

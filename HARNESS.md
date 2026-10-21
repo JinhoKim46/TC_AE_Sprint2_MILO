@@ -1,158 +1,175 @@
 # MILO — Agent Harness
 
-Status: v0.4, matches `SPEC.md` v0.4. Read `SPEC.md` first. If a rule here and `SPEC.md` disagree, stop and write a request in
-`docs/requests/` instead of guessing.
+Status: v0.5, matches `SPEC.md` v0.6. Read `SPEC.md` first. If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
 
 ## 1. Roles
 
-| Role | Writes | Never writes |
-|---|---|---|
-| Scaffold (S0) | section 11 files; the stub files listed in SPEC 17 | any owned module body |
-| Data (M0) | `data/**`, `protocols/`, `evals/agent/attacks_kb/`, `tests/test_checker.py`, `tests/test_leakage.py` | `src/**`, `evals/**` except the attacks folder |
-| Retrieval (M1, M2) | `src/milo/rag/**` (per file list in appendix A), `evals/retrieval/**`, their tests and reports | `data/gold*`, `tools/`, `security/` |
-| Tools and pricing (M3) | `src/milo/tools/**`, `src/milo/pricing/**`, `src/milo/loop.py`, `evals/agent/run_tools.py`, their tests and report | `security/**` |
-| Security (M4) | `src/milo/security/**`, `evals/agent/run_attacks.py`, its tests and report | `tools/specs.py` (request a change) |
-| LLM and errors (M5a) | `src/milo/llm/**`, its tests and report section | `errors.py` (integrator-owned; send a request) |
-| Protocol, facts, chain, turns, approvals (M5b) | `src/milo/{protocol,facts,chain,turns,store,auth}/**`, `evals/discovery/**`, tests, report, traces | `app.py` (integrator), `llm/**`, `security/**` |
-| Report (M5c) | `src/milo/report/**`, its test | everything else |
-| Web (M6) | `src/milo/web/**`, `evals/ui/record.py`, `tests/test_web.py`, `docs/m6_*` | `App` internals; it uses the public contract only |
-| Evaluation (M7) | `evals/rag/**`, `docs/m7_report.md`, `docs/reflection.md` | `src/**`, the `Makefile` |
-| Verifier (one per milestone) | `docs/verify/<milestone>.md` on the `verify/<milestone>` branch | any code; it may run commands and may not fix |
-| Integrator | `main`, `SPEC.md` version log and new `Dnn` decisions, `Makefile`, `pytest.ini`, `pyproject.toml`, `README.md`, `src/milo/{app,types,errors}.py`, `docs/owner/CHECKPOINTS_PENDING.md`, `docs/requests/` triage | owners' modules (it merges, it does not rewrite them) |
+Every role below is a SPEC section 13 phase entry. The integrator is one role (it may run as one or more agents, but never two at once on the same path).
 
-The number of agents is not fixed. A role may be split into several agents with disjoint paths. A data-builder and a data-checker must be different agents.
+| Role | Phase | Writes | Never writes |
+|---|---|---|---|
+| Integrator | 0, 4 and merges | everything listed as (I) in Appendix A; `main`; `verify/*` merges; `docs/owner/CHECKPOINTS_PENDING.md` | owners' module bodies (it merges them, it does not rewrite them) |
+| Data (M0) | 1a | `data/**`, `protocols/**`, `scripts/build_data.py`, `tests/test_checker.py`, `tests/test_leakage.py` | `src/**`, `evals/**` |
+| Tools and pricing (M3) | 1a | `src/milo/tools/**`, `src/milo/pricing/{rate_card,estimator}.py`, `evals/agent/run_tools.py`, its tests and report | `security/**`, `llm/**` |
+| LLM and errors (M5a) | 1a | `src/milo/llm/**`, `tests/test_llm.py`, `tests/test_errors.py`, `docs/m5a_report.md` | `errors.py` (I), `app.py` (I) |
+| Store and auth (M5-store) | 1a | `src/milo/store/**`, `src/milo/auth/**`, `store/schema.sql`, `tests/test_store.py`, `tests/test_auth.py`, `tests/test_store_identity.py` | repositories' callers in `web/` |
+| Web shell (M6, phase 1a part) | 1a | `src/milo/web/**` shell, static files, `tests/test_web_shell.py` | `App` internals |
+| Retrieval (M1) | 1b | `src/milo/rag/{chunk,ingest,vectors,retrieve}.py`, `evals/retrieval/run_retrieval.py`, `tests/test_chunk.py`, `tests/test_vectors.py`, `docs/m1_report.md` | `data/**`, `src/milo/security/**` |
+| Security (M4) | 2 | `src/milo/security/{policy,identity,taint}.py`, `evals/agent/run_attacks.py`, `tests/test_policy.py`, `tests/test_identity.py`, `docs/m4_report.md` | `tools/specs.py` (request a change) |
+| Discovery (M5b) | 2 | `src/milo/{protocol,facts,chain,turns,prompts}/**`, `evals/discovery/**`, `tests/test_protocol.py`, `tests/test_turns.py`, `docs/m5_report.md`, `docs/traces/` | `app.py` (I) |
+| Advanced RAG (M2) | 2 | `src/milo/rag/{translate,selfquery,bm25,fusion,rerank}.py`, `evals/retrieval/ab.py`, `tests/test_selfquery.py`, `tests/test_fusion.py`, `docs/m2_report.md` | M1 files |
+| Report (M5c) | 3 | `src/milo/report/**`, `tests/test_report.py` | everything else |
+| Web wiring (M6) | 3 | `src/milo/web/**` (wiring), `evals/ui/record.py`, `tests/test_web.py`, `docs/m6_checklist.md`, `docs/m6_recording.webm`, `evals/results/m6/**` | `App` internals |
+| Labelling (M7) | 3 | `evals/rag/labels.jsonl` only; committed before the judge prompt | everything else |
+| Evaluation (M7) | 3 | `evals/rag/**` (except labels), `docs/m7_report.md`, `docs/reflection.md` | `src/**`, `Makefile` |
+| Verifier | after each owner's merge | `docs/verify/<milestone>.md` on the `verify/<milestone>` branch | any code; it runs commands, never fixes |
 
-## 2. Isolation
+The number of agents is not fixed. A role may be split into several agents with disjoint paths. Labelling and evaluation must be different agents.
 
-- Each agent works in its own git worktree outside the AE repo: `git worktree add ~/milo-worktrees/<role>-<milestone> -b agent/<role>/<milestone> main`.
-- An agent reads from `main` and writes only in its worktree and branch.
-- No agent edits the kit (`project-kit/`), the AE repo, or another milestone's paths.
-- Agents do not push. Nothing leaves the machine.
-- Temporary files go in the agent's scratch directory, never in the repo.
+## 2. Isolation and Git
+
+- Each owner works in its own worktree outside the AE repo: `git worktree add ~/milo-worktrees/<role>-<milestone> -b agent/<role>/<milestone> main`.
+- An owner commits only on its own branch, in the SPEC D30 format, with the trailers the session harness supplies.
+- Only the integrator pushes, and only to `origin/main` (the private MILO repo). The owner's approval for pushing MILO is recorded in SPEC D29.
+- Verifiers commit only `docs/verify/<milestone>.md` on `verify/<milestone>`. The integrator merges those branches too.
+- The AE repo is touched only by the integrator, and only to update the submodule pointer.
+- No agent edits the kit (`project-kit/`), the AE repo's other folders, or another role's paths.
+- Temporary files go in the agent's scratch folder, never in the repo.
 
 ## 3. Hard rules (any violation fails the milestone)
 
-1. **No cloud call.** No agent sets `MILO_LIVE`, instantiates `ChatOpenAI` or any OpenRouter client in a path that tests or evals run, or reads `OPENROUTER_API_KEY` or `OPENAI_API_KEY`. A verifier greps for `openrouter.ai` and `ChatOpenAI(` outside `src/milo/llm/cloud.py`.
-2. **Offline tests.** `addopts = --disable-socket`. No test downloads, starts Ollama or loads a model. Embedding models are loaded only in S0 and the M1 eval, with `HF_HUB_OFFLINE=1`.
-3. **No secrets.** No keys, tokens, `.env` content, or machine-specific paths in code, data, logs, commits or verifier pastes. Verifiers replace `$HOME` with `~`.
-4. **No real identities.** Company names, clients, people, addresses, prices and orders are fictional. No real company or person is named, and no real domain is used.
-5. **Hidden project names.** The owner's business project name is never written into MILO files, commit messages or reports. The check is in `scripts/build_data.py` (stored in reversed form).
-6. **Test split sealed.** Only the final steps in `evals/final/` (SPEC 10) read `split=test`. The static check in `tests/test_leakage.py` runs on every merge. The SHA-256 of `data/gold.jsonl` is compared with `MANIFEST.json` at F2.
-7. **No self-approval.** An owner never writes into `docs/verify/` and never marks its own milestone done. The verifier writes the verdict on its own branch.
-8. **Contract files are read-only.** `contract/` is copied from the kit. If a test looks wrong, write a request.
-9. **No silent skip.** `skip` and `xfail` need a request and a verifier note. No fallback to a cloud model.
-10. **Commits only in your branch**, in the D30 format with both trailers.
+1. **No cloud call.** No agent sets `MILO_LIVE`, instantiates `ChatOpenAI` or an OpenRouter client outside `src/milo/llm/cloud.py`, or reads an API key. A verifier greps `openrouter.ai` and `ChatOpenAI(` under `src/`, `evals/`, `tests/` and fails any hit outside `llm/cloud.py`.
+2. **Offline tests.** `addopts = --disable-socket`. Tests never download, start Ollama or load a model. Embedding models are loaded only under `evals/` and in `create_app`, never under `tests/`. `HF_HUB_OFFLINE=1` is set in code before any model loads.
+3. **No secrets, no machine paths.** No keys, tokens, `.env` content or absolute home paths in code, data, logs, commits or verifier pastes. Verifiers replace `$HOME` with `~`.
+4. **Fictional identities only.** Companies, clients, people, addresses, prices and orders are invented. No real company or person is named, and no real domain is used.
+5. **Hidden names.** The owner's business project name, and the names of any other projects the owner keeps out of MILO, are never written into MILO files, commit messages or reports. The list of such names lives only in the untracked `.privacy-terms` file, and the privacy check enforces it.
+6. **Test split sealed.** Only `evals/common.py` names `gold.jsonl`. Only `make final-test` sets `MILO_FINAL=1`. A verifier checks the static rule in SPEC 10.1.
+7. **No self-approval.** An owner never writes into `docs/verify/` and never marks its own milestone done.
+8. **Contract files are read-only.** `contract/` is copied from the kit. A test that looks wrong gets a request, not an edit.
+9. **No silent skip.** `skip` and `xfail` are not allowed in a done-line. A test that needs a local model is marked `local` and is excluded from the default run. Running it is an explicit make target, and the report says which tests ran in that mode.
+10. **Retries in one place.** Only `src/milo/llm/retry.py` retries a model call (SPEC D23a).
 
 ## 4. Milestone cycle (no human in the loop)
 
 ```text
-owner agent builds in its worktree
-  -> owner runs its quick checks and commits to its branch
-  -> verifier (fresh agent, reads SPEC and the branch, not the owner's reasoning):
-       runs the done-line commands through the make kit-* or pytest targets
-       checks every hard rule in section 3 with grep and file checks
-       checks owned-path discipline (git diff --name-only main...branch)
-       checks every reported number has a provenance file in evals/results/
+owner builds in its worktree, runs its quick checks, commits on its branch
+  -> verifier (a fresh agent that reads SPEC and the branch, not the owner's notes):
+       runs the done-line through the make targets and pytest paths in SPEC 17
+       checks every hard rule in section 3 by grep and file checks
+       checks owned-path discipline: git diff --name-only main...<branch> must lie inside the owner's rows in Appendix A
+       checks every reported number has an evals/results file with the provenance fields of SPEC 10.3
+       replays every dev eval and compares rows (section 7)
        writes docs/verify/<milestone>.md on verify/<milestone>
        PASS -> integrator merges
-       FAIL -> owner receives the failing output, fixes (max 3 cycles)
-               after 3 failures: milestone = blocked; integrator continues with independent work
-  -> on merge, the integrator appends the milestone's checkpoint block to docs/owner/CHECKPOINTS_PENDING.md
+       FAIL -> the owner receives the failing output and fixes it in a fresh fix cycle
+               (a new agent, given the failing output and SPEC, not the previous agent's reasoning)
+               max 3 fix cycles; after 3 failures the milestone is blocked and independent work continues
+  -> on merge, the integrator appends the checkpoint block to docs/owner/CHECKPOINTS_PENDING.md
 ```
 
 No stop at a milestone. Checkpoint answers stay with the owner (SPEC D31).
 
 ## 5. Quality gates on every merge
 
-- `uv run ruff check . && uv run ruff format --check .` pass.
-- `uv run mypy src/milo` passes.
-- `uv run pytest` passes (unit tests only; `testpaths = tests`).
-- The kit targets for every merged milestone pass (`make kit-<keyword>`, SPEC 17). The contract directory is never collected by a bare `pytest`.
-- `python scripts/check_project_data.py data` prints `OK` after any change to `data/`.
-- Size: 2 MB per file, except `docs/m6_recording.webm` (25 MB). No generated index, database, log or model file is committed. Checked by a `make check` rule.
-- The integrator reruns the merged milestones' kit targets before merging into `main`. A regression reverts the merge.
+- `make check` passes. It runs ruff, mypy, pytest, and the data checks once `data/gold.jsonl` exists. The size check excludes `docs/m6_recording.webm`.
+- The `make kit-<keyword>` targets for the merged milestone pass (SPEC 13).
+- `uv sync` is allowed in every worktree. It is a sanctioned download step (SPEC 11.3).
+- The integrator reruns the merged milestones' targets on `main` after the merge. A regression reverts the merge.
 
-## 6. Requests between agents
+## 6. Requests between roles
 
-- File: `docs/requests/<from-role>-to-<to-role>-<slug>.md`, on the requester's branch.
-- Content: the exact file and function, the change asked for, why, and the test that will show it works.
-- The receiving agent answers in the same file (accepted or rejected, with reason) and changes only its own paths.
-- Changes to integrator-owned files are requests to the integrator, who applies them at merge time.
+- File: `docs/requests/<from-role>-to-<to-role>-<slug>.md`, committed on the requester's branch.
+- Content: the exact path and function, the change asked for, why, and the test that will show it works.
+- The receiving role answers in the same file (accepted or rejected, with a reason) and changes only its own paths.
+- Changes to integrator-owned paths are requests to the integrator, who applies them at merge time.
 
 ## 7. Verifier checklist (every milestone)
 
 1. Check out the branch in a fresh worktree. Do not read the owner's notes.
 2. Run the done-line commands exactly as SPEC 17 writes them. Paste the output with `$HOME` replaced by `~`.
-3. Run the hard-rule checks in section 3, paste the results.
-4. Run `git diff --name-only main...<branch>`. Every path must be in the owner's appendix A entries.
-5. For each number in the milestone's report, confirm a file in `evals/results/` with `git_commit`, `model`, `seed`, `temperature`, `timestamp` and `command`.
-6. Rerun the dev targets for the milestone and compare with the stored results within tolerance 0.005 on nDCG and recall.
-7. Write the verdict (PASS or FAIL) with evidence to `docs/verify/<milestone>.md` on `verify/<milestone>`.
+3. Run the hard-rule checks in section 3 and paste the results.
+4. Run `git diff --name-only main...<branch>`. Every path must lie inside the owner's rows in Appendix A.
+5. For each number in the milestone's report, confirm an `evals/results/<milestone>/*.json` file with `git_commit`, `model`, `seed`, `temperature`, `command`, `timestamp`, `inputs` and `rows`.
+6. Replay every dev eval of the milestone with its `make ...-replay` target. The replay must match the stored rows exactly.
+7. Dense-only M1 retrieval is also rerun live and compared within 0.005. Model-driven arms (M2 rewrite and self-query, M4, M5, M7) are reported with their live rerun, and a difference is noted in the verdict, not failed.
+8. Write the verdict (PASS or FAIL) with evidence to `docs/verify/<milestone>.md` on `verify/<milestone>`.
 
 ## 8. Red-team loop (for SPEC and HARNESS)
 
-- A red-team agent gets `SPEC.md` and `HARNESS.md` and tries to break them: contradictions, missing decisions, impossible or vacuous done-lines, shared paths, ways to cheat a verifier, leaks of the test split, cloud calls without `MILO_LIVE`, and kit mismatches.
-- Each break gets a severity (blocker, major, minor) and the section.
-- The integrator fixes SPEC or HARNESS, bumps the version, and sends the new version to a **new** red-team agent.
-- Stop: a full round finds no blocker or major. Cap: 5 rounds. Blockers open at the cap: the build does not start.
+- A red-team agent reads `SPEC.md` and `HARNESS.md` and tries to break them: contradictions, missing decisions, paths with no owner or two owners, impossible or vacuous done-lines, ways to cheat a verifier, leaks of the test split, cloud calls, and kit mismatches. It verifies claimed fixes by running things, not only by reading.
+- Each break gets a severity (blocker, major, minor), a section and a fix.
+- The integrator fixes SPEC or HARNESS, bumps the version line, and sends the new version to a **new** red-team agent.
+- Stop: a full round finds no blocker or major. Cap: 5 rounds. Blockers still open at the cap: the build does not start, and the owner is told.
 
 ## 9. Decisions and escalation
 
 - Decisions already in SPEC are not re-asked.
-- A question SPEC does not answer: the integrator chooses the option that is local, offline, reversible and within the kit rules, records it as a new `Dnn` decision with a version-log line, and continues.
-- Only a conflict that would break a section 3 rule stops work for the owner.
+- A question SPEC does not answer: the integrator picks the option that is local, offline, reversible and within the kit rules, records it as a new `Dnn` decision with a version-log line, and continues.
+- A conflict that would break a section 3 rule stops work for the owner.
 
-## 10. Final report (last step)
+## 10. Final report
 
-Per milestone: status (`verified`, `blocked`, `owner review pending`), the done-line output, the report numbers with CIs and provenance files, the decisions made during the build (new `Dnn` entries and version lines), and every open item. Written to `docs/owner/CHECKPOINTS_PENDING.md` and the README status line by the integrator.
+Per milestone: status (`verified, owner review pending`, or `blocked`), the done-line output, the report numbers with CIs and provenance files, every decision made during the build (new `Dnn` entries and version lines), and every open item. Written by the integrator to `docs/owner/CHECKPOINTS_PENDING.md` and the README status line.
 
 ## Appendix A. File ownership
 
-One owner per path. "(I)" marks integrator-owned. A path not listed belongs to nobody and must be requested.
+One owner per path. (I) marks integrator-owned. A path not listed belongs to nobody and must be requested.
 
 | Path | Owner |
 |---|---|
-| `pyproject.toml`, `uv.lock`, `Makefile`, `pytest.ini`, `.gitignore`, `.env.example`, `README.md`, `SPEC.md`, `HARNESS.md` | (I) |
-| `contract/**`, `scripts/check_project_data.py` | S0 (read-only after S0) |
-| `src/milo/__init__.py`, `src/milo/app.py`, `src/milo/types.py`, `src/milo/errors.py`, `src/milo/settings.py`, `src/milo/trace.py`, `src/milo/spend.py` | (I) |
+| `pyproject.toml`, `uv.lock`, `.python-version`, `Makefile`, `pytest.ini`, `conftest.py`, `.gitignore`, `.env.example`, `README.md`, `SPEC.md`, `HARNESS.md` | (I) |
+| `contract/**`, `scripts/check_project_data.py` | read-only copies from S0 (I) |
+| `src/milo/__init__.py`, `app.py`, `types.py`, `errors.py`, `settings.py`, `trace.py`, `spend.py` | (I) |
+| `src/milo/security/validate.py`, `src/milo/protocol/schema.py`, `src/milo/pricing/schema.py`, `src/milo/store/schema.sql` | (I) at S0; then the owner named below may change them by request |
+| `src/milo/rag/retrieve.py` | (I) S0 seam; M1 replaces the body |
+| `src/milo/security/policy.py`, `src/milo/security/taint.py`, `src/milo/loop.py`, `src/milo/llm/retry.py` | (I) S0 seams; M4, M3, M5a replace the bodies |
 | `src/milo/llm/**` | M5a |
-| `src/milo/rag/chunk.py`, `ingest.py`, `vectors.py`, `retrieve.py` | M1 |
+| `src/milo/rag/chunk.py`, `ingest.py`, `vectors.py` | M1 |
 | `src/milo/rag/translate.py`, `selfquery.py`, `bm25.py`, `fusion.py`, `rerank.py` | M2 |
-| `src/milo/tools/**`, `src/milo/pricing/**`, `src/milo/loop.py` | M3 |
-| `src/milo/security/**` | M4 |
-| `src/milo/protocol/**`, `src/milo/facts/**`, `src/milo/chain.py`, `src/milo/turns.py`, `src/milo/store/**`, `src/milo/auth/**` | M5b |
+| `src/milo/tools/**`, `src/milo/pricing/rate_card.py`, `src/milo/pricing/estimator.py` | M3 |
+| `src/milo/security/identity.py`, `src/milo/security/policy.py` (body), `src/milo/security/taint.py` (body) | M4 |
+| `src/milo/protocol/**`, `src/milo/facts/**`, `src/milo/chain.py`, `src/milo/turns.py`, `src/milo/prompts/**` | M5b |
+| `src/milo/store/**`, `src/milo/auth/**` | M5-store |
 | `src/milo/report/**` | M5c |
-| `src/milo/web/**` | M6 |
+| `src/milo/web/**` (shell) | M6 shell (phase 1a) |
+| `src/milo/web/**` (wiring) | M6 (phase 3) |
 | `protocols/**`, `data/**`, `evals/agent/attacks_kb/**` | M0 |
-| `tests/conftest.py`, `tests/test_contract_target.py`, `tests/canary.txt` | S0 |
+| `scripts/build_data.py` | M0 |
+| `tests/conftest.py` | (I) — not used; the root `conftest.py` is (I) |
+| `tests/canary.txt` | (I) at S0 |
 | `tests/test_checker.py`, `tests/test_leakage.py` | M0 |
 | `tests/test_chunk.py`, `tests/test_vectors.py` | M1 |
 | `tests/test_selfquery.py`, `tests/test_fusion.py` | M2 |
 | `tests/test_tools.py`, `tests/test_pricing.py` | M3 |
 | `tests/test_policy.py`, `tests/test_identity.py` | M4 |
-| `tests/test_errors.py`, `tests/test_llm.py` | M5a |
+| `tests/test_llm.py`, `tests/test_errors.py` | M5a |
+| `tests/test_store.py`, `tests/test_auth.py`, `tests/test_store_identity.py` | M5-store |
 | `tests/test_protocol.py`, `tests/test_turns.py` | M5b |
 | `tests/test_report.py` | M5c |
-| `tests/test_web.py` | M6 |
-| `evals/retrieval/**` (M1 `run_retrieval.py`, report template; M2 `ab.py`) | M1 (`run_retrieval.py`, template), M2 (`ab.py`) |
+| `tests/test_web_shell.py` | M6 shell |
+| `tests/test_web.py` | M6 (phase 3) |
+| `evals/common.py` | (I) |
+| `evals/run_all_replay.py` | (I) |
+| `evals/retrieval/run_retrieval.py`, `evals/retrieval/**` (report template) | M1 |
+| `evals/retrieval/ab.py` | M2 |
 | `evals/agent/run_tools.py` | M3 |
 | `evals/agent/run_attacks.py` | M4 |
-| `evals/discovery/**`, `docs/traces/**` | M5b |
-| `evals/ui/record.py` | M6 |
-| `evals/rag/**` | M7 |
-| `evals/final/**` | integrator (F2 only) |
-| `evals/results/**` | written by the eval run that produced it; never hand-edited |
-| `docs/m1_report.md` | M1 |
-| `docs/m2_report.md` | M2 |
-| `docs/m3_report.md` | M3 |
-| `docs/m4_report.md` | M4 |
-| `docs/m5_report.md` | M5a and M5b (separate sections, merged by the integrator) |
+| `evals/discovery/**` | M5b |
+| `evals/ui/record.py`, `evals/results/m6/**` | M6 (phase 3) |
+| `evals/rag/labels.jsonl` | Labelling (M7) |
+| `evals/rag/**` (other) | M7 |
+| `evals/final/**` | (I), F2 only |
+| `evals/results/<milestone>/**` | written only by the eval run that produced it, on that milestone's branch; never hand-edited |
+| `docs/m1_report.md` ... `docs/m7_report.md` (one per milestone) | the owner of that milestone |
+| `docs/m5a_report.md` | M5a |
+| `docs/m5_report.md` | M5b |
 | `docs/m6_checklist.md`, `docs/m6_recording.webm` | M6 |
-| `docs/m7_report.md`, `docs/reflection.md` | M7 |
+| `docs/reflection.md` | M7 |
+| `docs/traces/**` | M5b |
 | `docs/verify/**` | verifiers |
-| `docs/requests/**` | requester (create); integrator (triage) |
+| `docs/requests/**` | requester creates; integrator triages |
 | `docs/owner/CHECKPOINTS_PENDING.md` | (I) |
-| `docs/design/**` | published separately; not in the repo build |
+| `docs/design/**` | git-ignored; not in the repo build |
 | `logs/**`, `data/index/**`, `data/milo.sqlite` | generated; git-ignored |
 
-Shared-file rule: a path in two rows is allowed only where the table says so. The integrator resolves any other overlap at merge time and records it as a finding.
+Overlap rule: a path may appear in two rows only where the row says so (an S0 seam replaced by its owner). Any other overlap is resolved by the integrator at merge time and recorded as a finding.
