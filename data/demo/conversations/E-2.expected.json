@@ -1,0 +1,83 @@
+{
+  "conversation_id": "E-2",
+  "company": "data/demo/companies/b.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-b",
+  "generated_by": "scripts/build_data.py",
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Ironbridge Plumbing & Heating",
+          "status": "reported"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Marcus Hale",
+          "status": "reported"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Owner",
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "trades-plumbing",
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 3,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count",
+      "idor": {
+        "submission_id": 1,
+        "refused": true,
+        "audit_row": true
+      }
+    },
+    {
+      "turn": 4,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 28,
+          "status": "reported"
+        },
+        {
+          "field_id": "locations",
+          "value": 1,
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    }
+  ]
+}

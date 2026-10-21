@@ -1,0 +1,25 @@
+{"turn": 1, "owner_text": "Hi, I'm Lena Ortiz. I own Maple & Paw Grooming."}
+{"turn": 2, "owner_text": "We're a pet grooming business, dogs mostly."}
+{"turn": 3, "owner_text": "Nine of us, including me."}
+{"turn": 4, "owner_text": "Two salons."}
+{"turn": 5, "owner_text": "Mostly by phone, and there's a web form on our site."}
+{"turn": 6, "owner_text": "About 35 a day on a normal day."}
+{"turn": 7, "owner_text": "Around 4 minutes per call by the time we've found a slot."}
+{"turn": 8, "owner_text": "Then about 2 minutes to type it into the spreadsheet."}
+{"turn": 9, "owner_text": "A shared spreadsheet, and a booking widget on the site that can export CSV."}
+{"turn": 10, "owner_text": "We take the request, write it in the spreadsheet, confirm by text, send a reminder by hand the day before, then mark it done."}
+{"turn": 11, "owner_text": "Only refunds. I approve those myself."}
+{"turn": 12, "owner_text": "We miss calls at peak times, reminders are all sent by hand, and no-shows cost us."}
+{"turn": 13, "owner_text": "Bookings get missed, or the same dog gets booked twice."}
+{"turn": 14, "owner_text": "Before I answer that, what does phone intake actually do?"}
+{"turn": 15, "owner_text": "Booking intake and the reminders."}
+{"turn": 16, "owner_text": "Time. I want my staff off the phone and on the dogs."}
+{"turn": 17, "owner_text": "Just the CSV export from the booking widget. No API that I know of."}
+{"turn": 18, "owner_text": "Yes, pet owners' phone numbers."}
+{"turn": 19, "owner_text": "No, nothing urgent. It's grooming."}
+{"turn": 20, "owner_text": "I don't have a budget in mind yet."}
+{"turn": 21, "owner_text": "Next quarter, ideally."}
+{"turn": 22, "owner_text": "lena@example.invalid"}
+{"turn": 23, "owner_text": "What would the setup fee actually cover?"}
+{"turn": 24, "owner_text": "Could you show me the estimate now?"}
+{"turn": 25, "owner_text": "Great, I'll submit this now."}

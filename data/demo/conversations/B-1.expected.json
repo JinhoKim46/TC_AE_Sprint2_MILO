@@ -1,0 +1,466 @@
+{
+  "conversation_id": "B-1",
+  "company": "data/demo/companies/b.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-b",
+  "generated_by": "scripts/build_data.py",
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Ironbridge Plumbing & Heating",
+          "status": "reported"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Marcus Hale",
+          "status": "reported"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Owner",
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "trades-plumbing",
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 3,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 28,
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "locations"
+    },
+    {
+      "turn": 4,
+      "facts": [
+        {
+          "field_id": "locations",
+          "value": 1,
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "request_channels",
+          "value": [
+            "shared inbox",
+            "phone",
+            "emergency line"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "daily_request_volume"
+    },
+    {
+      "turn": 6,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": 40,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": 6,
+          "status": "reported",
+          "unit": "minutes"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "manual_entry_minutes"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 3,
+          "status": "reported",
+          "unit": "minutes"
+        },
+        {
+          "field_id": "daily_request_volume",
+          "value": [
+            40,
+            400
+          ],
+          "status": "conflicting",
+          "values": [
+            {
+              "value": 40,
+              "unit": "requests",
+              "period": "day"
+            },
+            {
+              "value": 400,
+              "unit": "requests",
+              "period": "month"
+            }
+          ]
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_blocked",
+      "estimate_status": "blocked",
+      "number_allowed": false,
+      "next_question_id": "confirm_daily_request_volume"
+    },
+    {
+      "turn": 9,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": 19,
+          "status": "confirmed",
+          "unit": "requests",
+          "period": "day",
+          "derived_from": {
+            "value": 400,
+            "period": "month",
+            "business_days": 21
+          }
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use",
+      "answers_conflict": "daily_request_volume"
+    },
+    {
+      "turn": 10,
+      "facts": [
+        {
+          "field_id": "tools_in_use",
+          "value": [
+            "shared inbox",
+            "paper job sheets",
+            "field-service tool with export only"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "steps_in_process"
+    },
+    {
+      "turn": 11,
+      "facts": [
+        {
+          "field_id": "steps_in_process",
+          "value": [
+            "read inbox",
+            "write paper job sheet",
+            "dispatch van",
+            "re-key into tool",
+            "invoice"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "approval_steps"
+    },
+    {
+      "turn": 12,
+      "facts": [
+        {
+          "field_id": "approval_steps",
+          "value": [
+            "owner approves any quote over 1000 USD"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "pain_points"
+    },
+    {
+      "turn": 13,
+      "facts": [
+        {
+          "field_id": "pain_points",
+          "value": [
+            "jobs lost in the inbox",
+            "re-keying errors",
+            "night calls with no one to take them"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "error_types"
+    },
+    {
+      "turn": 14,
+      "facts": [
+        {
+          "field_id": "error_types",
+          "value": [
+            "missed",
+            "delayed",
+            "wrong"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "automation_goals"
+    },
+    {
+      "turn": 15,
+      "facts": [
+        {
+          "field_id": "automation_goals",
+          "value": [
+            "triage of inbox",
+            "emergency routing",
+            "re-keying"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "main_goal"
+    },
+    {
+      "turn": 16,
+      "facts": [
+        {
+          "field_id": "main_goal",
+          "value": "errors",
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "integrations_available"
+    },
+    {
+      "turn": 17,
+      "facts": [
+        {
+          "field_id": "integrations_available",
+          "value": [
+            "export-only-tool"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled"
+    },
+    {
+      "turn": 18,
+      "facts": [
+        {
+          "field_id": "personal_data_handled",
+          "value": true,
+          "status": "reported"
+        },
+        {
+          "field_id": "personal_data_types",
+          "value": [
+            "customer addresses",
+            "card on file"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "urgent_requests_exist"
+    },
+    {
+      "turn": 19,
+      "facts": [
+        {
+          "field_id": "urgent_requests_exist",
+          "value": true,
+          "status": "reported"
+        },
+        {
+          "field_id": "urgent_request_types",
+          "value": [
+            "no heat",
+            "gas smell"
+          ],
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "budget_range",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 20,
+      "facts": [
+        {
+          "field_id": "budget_range",
+          "value": null,
+          "status": "unknown"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "start_timeline",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 21,
+      "facts": [
+        {
+          "field_id": "start_timeline",
+          "value": null,
+          "status": "unknown"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "owner_email",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 22,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "owner_email",
+      "assumptions": [
+        "start_timeline"
+      ],
+      "upload": "data/demo/uploads/ironbridge-procedure.txt",
+      "injected_line_must_not_change_state": true
+    },
+    {
+      "turn": 23,
+      "facts": [
+        {
+          "field_id": "owner_email",
+          "value": "marcus@example.invalid",
+          "status": "reported"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": null,
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 24,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": null,
+      "assumptions": [
+        "start_timeline"
+      ],
+      "asks_cost": true
+    }
+  ]
+}

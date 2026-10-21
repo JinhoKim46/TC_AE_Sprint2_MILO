@@ -1,0 +1,197 @@
+# MILO discovery protocol v1 (SPEC D36, section 5). Fictional. Loadable with yaml.safe_load.
+#
+# How the engine (src/milo/protocol/engine.py, M5b) is expected to read this file:
+#
+# - `fields` is an ordered list. The order is the question priority: the next question is the first field whose
+#   `condition` holds, that has no fact yet, and that is not already answered "unknown". A field the owner answered
+#   with "I don't know" (or similar) gets status `unknown` and is not asked again. A field that was asked but not
+#   answered stays the next question (SPEC 3A: no duplicate questions means no re-asking of answered fields).
+# - Conflicts come first: when any field has status `conflicting`, the next question is that field's
+#   `conflict_question` (question id `confirm_<field_id>`). The owner's reply to it sets status `confirmed` (D37);
+#   the engine performs the unit conversion in code (`conversions`), never the model.
+# - `required_for` lists the protocol states a field gates:
+#     assessment_ready  every field with `assessment` in required_for has status reported, confirmed or estimated
+#     quote_ready       assessment_ready and every field with `quote` in required_for has status reported or
+#                       confirmed, and no field is `conflicting`
+#     quote_blocked     any field with `blocking: true` is `conflicting`
+#   Before assessment_ready the state is `collecting` (a name this file adds; SPEC names only the three above).
+#   State precedence: quote_blocked > quote_ready > assessment_ready > collecting.
+# - Estimate status (D39) follows the state: collecting -> none (no number may be shown); quote_blocked -> blocked;
+#   quote_ready -> indicative; assessment_ready (quote fields missing or unknown) -> scenario, with the missing
+#   fields listed as assumptions.
+# - `pricing: true` marks the fields the pricing engine reads. `record_fact` on these is denied when taint is high
+#   (D22). `pii: true` marks owner contact data stored only after consent (D43).
+# - `type` is one of string, integer, number, boolean, enum, list, list_enum. `values` lists the allowed enum
+#   values. `unit` and `periods` apply to numbers; the first period is the canonical one.
+#
+version: discovery.v1
+updated: "2026-10-22"
+states: [collecting, assessment_ready, quote_ready, quote_blocked]
+groups:
+  company: Company
+  workflow: Workflow
+  problems: Problems
+  constraints: Constraints
+conversions:
+  # business days per period, used to turn a monthly or weekly volume into a daily one
+  business_days_per_month: 21
+  business_days_per_week: 5
+fields:
+  - id: company_name
+    group: company
+    type: string
+    required_for: [assessment]
+    question: What is your company called?
+  - id: industry
+    group: company
+    type: string
+    required_for: [assessment]
+    question: What kind of business is it? For example a trade, a shop, a clinic or a service.
+  - id: employee_count
+    group: company
+    type: integer
+    unit: people
+    min: 1
+    max: 10000
+    required_for: [assessment]
+    question: How many people work there, including you?
+  - id: locations
+    group: company
+    type: integer
+    unit: sites
+    min: 1
+    max: 1000
+    required_for: [assessment]
+    question: How many locations or sites do you run?
+  - id: owner_name
+    group: company
+    type: string
+    required_for: [assessment]
+    question: Who am I talking to? Your name, please.
+  - id: owner_role
+    group: company
+    type: string
+    required_for: []
+    question: What is your role in the company?
+  - id: request_channels
+    group: workflow
+    type: list
+    required_for: [assessment]
+    question: How do requests reach you today? For example phone, email, a web form or walk-ins.
+  - id: daily_request_volume
+    group: workflow
+    type: number
+    unit: requests
+    periods: [day, week, month]
+    min: 0
+    max: 100000
+    required_for: [assessment, quote]
+    pricing: true
+    blocking: true
+    question: Roughly how many requests come in on a normal day?
+    conflict_question: >-
+      I have two different volumes from you. Which should I use: the daily figure or the monthly one?
+      Please give me the one that reflects a normal month.
+  - id: average_handling_minutes
+    group: workflow
+    type: number
+    unit: minutes
+    min: 0
+    max: 600
+    required_for: [assessment]
+    question: How many minutes does one request take to handle, on average?
+  - id: manual_entry_minutes
+    group: workflow
+    type: number
+    unit: minutes
+    min: 0
+    max: 600
+    required_for: [assessment]
+    question: And how many minutes of typing or re-keying does each request need after that?
+  - id: tools_in_use
+    group: workflow
+    type: list
+    required_for: [assessment]
+    question: Which tools do you use for this today? Spreadsheets, an inbox, a booking tool, paper?
+  - id: steps_in_process
+    group: workflow
+    type: list
+    required_for: [assessment]
+    question: Walk me through the steps from the moment a request arrives until it is done.
+  - id: approval_steps
+    group: workflow
+    type: list
+    required_for: []
+    question: Is there anything in that process that you or a manager must approve?
+  - id: pain_points
+    group: problems
+    type: list
+    required_for: [assessment]
+    question: What goes wrong most often, or takes the most time?
+  - id: error_types
+    group: problems
+    type: list_enum
+    values: [missed, duplicated, delayed, wrong, other]
+    required_for: [assessment]
+    question: When mistakes happen, what kind are they? Missed, duplicated, delayed or wrong?
+  - id: automation_goals
+    group: problems
+    type: list
+    required_for: [assessment, quote]
+    pricing: true
+    question: Which parts would you most like to hand over to an automated system?
+  - id: main_goal
+    group: problems
+    type: enum
+    values: [time, errors, cost, growth]
+    required_for: [assessment]
+    question: "What matters most to you here: saving time, fewer errors, lower cost or room to grow?"
+  - id: integrations_available
+    group: constraints
+    type: list_enum
+    values: [csv-export, api-connector, crm-connector, export-only-tool]
+    required_for: [assessment, quote]
+    pricing: true
+    question: Can your current tools export or import data, and do any of them offer an API?
+  - id: personal_data_handled
+    group: constraints
+    type: boolean
+    required_for: [assessment]
+    question: Do you store customer personal data, such as phone numbers, addresses or payment details?
+  - id: personal_data_types
+    group: constraints
+    type: list
+    required_for: []
+    condition: {field: personal_data_handled, equals: true}
+    question: Which kinds of personal data do you keep?
+  - id: urgent_requests_exist
+    group: constraints
+    type: boolean
+    required_for: [assessment]
+    question: Do you get urgent requests that must be handled straight away, at any hour?
+  - id: urgent_request_types
+    group: constraints
+    type: list
+    required_for: []
+    condition: {field: urgent_requests_exist, equals: true}
+    question: What counts as urgent for you, and who takes those calls today?
+  - id: budget_range
+    group: constraints
+    type: string
+    required_for: []
+    pricing: true
+    allow_unknown: true
+    question: Do you have a budget range in mind? It is fine to say you do not know yet.
+  - id: start_timeline
+    group: constraints
+    type: string
+    required_for: [quote]
+    pricing: true
+    allow_unknown: true
+    question: When would you want to start? Next month, next quarter, or not decided yet?
+  - id: owner_email
+    group: company
+    type: string
+    required_for: []
+    pii: true
+    question: Finally, which email address should the report go to? We store it only with your consent.
