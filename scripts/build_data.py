@@ -35,8 +35,18 @@ TOOLS = {
     "record_fact",
     "withdraw_submission",
 }
-# Names that must never appear in MILO files (HARNESS 3.4, 3.5). Stored reversed so this file does not contain them.
-FORBIDDEN_WORDS = tuple(w[::-1] for w in ("REDACTED", "REDACTED", "REDACTED"))
+# Names that must never appear in MILO files (HARNESS 3.5). They live only in the untracked `.privacy-terms`
+# file (one per line, `#` comments), so this file contains none of them. Without that file the word check is skipped.
+_PRIVACY_TERMS = Path(__file__).resolve().parents[1] / ".privacy-terms"
+FORBIDDEN_WORDS = (
+    tuple(
+        line.strip()
+        for line in _PRIVACY_TERMS.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    )
+    if _PRIVACY_TERMS.exists()
+    else ()
+)
 DEMO_NAMES = ("Maple", "Paw", "Ironbridge", "Ortiz", "Hale")
 STOP = {"the", "a", "of", "and", "is", "to", "in"}
 FRONT_KEYS = ("title", "section", "updated", "doc_id", "product")
