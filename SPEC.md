@@ -135,7 +135,7 @@ Git-ignored: `data/index/`, `data/milo.sqlite`, `logs/`, `.env`, `.venv/`, `eval
   - **B. Ironbridge Plumbing & Heating** (owner Marcus Hale, 28 staff, 3 vans): shared inbox and paper job sheets; export-only tool; night emergency line; personal data; a volume conflict (40 a day, later 400 a month, true value 19 a business day); an uploaded procedure with one injected line.
 - Truth files: `data/demo/companies/a.yaml`, `b.yaml`. Six scripted conversations in `data/demo/conversations/` (A-1, A-2, B-1, B-2, E-1, E-2) with expected facts, states and next questions per turn in `<id>.expected.json`, derived from the truth files and the protocol, never from a model.
 - **D50** Source of truth: `catalogue.yaml`, `rate_card.v1.yaml` and the truth files. Generated files are not edited by hand.
-- **D51** Larkspur (`sprint2/data/larkspur/`) is not MILO content. It may be converted (outside the repo, in a scratch folder) for an M1 smoke test of the code. Its results are never reported as MILO results.
+- **D51** The reference dataset in the course data folder (`sprint2/data/`, one subfolder) is not MILO content. It may be converted (outside the repo, in a scratch folder) for an M1 smoke test of the code. Its results are never reported as MILO results.
 
 ## 4. Retrieval (M1, M2)
 

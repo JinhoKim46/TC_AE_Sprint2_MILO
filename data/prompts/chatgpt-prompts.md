@@ -16,7 +16,7 @@ retry with the check's error text pasted in. Do not hand-edit numbers to pass a 
 ```text
 You are helping build a fictional dataset for a software demo. The company "MILO" is a fictional consultancy that helps
 small businesses automate parts of their work. Everything you write is fictional. Do not mention any real company, real
-person, real product, real website or real price list. Do not use the words "REDACTED", "Larkspur" or "Brightside".
+person, real product, real website or real price list. Do not use the names listed in the repository rules.
 
 Rules for every answer:
 1. Use only the facts I give you. Do not invent numbers, prices, dates, module names, percentages, or people.

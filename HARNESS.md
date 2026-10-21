@@ -35,8 +35,8 @@ The number of agents is not fixed. A role may be split into several agents with 
 1. **No cloud call.** No agent sets `MILO_LIVE`, instantiates `ChatOpenAI` or any OpenRouter client in a path that tests or evals run, or reads `OPENROUTER_API_KEY` or `OPENAI_API_KEY`. A verifier greps for `openrouter.ai` and `ChatOpenAI(` outside `src/milo/llm/cloud.py`.
 2. **Offline tests.** `addopts = --disable-socket`. No test downloads, starts Ollama or loads a model. Embedding models are loaded only in S0 and the M1 eval, with `HF_HUB_OFFLINE=1`.
 3. **No secrets.** No keys, tokens, `.env` content, or machine-specific paths in code, data, logs, commits or verifier pastes. Verifiers replace `$HOME` with `~`.
-4. **No real identities.** Brightside-style names, clients, people, addresses, prices and orders are fictional. No real company or person is named, and no real domain is used.
-5. **No REDACTED.** The word and any project that uses it are never written into MILO files, commit messages or reports.
+4. **No real identities.** Company names, clients, people, addresses, prices and orders are fictional. No real company or person is named, and no real domain is used.
+5. **Hidden project names.** The owner's business project name is never written into MILO files, commit messages or reports. The check is in `scripts/build_data.py` (stored in reversed form).
 6. **Test split sealed.** Only the final steps in `evals/final/` (SPEC 10) read `split=test`. The static check in `tests/test_leakage.py` runs on every merge. The SHA-256 of `data/gold.jsonl` is compared with `MANIFEST.json` at F2.
 7. **No self-approval.** An owner never writes into `docs/verify/` and never marks its own milestone done. The verifier writes the verdict on its own branch.
 8. **Contract files are read-only.** `contract/` is copied from the kit. If a test looks wrong, write a request.
