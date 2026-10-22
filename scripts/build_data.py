@@ -4,8 +4,9 @@
     python scripts/build_data.py            # write gold, tool cases, attacks, conversations, expected, MANIFEST
     python scripts/build_data.py --check    # verify every file matches its sources; exit 1 on any mismatch
 
-Sources (hand-written, never changed here): data/source/catalogue.yaml, data/pricing/rate_card.v1.yaml,
-data/demo/companies/{a,b}.yaml, protocols/discovery.v1.yaml, the KB articles and the owner messages below.
+Sources (hand-written, never changed here): data/source/catalogue.yaml, data/source/gold_questions.yaml,
+data/pricing/rate_card.v1.yaml, data/demo/companies/{a,b}.yaml, protocols/discovery.v1.yaml, the KB articles and the
+owner messages below.
 Deterministic. Standard library and PyYAML only. No model, no network.
 """
 
@@ -61,387 +62,61 @@ SECTIONS = {
 ABSTAIN = "INSUFFICIENT_CONTEXT"
 
 # ----------------------------------------------------------------------------------------------------------------
-# Gold (SPEC D25, section 3). 40 rows: 8 identifier, 24 paraphrase, 8 unanswerable; 20 dev / 20 test,
-# stratified by type; 8 filtered rows, 4 of them in dev. Quotes are verbatim sentences of the KB articles.
+# Gold (SPEC D60, D78, D151, section 3; protocol evals/protocols/m0b-gold-expansion.md). The 120 rows are hand-written
+# in data/source/gold_questions.yaml (q001 to q040 are the M0 rows, moved there unchanged; q041 to q120 were added in
+# M0b). gen_gold() writes the kit fields only; the YAML-only fields section_heading, realism and absent_terms are
+# used by check_gold(). Quotes are verbatim substrings of the article bodies, inside one level-2 section.
 # ----------------------------------------------------------------------------------------------------------------
-GOLD = [
-    # identifier (8): the question names the module or integration id exactly
-    (
-        "identifier",
-        "dev",
-        "What activities fall outside the scope of phone-intake?",
-        "solutions/phone-intake",
-        "The phone-intake module does not make outbound sales calls.",
-        "Outbound sales calls, among others, are excluded from phone-intake.",
-        {"product": "phone-intake"},
-    ),
-    (
-        "identifier",
-        "test",
-        "Will email-triage ever send a reply on its own?",
-        "solutions/email-triage",
-        "The email-triage module never sends a message without approval.",
-        "No. Email triage only drafts; a member of staff approves before anything is sent.",
-        {"section": "solutions"},
-    ),
-    (
-        "identifier",
-        "dev",
-        "Can ticket-creation mark a job as finished by itself?",
-        "solutions/ticket-creation",
-        "The ticket-creation module does not close a ticket without a person.",
-        "No. A person closes the ticket.",
-        None,
-    ),
-    (
-        "identifier",
-        "test",
-        "Does staff-assignment alter wages or rotas?",
-        "solutions/staff-assignment",
-        "The staff-assignment module does not make automatic payroll or shift changes.",
-        "No. It only suggests who should take a ticket; payroll and shifts are untouched.",
-        None,
-    ),
-    (
-        "identifier",
-        "dev",
-        "Which kinds of writing can document-data-entry refuse?",
-        "solutions/document-data-entry",
-        "The document-data-entry module does not read handwriting outside the agreed form types.",
-        "Handwriting on forms that were not agreed during setup.",
-        {"product": "document-data-entry"},
-    ),
-    (
-        "identifier",
-        "test",
-        "Is promotional messaging part of customer-status-updates?",
-        "solutions/customer-status-updates",
-        "The customer-status-updates module does not send marketing messages.",
-        "No. Marketing messages are excluded.",
-        {"product": "customer-status-updates"},
-    ),
-    (
-        "identifier",
-        "dev",
-        "Is there a recurring charge when using csv-export?",
-        "implementation/csv-export",
-        "The csv-export integration carries no monthly surcharge.",
-        "No. The csv-export surcharge is zero.",
-        None,
-    ),
-    (
-        "identifier",
-        "test",
-        "Which module can use the crm-connector?",
-        "implementation/crm-connector",
-        "The crm-connector is offered for ticket-creation only.",
-        "Only ticket-creation.",
-        {"section": "implementation"},
-    ),
-    # paraphrase (24)
-    (
-        "paraphrase",
-        "dev",
-        "How much does the call answering product cost each month before any factors?",
-        "solutions/phone-intake",
-        "The base monthly price for phone-intake is 690 USD.",
-        "690 USD a month, before the volume factor.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "How are repeated submissions of one job prevented?",
-        "solutions/ticket-creation",
-        "Before it creates a ticket it checks for duplicates, so the same request sent twice does not become two jobs.",
-        "A duplicate check runs before a ticket is created.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "What happens when the scanner tool is unsure about a field?",
-        "solutions/document-data-entry",
-        "Anything the module cannot read with confidence is flagged for a person to check, rather than guessed.",
-        "It is flagged for a person to review instead of being guessed.",
-        {"product": "document-data-entry"},
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "What do reminders and confirmations to clients cost per month at the base rate?",
-        "solutions/customer-status-updates",
-        "The base monthly price for customer-status-updates is 240 USD.",
-        "240 USD a month.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "Which version of the rate list applies, and what currency are the figures in?",
-        "pricing/how-we-price",
-        "The current rate card is rate-card-v1-2026-10 and every price on it is in USD.",
-        "Rate card rate-card-v1-2026-10, in USD.",
-        {"section": "pricing"},
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "Could the chatbot give me a cheaper deal if I ask nicely?",
-        "pricing/how-we-price",
-        "It cannot change the arithmetic, apply a discount, or set a price itself.",
-        "No. The assistant cannot discount or set prices.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "Are sales tax, mileage and equipment part of the quoted figures?",
-        "pricing/what-is-included",
-        "Prices exclude taxes, travel and any hardware.",
-        "No. Taxes, travel and hardware are excluded.",
-        {"section": "pricing"},
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "What happens if my daily workload is larger than the top tier?",
-        "pricing/volume-tiers",
-        "Above 150 requests per day there is no automatic estimate and a person prices it.",
-        "There is no automatic estimate; a person prices it.",
-        {"section": "pricing"},
-    ),
-    (
-        "paraphrase",
-        "test",
-        "What multiplier applies when we handle roughly fifty requests daily?",
-        "pricing/volume-tiers",
-        "A business with volume up to 60 requests a day pays the base price multiplied by 1.25.",
-        "The factor is 1.25 for volume up to 60 requests a day.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "If three products share one connection, how many times do I pay the connection fee?",
-        "pricing/setup-fees",
-        "A surcharge is counted once per integration, not once per module.",
-        "Once. The surcharge is per integration, not per module.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "Does the CRM link price cover mapping my fields?",
-        "pricing/setup-fees",
-        "The crm-connector surcharge is 450 USD a month and includes the field mapping.",
-        "Yes. 450 USD a month, field mapping included.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "How is the lower end of the price bracket calculated?",
-        "pricing/range-and-estimates",
-        "The low figure is the base multiplied by 0.90.",
-        "Base multiplied by 0.90.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "What is the largest number of products one calculation can cover?",
-        "pricing/range-and-estimates",
-        "An estimate covers at most 6 modules.",
-        "At most 6 modules.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "Does a file-based link keep my software permanently connected?",
-        "implementation/csv-export",
-        "There is no live connection between the two systems.",
-        "No. CSV exchange has no live connection.",
-        {"section": "implementation"},
-    ),
-    (
-        "paraphrase",
-        "test",
-        "How long does hooking up to my software's API take?",
-        "implementation/api-connector",
-        "Setup takes one working day.",
-        "One working day.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "How many days are needed to connect a customer database?",
-        "implementation/crm-connector",
-        "Setup takes two working days.",
-        "Two working days.",
-        {"section": "implementation"},
-    ),
-    (
-        "paraphrase",
-        "test",
-        "My job software can only send data out; can you make it accept data?",
-        "implementation/export-only-tools",
-        "The integration does not add an import to a tool that has none.",
-        "No. An export-only tool stays export-only; the integration prepares results for a file drop or re-keying.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "In the heating company story, why was no price shown for a while?",
-        "cases/trades-dispatch",
-        "The estimate stayed blocked until the owner said which figure reflected a normal month.",
-        "Two volumes conflicted; the estimate was blocked until the owner chose one.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "What happens when I answer that I have no idea?",
-        "consultation/first-questions",
-        "If you say you do not know, the fact is marked unknown and the question is not asked again.",
-        "The fact is marked unknown and the question is not repeated.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "Will the interviewer silently pick my most recent figure when two disagree?",
-        "consultation/volume-and-timing",
-        "The assistant does not quietly choose the later answer.",
-        "No. It keeps both and asks you which to use.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "Does needing emergency cover make the modules more expensive?",
-        "consultation/urgent-requests",
-        "Urgent handling does not change the rate card price.",
-        "No. Urgent handling changes the setup, not the price.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "Is removing my data written down anywhere?",
-        "policies/personal-data",
-        "A deletion is recorded in an audit log with the time and the person who did it.",
-        "Yes. Deletions go to the audit log with time and person.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "dev",
-        "Can the chat assistant file my spec for me?",
-        "policies/approvals",
-        "The assistant cannot submit your specification.",
-        "No. Only you can submit, with the button.",
-        None,
-    ),
-    (
-        "paraphrase",
-        "test",
-        "Are my typed words stored verbatim in the logs?",
-        "policies/security",
-        "Your message text is logged as a hash and a length, not as text.",
-        "No. Only a hash and a length are logged.",
-        None,
-    ),
-    # unanswerable (8): topics the KB does not cover; keywords checked against the KB below
-    (
-        "unanswerable",
-        "dev",
-        "Which spoken languages can phone-intake understand?",
-        None,
-        None,
-        ABSTAIN,
-        None,
-    ),
-    (
-        "unanswerable",
-        "test",
-        "Is there a free trial period before I commit?",
-        None,
-        None,
-        ABSTAIN,
-        None,
-    ),
-    (
-        "unanswerable",
-        "dev",
-        "Do you have a mobile app for engineers in the van?",
-        None,
-        None,
-        ABSTAIN,
-        None,
-    ),
-    (
-        "unanswerable",
-        "test",
-        "Which countries do you operate in?",
-        None,
-        None,
-        ABSTAIN,
-        None,
-    ),
-    (
-        "unanswerable",
-        "dev",
-        "What uptime percentage do you promise?",
-        None,
-        None,
-        ABSTAIN,
-        None,
-    ),
-    (
-        "unanswerable",
-        "test",
-        "Can I pay annually instead of monthly?",
-        None,
-        None,
-        ABSTAIN,
-        None,
-    ),
-    (
-        "unanswerable",
-        "dev",
-        "What training do my staff receive after setup?",
-        None,
-        None,
-        ABSTAIN,
-        None,
-    ),
-    (
-        "unanswerable",
-        "test",
-        "How long is the contract and what is the notice period?",
-        None,
-        None,
-        ABSTAIN,
-        None,
-    ),
-]
-UNANSWERABLE_KEYWORDS = {
-    "languages",
-    "trial",
-    "mobile",
-    "app",
-    "countries",
-    "uptime",
-    "percentage",
-    "annually",
-    "training",
-    "contract",
-    "notice",
+GOLD_SRC = DATA / "source" / "gold_questions.yaml"
+# The three types used; a subset of the kit checker's GOLD_TYPES (checked against scripts/check_project_data.py,
+# which also accepts any filter key that matches an article's front matter; D151 keeps section and product).
+GOLD_TYPES = ("identifier", "paraphrase", "unanswerable")
+GOLD_FIELDS = (
+    "qid",
+    "question",
+    "type",
+    "gold_evidence",
+    "reference_answer",
+    "filters",
+    "split",
+)
+GOLD_YAML_ONLY = ("section_heading", "realism", "absent_terms")
+GOLD_FILTER_KEYS = ("section", "product")  # D151
+REALISM_TAGS = (
+    "typo",
+    "short_form",
+    "multi_part",
+    "fragment",
+    "fragmented_owner",
+    "plain",
+)
+GOLD_ROWS = 120
+GOLD_M0_ROWS = 40  # q001 to q040; their identifier rows predate the P3 overlap rule (q004, q006 exceed it)
+GOLD_QUOTE_MAX = 150
+GOLD_OVERLAP_MAX = (
+    0.20  # P3: share of the question's words that also occur in the quote
+)
+GOLD_JACCARD_MAX = 0.60  # near-duplicate questions (word-set Jaccard)
+# Protocol table, final counts (dev, test) per type and for the filtered rows; the D78 minima are asserted as well.
+GOLD_TABLE = {"identifier": (12, 12), "paraphrase": (36, 36), "unanswerable": (12, 12)}
+GOLD_FILTERED = (22, 22)
+GOLD_MIN_PER_FILTER_KEY = 12
+GOLD_PER_ARTICLE = (3, 6)  # answerable rows per article, with at least one per split
+# Realism quotas on the 80 M0b rows (whole file, and at least half of each in every split).
+GOLD_REALISM_MIN = {
+    ("typo", "short_form"): 16,
+    ("multi_part",): 10,
+    ("fragment",): 10,
+    ("fragmented_owner",): 8,
 }
+GOLD_FRAGMENT_MAX_WORDS = 5
+# Names that a gold question must never contain: the demo companies and owners, and the attack-file stem (rule 6).
+GOLD_FORBIDDEN_NAMES = tuple(n.lower() for n in DEMO_NAMES) + (
+    "lena",
+    "marcus",
+    "dockside",
+    "neil",
+)
 
 # ----------------------------------------------------------------------------------------------------------------
 # Tool cases (SPEC section 3, 6). 15 rows; 3 over-eager traps; one submit request (no tool).
@@ -1536,19 +1211,26 @@ TRUTH_EXTRA = {
 # ----------------------------------------------------------------------------------------------------------------
 # Generators
 # ----------------------------------------------------------------------------------------------------------------
-def gen_gold() -> list[dict]:
+def load_gold_source() -> list[dict]:
+    """The hand-written rows of data/source/gold_questions.yaml, YAML-only fields included."""
+    return load_yaml(GOLD_SRC)["rows"]
+
+
+def gen_gold(source: list[dict] | None = None) -> list[dict]:
     rows = []
-    for i, (typ, split, q, doc_id, quote, ref, filters) in enumerate(GOLD, 1):
-        ev = [] if typ == "unanswerable" else [{"doc_id": doc_id, "quote": quote}]
+    for r in source if source is not None else load_gold_source():
         rows.append(
             {
-                "qid": f"q{i:03d}",
-                "question": q,
-                "type": typ,
-                "gold_evidence": ev,
-                "reference_answer": ref,
-                "filters": filters,
-                "split": split,
+                "qid": r["qid"],
+                "question": r["question"],
+                "type": r["type"],
+                "gold_evidence": [
+                    {"doc_id": e["doc_id"], "quote": e["quote"]}
+                    for e in (r.get("gold_evidence") or [])
+                ],
+                "reference_answer": r["reference_answer"],
+                "filters": r.get("filters"),
+                "split": r["split"],
             }
         )
     return rows
@@ -1843,71 +1525,310 @@ def check_kb(docs, errs: list[str], catalogue: dict, rate_card: dict) -> None:
                     errs.append(f"{w}: names a demo company ({name})")
 
 
-def check_gold(rows: list[dict], docs, errs: list[str]) -> None:
-    if len(rows) != 40:
-        errs.append(f"gold: {len(rows)} rows, expected 40")
-    counts = {"identifier": 0, "paraphrase": 0, "unanswerable": 0}
-    by_split = {
-        "dev": {"identifier": 0, "paraphrase": 0, "unanswerable": 0},
-        "test": {"identifier": 0, "paraphrase": 0, "unanswerable": 0},
+def all_words(s: str) -> set[str]:
+    """Lower-cased word set, stop words kept (for the duplicate and absent-term rules)."""
+    return set(re.findall(r"[a-z0-9][a-z0-9'-]*", s.lower()))
+
+
+def sections(body: str) -> list[tuple[int, int, str]]:
+    """(start, end, heading) of every level-2 section of an article body."""
+    heads = [
+        (m.start(), m.group(1).strip()) for m in re.finditer(r"^## (.+)$", body, re.M)
+    ]
+    return [
+        (s, heads[i + 1][0] if i + 1 < len(heads) else len(body), h)
+        for i, (s, h) in enumerate(heads)
+    ]
+
+
+def quote_heading(body: str, quote: str) -> str | None:
+    """The heading of the single level-2 section that contains the quote, or None."""
+    i = body.find(quote)
+    while i >= 0:
+        for s, e, h in sections(body):
+            if s <= i and i + len(quote) <= e:
+                return h
+        i = body.find(quote, i + 1)
+    return None
+
+
+def gold_counts(rows: list[dict]) -> dict:
+    """The counts of the protocol table, computed from the source rows."""
+    c = {
+        "rows": len(rows),
+        "by_type": {t: {"dev": 0, "test": 0} for t in GOLD_TYPES},
+        "by_split": {"dev": 0, "test": 0},
+        "filtered": {"dev": 0, "test": 0},
+        "by_filter_key": {k: 0 for k in GOLD_FILTER_KEYS},
+        "per_article": {},
+        "realism": {},
     }
-    filtered = {"dev": 0, "test": 0}
-    kb_words = set()
-    for _, body, _ in docs.values():
-        kb_words |= set(re.findall(r"[a-z0-9][a-z0-9'-]*", body.lower()))
     for r in rows:
-        w = f"gold:{r['qid']}"
-        counts[r["type"]] += 1
-        by_split[r["split"]][r["type"]] += 1
-        if r["filters"]:
-            filtered[r["split"]] += 1
-            if set(r["filters"]) - {"section", "product"}:
-                errs.append(f"{w}: filter keys must be section or product")
-        if r["type"] == "unanswerable":
-            if r["gold_evidence"] or r["reference_answer"] != ABSTAIN:
-                errs.append(f"{w}: unanswerable needs empty evidence and {ABSTAIN}")
-            hits = words(r["question"]) & UNANSWERABLE_KEYWORDS & kb_words
-            if hits:
+        t, s = r.get("type"), r.get("split")
+        if t in c["by_type"] and s in ("dev", "test"):
+            c["by_type"][t][s] += 1
+            c["by_split"][s] += 1
+        if r.get("filters"):
+            if s in c["filtered"]:
+                c["filtered"][s] += 1
+            for k in r["filters"]:
+                if k in c["by_filter_key"]:
+                    c["by_filter_key"][k] += 1
+        for e in r.get("gold_evidence") or []:
+            d = c["per_article"].setdefault(e["doc_id"], {"dev": 0, "test": 0})
+            if s in d:
+                d[s] += 1
+        if r["qid"] > f"q{GOLD_M0_ROWS:03d}":
+            for tag in r.get("realism") or []:
+                c["realism"].setdefault(tag, {"dev": 0, "test": 0})
+                if s in ("dev", "test"):
+                    c["realism"][tag][s] += 1
+    return c
+
+
+def gold_summary(counts: dict) -> list[str]:
+    bt = counts["by_type"]
+    lines = [
+        f"gold: {counts['rows']} rows, dev {counts['by_split']['dev']} / test {counts['by_split']['test']}",
+        "gold: "
+        + ", ".join(
+            f"{t} {bt[t]['dev'] + bt[t]['test']} ({bt[t]['dev']}/{bt[t]['test']})"
+            for t in bt
+        ),
+        f"gold: filtered {sum(counts['filtered'].values())} ({counts['filtered']['dev']}/{counts['filtered']['test']}), "
+        + ", ".join(f"{k} {v}" for k, v in counts["by_filter_key"].items()),
+    ]
+    pa = counts["per_article"]
+    if pa:
+        totals = {d: v["dev"] + v["test"] for d, v in pa.items()}
+        lo, hi = min(totals.values()), max(totals.values())
+        lines.append(
+            f"gold: {len(pa)} articles covered, answerable rows per article {lo} to {hi}, "
+            f"per split {min(min(v.values()) for v in pa.values())} to {max(max(v.values()) for v in pa.values())}"
+        )
+    rl = counts["realism"]
+    if rl:
+        lines.append(
+            "gold: realism on the M0b rows "
+            + ", ".join(
+                f"{t} {v['dev'] + v['test']} ({v['dev']}/{v['test']})"
+                for t, v in sorted(rl.items())
+            )
+        )
+    return lines
+
+
+def check_gold(rows: list[dict], docs, errs: list[str], catalogue: dict) -> None:
+    """SPEC D78 done-line and protocol M0B-GOLD step 2, on the source rows (YAML-only fields included)."""
+    cat = catalogue["catalogue"]
+    cat_ids = {m["id"] for m in cat["modules"]} | {i["id"] for i in cat["integrations"]}
+    kb_words: set[str] = set()
+    for _, body, _ in docs.values():
+        kb_words |= all_words(body)
+    n = len(rows)
+    if n != GOLD_ROWS:
+        errs.append(f"gold: {n} rows, expected {GOLD_ROWS}")
+    qids = [r.get("qid") for r in rows]
+    if len(set(qids)) != n:
+        errs.append("gold: duplicate qid")
+    if qids != [f"q{i:03d}" for i in range(1, n + 1)]:
+        errs.append(f"gold: qids must run q001 to q{n:03d} in order")
+    seen_norm: dict[str, str] = {}
+    quotes: dict[str, str] = {}
+    word_sets: list[tuple[str, set[str]]] = []
+    for r in rows:
+        w = f"gold:{r.get('qid')}"
+        qid = str(r.get("qid"))
+        new = qid > f"q{GOLD_M0_ROWS:03d}"
+        missing = [k for k in GOLD_FIELDS if k not in r]
+        if missing:
+            errs.append(f"{w}: missing field(s) {missing}")
+            continue
+        extra = set(r) - set(GOLD_FIELDS) - set(GOLD_YAML_ONLY)
+        if extra:
+            errs.append(f"{w}: unknown field(s) {sorted(extra)}")
+        if r["type"] not in GOLD_TYPES:
+            errs.append(f"{w}: type {r['type']!r} not in GOLD_TYPES")
+        if r["split"] not in ("dev", "test"):
+            errs.append(f"{w}: split {r['split']!r}")
+        q = r["question"]
+        if not isinstance(q, str) or not q.strip():
+            errs.append(f"{w}: empty question")
+            continue
+        qa = all_words(q)
+        key = norm(q)
+        if key in seen_norm:
+            errs.append(f"{w}: question equals {seen_norm[key]} after normalisation")
+        seen_norm[key] = qid
+        for other, ws in word_sets:
+            j = len(qa & ws) / max(1, len(qa | ws))
+            if j > GOLD_JACCARD_MAX:
+                errs.append(f"{w}: near-duplicate of {other} (Jaccard {j:.2f})")
+        word_sets.append((qid, qa))
+        for name in GOLD_FORBIDDEN_NAMES:
+            if name in qa:
+                errs.append(f"{w}: names a demo company, owner or attack file ({name})")
+        f = r["filters"]
+        if f is not None:
+            if not isinstance(f, dict) or not f:
+                errs.append(f"{w}: filters must be null or a non-empty object")
+            elif set(f) - set(GOLD_FILTER_KEYS):
+                errs.append(f"{w}: filter keys must be in {GOLD_FILTER_KEYS}")
+        realism = r.get("realism")
+        if new:
+            if (
+                not realism
+                or not isinstance(realism, list)
+                or set(realism) - set(REALISM_TAGS)
+            ):
+                errs.append(f"{w}: realism must be a non-empty list of {REALISM_TAGS}")
+            elif "fragment" in realism and len(q.split()) > GOLD_FRAGMENT_MAX_WORDS:
                 errs.append(
-                    f"{w}: unanswerable keyword(s) {sorted(hits)} appear in the KB"
+                    f"{w}: a fragment has at most {GOLD_FRAGMENT_MAX_WORDS} words"
                 )
+        if r["type"] == "unanswerable":
+            if r["gold_evidence"] or r["reference_answer"] != ABSTAIN or f is not None:
+                errs.append(
+                    f"{w}: unanswerable needs empty evidence, {ABSTAIN} and null filters"
+                )
+            terms = r.get("absent_terms")
+            if not terms or not isinstance(terms, list):
+                errs.append(f"{w}: unanswerable needs absent_terms")
+            else:
+                for t in terms:
+                    t = str(t).lower()
+                    if t not in qa:
+                        errs.append(
+                            f"{w}: absent term {t!r} is not a word of the question"
+                        )
+                    if t in kb_words:
+                        errs.append(f"{w}: absent term {t!r} appears in the KB")
             continue
         if not r["gold_evidence"]:
             errs.append(f"{w}: no evidence")
+        if not r["reference_answer"] or r["reference_answer"] == ABSTAIN:
+            errs.append(f"{w}: answerable row needs a reference answer")
+        ids_in_q = re.findall(r"\b[a-z]+-[a-z-]+\b", q)
+        if r["type"] == "paraphrase" and set(ids_in_q) & cat_ids:
+            errs.append(
+                f"{w}: paraphrase question names a catalogue id {sorted(set(ids_in_q) & cat_ids)}"
+            )
         for e in r["gold_evidence"]:
             if e["doc_id"] not in docs:
                 errs.append(f"{w}: unknown doc {e['doc_id']}")
                 continue
             meta, body, _ = docs[e["doc_id"]]
-            if len(e["quote"]) > 150:
-                errs.append(f"{w}: quote longer than 150 characters")
-            if norm(e["quote"]) not in norm(body):
-                errs.append(f"{w}: quote not verbatim in {e['doc_id']}")
-            if r["type"] == "paraphrase":
-                qw, tw = words(r["question"]), words(e["quote"])
-                share = len(qw & tw) / max(1, len(qw))
-                if share > 0.20:
+            quote = e["quote"]
+            if len(quote) > GOLD_QUOTE_MAX:
+                errs.append(
+                    f"{w}: quote longer than {GOLD_QUOTE_MAX} characters ({len(quote)})"
+                )
+            if quote not in body:
+                errs.append(f"{w}: quote not an exact substring of {e['doc_id']}")
+            else:
+                h = quote_heading(body, quote)
+                if h is None:
                     errs.append(
-                        f"{w}: question shares {share:.0%} of its words with the quote: {sorted(qw & tw)}"
+                        f"{w}: quote is not inside one level-2 section of {e['doc_id']}"
                     )
+                elif r.get("section_heading") != h:
+                    errs.append(
+                        f"{w}: section_heading {r.get('section_heading')!r} is not {h!r}"
+                    )
+            if quote in quotes:
+                errs.append(f"{w}: quote already used by {quotes[quote]}")
+            for other_q, other_id in quotes.items():
+                if other_id != qid and (quote in other_q or other_q in quote):
+                    errs.append(f"{w}: quote overlaps the quote of {other_id}")
+            quotes[quote] = qid
+            qw, tw = words(q), words(quote)
+            share = len(qw & tw) / max(1, len(qw))
+            if share > GOLD_OVERLAP_MAX and (r["type"] == "paraphrase" or new):
+                errs.append(
+                    f"{w}: question shares {share:.0%} of its words with the quote: {sorted(qw & tw)}"
+                )
             if r["type"] == "identifier":
-                ids = re.findall(r"\b[a-z]+-[a-z-]+\b", r["question"])
-                if not ids or not all(i in e["quote"] for i in ids):
+                if not ids_in_q or not all(i in quote for i in ids_in_q):
                     errs.append(
                         f"{w}: identifier question must name the id that appears in the quote"
                     )
-            for k, v in (r["filters"] or {}).items():
+                if not set(ids_in_q) & cat_ids:
+                    errs.append(f"{w}: identifier question names no catalogue id")
+            for k, v in (f or {}).items():
                 if meta.get(k) != str(v):
                     errs.append(f"{w}: filter {k}={v!r} does not match {e['doc_id']}")
-    if counts["unanswerable"] < 6 or counts["identifier"] < 6:
-        errs.append(f"gold: counts {counts} below the minimum")
-    if sum(filtered.values()) < 8 or filtered["dev"] < 4:
-        errs.append(f"gold: filtered rows {filtered}, need 8 with 4 in dev")
-    if sum(by_split["dev"].values()) != 20 or sum(by_split["test"].values()) != 20:
-        errs.append(f"gold: split sizes {by_split}, expected 20/20")
-    for t in counts:
-        if abs(by_split["dev"][t] - by_split["test"][t]) > 1:
-            errs.append(f"gold: type {t} is not stratified across splits: {by_split}")
+    # ---- counts of the protocol table and the D78 minima --------------------------------------------------------
+    c = gold_counts(rows)
+    bt = c["by_type"]
+    for t, (d, te) in GOLD_TABLE.items():
+        if (bt[t]["dev"], bt[t]["test"]) != (d, te):
+            errs.append(
+                f"gold: {t} is {bt[t]['dev']}/{bt[t]['test']}, the protocol table says {d}/{te}"
+            )
+        if abs(bt[t]["dev"] - bt[t]["test"]) > 1:
+            errs.append(f"gold: type {t} is not stratified across splits")
+    if (c["by_split"]["dev"], c["by_split"]["test"]) != (
+        GOLD_ROWS // 2,
+        GOLD_ROWS // 2,
+    ):
+        errs.append(
+            f"gold: split sizes {c['by_split']}, expected {GOLD_ROWS // 2}/{GOLD_ROWS // 2}"
+        )
+    if bt["unanswerable"]["dev"] < 12 or bt["unanswerable"]["test"] < 12:
+        errs.append("gold: fewer than 12 unanswerable rows in a split")
+    if bt["identifier"]["dev"] < 8 or bt["identifier"]["test"] < 8:
+        errs.append("gold: fewer than 8 identifier rows in a split")
+    fd, ft = c["filtered"]["dev"], c["filtered"]["test"]
+    if (fd, ft) != GOLD_FILTERED:
+        errs.append(
+            f"gold: filtered rows {fd}/{ft}, the protocol table says {GOLD_FILTERED[0]}/{GOLD_FILTERED[1]}"
+        )
+    if fd + ft < 40 or fd < 20:
+        errs.append(
+            f"gold: filtered rows {fd + ft} with {fd} in dev, need 40 with 20 in dev"
+        )
+    for k, v in c["by_filter_key"].items():
+        if v < GOLD_MIN_PER_FILTER_KEY:
+            errs.append(f"gold: {v} rows filter on {k}, need {GOLD_MIN_PER_FILTER_KEY}")
+    lo, hi = GOLD_PER_ARTICLE
+    for doc_id in docs:
+        d = c["per_article"].get(doc_id, {"dev": 0, "test": 0})
+        total = d["dev"] + d["test"]
+        if not lo <= total <= hi:
+            errs.append(
+                f"gold: {doc_id} has {total} answerable rows, expected {lo} to {hi}"
+            )
+        if d["dev"] < 1 or d["test"] < 1:
+            errs.append(
+                f"gold: {doc_id} needs at least one answerable row in each split ({d})"
+            )
+    # ---- M0b rows: split alternation within each (type, article) group, realism quotas ---------------------------
+    groups: dict[tuple, list[str]] = {}
+    for r in rows:
+        if (
+            str(r.get("qid")) <= f"q{GOLD_M0_ROWS:03d}"
+            or r.get("type") not in GOLD_TYPES
+        ):
+            continue
+        doc_id = r["gold_evidence"][0]["doc_id"] if r.get("gold_evidence") else None
+        groups.setdefault((r["type"], doc_id), []).append(r["split"])
+    for (t, doc_id), splits in groups.items():
+        if any(splits[i] == splits[i + 1] for i in range(len(splits) - 1)):
+            errs.append(
+                f"gold: splits do not alternate within the M0b group ({t}, {doc_id}): {splits}"
+            )
+    for tags, minimum in GOLD_REALISM_MIN.items():
+        got = {s: 0 for s in ("dev", "test")}
+        for r in rows:
+            if str(r.get("qid")) > f"q{GOLD_M0_ROWS:03d}" and set(
+                r.get("realism") or []
+            ) & set(tags):
+                if r.get("split") in got:
+                    got[r["split"]] += 1
+        if sum(got.values()) < minimum or min(got.values()) < minimum // 2:
+            errs.append(
+                f"gold: realism {'|'.join(tags)} is {got}, need {minimum} with {minimum // 2} per split"
+            )
 
 
 def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
@@ -2052,6 +1973,7 @@ def check_record(errs: list[str]) -> None:
         "tool cases",
         "attacks",
         "protocol",
+        "gold expansion",
     ):
         if f"## {group}" not in rec:
             errs.append(f"generation-record.md: no entry for {group}")
@@ -2104,7 +2026,8 @@ def main(argv=None) -> int:
     docs = load_kb()
     check_protocol(protocol, errs)
     check_kb(docs, errs, catalogue, rate_card)
-    check_gold(gen_gold(), docs, errs)
+    gold_src = load_gold_source()
+    check_gold(gold_src, docs, errs, catalogue)
     check_tool_cases(gen_tool_cases(), errs, protocol)
     check_attacks(gen_attacks(), errs)
     check_forbidden(errs)
@@ -2135,6 +2058,8 @@ def main(argv=None) -> int:
         check_record(errs)
         (DATA / "MANIFEST.json").write_text(manifest_text(), encoding="utf-8")
         print(f"wrote {len(gen)} files and MANIFEST.json ({len(manifest())} entries)")
+    for line in gold_summary(gold_counts(gold_src)):
+        print(line)
     for e in errs:
         print(f"FAIL {e}")
     print(f"{'OK' if not errs else 'FAILED'}: {len(errs)} problem(s)")

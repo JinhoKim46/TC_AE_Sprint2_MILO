@@ -75,3 +75,34 @@ P1–P3 require additional input: P1 requires `data/source/catalogue.yaml` and `
 
 - `data/MANIFEST.json` is written by `scripts/build_data.py` after every other file; `--check` verifies it.
 - No file in this record was produced by a model call. The build never set `MILO_LIVE` and read no API key.
+
+## gold expansion (M0b)
+
+- files written: `data/source/gold_questions.yaml` (120 rows: q001 to q040 moved unchanged from the `GOLD` list that
+  used to live in `scripts/build_data.py`, q041 to q120 new), the gold file under `data/` (regenerated, first 40 rows
+  byte-identical), `data/MANIFEST.json`, `scripts/build_data.py` (reads the YAML; `--check` asserts the protocol
+  table), this entry
+- drafted-by: M0b data agent (Fable), 2026-10-22, session agent only; no model API call, no network call, no key
+  read, `MILO_LIVE` never set (SPEC D126, HARNESS rule 14)
+- protocol: `evals/protocols/m0b-gold-expansion.md`, step 1 and step 2
+- brief (the prompt contract of the protocol): one row per entry with `qid` q041 to q120, `question`, `type`,
+  `split`, `gold_evidence`, `reference_answer`, `filters`, plus the YAML-only tags `realism` and `section_heading`;
+  quotes copied verbatim, at most 150 characters, inside one level-2 heading, each alone supporting the reference
+  answer; at most 20 percent word overlap between question and quote (P3); identifier rows name a catalogue id;
+  unanswerable rows on topics absent from every article (`absent_terms`, YAML-only, lists the words the checker
+  proves absent), `INSUFFICIENT_CONTEXT`, empty evidence, null filters; no equal question after normalisation and no
+  pair above 0.6 word Jaccard; no demo company, owner or attack-file name; split alternated within each
+  (type, article) group; filters on `section` and `product` only; 3 to 6 answerable rows per article with at least
+  one per split; the stratification table (identifier 24 = 12/12, paraphrase 72 = 36/36, unanswerable 24 = 12/12,
+  filtered 44 = 22/22, at least 12 per filter key) and the realism quotas (typo or short form 16, multi-part 10,
+  fragment 10, fragmented owner 8, half in each split)
+- sources read: `SPEC.md` section 3, 10.1, D60, D78, D151, D152; `HARNESS.md` rules 5, 6, 7, 14; the protocol;
+  the 24 articles under `data/kb/`; `data/source/catalogue.yaml`; `data/pricing/rate_card.v1.yaml`; the committed
+  40 gold rows; `scripts/build_data.py`; this record
+- check command: `python scripts/build_data.py` then `python scripts/build_data.py --check`, then
+  `python scripts/check_project_data.py data` (printed `OK: 0 problem(s)`; the kit checker landed with the S0
+  scaffold during this session, D152). Verified there: its `GOLD_TYPES` contains identifier, paraphrase and
+  unanswerable, and it accepts any filter key that matches an article's front matter, so `section` and `product`
+  pass. `tests/test_checker.py` and `tests/test_leakage.py` do not exist yet and were not run.
+- known pre-existing deviations, left for the audit: M0 identifier rows q004 and q006 share more than 20 percent of
+  their words with their quote (the checker grandfathers q001 to q040 for that rule on identifier rows).
