@@ -12,9 +12,15 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 
 | # | Run | Command | Protocol (commit) | Cap USD | Actual USD | Result file cost | Cumulative USD |
 |---|---|---|---|---|---|---|---|
+| 1 | E01c embedding rerun | `MILO_LIVE=1 python evals/retrieval/compare_embeddings.py --max-cost 0.05` | e01-rerun.md (ac31ea3) | 0.05 | 0.015496 | 0.015722 | 0.015496 |
 
 ## Notes
 
 - E01 runner: `compare_embeddings.py` gained the D56 provenance block, the spend reason, `relevant` per row, the
   summary excluding rows without a chunk, a running `--max-cost` (default 0.05) and `--replay`. Metric and chunk code
   unchanged (E01b comparability, as the protocol asks).
+- E01 decision (e01-rerun.md rule, 800/100, nDCG@5, 48 dev questions): `google/gemini-embedding-2` stays; no
+  candidate's paired interval lies above zero. Gemini 0.761; runner-up `mistralai/mistral-embed-2312` 0.674, paired
+  difference -0.087 [-0.176, -0.004] (excluded); `openai/text-embedding-3-large` -0.089 [-0.192, 0.009] (interval
+  still includes zero). D5 restated as "confirmed on 48 dev questions, runner-up excluded". Chunk setting stays
+  800/100 (D9); no winner differs from the provisional choice, so M1 indexes with gemini at 800/100.
