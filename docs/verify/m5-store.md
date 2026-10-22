@@ -388,3 +388,227 @@ FORCE) are unverified this pass.
 3. Rerun HARNESS 7.8 from a clean project: `make migrate`, `tests/test_store_identity.py --postgres`, the FORCE
    checks (operator `delete_customer` cascade, confirmation trigger profile insert, owner reads through
    `owns_session`/`owns_turn`), `make db-reset`, and an empty-project query.
+
+---
+
+# Pass 3 (fix cycle 3, Postgres)
+
+Branch verified: `verify/m5-store` at `2b13e7b` (= `agent/m5-store` `bdcf7a3` merged). Fresh verifier agent; the
+builder's notes were not read. No model call. Postgres: TEST project only, run allowed by the owner on 2026-10-22;
+`MILO_ENV` unset; the git-ignored `.env` was sourced for each command and every prod-prefixed variable unset before
+the command ran (a count of exported prod-prefixed variables printed `0`). All output passed through a filter that
+replaces the host, user, project ref, password and full string with `<redacted>`, and `$HOME` with `~`.
+
+## Verdict: FAIL
+
+Fix cycle 3 closes F6 (probes wired) and F7's grant (`inherit true`), and the row-level security itself holds in
+Postgres: FORCE on all 17 owner tables, the confirmation trigger, the operator cascade and the owner's reads through
+the `security invoker` helpers all work. But `make db-reset` still fails on every database, old or freshly migrated
+(F8, high, new): `reset.py` now runs `drop owned by <role>` after `set role <role>`, and as `milo_app` it cannot
+revoke the `USAGE on schema public` grant (grantor `pg_database_owner`), so `drop role` fails. Steps (b) to (d)
+were evidenced only after a verifier workaround, and step (e) failed the same way. The committed
+`tests/test_store_identity.py --postgres` also exits 1 on a correct schema (F9 probe defect, F10 TTL flake); F9
+alone blocks HARNESS 7.8 even once F8 is fixed.
+
+## Offline evidence
+
+```text
+$ make check        ruff check: All checks passed!; ruff format --check: 153 files already formatted;
+                    mypy src/milo: Success, no issues found in 65 source files; uv lock --check;
+                    507 passed; data checks OK: 0 problem(s) (x2); size check clean. exit=0
+$ uv run pytest tests/          507 passed
+$ make kit-sources    1 passed, 8 deselected
+$ make kit-abstains   1 passed, 8 deselected
+$ make kit-tools      1 passed, 8 deselected
+$ make kit-security   2 passed, 7 deselected
+$ make kit-errors     2 passed, 7 deselected
+$ make kit-threads    1 passed, 8 deselected
+$ make kit-cost       1 passed, 8 deselected
+```
+
+Secrets in `git diff main...bdcf7a3` (OpenRouter, AWS, GitHub key prefixes, private-key header, a database URL with
+a password, an absolute home path): 0 hits. PASS.
+
+| Pass 2 item | Pass 3 check | Result |
+|---|---|---|
+| F7 grant | `0001_init.sql:33-34` `with set true, inherit true`; after a clean migrate `pg_auth_members` holds `(milo_app, admin=f, inherit=t, set=t)` and the same for `milo_operator` | fixed; reset still fails (F8) |
+| F6 probes not called | `tests/test_store_identity.py:583-590` calls `sql_probes(url, a, b)`, prints PASS/FAIL per group, folds failures into the exit code | fixed (but see F9) |
+| Info address counter | `auth/login.py:93` resets `LOGIN_FAIL_IP` on success; `test_auth.py:767` | fixed |
+| F5 | unchanged, M0b, out of scope | open (integrator) |
+
+## Postgres run (test project only)
+
+Pre-check: the project held the fix-cycle-2 objects (18 tables, 5 functions, 37 policies, trigger, both roles,
+17 forced tables, memberships `(admin=t,inherit=f,set=f)` and `(admin=f,inherit=f,set=t)` per role, 0 test
+accounts). Server PostgreSQL 17.11; administrative role `rolsuper=false`, `rolbypassrls=true`.
+
+### (a) `uv run python -m milo.store.reset`: FAIL (two attempts, F8)
+
+```text
+psycopg.errors.DependentObjectsStillExist: role "milo_app" cannot be dropped because some objects depend on it
+DETAIL:  privileges for schema public
+CONTEXT:  SQL statement "drop role milo_app"
+PL/pgSQL function inline_code_block line 1 at SQL statement
+exit=1          (same on the retry; one transaction, nothing dropped)
+```
+
+Diagnosis (one transaction, rolled back): after `reset.py`'s table and function drops, `nspacl` of `public` holds
+`milo_app=U/pg_database_owner` and `milo_operator=U/pg_database_owner`; `set role milo_app; drop owned by milo_app`
+emits `WARNING: no privileges could be revoked for "public"` and leaves both entries. On the clean fix-cycle-3
+install (inheriting grant), the same test showed that `drop owned by milo_app` run as the administrative role
+removes the entry.
+
+Verifier workaround (not on the branch): `revoke all on schema public from milo_app, milo_operator` as the
+administrative role, then `uv run python -m milo.store.reset` -> `db-reset: ran 26 statements; the test project
+holds no MILO objects`, exit 0. Inventory: tables in `public` `[]`, MILO functions `[]`, policies 0, trigger on
+`auth.users` 0, roles `[]`, memberships `[]`, test accounts 0.
+
+### (b) `uv run python -m milo.store.migrate`
+
+```text
+applied: 0001_init
+exit=0
+```
+
+18 tables, 5 functions, 37 policies, trigger `on_auth_user_confirmed`, roles `milo_app` and `milo_operator`, 17
+forced tables, memberships `(admin=t,inherit=f,set=f)` (CREATE ROLE) and `(admin=f,inherit=t,set=t)` (`0001:33-34`).
+
+### (c) `uv run python tests/test_store_identity.py --postgres`: exit 1
+
+The script's only option is `--postgres`. The run exceeded 600 s (it outlived a 600 s foreground limit and finished
+several minutes later; pooler round trips).
+
+```text
+PASS sessions.get            PASS sessions.rename         PASS sessions.archive        PASS sessions.restore
+PASS sessions.set_status     PASS sessions.touch          PASS turns.start             PASS turns.get
+PASS turns.finish            PASS turns.add_event         PASS turns.events            PASS messages.add
+PASS messages.get            PASS messages.history        PASS facts.upsert            PASS facts.get
+PASS facts.for_session       PASS facts.field_history     PASS evidence.add            PASS evidence.for_session
+PASS submissions.create      PASS submissions.get         PASS submissions.for_session PASS submissions.latest
+PASS submissions.attach_report PASS submissions.set_status PASS approvals.create       PASS approvals.get
+PASS approvals.transition    PASS traces.record           PASS traces.for_turn         PASS field_requests.add
+PASS mixed.fact_source       PASS mixed.evidence_message  PASS mixed.approval_turn     PASS sessions.search
+PASS sessions.search_archived PASS sessions.search_title  PASS customers.get           PASS consents.has
+PASS consents.history
+FAIL field_requests.history: changed the other owner's data
+PASS deletion_requests.history PASS profiles.get          PASS profiles.role           PASS profiles.touch_last_seen
+PASS customers.ensure        PASS customers.update        PASS consents.record         PASS sessions.create
+PASS deletion_requests.add   PASS field_requests.add_own
+51 passed, 1 failed
+PASS probe A-09c
+PASS probe A-09a
+FAIL probe A-09b
+     A-09b profiles: owner B sees 1 rows
+     A-09b customers: owner B sees 1 rows
+     A-09b consents: owner B sees 1 rows
+     A-09b sessions: owner B sees 4 rows
+     A-09b field_requests: owner B sees 1 rows
+     A-09b deletion_requests: owner B sees 1 rows
+     A-09b sessions: owner B updated A's rows
+PASS probe A-10b
+PASS probe A-27
+PASS probe counts
+table probes: 7 failed
+```
+
+(The script prints one line per check; the PASS lines are packed here for space, order kept.) Both FAIL groups are
+test defects, not leaks:
+
+- `field_requests.history` (F10): `history(b)` is a read. The digest compared before and after includes
+  `approvals.get(a, apid)`, and `approvals.get` writes a pending approval past `expires_at` as `expired`
+  (`store/approvals.py:59-64`, `APPROVAL_TTL_S = 600`), the only time-dependent write in the digest. The approval
+  was seeded at the start and the run exceeded 600 s, so the most likely cause is that A's approval expired between
+  the two digests of this check (inferred; the script does not print which digest key changed). The next check
+  passed with the new state.
+- probe A-09b (F9): `tests/test_store_identity.py:451-464` counts every row B can see and updates every session B
+  can see, with no `where user_id = A`. By then the OWN checks have created B's own rows (`customers.ensure`,
+  `consents.record`, `sessions.create`, `field_requests.add_own`, `deletion_requests.add`, and B's profile from the
+  trigger); the counts 1/1/1/4/1/1 match those exactly (the 4 sessions are the three `mixed.*` checks, each of
+  which creates a B session at `:153`, plus `sessions.create`; A owns 2). `probe counts` passed: A's row counts are unchanged, and
+  all 36 NOT_FOUND calls with A's ids raised `not_found`.
+
+### (d) Verifier probes (administrative connection, `SET LOCAL ROLE` per transaction)
+
+```text
+table              rls    force  policies
+approvals          True   True   2
+audit_log          True   True   2
+consents           True   True   2
+customers          True   True   3
+deletion_requests  True   True   2
+evidence           True   True   2
+fact_history       True   True   2
+facts              True   True   2
+field_requests     True   True   2
+messages           True   True   2
+profiles           True   True   3
+rate_limits        True   True   2
+schema_migrations  True   False  1
+sessions           True   True   2
+submissions        True   True   2
+traces             True   True   2
+turn_events        True   True   2
+turns              True   True   2
+PASS relrowsecurity and relforcerowsecurity true on all owner tables  [17 owner tables]
+PASS schema_migrations: rls enabled, not forced (migrate writes it as owner)
+PASS milo_app: no SUPERUSER, BYPASSRLS, CREATEROLE, CREATEDB  [(False, False, False, False)]
+PASS milo_operator: no SUPERUSER, BYPASSRLS, CREATEROLE, CREATEDB  [(False, False, False, False)]
+PASS unconfirmed auth user: no profile  [profiles=0]
+PASS confirmation trigger inserts the profile under FORCE RLS  [('owner', True)]
+PASS owner sees exactly its own profile as milo_app  [rows=1]
+PASS owner reads own sessions/messages/turns/turn_events (owns_session, owns_turn invoker)  [1/1/1/1]
+PASS another owner id sees none of them  [0/0/0/0]
+PASS milo_operator deletes the customer row
+PASS cascade removed the owner's sessions, messages, turns, turn_events  [0/0/0/0/0]
+PASS audit row written in the same transaction  [rows=1]
+PASS test auth user deleted; profile cascades away  [profiles=0, auth.users=0]
+verifier probes: 13 passed, 0 failed
+```
+
+One test auth user (`@example.test`) was created unconfirmed, confirmed by `update ... email_confirmed_at`, used,
+and deleted. Function security: `owns_session`, `owns_turn`, `milo_user` invoker; `handle_confirmed_user` definer.
+Note: on Supabase the administrative role has `BYPASSRLS`, so the definer trigger is not subject to FORCE here and
+the `profiles_trigger_insert` policy is not what lets it insert; this is informational.
+
+The repository NOT_FOUND checks plus "another owner id sees none" are the A-09b evidence this pass.
+
+### (e) `uv run python -m milo.store.reset`: FAIL (F8, on the clean fix-cycle-3 install)
+
+```text
+psycopg.errors.DependentObjectsStillExist: role "milo_app" cannot be dropped because some objects depend on it
+DETAIL:  privileges for schema public
+exit=1
+```
+
+The same workaround (revoke schema usage, then reset) gave `db-reset: ran 26 statements ...`, exit 0. Final
+inventory: tables in `public` `[]`, MILO functions `[]`, policies 0, trigger 0, roles `[]`, memberships `[]`, test
+accounts 0. **The test project is empty.**
+
+## Findings (pass 3)
+
+| # | Where | What | Spec | Severity |
+|---|---|---|---|---|
+| F8 | `src/milo/store/reset.py:57-58`; `tests/test_store.py:737-753` asserts the form | `set role r; drop owned by r` runs the privilege revokes as `r`, which is not the grantor of `USAGE on schema public` (`pg_database_owner`, from `0001_init.sql:36`), so the revoke is a no-op warning and `drop role r` fails with 2BP01 on every database, including a clean fix-cycle-3 one. Fix: with the inheriting grant now in place, run `drop owned by r` as the administrative role (no `set role`), or `revoke all on schema public from r` before `drop role r`; then rerun HARNESS 7.8 from a clean project. | D154, HARNESS 7.8 | high; fails the milestone |
+| F9 | `tests/test_store_identity.py:450-464` | The committed A-09b probe counts all rows visible to B and updates all of B's sessions, so it fails once the OWN checks have given B rows; the committed run exits 1 on a correct schema. Fix: filter by A's ids (`where user_id = A` / A's session ids), or run the probes before the OWN checks with a B that owns nothing. | D140, A-09b, HARNESS 7.8 | high (test defect, not a leak; blocks the 7.8 run) |
+| F10 | `tests/test_store_identity.py:92` with `store/approvals.py:59-64` | The digest reads `approvals.get`, which expires a pending approval after 600 s; a run longer than 10 minutes reports a false "changed the other owner's data" (this run exceeded 600 s). Fix: seed the approval with a long expiry, or leave the status out of the digest. | D48, HARNESS 7.8 | low |
+| F5 | `evals/retrieval/compare_embeddings.py:61` | unchanged, pre-existing, M0b | HARNESS 3.1 | low (out of scope) |
+| Info | `0001_init.sql:353` | The administrative role on Supabase has BYPASSRLS, so `profiles_trigger_insert` is not exercised; harmless. | D89 | informational |
+
+## SR review (pass 3)
+
+| Case | Threat | Runner | Evidence | Result |
+|---|---|---|---|---|
+| A-09a | T-08 | postgres-test | committed `probe A-09a` PASS: milo_app without `milo.user_id` sees 0 rows or 42501 in every table, insert into `sessions` 42501 | met |
+| A-09b | T-08 | postgres-test | 36/36 NOT_FOUND calls with A's ids raised `not_found`; EMPTY/OWN calls showed none of A's data; `probe counts` PASS (A unchanged); verifier: another owner id sees 0 sessions/messages/turns/turn_events. Committed `probe A-09b` FAIL is a probe defect (F9) | met (committed probe defective, F9) |
+| A-09c | T-08 | postgres-test | committed `probe A-09c` PASS; verifier: `relrowsecurity` and `relforcerowsecurity` true on 17/17 owner tables, a policy on each; `milo_app`, `milo_operator` not SUPERUSER, BYPASSRLS, CREATEROLE, CREATEDB | met |
+| A-10b | T-09 | postgres-test | committed `probe A-10b` PASS: owner update and insert of `profiles.role` 42501, operator update 42501, role unchanged | met |
+| A-17 | T-16 | offline | per-account and per-address 5/15 min, email rotation `rate_limited` at the 6th attempt (`test_auth.py:661-673`); success now clears the address counter too (`login.py:93`, `test_auth.py:767`) | met |
+| A-27 | T-26 | postgres-test | committed `probe A-27` PASS: update/delete on `audit_log` 42501 for both roles, milo_app insert 42501, operator insert allowed; verifier: operator delete wrote its audit row in the same transaction | met |
+
+## For fix cycle 4
+
+1. F8: drop `set role` from the reset role block (admin `drop owned by r` works with `inherit true`), or revoke
+   schema usage first; update `tests/test_store.py:737-753`.
+2. F9: scope the A-09b probe to A's rows; F10: make the seeded approval outlive a slow run.
+3. Rerun HARNESS 7.8 from the (now empty) test project: migrate, `--postgres` (expect exit 0), reset (expect exit
+   0), empty-project query.
