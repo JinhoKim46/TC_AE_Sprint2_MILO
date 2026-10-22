@@ -26,6 +26,22 @@ rate_card:
     base_factor: 1.00
     high_factor: 1.20
   max_modules_per_estimate: 6
+  # Return estimate inputs (SPEC 5.2): minutes of staff time one automated request saves, and the share of
+  # requests the module can handle without a person. Fictional values.
+  automated_minutes_per_request:
+    phone-intake: 6
+    email-triage: 3
+    ticket-creation: 4
+    staff-assignment: 5
+    document-data-entry: 8
+    customer-status-updates: 4
+  eligible_share:
+    phone-intake: 0.60
+    email-triage: 0.70
+    ticket-creation: 0.80
+    staff-assignment: 0.50
+    document-data-entry: 0.60
+    customer-status-updates: 0.70
   notes:
     - Prices exclude taxes, travel and any hardware.
     - The estimate is indicative and non-binding.

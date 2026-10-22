@@ -9,10 +9,12 @@ Comparisons: paired bootstrap of the per-question difference between each model 
 reference model (2000 resamples, seed 0). Chunk configurations: 800/100, 400/50, 1500/150 characters.
 Never reads the test split. Writes evals/results/retrieval/embedding_dev_v2.json.
 """
-import hashlib, json, math, os, random, re, time, urllib.request
+import hashlib, json, math, os, random, re, sys, time, urllib.request
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO))
+from evals.common import load_gold  # the only reader of the gold file (SPEC 10.1)
 OUT = Path(os.environ.get("EMBED_OUT", REPO / "evals" / "results" / "retrieval"))
 KEY = os.environ["OPENROUTER_API_KEY"]
 MODELS = [
@@ -110,8 +112,7 @@ def paired_diff(a, b):
 
 
 def main():
-    gold = [json.loads(l) for l in (REPO / "data" / "gold.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
-    dev = [g for g in gold if g["split"] == "dev" and g["gold_evidence"]]
+    dev = [g for g in load_gold("dev") if g["gold_evidence"]]
     results = {"configs": []}
     total_cost = 0.0
     for size, overlap in CHUNK_CONFIGS:
