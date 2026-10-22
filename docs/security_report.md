@@ -222,7 +222,7 @@ Notes on readings:
 | P-17 | rate limits across sessions | Messages across three sessions of one account | pass | 11th message 429; another account unaffected (200) |
 | P-18 | rate limits across sessions | Uploads across six sessions | pass | 6th upload 429 |
 | P-19 | rate limits across sessions | Sign out and in again | pass | the counter holds: 11th message 429 after re-login |
-| P-20 | production guard | `create_app` with `MILO_ENV=prod` | pass | refuses no key, a short key, `FLASK_DEBUG=1`, `debug=True`, consent v0, no operator profile, and missing database strings (before any connection); `build_local` and `create_dev_app` refuse; a clean prod setup starts with a Secure cookie. The example-key refusal is m6's D137 row (passes) |
+| P-20 | production guard | `create_app` with `MILO_ENV=prod` | pass | refuses no key, a short key, `FLASK_DEBUG=1`, `debug=True`, consent v0, no operator profile, and missing database strings (before any connection); `build_local` and `create_dev_app` refuse; a clean prod setup starts with a Secure cookie. The example-key refusal is m6's D137 row, kept under `supporting_checks` in the result file (passes) |
 | P-21 | accepted gate limits | D117 fail-open and the D158 one-strong-term pass, with a scripted off-topic reply | pass | Jev failing: route `band`, 1 failed Jev call, the D108 reply check replaced the poem; "write me a poem about phone-intake": stage 1 pass, 0 Jev calls, the reply check replaced the poem. Cost: 2 chat calls each |
 | P-22 | consent | JSON consent bodies | pass | `{"agree":"no"}`, a list and a bare string: 400, no 500 (m6 F1 fixed); `{"agree": true}` records consent (the owner's own choice) |
 
