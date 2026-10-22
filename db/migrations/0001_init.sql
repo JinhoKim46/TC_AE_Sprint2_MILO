@@ -28,10 +28,10 @@ end
 $$;
 
 -- The administrative role may SET ROLE to both (D153), so the RLS test needs no role passwords. On PostgreSQL 16+ a
--- CREATEROLE role that creates a role holds only ADMIN membership, so the grant names SET explicitly. Granting
+-- CREATEROLE role that creates a role holds only ADMIN membership, so the grant names SET explicitly; INHERIT lets the administrative role drop the roles' objects at db-reset. Granting
 -- again is harmless, which keeps the file idempotent.
-grant milo_app to current_user with set true, inherit false;
-grant milo_operator to current_user with set true, inherit false;
+grant milo_app to current_user with set true, inherit true;
+grant milo_operator to current_user with set true, inherit true;
 
 grant usage on schema public to milo_app, milo_operator;
 

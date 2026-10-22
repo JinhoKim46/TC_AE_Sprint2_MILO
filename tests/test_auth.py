@@ -762,3 +762,18 @@ def test_auth_modules_hold_no_secret_names() -> None:
         text = path.read_text()
         for needle in ("service_role", "SUPABASE" + "_", "secret_key", "os.environ"):
             assert needle not in text, (path.name, needle)
+
+
+def test_a_success_clears_the_address_counter_too(world: World) -> None:
+    world.register()
+    for _ in range(4):
+        with pytest.raises(InvalidCredentials):
+            world.service.login(
+                "owner@example.test", "wrong password!!", "198.51.100.30"
+            )
+    world.service.login("owner@example.test", GOOD_PASSWORD, "198.51.100.30")
+    for _ in range(4):
+        with pytest.raises(InvalidCredentials):
+            world.service.login(
+                "owner@example.test", "wrong password!!", "198.51.100.30"
+            )

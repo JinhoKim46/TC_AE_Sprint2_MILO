@@ -44,6 +44,8 @@ def tables(directory: Path | str = MIGRATIONS_DIR) -> list[str]:
     return list(dict.fromkeys([*names, "schema_migrations"]))
 
 
+# `set role` first, so the drop works whether the administrative role holds INHERIT or only SET on the role
+# (a database migrated with the older `inherit false` grant; SPEC D154).
 def statements(directory: Path | str = MIGRATIONS_DIR) -> list[str]:
     out = ["drop trigger if exists on_auth_user_confirmed on auth.users"]
     out += [
@@ -53,7 +55,7 @@ def statements(directory: Path | str = MIGRATIONS_DIR) -> list[str]:
     for role in ROLES:
         out.append(
             f"do $$ begin if exists (select 1 from pg_roles where rolname = '{role}') then "
-            f"drop owned by {role}; drop role {role}; end if; end $$"
+            f"set role {role}; drop owned by {role}; reset role; drop role {role}; end if; end $$"
         )
     return out
 

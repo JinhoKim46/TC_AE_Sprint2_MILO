@@ -739,6 +739,21 @@ def test_reset_covers_every_migration_object_and_refuses_prod() -> None:
     for fn in re.findall(r"create or replace function ([\w.]+\([^)]*\))", sql):
         name = fn if "." in fn else "public." + fn
         assert any(name.split("(")[0] in s for s in stmts), fn
+    for role in ("milo_app", "milo_operator"):
+        (stmt,) = [s for s in stmts if f"drop role {role}" in s]
+        order = [
+            stmt.index(x)
+            for x in (
+                f"set role {role};",
+                f"drop owned by {role};",
+                "reset role;",
+                f"drop role {role};",
+            )
+        ]
+        assert order == sorted(order), "set role, drop owned, reset role, drop role"
+        assert stmts.index(stmt) > max(
+            i for i, s in enumerate(stmts) if "drop table" in s or "drop function" in s
+        )
     assert any("drop role milo_app" in s for s in stmts) and any(
         "drop role milo_operator" in s for s in stmts
     )
@@ -757,7 +772,7 @@ def test_migration_is_idempotent_in_form() -> None:
     assert "drop trigger if exists on_auth_user_confirmed on auth.users;" in sql
     assert "drop trigger if exists submissions_immutable_trg on submissions;" in sql
     for role in ("milo_app", "milo_operator"):
-        assert f"grant {role} to current_user with set true, inherit false;" in sql
+        assert f"grant {role} to current_user with set true, inherit true;" in sql
     forced = set(
         re.findall(r"^alter table (\w+) force row level security;", sql, re.MULTILINE)
     )
