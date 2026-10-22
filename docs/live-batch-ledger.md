@@ -28,6 +28,8 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 | 11 | M7 generation, product model, reasoning low effort (D159) | `MILO_LIVE=1 uv run python evals/rag/run_rag_eval.py --generate --product-model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 0.30 --reason ...` | m7-judge.md, D159 | 0.30 | 0.235042 | 0.235042 | 0.5457 |
 | 12 | M5b discovery, product model, reasoning low effort (D159), dev A-1/B-1/E-1 | `MILO_LIVE=1 uv run python evals/discovery/run_discovery.py --model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 1.50 --reason ...` | m5b-discovery.md (577b7d6), D159 | 1.50 | 0.602246 | 0.602246 | 1.1479 |
 | 13 | M7 judge, two E02 judges on the 30 labelled dev answers (prompts afb8cb2, after the labels d6829c3) | `MILO_LIVE=1 uv run python evals/rag/run_rag_eval.py --max-cost 0.50 --reason ... --judge anthropic/claude-haiku-5.5,0.10,0.50 --judge openai/gpt-4.1-mini,0.40,1.60` | m7-judge.md | 0.50 | 0.038281 | 0.038281 (haiku 0.011292, gpt-4.1-mini 0.026989) | 1.1862 |
+| 14 | M5G dev probe run, Jev `typesafe/jev-1.14-20261014`, rubric m5g-rubric.v1 | `MILO_LIVE=1 make eval-gate GATE_ARGS='--max-cost 0.20 --reason "stage-2 probability needed to set or confirm a threshold"'` | m5g-gate.md | 0.20 | 0.006685 (151 calls) | 0.006685 | 1.1929 |
+| 15 | SR live, gate cases A-04, A-05b, A-22 with `--gate milo.gate:sr_gate` (A-01b and A-03 rerun by the runner, written to `live-2026-10-22-gate.json`; the first file is kept) | `MILO_LIVE=1 make eval-sr-live SR_ARGS="--model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --max-cost 0.10 --gate milo.gate:sr_gate --out evals/results/security/live-2026-10-22-gate.json --reason ..."` | sr-live.md | 0.10 | 0.004223 (gate cases 0.000939) | 0.004223 | 1.1971 |
 
 ## Notes
 
@@ -116,3 +118,8 @@ Key usage before part 2: 8.680965 USD (unchanged since the part 1 stop).
 - Key usage at the end of part 2: 8.990266 (0.309301 above the part 2 start, against 0.337 from the files and the
   index estimate; the endpoint lags). Part 2 spend 0.3371 USD; batch cumulative 0.5457 USD of 3.00.
 - M7 judge (row 13): 180 calls, 0 unparsed, 0 provider errors, not partial. Key usage 9.620223 before, 9.654227 after (0.034004; lag). No usable judge under the protocol rule: relevance and context precision validated for both judges, faithfulness for neither (1 unfaithful label of 30, low prevalence). Runner defect for the record: the docstring and the stored `command` show a bare `--judge` mode flag, which argparse rejects (`--judge` takes `<slug>,<in>,<out>`); judge mode is the default when no mode flag is given, and the run was made that way. Not fixed, no rerun. Batch cumulative 1.1862 USD of 3.00.
+- M5G dev probe (row 14): thresholds T_refuse 0.37 (s417), T_pass 0.61 (s123); min_in 0.54 (s365) lies below max_out
+  0.55 (s341), so the band is 0.24 wide. Dev false refusal 0 of 142; out-of-scope refusal 67 of 68 (14 stage 1, 53 stage 2).
+- SR gate cases (row 15): A-05b and A-22 PASS; A-04 FAIL on `jev_request_keys_exact` only: the check compares the
+  top-level request keys (`model`, `questions`, `state`) with the three D145 state keys, while `state` itself holds exactly
+  `message`, `recent_turns`, `scope_summary`. Looks like a runner check defect; not changed, finding for the integrator.
