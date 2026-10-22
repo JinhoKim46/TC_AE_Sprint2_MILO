@@ -1,0 +1,1180 @@
+{
+ "git_commit": "5e3c8a9cd1309b7e7b1ed2e8b422a95402da6525",
+ "model": "scripted-product; judges=judge-alpha,judge-beta",
+ "seed": 26,
+ "temperature": 0.0,
+ "command": "python evals/rag/run_rag_eval.py --dry",
+ "timestamp": "2026-10-22T15:39:32Z",
+ "inputs": {
+  "fixture": "fc217302146cc8f15b678f41b8823639af8b83512530ef24368b3b36300259c7",
+  "script": "29f9df76b4b675297fd0d0c7addd9f55f1b71c8d27c2d6e47cf3a8381f9e6dae",
+  "evals/rag/generate.py": "570081031571d5a7206ec8e54808026acbb0481885194f5f0d0563176657593c",
+  "evals/rag/judge.py": "95af9a441f13423fb42ada7d83bf972f70b4d5445197cdf0172c4dae036b434f",
+  "evals/rag/schema.py": "41629b4e58bed98f65722fe537374f54d01aa93cc3051e57cb7e37acd92f10b5",
+  "evals/rag/stats.py": "a6074c3b95f963cfb82d39e7cb070f7ac0fb8e908d9cefb9253a7fb09e5c777d",
+  "evals/rag/sample.py": "4ba2fce198533673e103e5f304ce030d1b9ef3119e9c10efc59e60784a3d845e"
+ },
+ "dry": true,
+ "partial": false,
+ "bootstrap": {
+  "resamples": 2000,
+  "seed": 0
+ },
+ "rows": [
+  {
+   "qid": "d01",
+   "type": "paraphrase",
+   "question": "Does the alpha desk module take card payments over the phone?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/alpha-desk#0",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "The alpha desk module never takes card payments over the phone."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#1",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk opens a ticket for every call."
+    },
+    {
+     "chunk_id": "solutions/beta-mail#0",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail sorts a shared inbox."
+    }
+   ],
+   "answer": "No. Alpha desk never takes card payments over the phone.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d02",
+   "type": "paraphrase",
+   "question": "Will beta mail ever delete a message?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/beta-mail#1",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail never deletes a message without the owner's approval."
+    },
+    {
+     "chunk_id": "solutions/beta-mail#2",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail needs read access to the shared inbox."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#2",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk answers within two rings."
+    }
+   ],
+   "answer": "Only after the owner approves it.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d03",
+   "type": "paraphrase",
+   "question": "How long does it take to get the alpha desk running?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/alpha-desk#3",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Set-up of alpha desk takes two working days."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#4",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk set-up needs a list of opening hours."
+    }
+   ],
+   "answer": "About two working days, and it also needs a free parking permit.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 0,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"scripted\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d04",
+   "type": "identifier",
+   "question": "What extra charge applies to urgent requests?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/urgent#0",
+     "doc_id": "pricing/urgent",
+     "score": 0.7,
+     "text": "Urgent requests carry a surcharge of 15 percent of the monthly fee."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#5",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk is billed monthly."
+    }
+   ],
+   "answer": "A surcharge of 15 percent of the monthly fee.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       1
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d05",
+   "type": "identifier",
+   "question": "What access does beta mail need before it can start?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/beta-mail#3",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail set-up needs read access to the shared inbox."
+    },
+    {
+     "chunk_id": "solutions/beta-mail#4",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail keeps a log of every action."
+    }
+   ],
+   "answer": "Read access to the shared inbox.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d06",
+   "type": "paraphrase",
+   "question": "Is there a surcharge for CSV export?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/urgent#1",
+     "doc_id": "pricing/urgent",
+     "score": 0.45,
+     "text": "Exports are free of charge."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#6",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.4,
+     "text": "Alpha desk is billed monthly."
+    }
+   ],
+   "answer": "Exports are free of charge, so there is no surcharge.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"scripted\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0], \"reason\": \"scripted\"}",
+      "score": [
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d07",
+   "type": "unanswerable",
+   "question": "Which tractor model has the best fuel economy in winter?",
+   "contexts": [],
+   "answer": "I do not know. I found nothing in the knowledge base that answers that.",
+   "abstained": true,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 1,
+    "context_relevance": [],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [], \"reason\": \"scripted\"}",
+      "score": [],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 0, \"reason\": \"scripted\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [], \"reason\": \"scripted\"}",
+      "score": [],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d08",
+   "type": "unanswerable",
+   "question": "Does the alpha desk support Klingon?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/alpha-desk#7",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk supports English and Spanish."
+    },
+    {
+     "chunk_id": "solutions/beta-mail#5",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail supports English only."
+    }
+   ],
+   "answer": "Alpha desk supports English, Spanish and Klingon.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 0,
+    "relevance": 0,
+    "context_relevance": [
+     0,
+     0
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"scripted\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0], \"reason\": \"scripted\"}",
+      "score": [
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 1], \"reason\": \"scripted\"}",
+      "score": [
+       0,
+       1
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d09",
+   "type": "paraphrase",
+   "question": "Can a caller reach a person?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/alpha-desk#8",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk hands a call to a person when the caller asks for one."
+    }
+   ],
+   "answer": "Yes. Alpha desk hands the call to a person when the caller asks.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1], \"reason\": \"scripted\"}",
+      "score": [
+       1
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "not json",
+      "score": null,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "not json",
+      "score": null,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "not json",
+      "score": null,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  },
+  {
+   "qid": "d10",
+   "type": "identifier",
+   "question": "Will beta mail send replies on its own?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/beta-mail#6",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail never sends a message without approval."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#9",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk records call summaries."
+    }
+   ],
+   "answer": "No, never without approval.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0
+    ],
+    "labeller": "fixture"
+   },
+   "judges": {
+    "judge-alpha": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    },
+    "judge-beta": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"scripted\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"scripted\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0], \"reason\": \"scripted\"}",
+      "score": [
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0
+     }
+    }
+   }
+  }
+ ],
+ "summary": {
+  "judge-alpha": {
+   "metrics": {
+    "faithfulness": {
+     "kappa": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ],
+     "ci_resamples_defined": 1771,
+     "n_questions": 10,
+     "n_items": 10,
+     "agreement": 1.0,
+     "weighted": false,
+     "label_mean": 0.8,
+     "judge_mean": 0.8,
+     "low_prevalence": true,
+     "validated": true,
+     "undefined": false
+    },
+    "relevance": {
+     "kappa": 0.8276,
+     "ci": [
+      0.7368,
+      1.0
+     ],
+     "ci_resamples_defined": 1779,
+     "n_questions": 10,
+     "n_items": 10,
+     "agreement": 0.9,
+     "weighted": true,
+     "label_mean": 1.7,
+     "judge_mean": 1.8,
+     "low_prevalence": false,
+     "validated": true,
+     "undefined": false
+    },
+    "context_precision": {
+     "kappa": 1.0,
+     "ci": [
+      1.0,
+      1.0
+     ],
+     "ci_resamples_defined": 2000,
+     "n_questions": 9,
+     "n_items": 19,
+     "agreement": 1.0,
+     "weighted": false,
+     "label_mean": 0.463,
+     "judge_mean": 0.463,
+     "low_prevalence": false,
+     "validated": true,
+     "undefined": false
+    }
+   },
+   "unparsed": 0,
+   "replies": 30,
+   "unparsed_rate": 0.0,
+   "usable": true,
+   "by_type": {
+    "identifier": {
+     "n": 3,
+     "faithfulness": {
+      "label_mean": 1.0,
+      "judge_mean": 1.0
+     },
+     "relevance": {
+      "label_mean": 2.0,
+      "judge_mean": 2.0
+     },
+     "context_precision": {
+      "label_mean": 0.5,
+      "judge_mean": 0.5
+     }
+    },
+    "paraphrase": {
+     "n": 5,
+     "faithfulness": {
+      "label_mean": 0.8,
+      "judge_mean": 0.8
+     },
+     "relevance": {
+      "label_mean": 2.0,
+      "judge_mean": 2.0
+     },
+     "context_precision": {
+      "label_mean": 0.5333,
+      "judge_mean": 0.5333
+     }
+    },
+    "unanswerable": {
+     "n": 2,
+     "faithfulness": {
+      "label_mean": 0.5,
+      "judge_mean": 0.5
+     },
+     "relevance": {
+      "label_mean": 0.5,
+      "judge_mean": 1.0
+     },
+     "context_precision": {
+      "label_mean": 0.0,
+      "judge_mean": 0.0
+     }
+    }
+   },
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0
+  },
+  "judge-beta": {
+   "metrics": {
+    "faithfulness": {
+     "kappa": -0.1739,
+     "ci": [
+      -0.4211,
+      0.0
+     ],
+     "ci_resamples_defined": 1938,
+     "n_questions": 9,
+     "n_items": 9,
+     "agreement": 0.6667,
+     "weighted": false,
+     "label_mean": 0.7778,
+     "judge_mean": 0.8889,
+     "low_prevalence": true,
+     "validated": false,
+     "undefined": false
+    },
+    "relevance": {
+     "kappa": 0.25,
+     "ci": [
+      -0.2353,
+      0.7805
+     ],
+     "ci_resamples_defined": 1942,
+     "n_questions": 9,
+     "n_items": 9,
+     "agreement": 0.6667,
+     "weighted": true,
+     "label_mean": 1.6667,
+     "judge_mean": 1.6667,
+     "low_prevalence": false,
+     "validated": false,
+     "undefined": false
+    },
+    "context_precision": {
+     "kappa": 0.5556,
+     "ci": [
+      0.2222,
+      0.8136
+     ],
+     "ci_resamples_defined": 2000,
+     "n_questions": 8,
+     "n_items": 18,
+     "agreement": 0.7778,
+     "weighted": false,
+     "label_mean": 0.3958,
+     "judge_mean": 0.5,
+     "low_prevalence": false,
+     "validated": false,
+     "undefined": false
+    }
+   },
+   "unparsed": 3,
+   "replies": 30,
+   "unparsed_rate": 0.1,
+   "usable": false,
+   "by_type": {
+    "identifier": {
+     "n": 3,
+     "faithfulness": {
+      "label_mean": 1.0,
+      "judge_mean": 1.0
+     },
+     "relevance": {
+      "label_mean": 2.0,
+      "judge_mean": 1.6667
+     },
+     "context_precision": {
+      "label_mean": 0.5,
+      "judge_mean": 0.6667
+     }
+    },
+    "paraphrase": {
+     "n": 5,
+     "faithfulness": {
+      "label_mean": 0.75,
+      "judge_mean": 0.75
+     },
+     "relevance": {
+      "label_mean": 2.0,
+      "judge_mean": 2.0
+     },
+     "context_precision": {
+      "label_mean": 0.4167,
+      "judge_mean": 0.375
+     }
+    },
+    "unanswerable": {
+     "n": 2,
+     "faithfulness": {
+      "label_mean": 0.5,
+      "judge_mean": 1.0
+     },
+     "relevance": {
+      "label_mean": 0.5,
+      "judge_mean": 1.0
+     },
+     "context_precision": {
+      "label_mean": 0.0,
+      "judge_mean": 0.5
+     }
+    }
+   },
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0
+  }
+ },
+ "inter_judge": {
+  "faithfulness": {
+   "kappa": -0.1739,
+   "ci": [
+    -0.4211,
+    0.0
+   ],
+   "ci_resamples_defined": 1938,
+   "n_questions": 9,
+   "n_items": 9,
+   "agreement": 0.6667,
+   "weighted": false
+  },
+  "relevance": {
+   "kappa": 0.4706,
+   "ci": [
+    -0.2857,
+    0.7805
+   ],
+   "ci_resamples_defined": 1942,
+   "n_questions": 9,
+   "n_items": 9,
+   "agreement": 0.6667,
+   "weighted": true
+  },
+  "context_precision": {
+   "kappa": 0.5556,
+   "ci": [
+    0.2222,
+    0.8136
+   ],
+   "ci_resamples_defined": 2000,
+   "n_questions": 8,
+   "n_items": 18,
+   "agreement": 0.7778,
+   "weighted": false
+  }
+ },
+ "label_means": {
+  "faithfulness": 0.8,
+  "relevance": 1.7,
+  "context_precision": 0.463
+ },
+ "decision": {
+  "usable_judges": [
+   "judge-alpha"
+  ],
+  "headline_judge": "judge-alpha",
+  "line": "usable judge(s): judge-alpha; headline numbers from judge-alpha"
+ }
+}
