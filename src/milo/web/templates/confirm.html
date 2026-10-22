@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card narrow">
+  {% if sent %}
+  <h1>Check your email</h1>
+  <p>If the address can be used, we sent a confirmation link. Open it to finish creating your account.</p>
+  {% elif confirmed %}
+  <h1>Email confirmed</h1>
+  <p>Your account is ready.</p>
+  <p><a class="btn btn-primary" href="{{ url_for('web.login') }}">Sign in</a></p>
+  {% else %}
+  <h1>Link not valid</h1>
+  <p>This confirmation link is not valid or was already used.</p>
+  <p><a href="{{ url_for('web.signup') }}">Create an account again</a></p>
+  {% endif %}
+</section>
+{% endblock %}
