@@ -1,0 +1,730 @@
+{
+ "decision": {
+  "candidates": {
+   "vendor/cheap-model": {
+    "checks": {
+     "abstention_within_0.05": true,
+     "citation_within_0.05": false,
+     "f1_within_0.05": false,
+     "json_after_retry_0.98": true,
+     "no_persistent_provider_error": true,
+     "paired_ci_not_below_-0.10": false
+    },
+    "paired_f1_ci": [
+     -1.0,
+     -1.0
+    ],
+    "pass": false
+   }
+  },
+  "chosen": "openai/gpt-4.1-mini",
+  "line": "development model: openai/gpt-4.1-mini (no candidate passed; the reference is used)",
+  "reference": "openai/gpt-4.1-mini"
+ },
+ "metrics": {
+  "openai/gpt-4.1-mini": {
+   "abstention_ci": [
+    1.0,
+    1.0
+   ],
+   "abstention_correct": 1.0,
+   "answer_pass_rate": null,
+   "citation_ci": [
+    1.0,
+    1.0
+   ],
+   "citation_correct": 1.0,
+   "cost_a": 0.000416,
+   "cost_b": 0.000416,
+   "evidence_verbatim": 1.0,
+   "f1": 1.0,
+   "f1_ci": [
+    1.0,
+    1.0
+   ],
+   "json_valid_after_retry": 1.0,
+   "json_valid_first": 1.0,
+   "latency_mean": 0.5,
+   "latency_p95": 0.5,
+   "n_a": 3,
+   "n_b": 3,
+   "precision": 1.0,
+   "provider_errors": 0,
+   "recall": 1.0
+  },
+  "vendor/cheap-model": {
+   "abstention_ci": [
+    1.0,
+    1.0
+   ],
+   "abstention_correct": 1.0,
+   "answer_pass_rate": null,
+   "citation_ci": [
+    0.0,
+    0.0
+   ],
+   "citation_correct": 0.0,
+   "cost_a": 0.000139,
+   "cost_b": 0.000104,
+   "evidence_verbatim": 0.0,
+   "f1": 0.0,
+   "f1_ci": [
+    0.0,
+    0.0
+   ],
+   "json_valid_after_retry": 1.0,
+   "json_valid_first": 0.666667,
+   "latency_mean": 0.5,
+   "latency_p95": 0.5,
+   "n_a": 3,
+   "n_b": 3,
+   "precision": 0.0,
+   "provider_errors": 0,
+   "recall": 0.0
+  }
+ },
+ "note": "Synthetic fixture for the replay path: scripted replies, not model output, no OpenRouter call. Not a result.",
+ "reason": "fixture for `make eval-chat-replay`",
+ "rows": [
+  {
+   "calls": 1,
+   "conv": "E-1",
+   "cost_usd": 0.000416,
+   "earlier_fields": [],
+   "error": null,
+   "expected": [
+    {
+     "field_id": "company_name",
+     "status": "reported",
+     "value": "Maple & Paw Grooming"
+    },
+    {
+     "field_id": "owner_name",
+     "status": "reported",
+     "value": "Lena Ortiz"
+    },
+    {
+     "field_id": "owner_role",
+     "status": "reported",
+     "value": "Owner"
+    },
+    {
+     "field_id": "industry",
+     "status": "reported",
+     "value": "pet-services"
+    }
+   ],
+   "latency_s": 0.5,
+   "model": "openai/gpt-4.1-mini",
+   "owner_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.",
+   "parsed": {
+    "asks_about": null,
+    "facts": [
+     {
+      "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.",
+      "field_id": "company_name",
+      "period": null,
+      "unit": null,
+      "value": "Maple & Paw Grooming"
+     },
+     {
+      "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.",
+      "field_id": "owner_name",
+      "period": null,
+      "unit": null,
+      "value": "Lena Ortiz"
+     },
+     {
+      "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.",
+      "field_id": "owner_role",
+      "period": null,
+      "unit": null,
+      "value": "Owner"
+     },
+     {
+      "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.",
+      "field_id": "industry",
+      "period": null,
+      "unit": null,
+      "value": "pet-services"
+     }
+    ]
+   },
+   "raw": "{\"facts\": [{\"field_id\": \"company_name\", \"value\": \"Maple & Paw Grooming\", \"unit\": null, \"period\": null, \"evidence_text\": \"Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.\"}, {\"field_id\": \"owner_name\", \"value\": \"Lena Ortiz\", \"unit\": null, \"period\": null, \"evidence_text\": \"Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.\"}, {\"field_id\": \"owner_role\", \"value\": \"Owner\", \"unit\": null, \"period\": null, \"evidence_text\": \"Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.\"}, {\"field_id\": \"industry\", \"value\": \"pet-services\", \"unit\": null, \"period\": null, \"evidence_text\": \"Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.\"}], \"asks_about\": null}",
+   "request_hash": "881489c1176192d18b64fc76e0decc037fa6f42a1afe2844741d74ec0140de7d",
+   "retry": false,
+   "scores": {
+    "f1": 1.0,
+    "facts": 4,
+    "fn": 0,
+    "fp": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tp": 4,
+    "verbatim": 4
+   },
+   "task": "A",
+   "temperature": 0.0,
+   "turn": 1,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "calls": 1,
+   "conv": "E-1",
+   "cost_usd": 0.000416,
+   "earlier_fields": [
+    "company_name",
+    "owner_name",
+    "owner_role",
+    "industry"
+   ],
+   "error": null,
+   "expected": [
+    {
+     "field_id": "employee_count",
+     "status": "reported",
+     "value": 9
+    },
+    {
+     "field_id": "locations",
+     "status": "reported",
+     "value": 2
+    }
+   ],
+   "latency_s": 0.5,
+   "model": "openai/gpt-4.1-mini",
+   "owner_text": "9 staff across 2 salons.",
+   "parsed": {
+    "asks_about": null,
+    "facts": [
+     {
+      "evidence_text": "9 staff across 2 salons.",
+      "field_id": "employee_count",
+      "period": null,
+      "unit": null,
+      "value": 9
+     },
+     {
+      "evidence_text": "9 staff across 2 salons.",
+      "field_id": "locations",
+      "period": null,
+      "unit": null,
+      "value": 2
+     }
+    ]
+   },
+   "raw": "{\"facts\": [{\"field_id\": \"employee_count\", \"value\": 9, \"unit\": null, \"period\": null, \"evidence_text\": \"9 staff across 2 salons.\"}, {\"field_id\": \"locations\", \"value\": 2, \"unit\": null, \"period\": null, \"evidence_text\": \"9 staff across 2 salons.\"}], \"asks_about\": null}",
+   "request_hash": "ffd9fac87059ea92ed64dc695d9d22aa9b64caf1f11a2b3bf17f473ef106ab85",
+   "retry": false,
+   "scores": {
+    "f1": 1.0,
+    "facts": 2,
+    "fn": 0,
+    "fp": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tp": 2,
+    "verbatim": 2
+   },
+   "task": "A",
+   "temperature": 0.0,
+   "turn": 2,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "calls": 1,
+   "conv": "E-1",
+   "cost_usd": 0.000416,
+   "earlier_fields": [
+    "company_name",
+    "owner_name",
+    "owner_role",
+    "industry",
+    "employee_count",
+    "locations"
+   ],
+   "error": null,
+   "expected": [
+    {
+     "field_id": "request_channels",
+     "status": "reported",
+     "value": [
+      "phone",
+      "web form"
+     ]
+    },
+    {
+     "field_id": "daily_request_volume",
+     "period": "day",
+     "status": "reported",
+     "unit": "requests",
+     "value": 35
+    }
+   ],
+   "latency_s": 0.5,
+   "model": "openai/gpt-4.1-mini",
+   "owner_text": "Phone and a web form, about 35 a day.",
+   "parsed": {
+    "asks_about": null,
+    "facts": [
+     {
+      "evidence_text": "Phone and a web form, about 35 a day.",
+      "field_id": "request_channels",
+      "period": null,
+      "unit": null,
+      "value": [
+       "phone",
+       "web form"
+      ]
+     },
+     {
+      "evidence_text": "Phone and a web form, about 35 a day.",
+      "field_id": "daily_request_volume",
+      "period": null,
+      "unit": null,
+      "value": 35
+     }
+    ]
+   },
+   "raw": "{\"facts\": [{\"field_id\": \"request_channels\", \"value\": [\"phone\", \"web form\"], \"unit\": null, \"period\": null, \"evidence_text\": \"Phone and a web form, about 35 a day.\"}, {\"field_id\": \"daily_request_volume\", \"value\": 35, \"unit\": null, \"period\": null, \"evidence_text\": \"Phone and a web form, about 35 a day.\"}], \"asks_about\": null}",
+   "request_hash": "a7072daee4d81983aad241fae2e495220afbb96c541d9b400e40bade85e8d10e",
+   "retry": false,
+   "scores": {
+    "f1": 1.0,
+    "facts": 2,
+    "fn": 0,
+    "fp": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "tp": 2,
+    "verbatim": 2
+   },
+   "task": "A",
+   "temperature": 0.0,
+   "turn": 3,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "answerable": true,
+   "calls": 1,
+   "context_ids": [
+    "solutions/phone-intake#149",
+    "cases/accounts-paperwork#0",
+    "cases/accounts-paperwork#1",
+    "cases/accounts-paperwork#2",
+    "cases/accounts-paperwork#3"
+   ],
+   "cost_usd": 0.000416,
+   "error": null,
+   "gold_chunk_ids": [
+    "solutions/phone-intake#149"
+   ],
+   "latency_s": 0.5,
+   "model": "openai/gpt-4.1-mini",
+   "parsed": null,
+   "qid": "q001",
+   "raw": "See the policy text. [solutions/phone-intake#149]",
+   "reply": "See the policy text. [solutions/phone-intake#149]",
+   "request_hash": "801661ebaa98259fec3c544edf48433efe89edcab39c7d2bda9ce0a579f9abf6",
+   "retry": false,
+   "scores": {
+    "abstain_ok": true,
+    "abstained": false,
+    "citation_ok": true,
+    "cited": [
+     "solutions/phone-intake#149"
+    ]
+   },
+   "task": "B",
+   "temperature": 0.0,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "answerable": true,
+   "calls": 1,
+   "context_ids": [
+    "solutions/ticket-creation#163",
+    "cases/accounts-paperwork#0",
+    "cases/accounts-paperwork#1",
+    "cases/accounts-paperwork#2",
+    "cases/accounts-paperwork#3"
+   ],
+   "cost_usd": 0.000416,
+   "error": null,
+   "gold_chunk_ids": [
+    "solutions/ticket-creation#163"
+   ],
+   "latency_s": 0.5,
+   "model": "openai/gpt-4.1-mini",
+   "parsed": null,
+   "qid": "q003",
+   "raw": "See the policy text. [solutions/ticket-creation#163]",
+   "reply": "See the policy text. [solutions/ticket-creation#163]",
+   "request_hash": "5fac095c7df4e047e15920557a09d34263ec1d2e54e19c91a5edd7a63ceed803",
+   "retry": false,
+   "scores": {
+    "abstain_ok": true,
+    "abstained": false,
+    "citation_ok": true,
+    "cited": [
+     "solutions/ticket-creation#163"
+    ]
+   },
+   "task": "B",
+   "temperature": 0.0,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "answerable": true,
+   "calls": 1,
+   "context_ids": [
+    "solutions/document-data-entry#135",
+    "cases/accounts-paperwork#0",
+    "cases/accounts-paperwork#1",
+    "cases/accounts-paperwork#2",
+    "cases/accounts-paperwork#3"
+   ],
+   "cost_usd": 0.000416,
+   "error": null,
+   "gold_chunk_ids": [
+    "solutions/document-data-entry#135"
+   ],
+   "latency_s": 0.5,
+   "model": "openai/gpt-4.1-mini",
+   "parsed": null,
+   "qid": "q005",
+   "raw": "See the policy text. [solutions/document-data-entry#135]",
+   "reply": "See the policy text. [solutions/document-data-entry#135]",
+   "request_hash": "f085843920648071ab4c8f641c5b04ea439668682e8ed4c29b71d2ed96ee5266",
+   "retry": false,
+   "scores": {
+    "abstain_ok": true,
+    "abstained": false,
+    "citation_ok": true,
+    "cited": [
+     "solutions/document-data-entry#135"
+    ]
+   },
+   "task": "B",
+   "temperature": 0.0,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "calls": 2,
+   "conv": "E-1",
+   "cost_usd": 0.000208,
+   "earlier_fields": [],
+   "error": null,
+   "expected": [
+    {
+     "field_id": "company_name",
+     "status": "reported",
+     "value": "Maple & Paw Grooming"
+    },
+    {
+     "field_id": "owner_name",
+     "status": "reported",
+     "value": "Lena Ortiz"
+    },
+    {
+     "field_id": "owner_role",
+     "status": "reported",
+     "value": "Owner"
+    },
+    {
+     "field_id": "industry",
+     "status": "reported",
+     "value": "pet-services"
+    }
+   ],
+   "latency_s": 0.5,
+   "model": "vendor/cheap-model",
+   "owner_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business.",
+   "parsed": {
+    "asks_about": null,
+    "facts": [
+     {
+      "evidence_text": "made up",
+      "field_id": "invented_field",
+      "period": null,
+      "unit": null,
+      "value": 1
+     }
+    ]
+   },
+   "raw": "{\"facts\": [{\"field_id\": \"invented_field\", \"value\": 1, \"unit\": null, \"period\": null, \"evidence_text\": \"made up\"}], \"asks_about\": null}",
+   "request_hash": "418c5b0bb6f4f64dc08417e42ff41f5f1ffd141d2c8b01cf48abe71a1688e919",
+   "retry": true,
+   "scores": {
+    "f1": 0.0,
+    "facts": 1,
+    "fn": 4,
+    "fp": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tp": 0,
+    "verbatim": 0
+   },
+   "task": "A",
+   "temperature": 0.0,
+   "turn": 1,
+   "usage": {
+    "input": 1600,
+    "output": 120
+   }
+  },
+  {
+   "calls": 1,
+   "conv": "E-1",
+   "cost_usd": 0.000104,
+   "earlier_fields": [
+    "company_name",
+    "owner_name",
+    "owner_role",
+    "industry"
+   ],
+   "error": null,
+   "expected": [
+    {
+     "field_id": "employee_count",
+     "status": "reported",
+     "value": 9
+    },
+    {
+     "field_id": "locations",
+     "status": "reported",
+     "value": 2
+    }
+   ],
+   "latency_s": 0.5,
+   "model": "vendor/cheap-model",
+   "owner_text": "9 staff across 2 salons.",
+   "parsed": {
+    "asks_about": null,
+    "facts": [
+     {
+      "evidence_text": "made up",
+      "field_id": "invented_field",
+      "period": null,
+      "unit": null,
+      "value": 1
+     }
+    ]
+   },
+   "raw": "{\"facts\": [{\"field_id\": \"invented_field\", \"value\": 1, \"unit\": null, \"period\": null, \"evidence_text\": \"made up\"}], \"asks_about\": null}",
+   "request_hash": "93d8d324489a86084b9ac7f6363c396b869c479116c287f8ff2887c4565e8bc3",
+   "retry": false,
+   "scores": {
+    "f1": 0.0,
+    "facts": 1,
+    "fn": 2,
+    "fp": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tp": 0,
+    "verbatim": 0
+   },
+   "task": "A",
+   "temperature": 0.0,
+   "turn": 2,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "calls": 1,
+   "conv": "E-1",
+   "cost_usd": 0.000104,
+   "earlier_fields": [
+    "company_name",
+    "owner_name",
+    "owner_role",
+    "industry",
+    "employee_count",
+    "locations"
+   ],
+   "error": null,
+   "expected": [
+    {
+     "field_id": "request_channels",
+     "status": "reported",
+     "value": [
+      "phone",
+      "web form"
+     ]
+    },
+    {
+     "field_id": "daily_request_volume",
+     "period": "day",
+     "status": "reported",
+     "unit": "requests",
+     "value": 35
+    }
+   ],
+   "latency_s": 0.5,
+   "model": "vendor/cheap-model",
+   "owner_text": "Phone and a web form, about 35 a day.",
+   "parsed": {
+    "asks_about": null,
+    "facts": [
+     {
+      "evidence_text": "made up",
+      "field_id": "invented_field",
+      "period": null,
+      "unit": null,
+      "value": 1
+     }
+    ]
+   },
+   "raw": "{\"facts\": [{\"field_id\": \"invented_field\", \"value\": 1, \"unit\": null, \"period\": null, \"evidence_text\": \"made up\"}], \"asks_about\": null}",
+   "request_hash": "9685e6296ca4e4c1da1db7acefb0877575797f59b7323390dbe3812d2a532ff6",
+   "retry": false,
+   "scores": {
+    "f1": 0.0,
+    "facts": 1,
+    "fn": 2,
+    "fp": 1,
+    "precision": 0.0,
+    "recall": 0.0,
+    "tp": 0,
+    "verbatim": 0
+   },
+   "task": "A",
+   "temperature": 0.0,
+   "turn": 3,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "answerable": true,
+   "calls": 1,
+   "context_ids": [
+    "solutions/phone-intake#149",
+    "cases/accounts-paperwork#0",
+    "cases/accounts-paperwork#1",
+    "cases/accounts-paperwork#2",
+    "cases/accounts-paperwork#3"
+   ],
+   "cost_usd": 0.000104,
+   "error": null,
+   "gold_chunk_ids": [
+    "solutions/phone-intake#149"
+   ],
+   "latency_s": 0.5,
+   "model": "vendor/cheap-model",
+   "parsed": null,
+   "qid": "q001",
+   "raw": "Probably yes.",
+   "reply": "Probably yes.",
+   "request_hash": "4e7d059a692ab9f73323569e9ed2feafeae8794aaf80684252f773cd956f3bd9",
+   "retry": false,
+   "scores": {
+    "abstain_ok": true,
+    "abstained": false,
+    "citation_ok": false,
+    "cited": []
+   },
+   "task": "B",
+   "temperature": 0.0,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "answerable": true,
+   "calls": 1,
+   "context_ids": [
+    "solutions/ticket-creation#163",
+    "cases/accounts-paperwork#0",
+    "cases/accounts-paperwork#1",
+    "cases/accounts-paperwork#2",
+    "cases/accounts-paperwork#3"
+   ],
+   "cost_usd": 0.000104,
+   "error": null,
+   "gold_chunk_ids": [
+    "solutions/ticket-creation#163"
+   ],
+   "latency_s": 0.5,
+   "model": "vendor/cheap-model",
+   "parsed": null,
+   "qid": "q003",
+   "raw": "Probably yes.",
+   "reply": "Probably yes.",
+   "request_hash": "03f450944576e8eea132067d50f831c282d9d9f9f61b631c94ab458fabd099c8",
+   "retry": false,
+   "scores": {
+    "abstain_ok": true,
+    "abstained": false,
+    "citation_ok": false,
+    "cited": []
+   },
+   "task": "B",
+   "temperature": 0.0,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  },
+  {
+   "answerable": true,
+   "calls": 1,
+   "context_ids": [
+    "solutions/document-data-entry#135",
+    "cases/accounts-paperwork#0",
+    "cases/accounts-paperwork#1",
+    "cases/accounts-paperwork#2",
+    "cases/accounts-paperwork#3"
+   ],
+   "cost_usd": 0.000104,
+   "error": null,
+   "gold_chunk_ids": [
+    "solutions/document-data-entry#135"
+   ],
+   "latency_s": 0.5,
+   "model": "vendor/cheap-model",
+   "parsed": null,
+   "qid": "q005",
+   "raw": "Probably yes.",
+   "reply": "Probably yes.",
+   "request_hash": "1a6ac3f1f917809373e1197c49a1a4b4ba9d5466194524c6b56de429c49ce4e6",
+   "retry": false,
+   "scores": {
+    "abstain_ok": true,
+    "abstained": false,
+    "citation_ok": false,
+    "cited": []
+   },
+   "task": "B",
+   "temperature": 0.0,
+   "usage": {
+    "input": 800,
+    "output": 60
+   }
+  }
+ ],
+ "split": "dev",
+ "synthetic": true
+}
