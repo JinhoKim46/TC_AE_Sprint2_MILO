@@ -19,20 +19,19 @@ Purpose: if the session stops (usage limit, crash, compaction loss), a fresh ses
 3. For each branch that exists: if `verify/<x>` has a `docs/verify/<x>.md` with PASS, merge it into main (`git merge --no-ff`), rerun `make check` and the seven kit targets on main, remove the worktrees, append the checkpoint block to `docs/owner/CHECKPOINTS_PENDING.md`. If a build branch has no verifier yet, open `verify/<x>` from it and launch a verifier with the HARNESS section 7 checklist. If an agent was mid-task, its branch holds whatever it committed; relaunch the task with the same brief (the briefs are in this session's transcript; the file ownership is in HARNESS Appendix A).
 4. Update `monitor/status.js` and this file.
 
-## State at last update (2026-10-22 16:35 local)
+## State at last update (2026-10-22 18:25 local)
 
 Pause: usage limit 15:30 to 16:31; the three verifiers (M5-store, M4, M6 shell) were resumed by SendMessage from their saved transcripts. If a verifier does not report, relaunch it fresh with the brief; for M5-store first query the test project and run `make db-reset` if 0001 is applied.
 
-Merged on main: S0 (f42d8f1), M5a (723dbca), M3 (dec57a1), protocols (ac31ea3), threat model and attack cases (52be734, ff14df3), settings accessors D153 (d0d5f10).
+Merged on main: S0, M5a, M3, M6 shell (a75cf0c), M4 (after fix cycle 2), M0b gold (b36e231, manifest 8e222e1), seven protocols, threat model, attack cases, settings accessors D153, D157 gate rule.
 
 | Branch | Where | Status | Next |
 |---|---|---|---|
-| agent/m5-store (22ff99c) + verify/m5-store (2a89058, merged with main) | `.worktrees/m5-store`, `.worktrees/verify-m5-store` | Verifier running: offline checklist plus Postgres run on the TEST project (migrate, RLS via SET ROLE, db-reset) | On PASS merge verify/m5-store; on FAIL fix cycle to the builder |
-| agent/m6-shell (626bc99) + verify/m6-shell (27e8fde verdict draft) | `.worktrees/m6-shell`, `.worktrees/verify-m6-shell` | Verifier finishing: counts must come from its script output | On PASS merge |
-| agent/m4 (34b7b96) + verify/m4 (ff540d2, merged with main) | `.worktrees/m4`, `.worktrees/verify-m4` | Verifier + SR reviewer running | On PASS merge verify/m4 |
-| agent/data/m0b (a7ab661) + agent/audit/m0b (d22240b) | `.worktrees/m0b`, `.worktrees/audit-m0b` | Audit pass 1: ok 108, fix 12. Generator applying fixes | Then auditor pass 2 (changed rows + 20 spot checks); then merge data branch and audit file; then M1 and the live batch may start |
-| agent/data/m5g (530133f) + agent/audit/m5g (547cfc3) | `.worktrees/m5g`, `.worktrees/audit-m5g` | Audit pass 1: ok 394, fix 46, not yet fit (templated 18.6%, thin undecided margin). Generator on fix cycle 1 (fixes, de-templating, more undecided rows, lexicon) | Auditor pass 2; then merge; M5G build waits for M5b |
+| agent/m5-store (23e058c) + verify/m5-store (2640b47) | `.worktrees/m5-store`, `.worktrees/verify-m5-store` | Verifier pass 2 running: second Postgres run on the TEST project after fix cycle 2 (role grant WITH SET, FORCE RLS) | On PASS merge; on FAIL fix cycle 3 |
+| agent/m0 (new) | `.worktrees/m0` | Builder running: remaining data scope (tool cases, attack row, rate card fields, D66 check, checker and leakage tests) | Verifier, merge |
+| agent/m1 (new) | `.worktrees/m1` | Builder running: chunking, ingest, vector store, dense retrieval, dry/replay runner | Verifier, merge; live index and eval in the live batch |
+| agent/data/m5g (9c3f3b0) + agent/audit/m5g (50ab458) | `.worktrees/m5g`, `.worktrees/audit-m5g` | Fix cycle 2 running (4 rows, lexicon v3 strong/weak per D157); then audit pass 3 | Merge both; M5G build waits for M5b |
 
-Not started: M0 remaining scope (after M0b lands; same files), M1 (after M0b audit), M2 (after M1), M5b (after M1, M3, M5a, M5-store), M5c, M5G build, M6 wiring, M7, live batch (E01 rerun, E02, M3 live tools, M4 live arms, Jev probes: one protocol check, one budget check, run by the integrator), SR pen test, F1 to F4.
+Not started: M2 (after M1), M5b (after M1, M3, M5a, M5-store), M5c, M5G build, M6 wiring, M7, live batch (E01 rerun, E02, M3 live tools, M4 live arms, Jev probes: one protocol check, one budget check, run by the integrator), SR pen test, F1 to F4.
 
 Owner checklist (SPEC section 18): items 1 to 10; none blocks the build.
