@@ -419,16 +419,13 @@ def test_cloud_wrapper_converts_tools_and_reads_cost_without_network():
     assert chat.last_cost_usd == 0.0001
 
 
-def test_discovery_and_create_app_are_stubs_until_their_milestones():
-    for fn, args in (
-        (build_discovery_app, (ScriptedChat(), HashEmbedder(), FakeBackend())),
-        (create_app, ()),
-    ):
-        with pytest.raises(NotImplementedError):
-            fn(*args)
-    app = build_app(ScriptedChat(), HashEmbedder(), FakeBackend(), discovery=True)
+def test_create_app_is_a_stub_until_m6_wiring():
+    # build_discovery_app landed in M5b; create_app (the web factory) lands with the M6 wiring.
     with pytest.raises(NotImplementedError):
-        app.ask("hello", "u1", "t1")
+        create_app()
+    assert (
+        build_discovery_app(ScriptedChat(), HashEmbedder(), FakeBackend()) is not None
+    )
 
 
 # ---- sealing, guards and migrations ----
