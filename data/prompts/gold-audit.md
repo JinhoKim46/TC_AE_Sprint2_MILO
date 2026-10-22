@@ -322,3 +322,134 @@ quote. Treated as style; the builder's own check passed at the generation commit
 SHA-256 of `data/gold.jsonl` at commit `a7ab661`:
 `7a47a9be5faeb500d43ed29af81735941a95e644bb255634a20d0b3a64afedec`.
 It equals the `data/gold.jsonl` entry in `data/MANIFEST.json`: yes.
+
+---
+
+# Pass 2 (protocol Step 4, after fix cycle 1)
+
+| Field | Value |
+|---|---|
+| Auditor | Gold audit role (slug `audit`), same agent as pass 1 |
+| Date | 2026-10-22 |
+| Commit audited | `4f3bd8f` (M0b: fix cycle 1), merged into `agent/audit/m0b` as `419d25b` |
+| Inputs | the 120 rows of the gold file, the 24 articles and `catalogue.yaml` (unchanged since `a7ab661`, checked with git), SPEC and the protocol as in pass 1 |
+| Not read | the generator's notes and chat, `## gold expansion (M0b)` in `generation-record.md`, `.env` |
+| Calls | no model call, no network call (D126) |
+| Files written | this file only; no data was edited |
+
+## Pass 2 script outputs
+
+Same read-only script as pass 1, rerun on the fixed file.
+
+```
+rows: 120
+sha256 gold: 6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72
+manifest  : 6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72
+articles: 24 (no change to data/kb or data/source/catalogue.yaml since a7ab661)
+
+== quote integrity and filters ==
+quotes verified (exact substring, one heading, <=150 chars): 96 of 96
+max quote length: 147
+problems: none
+unique qids: True | contiguous q001..q120: True
+identifier rows without an id in the question: none
+paraphrase rows that mention a catalogue id literally: none
+
+== duplicates ==
+equal after normalisation: none
+word-set Jaccard > 0.6 (whole file): none
+highest Jaccard pairs overall: [('q005','q049',0.31), ('q038','q109',0.3), ('q082','q084',0.27), ('q061','q105',0.27),
+  ('q062','q093',0.26), ('q013','q015',0.26), ('q072','q116',0.25), ('q032','q108',0.25)]
+
+== cross-split leakage ==
+quotes used by more than one row: none
+quotes shared across dev and test: none
+(doc, heading) groups with both dev and test rows: 5 (the four of pass 1 plus
+    ('solutions/ticket-creation', 'What is included') [('q010','dev'), ('q060','test')])
+cross-split question Jaccard >= 0.3: [('q005','q049',0.31), ('q038','q109',0.3)]
+identical reference answers across rows: none
+
+== stratification ==
+identifier    dev= 12 test= 12 total= 24
+paraphrase    dev= 36 test= 36 total= 72
+unanswerable  dev= 12 test= 12 total= 24
+total         dev= 60 test= 60
+with a filter: dev=22 test=22 total=44
+filter keys: {'product': 14, 'section': 30}
+per-article answerable rows: every one of the 24 articles is 2/2/4
+articles out of quota: none
+
+== safety ==
+safety hits: none
+```
+
+## Pass 2: the twelve fixed rows (full checklist)
+
+Each row was rechecked for answerability, labels (type, filters against front matter, split), quote
+integrity, duplicates, cross-split leakage, realism and safety. Where the generator departed from the
+literal pass 1 proposal, the alternative is judged on its merits.
+
+| qid | What changed | Judgement | verdict |
+|---|---|---|---|
+| q010 | quote replaced by the "What is included" sentence (93 chars), reference adjusted | as proposed; subject named; quote answers the question; new same-heading pair with q060 (test) asks a different fact (reminders), cleared | ok |
+| q014 | quote extended to the 147-char two-sentence form | as proposed; subject named | ok |
+| q046 | question reworded to "besides the csv export?"; quote, doc and filter kept | departs from the proposal: naming the antecedent in the question was the alternative offered in pass 1; "it" now resolves to csv-export from the question; per-article 2/2 preserved; identifier id `staff-assignment` still in the quote | ok |
+| q047 | quote cut to the 78-char clause, "if the delay is acceptable" dropped from the reference | as proposed; no truncated conditional remains | ok |
+| q049 | question reworded to "can document data entry run over api-connector?"; quote replaced by the 107-char list sentence; reference answers by omission | departs from the proposal on the question: the identifier rule needs every id in the question to appear in the quote, so `document-data-entry` was unhyphenated and `api-connector` added; the quote names its subject and lists the four supported modules, so the answer follows by omission; Jaccard with q005 (dev) is 0.31 on function words ("can document data entry"), different fact, cleared | ok |
+| q054 | reference answer polarity corrected to "No." | as proposed | ok |
+| q057 | quote replaced by the "What is included" sentence (129 chars), reference adjusted | as proposed; weaker evidence ("handover to staff") but it answers "do they just get hung up on?"; filter product=phone-intake still satisfied | ok |
+| q059 | question reworded to "will the email bot mess with those?"; quote kept | departs from the proposal because the proposed quote contained q002's quote; the question now names the antecedent, so "It" resolves; the reworded question keeps both parts (multi-part tag intact) | ok |
+| q089 | quote replaced by the 127-char "question it asks next comes from the list" sentence, reference adjusted | as proposed | ok |
+| q096 | quote replaced by the 127-char "If you paste a customer's details" sentence, reference adjusted | as proposed; answers "do i have to upload my client list?" with no | ok |
+| q100 | question reworded to "what does the assistant refuse to do with that message?"; quote and doc kept | departs from the proposal (moving to policies/security would break the 2/2 per-article rule); the question now names the antecedent of "it"; the quote states both refusals | ok |
+| q118 | question reworded to "weekend support from your team?" | as proposed; vendor support hours are absent from every article (keyword search unchanged, articles unchanged); 5 words, fragment tag intact; still unanswerable, test | ok |
+
+All twelve: quotes are exact substrings inside one heading and at most 150 characters; filters match
+front matter; splits unchanged; no new duplicate or cross-split pair above 0.31; no D22 phrase, name,
+key or path.
+
+## Pass 2: spot check of 20 unchanged rows
+
+Sample: `random.seed(0); random.sample(unchanged_qids, 20)` over the 108 unchanged qids, sorted:
+q006, q015, q020, q030, q036, q039, q041, q051, q056, q060, q062, q070, q071, q073, q074, q083, q108,
+q109, q112, q119. Each reread against its article with the full checklist (unanswerable rows against the
+keyword search). All twenty: `ok`, unchanged since pass 1.
+
+## Pass 2: changed since first pass, all 120 qids
+
+| changed | qids |
+|---|---|
+| yes (quote) | q010, q014, q047, q057, q089, q096 |
+| yes (quote and question) | q049 |
+| yes (question only) | q046, q059, q100, q118 |
+| yes (reference answer only) | q054 |
+| no | q001-q009, q011-q013, q015-q045, q048, q050-q053, q055, q056, q058, q060-q088, q090-q095, q097-q099, q101-q117, q119, q120 (108 rows) |
+
+Verdict in pass 2 for every one of the 120 qids: `ok`.
+
+## Pass 2: leakage findings
+
+Script: no quote shared across rows; no cross-split pair above Jaccard 0.31. New pairs introduced by the
+fixes, read and cleared: q005 (dev) and q049 (test), 0.31, handwriting limit vs api-connector support,
+different articles and quotes; q010 (dev) and q060 (test), same heading of ticket-creation, duplicate
+check vs reminders to staff, different quotes. The eleven kin pairs of pass 1 are unchanged. No test
+question is a rewording of a dev question.
+
+## Pass 2: quota check
+
+The stratification table holds unchanged (24/72/24; 60/60; 44 filtered, 22/22; section 30, product 14;
+every article 2 dev / 2 test). Realism quotas on the new rows hold: q118 stays a fragment (5 words), q059
+stays multi-part, no typo or short-form row was changed, so the pass 1 counts (14 / 10-13 / 28 / 16)
+stand.
+
+## Pass 2: summary
+
+| Verdict | Count |
+|---|---|
+| ok | 120 |
+| fix | 0 |
+| remove | 0 |
+
+No verdict is outstanding. SHA-256 of `data/gold.jsonl` at `4f3bd8f`:
+`6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72`.
+It equals the `data/gold.jsonl` entry in `data/MANIFEST.json`: yes.
