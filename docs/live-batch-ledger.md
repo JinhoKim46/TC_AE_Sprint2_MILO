@@ -24,6 +24,8 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 | 7 | M3 tools, product model, reasoning low effort (D159), part 2 | `MILO_LIVE=1 uv run python evals/agent/run_tools.py --model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 0.30 --reason ...` | m3-tools.md (16fef06), D159 | 0.30 | 0.062852 | 0.062852 | 0.2715 |
 | 8 | M4 attacks, dev model, 3 reps | `MILO_LIVE=1 uv run python evals/agent/run_attacks.py --live --model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --max-cost 0.60 --reps 3 --reason ...` | m4-attacks.md (02d425c) | 0.60 | 0.03363 | 0.03363 (sum of row `cost_usd`; the file has no total field) | 0.3051 |
 | 9 | SR live chat cases A-01b, A-03 (Jev cases not run) | `MILO_LIVE=1 make eval-sr-live SR_ARGS="--model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --max-cost 0.50 --reason ..."` | sr-live.md (16fef06) | 0.50 | 0.00331 | 0.00331 | 0.3084 |
+| 10 | M1 index rebuild (part 1's git-ignored index was not in this worktree) | `MILO_LIVE=1 make index` | e01-rerun.md (ac31ea3) | 0.005 | about 0.0023 (no result file; key usage delta) | none | 0.3107 |
+| 11 | M7 generation, product model, reasoning low effort (D159) | `MILO_LIVE=1 uv run python evals/rag/run_rag_eval.py --generate --product-model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 0.30 --reason ...` | m7-judge.md, D159 | 0.30 | 0.235042 | 0.235042 | 0.5457 |
 
 ## Notes
 
@@ -99,3 +101,15 @@ Key usage before part 2: 8.680965 USD (unchanged since the part 1 stop).
   taint low, 0 pricing facts with emailed values, 0 withdrawals, 0 approvals, no state change). A-04, A-05b and A-22
   are `not_run` (no M5G gate passed; `gate_dev.json` and `rubric.md` are absent). The runner's balance check used
   `MILO_BUDGET_USD=8.17` (approval balance 8.47 minus the batch spend). Replay matches.
+- M7 index: part 1's index under `data/index/` is git-ignored and was gone, so it was rebuilt with the same
+  settings (gemini-embedding-2, 800/100): 167 chunks, `chunk_sha256` 2e039419865c..., equal to part 1's. Before that,
+  `run_rag_eval.py --generate` read `data/index/` itself instead of the `<model>-800-100` folder `make index` writes,
+  so it refused every time; fixed in its own commit before the run (a9e41bf), and the result now records the index
+  manifest.
+- M7 generation (row 11): 30 dev sample questions, no error, not partial, mean 0.0078 USD per question (above the
+  0.0042 per call from M3: a turn can make more than one call). No question abstained, the 6 unanswerable ones
+  included (every question retrieves contexts at `min_score` 0.30, D160). Runner defect for the record: the rows'
+  `tokens_in` and `tokens_out` are 0 (only `cost_usd` is captured); not fixed, no rerun. `--make-template` rewrote
+  `evals/rag/labels.template.jsonl` (30 rows) from the generation. No labels, judge prompts or judge run.
+- Key usage at the end of part 2: 8.990266 (0.309301 above the part 2 start, against 0.337 from the files and the
+  index estimate; the endpoint lags). Part 2 spend 0.3371 USD; batch cumulative 0.5457 USD of 3.00.
