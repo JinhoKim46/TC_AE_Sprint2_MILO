@@ -26,6 +26,7 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 | 9 | SR live chat cases A-01b, A-03 (Jev cases not run) | `MILO_LIVE=1 make eval-sr-live SR_ARGS="--model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --max-cost 0.50 --reason ..."` | sr-live.md (16fef06) | 0.50 | 0.00331 | 0.00331 | 0.3084 |
 | 10 | M1 index rebuild (part 1's git-ignored index was not in this worktree) | `MILO_LIVE=1 make index` | e01-rerun.md (ac31ea3) | 0.005 | about 0.0023 (no result file; key usage delta) | none | 0.3107 |
 | 11 | M7 generation, product model, reasoning low effort (D159) | `MILO_LIVE=1 uv run python evals/rag/run_rag_eval.py --generate --product-model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 0.30 --reason ...` | m7-judge.md, D159 | 0.30 | 0.235042 | 0.235042 | 0.5457 |
+| 12 | M5b discovery, product model, reasoning low effort (D159), dev A-1/B-1/E-1 | `MILO_LIVE=1 uv run python evals/discovery/run_discovery.py --model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 1.50 --reason ...` | m5b-discovery.md (577b7d6), D159 | 1.50 | 0.602246 | 0.602246 | 1.1479 |
 
 ## Notes
 
