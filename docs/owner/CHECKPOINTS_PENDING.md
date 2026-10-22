@@ -34,3 +34,9 @@
 - Counts: identifier 24 (12/12), paraphrase 72 (36/36), unanswerable 24 (12/12); 44 filtered (22/22, keys section 30 and product 14); every article 2 dev / 2 test; 96 of 96 quotes verbatim; no split leakage; gold SHA-256 6141c7e3...37a72 equals MANIFEST.
 - Integrator checks (HARNESS 7.9): count check OK, audit file free of the forbidden token, hash matches; MANIFEST rebuilt once because the audit file joined data/ (gold unchanged).
 - Owner question: none.
+
+## M1 — Retrieval (merged 2026-10-22, offline)
+
+- Builder 855fd0f; verifier PASS offline (docs/verify/m1.md). 27 new tests; dry replay matches; live refuses without MILO_LIVE.
+- Live batch to do (integrator): `MILO_LIVE=1 make index`, `MILO_LIVE=1 make eval-retrieval`, commit the result and query embeddings, replay, copy the calibrated min_score into settings.py, fill docs/m1_report.md. Embedding cost comes from the OpenRouter ledger (cloud.py drops the embedding usage field).
+- Owner question: none.
