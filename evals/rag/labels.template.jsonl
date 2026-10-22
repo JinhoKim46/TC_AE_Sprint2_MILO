@@ -1,30 +1,30 @@
-{"qid": "q001", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q003", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q007", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q009", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q012", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q016", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q020", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q022", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q029", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q039", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q045", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q053", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q056", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q061", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q074", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q075", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q077", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q079", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q084", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q086", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q088", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q092", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q094", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q098", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q104", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q107", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q109", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q111", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q115", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
-{"qid": "q119", "faithfulness": null, "relevance": null, "context_relevance": [], "labeller": "", "note": ""}
+{"qid": "q001", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q003", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q007", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q009", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q012", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q016", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q020", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q022", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q029", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q039", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q045", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q053", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q056", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q061", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q074", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q075", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q077", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q079", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q084", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q086", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q088", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q092", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q094", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q098", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q104", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q107", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q109", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q111", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q115", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
+{"qid": "q119", "faithfulness": null, "relevance": null, "context_relevance": [null, null, null, null, null], "labeller": "", "note": ""}
