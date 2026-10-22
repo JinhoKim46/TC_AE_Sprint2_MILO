@@ -97,6 +97,40 @@ def database_url(environ: Mapping[str, str] | None = None) -> str:
     return admin_database_url(environ)
 
 
+# Supabase Auth (SPEC D88, D136). The project URL and publishable key are owner-provided
+# (`.env`, owner checklist item 1); the JWKS URL and issuer derive from the project URL.
+TEST_AUTH_URL_VAR = "SUPABASE_test_url"
+PROD_AUTH_URL_VAR = "SUPABASE_prod_url"
+TEST_AUTH_KEY_VAR = "SUPABASE_test_publishable_key"
+PROD_AUTH_KEY_VAR = "SUPABASE_prod_publishable_key"
+
+
+@dataclass(frozen=True)
+class AuthConfig:
+    url: str
+    publishable_key: str
+    jwks_url: str
+    issuer: str
+
+
+def auth_config(environ: Mapping[str, str] | None = None) -> AuthConfig:
+    """Supabase Auth settings for the running environment. Raises when the owner has not set them."""
+    env = _env(environ)
+    prod = is_prod(env)
+    url = env.get(PROD_AUTH_URL_VAR if prod else TEST_AUTH_URL_VAR, "").rstrip("/")
+    key = env.get(PROD_AUTH_KEY_VAR if prod else TEST_AUTH_KEY_VAR, "")
+    if not url or not key:
+        raise RuntimeError(
+            "Supabase Auth URL or publishable key is not set (see .env.example, owner item 1)"
+        )
+    return AuthConfig(
+        url=url,
+        publishable_key=key,
+        jwks_url=f"{url}/auth/v1/.well-known/jwks.json",
+        issuer=f"{url}/auth/v1",
+    )
+
+
 def production_problems(
     environ: Mapping[str, str] | None = None,
     example_values: frozenset[str] = frozenset(),

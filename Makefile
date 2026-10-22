@@ -9,7 +9,7 @@ define need
 @test -e $(1) || { echo "not built yet: $(1) is missing (milestone $(2) has not landed)"; exit 1; }
 endef
 
-.PHONY: check test audit migrate index record eval final-test discovery-table \
+.PHONY: check test audit migrate db-reset index record eval final-test discovery-table \
 	kit-sources kit-abstains kit-tools kit-security kit-errors kit-threads kit-cost \
 	eval-retrieval eval-retrieval-replay eval-tools eval-tools-replay eval-attacks eval-attacks-replay \
 	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay
@@ -32,6 +32,9 @@ audit:
 
 migrate:
 	uv run python -m milo.store.migrate
+
+db-reset:
+	uv run python -m milo.store.reset
 
 kit-sources:
 	$(KIT) -k sources -rA
