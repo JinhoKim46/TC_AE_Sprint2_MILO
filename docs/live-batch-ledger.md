@@ -16,6 +16,7 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 | 1 | E01c embedding rerun | `MILO_LIVE=1 python evals/retrieval/compare_embeddings.py --max-cost 0.05` | e01-rerun.md (ac31ea3) | 0.05 | 0.015722 | 0.015722 | 0.015722 |
 | 2 | M1 index build | `MILO_LIVE=1 make index` | e01-rerun.md (ac31ea3) | 0.005 | about 0.0021 (no result file; key usage delta) | none | 0.0178 |
 | 3 | M1 dense dev eval | `MILO_LIVE=1 make eval-retrieval` | e01-rerun.md (ac31ea3) | 0.005 | 0.00225 | 0.00225 | 0.0201 |
+| 4a | E02 chat compare, attempt 1 | `MILO_LIVE=1 make eval-chat` | e02-chat-compare.md (ac31ea3) | 1.20 (plan check) | 0 (failed at the first embedding request, before any chat call) | none | 0.0201 |
 
 ## Notes
 
@@ -29,3 +30,9 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
   800/100 (D9); no winner differs from the provisional choice, so M1 indexes with gemini at 800/100.
 - M1: `min_score` calibrated to 0.73 but not separable on dev; filed as request 1 in `docs/requests/live-batch.md`
   (settings.py unchanged).
+- E02 attempt 1 failed with HTTP 400 at task B's first embedding request: the runner sent all 167 chunks in one
+  request and the provider caps a batch at 100. Deterministic runner defect, not a provider fault, no chat call made.
+  Fix (own commit, before the result): task B embeds through `milo.rag.embed.OpenRouterEmbedder` (batches of 64,
+  the one retry site) and the result header records `embedding_cost_usd` and `chat_cost_usd`. One retry follows.
+- E02 has no running `--max-cost`; its cap mechanism is the up-front plan check against the protocol cap of 1.20 USD
+  (planned cost from catalogue prices with a 1.25 margin). All six slugs exist in the catalogue as named.

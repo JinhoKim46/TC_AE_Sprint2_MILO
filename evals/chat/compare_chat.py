@@ -660,8 +660,13 @@ def run_live(args: argparse.Namespace) -> int:
         return 2
     ledger.check(plan)
     rows: list[dict[str, Any]] = []
+    from milo.rag.embed import OpenRouterEmbedder
+
+    # Batched (64 per request) through the one retry site: the provider caps an embedding batch at 100 texts.
     embedder = (
-        cloud.OpenRouterEmbeddings(cfg.openrouter_api_key, EMBEDDING_MODEL)
+        OpenRouterEmbedder(
+            cfg.openrouter_api_key, EMBEDDING_MODEL, price_usd_per_mtok=0.2
+        )
         if gold
         else None
     )
@@ -676,7 +681,8 @@ def run_live(args: argparse.Namespace) -> int:
         )
         rows += task_a_rows(chat, slug, convs, time.sleep)
         rows += task_b_rows(chat, slug, items, time.sleep)
-    return write_result(args, rows, verified, plan)
+    emb_cost = round(embedder.total_cost_usd, 6) if embedder else 0.0
+    return write_result(args, rows, verified, plan, emb_cost)
 
 
 def write_result(
@@ -684,6 +690,7 @@ def write_result(
     rows: list[dict[str, Any]],
     verified: dict[str, Any],
     plan: float,
+    embedding_cost_usd: float = 0.0,
 ) -> int:
     metrics = compute_metrics(rows)
     decision = decide(rows, metrics, verified["reference"])
@@ -706,6 +713,8 @@ def write_result(
         "split": args.split,
         "catalogue": verified,
         "planned_cost_usd": round(plan, 4),
+        "embedding_cost_usd": embedding_cost_usd,
+        "chat_cost_usd": round(sum(r.get("cost_usd") or 0.0 for r in rows), 6),
         "metrics": normalise_metrics(metrics),
         "decision": decision,
         "rows": rows,
