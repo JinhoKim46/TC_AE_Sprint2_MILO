@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card narrow empty">
+  <p class="muted">{{ code }}</p>
+  <h1>{{ heading }}</h1>
+  <p>{{ text }}</p>
+  <p><a class="btn btn-primary" href="{{ url_for('web.index') }}">Go to the conversation</a></p>
+</section>
+{% endblock %}

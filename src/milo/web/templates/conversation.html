@@ -1,0 +1,55 @@
+{% extends "base.html" %}{% from "_macros.html" import icon, csrf with context %}
+{% block body_class %}app{% endblock %}
+{% block shell %}
+<div class="layout">
+  {% include "_session_panel.html" %}
+  <main id="main" class="centre" data-session="{{ session_id or '' }}" data-messages-url="{{ url_for('web.messages') }}" data-events-url="/turns/">
+    <h1 class="sr">{{ title }}</h1>
+    <div class="thread" id="thread" aria-live="polite">
+      {% if not messages %}
+      <div class="empty-state">
+        <div class="mark" aria-hidden="true"></div>
+        <h2>Hello{% if user %}, {{ user.first_name }}{% endif %}. What would you like to improve?</h2>
+        <ul class="plain suggestions">
+          {% for s in suggestions %}
+          <li><button type="button" class="suggestion" data-suggestion>{{ icon("bolt") }}<span>{{ s }}</span>{{ icon("chevron") }}</button></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% for m in messages %}
+      <article class="msg-row msg-{{ m.role }}">
+        <div class="bubble plain-text">{{ m.text }}</div>
+        {% if m.details %}
+        <details class="drawer">
+          <summary>Reply details</summary>
+          <h3>Sources</h3>
+          {% if m.details.sources %}
+          <ul>{% for s in m.details.sources %}<li>{{ s.chunk_id }} · {{ s.document }} · score {{ s.score }}</li>{% endfor %}</ul>
+          {% else %}<p class="muted">No sources.</p>{% endif %}
+          <h3>Tool calls</h3>
+          {% if m.details.tool_calls %}
+          <ul>{% for t in m.details.tool_calls %}<li>{{ t.name }} · {{ t.args }} · {{ t.result }} · {{ t.decision }}</li>{% endfor %}</ul>
+          {% else %}<p class="muted">No tool calls.</p>{% endif %}
+          <p class="small muted">Model cost: {{ "%.4f"|format(m.details.cost_usd) }} USD</p>
+        </details>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    <div class="approval-banner" id="approval-banner" hidden>
+      <p id="approval-text" class="plain-text"></p>
+      <div class="row"><button class="btn btn-quiet" type="button" data-approval="keep">Keep as is</button><button class="btn btn-primary" type="button" data-approval="approve">Approve</button></div>
+    </div>
+    <form class="composer" id="composer" method="post" action="{{ url_for('web.messages') }}">
+      {{ csrf() }}
+      <label class="sr" for="composer-input">Your message</label>
+      <textarea id="composer-input" name="text" rows="2" maxlength="4000" placeholder="Describe your business or answer the question above" required></textarea>
+      <label class="btn btn-quiet icon-btn" for="upload-input" title="Upload a document">{{ icon("clip") }}<span class="sr">Upload a document</span></label>
+      <input class="sr" id="upload-input" type="file" name="file" data-upload-url="{{ url_for('web.upload') }}">
+      <button class="btn btn-primary" type="submit">{{ icon("send") }} Send</button>
+    </form>
+  </main>
+  {% include "_spec_panel.html" %}
+</div>
+{% endblock %}

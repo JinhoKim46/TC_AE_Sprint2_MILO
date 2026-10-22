@@ -1,0 +1,35 @@
+{% from "_macros.html" import icon, csrf with context %}
+<aside class="panel panel-left" aria-label="Diagnoses">
+  <form method="post" action="{{ url_for('web.sessions_new') }}">
+    {{ csrf() }}
+    <button class="btn btn-primary btn-block" type="submit" data-action="new-session">{{ icon("plus") }} New diagnosis</button>
+  </form>
+  <form method="get" action="{{ url_for('web.sessions') }}" class="search" role="search">
+    <label class="sr" for="session-search">Search diagnoses</label>
+    <input id="session-search" type="search" name="q" value="{{ query }}" placeholder="Search by title" data-filter="#session-list">
+  </form>
+  <nav id="session-list" aria-label="Diagnosis list">
+    {% for name, items in groups %}
+    <h2 class="group">{{ name }}</h2>
+    <ul class="plain">
+      {% for s in items %}
+      <li class="session-row{% if s.id == current_id %} selected{% endif %}" data-title="{{ s.title }}">
+        <a href="{{ url_for('web.session_open', session_id=s.id) }}"{% if s.id == current_id %} aria-current="page"{% endif %}>{{ s.title }}</a>
+        <span class="row-actions">
+          {% if show_archived %}
+          <form method="post" action="{{ url_for('web.session_restore', session_id=s.id) }}" class="inline">{{ csrf() }}<button class="btn btn-quiet btn-small" type="submit">Restore</button></form>
+          {% else %}
+          <form method="post" action="{{ url_for('web.session_archive', session_id=s.id) }}" class="inline">{{ csrf() }}<button class="btn btn-quiet btn-small" type="submit" aria-label="Archive {{ s.title }}">{{ icon("archive") }}</button></form>
+          {% endif %}
+        </span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="muted empty-note">{% if query %}No diagnosis matches that title.{% elif show_archived %}Nothing archived.{% else %}No diagnoses yet. Start one above.{% endif %}</p>
+    {% endfor %}
+  </nav>
+  <p class="muted small">
+    {% if show_archived %}<a href="{{ url_for('web.sessions') }}">Show active</a>{% else %}<a href="{{ url_for('web.sessions', archived=1) }}">Show archived</a>{% endif %}
+  </p>
+</aside>

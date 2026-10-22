@@ -431,6 +431,7 @@ The build queue completes every milestone. Where a step needs the owner, the bui
 7. **AE privacy check.** Fails on the notebooks in `sprint2/part2` and `sprint2/part4`. The owner decides before any AE commit (section 19).
 8. **Operator MFA (D144).** Not built. The owner decides whether to enforce it in the Supabase dashboard before production.
 9. **Access-token residual risk (D136).** A stolen access token stays valid until it expires (at most 1 hour). The owner accepts or asks for server-side revocation before production.
+10. **Role passwords and app connection strings (D153).** After the first `make migrate` on each project, the owner sets passwords for `milo_app` and `milo_operator` and adds the app and operator pooler strings to `.env`. Production refuses to start without them.
 
 ## 19. Blocker for AE commits
 
@@ -601,7 +602,7 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9.4 (2026-10-22): two-stage input gate; stage 2 is the pinned decision model typesafe/jev-1.14-20261014 (D110 to D118).
 - v0.9.5 (2026-10-22): no invites anywhere (D119); scope and Jev gate added as milestone M5G (D120); owner-only items as placeholders with a production guard and a checklist (D121). Section 26 overrides earlier text.
 - v0.9.6 (2026-10-22): security red-team lane SR added (section 27, D122 to D125). Spend rule D126: session agents do all writing, data generation, audits and reviews; OpenRouter is used only where a model is being measured or the final run needs it (HARNESS rule 14).
-- v0.9.7 (2026-10-22): the 21 gaps in `docs/threat_model.md` v0.1 closed or assigned (section 28, D127 to D146); protocol-review decisions D147 to D152.
+- v0.9.7 (2026-10-22): the 21 gaps in `docs/threat_model.md` v0.1 closed or assigned (section 28, D127 to D146); protocol-review decisions D147 to D152; store-review decisions D153 to D156; gate-audit decision D157.
 
 ## 26. Version 0.9.5 decisions (these override earlier text where they conflict)
 
@@ -651,3 +652,14 @@ Protocol-review decisions (added after the four protocols were written):
 - **D150 Scope data owner.** `data/scope/**` is owned by M5G alone (the Appendix A M0 row is withdrawn); the scope set is generated and audited by session agents under `m5g-gate.md` before the gate code exists.
 - **D151 Gold filter keys.** Gold filters use `section` and `product` only. `updated_after` has no gold quota because every article carries the same `updated` date; the self-query code still supports it.
 - **D152 Kit checker.** `scripts/check_project_data.py` is copied from the kit at S0, read-only. Its `GOLD_TYPES` and accepted filter keys are verified then; M0b's protocol marks them "to verify" until that copy exists.
+
+Store-review decisions (added after the M5-store build):
+
+- **D153 Three connection roles, four strings (amends D127, D130).** The owner-provided `SUPABASE_test_session_pooler` and `SUPABASE_prod_session_pooler` are the administrative strings (the `postgres` role). They are used only by `make migrate`, `make db-reset` and the verifier's RLS test, never by the app. The app's own strings are `SUPABASE_test_app_pooler`, `SUPABASE_prod_app_pooler` (role `milo_app`) and `SUPABASE_prod_operator_pooler` (role `milo_operator`); the owner creates them after setting the role passwords (`docs/operations.md`, owner checklist item 10). In the test project no passwords are needed: migration 0001 runs `GRANT milo_app, milo_operator TO current_user`, and the verifier's RLS test opens the administrative connection and runs `SET ROLE milo_app` (or `milo_operator`) per check. `settings.py` is the only reader of all five names.
+- **D154 RLS test environment (replaces D77 and HARNESS 7.8's throwaway schema).** Migration 0001 targets the `public` schema of the test project and is not schema-relocatable. The verifier runs `make migrate` against the test project, runs `tests/test_store_identity.py --postgres`, then `make db-reset`, which drops every MILO object in `public` (tables, functions, trigger on `auth.users`, roles) so the project returns to empty. The test project may be reset freely (D58). Production is never a target.
+- **D155 Migration hygiene.** `0001_init.sql` uses `create or replace` for functions and `drop trigger if exists` before `create trigger`, pins no `search_path`, and is idempotent on an empty project. `store/migrate.py` connects with the administrative string only and refuses `MILO_ENV=prod` unless `MILO_MIGRATE_PROD=1` is set by the owner by hand.
+- **D156 Appendix A.** `docs/operations.md`, `docs/m5-store_report.md` and `docs/requests/m5-store.md` belong to the M5-store row.
+
+Gate-audit decision (added after the scope-set audit, before any probe):
+
+- **D157 Stage-1 pass needs a strong term (amends D110, D106).** A lexicon term is `strong` (module id or name, integration id, protocol field id or its synonyms, product words, session and account action words) or `weak` (bare trade words and generic business words). Stage 1 passes a message on one strong term or two weak terms; a single weak term leaves the message `undecided` for stage 2. Reason: with one-word passes, off-topic text that happens to contain a trade word bypasses the judge, and the audit showed the 95 percent target (D118) is unreachable that way. The cost is one Jev call for such messages. The lexicon is versioned v3 with the strength marked per term.

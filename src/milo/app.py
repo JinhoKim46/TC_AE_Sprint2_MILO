@@ -35,6 +35,7 @@ from milo.rag.retrieve import Retriever
 from milo.security.validate import validate_question
 from milo.settings import MIN_SCORE, TURN_DEADLINE_S
 from milo.store.memory import MemoryApprovals
+from milo.tools.approvals import ApprovalService
 from milo.trace import Tracer, text_ref
 from milo.types import (
     ApprovalStore,
@@ -185,31 +186,39 @@ class App:
     def resume_approval(
         self, approval_id: str, decision: str, user_id: str
     ) -> Response:
-        """Resolve a pending approval (SPEC section 8). Only the owning caller can; anyone else gets `not_found`."""
+        """Resolve a pending approval (SPEC section 8). Only the owning caller can; anyone else gets `not_found`.
+
+        The claim, the argument-hash check and the approve-time policy live in `ApprovalService.resolve`
+        (compare-and-set, D48): a second approve of the same row runs nothing, and tampered arguments or a
+        policy denial at approve time run nothing. The model follow-up happens only after an execution.
+        """
         row = self.approvals.get(approval_id, user_id)
         if row is None:
             return Response(answer=user_message(NOT_FOUND), error=NOT_FOUND)
-        if row["status"] == "expired":
+        if decision not in ("approve", "keep"):
+            error = format_error("invalid_input")
+            return Response(answer=user_message(error), error=error)
+        outcome = ApprovalService(self.tools, self.approvals).resolve(
+            approval_id, decision, user_id
+        )
+        if outcome.status == "not_found":
+            return Response(answer=user_message(NOT_FOUND), error=NOT_FOUND)
+        if outcome.status == "expired":
             return Response(answer="This request expired. Nothing was changed.")
-        if row["status"] != "pending":
+        if outcome.status == "already_resolved":
             return Response(
                 answer="This request was already handled. Nothing more was changed."
             )
-        if decision == "keep":
-            self.approvals.set_status(approval_id, user_id, "kept")
+        if outcome.status == "kept":
             return Response(
                 answer="Understood. I kept things as they are. Nothing was changed."
             )
-        if decision != "approve":
-            error = format_error("invalid_input")
-            return Response(answer=user_message(error), error=error)
-        self.approvals.set_status(approval_id, user_id, "approved")
+        if outcome.status in ("denied", "denied_at_approve"):
+            return Response(
+                answer="This request can no longer be carried out. Nothing was changed."
+            )
         name, args = row["tool_name"], row["args"]
-        try:
-            output, ok = self.tools.call(name, args, user_id=row["owner_id"]), True
-        except Exception:
-            output, ok = {"error": "tool_failed"}, False
-        self.approvals.set_status(approval_id, user_id, "used")
+        output, ok = outcome.output, outcome.ok
         tool_result = ToolResult(name, args, output, ok, "allowed")
         ctx = row["context"]
         key, sources = self._pending.get(approval_id, ((user_id, ""), []))
