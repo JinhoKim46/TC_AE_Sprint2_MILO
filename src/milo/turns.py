@@ -71,8 +71,10 @@ class TurnRunner:
         clean = validate_question(text)
         upload_text = None
         if upload is not None:
+            upload_text = validate_upload(
+                upload, upload_mime
+            )  # a rejected file uses no slot
             self.limiter.hit(UPLOADS, owner)
-            upload_text = validate_upload(upload, upload_mime)
         self.limiter.hit(MESSAGES, owner)
         if self.runtime.spent_today(owner) >= settings.ACCOUNT_DAILY_SPEND_USD:
             now = self.clock()

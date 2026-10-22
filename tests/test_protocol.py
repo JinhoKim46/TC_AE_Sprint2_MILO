@@ -552,3 +552,53 @@ def test_eval_refuses_test_conversations_and_replays_the_dry_result(monkeypatch)
     tampered = json.loads(json.dumps(doc["rows"]))
     tampered[0]["actual"]["answer"] = "That is $500 a month."
     assert rd.compute_metrics(tampered)["pooled"]["premature_estimate_rate"] > 0
+
+
+# ---- fix cycle 1: bare price numbers before an estimate is allowed (finding 1) ----
+
+
+def test_bare_price_numbers_are_removed_before_the_estimate_but_owner_volumes_stay():
+    from milo.chain import answer_has_figure
+    from milo.protocol.replycheck import owner_numbers, shows_figure
+
+    view = ENGINE.evaluate({})  # collecting: no figure allowed
+    owner = owner_numbers(
+        ["About 40 jobs a day.", "We do around 400 a month, so it adds up."]
+    )
+    priced = [
+        "It will be about 900 a month.",
+        "Roughly 1,200 per month.",
+        "The setup fee is 900.",
+        "A budget of 5000 should cover it.",
+        "nine hundred dollars",
+        "That is 2k monthly.",
+    ]
+    kept = [
+        "So that is 400 a month, noted.",  # the owner's own number
+        "About 40 jobs a day.",
+        "With 35 requests a month that cost you time.",  # a volume unit follows the number
+        "You have 9 staff and 2 salons.",
+    ]
+    for text in priced:
+        assert shows_figure(text, number_allowed=False, owner=owner), text
+        assert answer_has_figure(text, owner), (
+            text
+        )  # the eval's rule is the same function
+        out = check_reply(
+            f"{text} What is your company called?", view, scope_terms=[], owner=owner
+        )
+        assert not shows_figure(out.text, number_allowed=False, owner=owner), out.text
+        assert "What is your company called?" in out.text
+    for text in kept:
+        assert not shows_figure(text, number_allowed=False, owner=owner), text
+        assert not answer_has_figure(text, owner), text
+        out = check_reply(
+            f"{text} What is your company called?", view, scope_terms=[], owner=owner
+        )
+        assert text in out.text and not out.money_removed
+    allowed = ENGINE.evaluate(
+        {f.id: {"value": "x", "status": "reported"} for f in PROTOCOL.fields}
+    )
+    assert allowed.number_allowed
+    assert not shows_figure("Setup is about 900.", number_allowed=True)
+    assert shows_figure("That is $900.", number_allowed=True)

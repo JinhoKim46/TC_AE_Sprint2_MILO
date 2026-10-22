@@ -48,3 +48,14 @@ Each request names the path, the change, why, and the test that shows it works.
 9. **A per-account daily spend counter** (D131 `ACCOUNT_DAILY_SPEND_USD`). `rate_limits` counts integers only; M5b
    counts spend in process (`DiscoveryRuntime.record_spend`). A `spend(user_id, day, usd)` table or a micro-USD
    counter would make it hold across workers.
+
+## Fix cycle 1 (verifier findings left open by decision)
+
+10. **Finding 3, taint persistence (low, to M5-store's next cycle).** Same as request 6: upload, retrieval and tool
+    output taint is held in process; after a restart only owner-message taint is rebuilt from `messages`. Needs the
+    `sessions.taint` column. Fails closed for approvals (lost arguments fail the hash check).
+11. **Finding 6, 409 vs 429 (low, M5-store and M6).** A message to a second session while a turn runs raises
+    `TurnRunning` (409, D99/D131 as documented); SR case A-23 expects 429 `rate_limited`. The web mapping is M6's.
+12. **Daily spend counter (request 9, updated).** Spend is now counted in `rate_limits` (D142) as one event per
+    0.001 USD, rounded up. An `add(scope, key, amount, window_s)` method on the repository would make it one round
+    trip per call instead of one per unit.

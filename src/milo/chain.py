@@ -24,11 +24,11 @@ cost, never owner text (D141).
 from __future__ import annotations
 
 import json
+import math
 import threading
 import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
 from typing import Any
 
 from milo.errors import (
@@ -61,7 +61,8 @@ from milo.protocol.replycheck import (
     catalogue_terms,
     check_reply,
     field_terms,
-    has_money,
+    owner_numbers,
+    shows_figure,
 )
 from milo.security.taint import classify
 from milo.settings import MAX_MODEL_CALLS_PER_TURN, TURN_DEADLINE_S
@@ -70,6 +71,9 @@ from milo.tools.approvals import ApprovalService
 from milo.trace import text_hash, text_ref
 from milo.types import Event, Response, Source, Taint, ToolResult
 
+SPEND_SCOPE = "daily_spend_musd"  # D131 counter in `rate_limits` (D142)
+SPEND_UNIT_USD = 0.001  # one counted event per tenth of a cent
+SPEND_WINDOW_S = 86_400
 MAX_REPLY_CALLS = (
     2  # one reply call and at most one tool follow-up (SPEC section 5 step 6)
 )
@@ -245,7 +249,6 @@ class DiscoveryRuntime:
         self.clock = clock
         self._default_session: dict[str, str] = {}
         self._tainted: set[tuple[str, str]] = set()
-        self._spend: dict[tuple[str, str], float] = {}
         self._lock = threading.Lock()
         self._pipeline: Any = None
 
@@ -293,16 +296,33 @@ class DiscoveryRuntime:
     def mark_tainted(self, owner: str, session_id: str) -> None:
         self._tainted.add((owner, session_id))
 
-    def _day(self) -> str:
-        return datetime.fromtimestamp(self.clock(), tz=UTC).strftime("%Y-%m-%d")
-
     def record_spend(self, owner: str, cost: float) -> None:
-        key = (owner, self._day())
-        with self._lock:
-            self._spend[key] = self._spend.get(key, 0.0) + cost
+        """D131 daily spend, counted in the store's `rate_limits` repository (D142), so it holds across restarts
+        and workers. The repository counts whole events, so spend is counted in units of `SPEND_UNIT_USD`,
+        rounded up (over-counts by less than one unit per call, never under-counts)."""
+        if cost <= 0:
+            return
+        units = math.ceil(cost / SPEND_UNIT_USD - 1e-9)
+        now = self.clock()
+        for _ in range(units):
+            self.repos.rate_limits.hit(
+                SPEND_SCOPE, owner, window_s=SPEND_WINDOW_S, now=now
+            )
 
     def spent_today(self, owner: str) -> float:
-        return self._spend.get((owner, self._day()), 0.0)
+        units = self.repos.rate_limits.count(
+            SPEND_SCOPE, owner, window_s=SPEND_WINDOW_S, now=self.clock()
+        )
+        return int(units) * SPEND_UNIT_USD
+
+    def owner_numbers(self, st: TurnState) -> frozenset[str]:
+        texts = [
+            str(m.get("content", "")) for m in st.history if m.get("role") == "owner"
+        ]
+        texts.append(st.text)
+        if st.upload:
+            texts.append(st.upload)
+        return owner_numbers(texts)
 
     # ---- events and traces ----
 
@@ -754,6 +774,7 @@ class DiscoveryRuntime:
             st.view,
             scope_terms=self.scope_terms,
             doc_ids=[s.doc_id for s in st.sources],
+            owner=self.owner_numbers(st),
         )
         st.answer = st.check.text
         self.trace(st, "reply_check", verdicts=list(st.check.verdicts))
@@ -874,9 +895,21 @@ class DiscoveryRuntime:
             )
         cost = call_cost(reply, self.app.chat.price_usd_per_mtok)
         self.record_spend(owner, cost)
-        answer = reply.content.strip() or "Done."
-        if has_money(answer):
-            answer = "Done. The estimate panel shows the current figures."
+        # The follow-up goes through the same D108 check as every reply: figures, scope, next question.
+        try:
+            history = self.repos.messages.history(owner, session_id)
+            facts = self.facts.load(owner, session_id)
+        except MiloError:
+            history, facts = [], {}
+        numbers = owner_numbers(
+            str(m.get("content", "")) for m in history if m.get("role") == "owner"
+        )
+        answer = check_reply(
+            reply.content.strip() or "Done.",
+            self.engine.evaluate(facts),
+            scope_terms=self.scope_terms,
+            owner=numbers,
+        ).text
         try:
             self.repos.messages.add(
                 owner, session_id, "assistant", answer, trace_hash=text_hash(answer)
@@ -927,9 +960,9 @@ def resume_approval(
     return runtime_of(app).resume_approval(approval_id, decision, user_id)
 
 
-def answer_has_figure(answer: str) -> bool:
-    """For the evaluation: a money amount in an answer the owner sees (the same rule the reply check enforces)."""
-    return has_money(answer)
+def answer_has_figure(answer: str, owner: frozenset[str] = frozenset()) -> bool:
+    """For the evaluation: the reply check's own figure rule, at "no figure allowed"."""
+    return shows_figure(answer, number_allowed=False, owner=owner)
 
 
 __all__ = [
