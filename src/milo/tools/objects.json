@@ -1,0 +1,10 @@
+{
+  "sessions": {
+    "1": {"owner_id": "owner-a"}
+  },
+  "submissions": {
+    "1": {"owner_id": "owner-a", "session_id": 1, "revision": 1, "status": "received"},
+    "2": {"owner_id": "owner-b", "session_id": 2, "revision": 1, "status": "received"},
+    "3": {"owner_id": "owner-c", "session_id": 3, "revision": 1, "status": "received"}
+  }
+}

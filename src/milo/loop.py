@@ -1,9 +1,12 @@
-"""The tool loop (SPEC section 5, D2). S0 seam; M3 replaces the body and keeps `run_turn`.
+"""The tool loop (SPEC section 5, D2; M3 body, `run_turn` unchanged from the S0 seam).
 
 At most `max_calls` model calls per turn in total. Tools come from `tools.specs()` and run only through
-`tools.call(name, args, user_id=...)`. Identity keys are stripped from the arguments before schema validation;
-the policy decides per call; every attempt lands in `tool_results`. The loop never retries a model call itself
-(`llm/retry.py` does) and never raises: failures become a `provider_error` result.
+`tools.call(name, args, user_id=...)`. Order of every attempt (SPEC section 8): strip identity keys and
+look-alikes, validate the arguments against the tool's schema, ask the policy (risk times taint, with the
+backend's pricing fields), then run, or create an approval and stop. Every attempt lands in `tool_results` and in
+the trace (argument hash and length only, D141). Tool output is untrusted: it is reclassified after each call.
+The loop never retries a model call itself (`llm/retry.py` does) and never raises: failures become a
+`provider_error` result, and a policy or classifier fault fails closed as `denied`.
 """
 
 from __future__ import annotations
@@ -18,10 +21,10 @@ import jsonschema
 
 from milo.errors import ProviderFailure, format_error, user_message
 from milo.llm.retry import invoke_with_retry
-from milo.security.identity import strip_identity
-from milo.security.policy import decide
+from milo.security.policy import Decision, decide
 from milo.security.taint import classify
 from milo.settings import MAX_MODEL_CALLS_PER_TURN, TURN_DEADLINE_S
+from milo.tools.args import clean_args
 from milo.trace import Tracer, text_ref
 from milo.types import (
     ApprovalStore,
@@ -34,7 +37,7 @@ from milo.types import (
     ToolsBackend,
 )
 
-MAX_TOOL_OUTPUT_CHARS = 2000
+MAX_TOOL_OUTPUT_CHARS = 6000
 NEEDS_APPROVAL_ANSWER = (
     "That action needs your approval before I run it. Nothing has been changed. "
     "Please approve it or keep things as they are."
@@ -94,7 +97,9 @@ def run_tool(
     context: Callable[[], Any],
 ) -> tuple[ToolResult, str | None]:
     """One tool attempt. Returns the result and, for a destructive call, the id of the pending approval."""
-    args = strip_identity(raw_args)  # before schema validation (SPEC D21)
+    if not isinstance(raw_args, dict):  # a model can emit anything as arguments
+        raw_args = {}
+    args = clean_args(raw_args)  # before schema validation (SPEC D21)
     if spec is None:
         tracer.record(
             "policy",
@@ -125,7 +130,12 @@ def run_tool(
             False,
             "denied",
         ), None
-    decision = decide(spec, args, taint)
+    try:
+        decision = decide(
+            spec, args, taint, frozenset(getattr(tools, "pricing_fields", ()))
+        )
+    except Exception:  # fail closed: a policy fault never lets a call through
+        decision = Decision("denied", "policy error")
     tracer.record(
         "policy",
         thread_id=thread_id,
