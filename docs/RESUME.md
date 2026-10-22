@@ -19,17 +19,19 @@ Purpose: if the session stops (usage limit, crash, compaction loss), a fresh ses
 3. For each branch that exists: if `verify/<x>` has a `docs/verify/<x>.md` with PASS, merge it into main (`git merge --no-ff`), rerun `make check` and the seven kit targets on main, remove the worktrees, append the checkpoint block to `docs/owner/CHECKPOINTS_PENDING.md`. If a build branch has no verifier yet, open `verify/<x>` from it and launch a verifier with the HARNESS section 7 checklist. If an agent was mid-task, its branch holds whatever it committed; relaunch the task with the same brief (the briefs are in this session's transcript; the file ownership is in HARNESS Appendix A).
 4. Update `monitor/status.js` and this file.
 
-## State at last update (2026-10-22 15:15 local)
+## State at last update (2026-10-22 16:35 local)
+
+Pause: usage limit 15:30 to 16:31; the three verifiers (M5-store, M4, M6 shell) were resumed by SendMessage from their saved transcripts. If a verifier does not report, relaunch it fresh with the brief; for M5-store first query the test project and run `make db-reset` if 0001 is applied.
 
 Merged on main: S0 (f42d8f1), M5a (723dbca), M3 (dec57a1), protocols (ac31ea3), threat model and attack cases (52be734, ff14df3), settings accessors D153 (d0d5f10).
 
 | Branch | Where | Status | Next |
 |---|---|---|---|
 | agent/m5-store (22ff99c) + verify/m5-store (2a89058, merged with main) | `.worktrees/m5-store`, `.worktrees/verify-m5-store` | Verifier running: offline checklist plus Postgres run on the TEST project (migrate, RLS via SET ROLE, db-reset) | On PASS merge verify/m5-store; on FAIL fix cycle to the builder |
-| agent/m6-shell (626bc99) + verify/m6-shell | `.worktrees/m6-shell`, `.worktrees/verify-m6-shell` | Verifier and SR reviewer running (web attack cases against the dev app) | On PASS merge |
-| agent/m4 (e136a66) | `.worktrees/m4` | Builder on fix cycle 1: approval compare-and-set (A-12b), approve-time policy re-run | Then verifier + SR review (Fable), then merge |
+| agent/m6-shell (626bc99) + verify/m6-shell (27e8fde verdict draft) | `.worktrees/m6-shell`, `.worktrees/verify-m6-shell` | Verifier finishing: counts must come from its script output | On PASS merge |
+| agent/m4 (34b7b96) + verify/m4 (ff540d2, merged with main) | `.worktrees/m4`, `.worktrees/verify-m4` | Verifier + SR reviewer running | On PASS merge verify/m4 |
 | agent/data/m0b (a7ab661) + agent/audit/m0b (d22240b) | `.worktrees/m0b`, `.worktrees/audit-m0b` | Audit pass 1: ok 108, fix 12. Generator applying fixes | Then auditor pass 2 (changed rows + 20 spot checks); then merge data branch and audit file; then M1 and the live batch may start |
-| agent/data/m5g (530133f) + agent/audit/m5g | `.worktrees/m5g`, `.worktrees/audit-m5g` | Auditor running (labels, realism, leakage, lexicon, stage-1 simulation) | Fix cycle if needed, then merge; M5G build waits for M5b |
+| agent/data/m5g (530133f) + agent/audit/m5g (547cfc3) | `.worktrees/m5g`, `.worktrees/audit-m5g` | Audit pass 1: ok 394, fix 46, not yet fit (templated 18.6%, thin undecided margin). Generator on fix cycle 1 (fixes, de-templating, more undecided rows, lexicon) | Auditor pass 2; then merge; M5G build waits for M5b |
 
 Not started: M0 remaining scope (after M0b lands; same files), M1 (after M0b audit), M2 (after M1), M5b (after M1, M3, M5a, M5-store), M5c, M5G build, M6 wiring, M7, live batch (E01 rerun, E02, M3 live tools, M4 live arms, Jev probes: one protocol check, one budget check, run by the integrator), SR pen test, F1 to F4.
 

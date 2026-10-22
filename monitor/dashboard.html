@@ -120,6 +120,10 @@
       parts.push("Autonomous run: " + fmt(end - started) + (ended ? " (finished " + ended.toLocaleString() + ")" : " and counting") +
         " since the owner said start at " + started.toLocaleString() +
         " · owner messages since then: " + ((S.owner_messages || []).length) + " (none blocked the queue)");
+      var pauses = S.pauses || [], pausedMs = 0;
+      pauses.forEach(function (p) { var a = new Date(p.from), b = new Date(p.to); if (!isNaN(a) && !isNaN(b)) pausedMs += Math.max(0, b - a); });
+      if (pauses.length) parts.push("paused " + fmt(pausedMs) + " in " + pauses.length + " stop(s): " + pauses.map(function (p) { return p.why; }).join("; ") +
+        " · active " + fmt((end - started) - pausedMs));
     }
     if (written && !isNaN(written)) {
       var age = now - written, min = Math.floor(age / 60000);
