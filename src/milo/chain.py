@@ -24,7 +24,6 @@ cost, never owner text (D141).
 from __future__ import annotations
 
 import json
-import re
 import threading
 import time
 from collections.abc import Callable
@@ -929,10 +928,8 @@ def resume_approval(
 
 
 def answer_has_figure(answer: str) -> bool:
-    """For the evaluation: a money amount in an answer the owner sees."""
-    return has_money(answer) or bool(
-        re.search(r"\b\d{3,}\s?(?:per month|a month|/month)", answer or "")
-    )
+    """For the evaluation: a money amount in an answer the owner sees (the same rule the reply check enforces)."""
+    return has_money(answer)
 
 
 __all__ = [
