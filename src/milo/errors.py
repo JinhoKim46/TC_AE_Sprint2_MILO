@@ -51,6 +51,17 @@ class ProviderFailure(MiloError):
     code = PROVIDER_ERROR
 
 
+class ReasoningRequired(ProviderFailure):
+    """The endpoint answered HTTP 400 "reasoning is mandatory" (SPEC D159). Permanent: never retried.
+
+    The error string is `provider_error:reasoning_required:<model>`, so the first field is still `provider_error`.
+    """
+
+    def __init__(self, model: str) -> None:
+        super().__init__(f"reasoning_required:{model}")
+        self.model = model
+
+
 class PolicyDenied(MiloError):
     code = POLICY_DENIED
 

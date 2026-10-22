@@ -79,3 +79,35 @@ def test_rerank_ids_reorders_and_falls_back() -> None:
     assert ids == ["c", "a", "b"] and ok and raw == "[3,1,2]"
     ids, _, ok = rerank_ids("q", cands, lambda q, t: "sorry")
     assert ids == ["a", "b", "c"] and not ok
+
+
+def test_hybrid_lists_share_chunk_ids_and_fusion_is_rank_only() -> None:
+    """M2 hybrid investigation: the BM25 and dense lists cover the same ids, and RRF mixes ranks, not scores."""
+    from milo.rag.embed import FakeEmbedder
+    from milo.rag.vectors import VectorStore
+
+    texts = [
+        "urgent requests carry a surcharge",
+        "set-up takes two working days",
+        "the surcharge for exports is zero",
+        "completely unrelated tractor text",
+        "urgent urgent urgent surcharge surcharge",
+    ]
+    chunks = [_chunk(i, t) for i, t in enumerate(texts)]
+    emb = FakeEmbedder()
+    store = VectorStore(None)
+    store.add(chunks, emb.embed([c.text for c in chunks]))
+    q = "urgent surcharge"
+    dense = [h.chunk_id for h in store.rank(emb.embed([q])[0])]
+    lexical = [c for c, _ in BM25Index(chunks).rank(q)]
+    assert set(dense) == {c.chunk_id for c in chunks}  # dense covers every chunk
+    assert set(lexical) <= set(dense)  # BM25 ids are chunk ids of the same index
+    fused = rrf([dense, lexical], RRF_K)
+    assert {c for c, _ in fused} == set(dense)
+    for cid, score in fused:  # no score mixing: only 1/(60+rank) terms
+        expect = 1 / (RRF_K + dense.index(cid) + 1)
+        if cid in lexical:
+            expect += 1 / (RRF_K + lexical.index(cid) + 1)
+        assert score == pytest.approx(expect)
+    # identical lists leave the order unchanged
+    assert [c for c, _ in rrf([dense, dense])] == dense

@@ -9,7 +9,7 @@ from types import SimpleNamespace as NS
 import pytest
 from fakes import ChatReply, ProviderError, ScriptedChat, Usage
 
-from milo.errors import ProviderFailure, SpendRefused
+from milo.errors import ProviderFailure, ReasoningRequired, SpendRefused
 from milo.llm import cloud
 from milo.llm.client import cost_usd, invoke_json, parse_json_object
 from milo.llm.retry import classify_exception, invoke_with_retry, is_retryable
@@ -147,6 +147,59 @@ def test_request_shape_pins_model_and_disables_thinking():
     assert req["model"] == "vendor/model-1" and req["temperature"] == 0.0
     assert req["extra_body"]["reasoning"] == {"enabled": False}
     assert req["messages"] == [{"role": "user", "content": "q"}]
+
+
+def test_reasoning_request_body_per_model_d159():
+    body = {}
+    for model in ("anthropic/claude-sonnet-5.5", "anthropic/claude-haiku-5.5"):
+        client = FakeClient([resp()])
+        cloud.OpenRouterChat(model, "k", (1, 2), client=client).invoke([])
+        body[model] = client.requests[0]["extra_body"]["reasoning"]
+    assert body["anthropic/claude-sonnet-5.5"] == {"effort": "low"}
+    assert body["anthropic/claude-haiku-5.5"] == {"enabled": False}
+    assert cloud.reasoning_mode("anthropic/claude-sonnet-5.5") == "low_effort"
+    assert cloud.reasoning_mode("openai/gpt-4.1-mini") == "off"
+
+
+def test_reasoning_tokens_stay_in_cost_and_thinking_is_stripped():
+    usage = NS(
+        prompt_tokens=100,
+        completion_tokens=900,  # includes 800 reasoning tokens
+        completion_tokens_details=NS(reasoning_tokens=800),
+        cost=0.0123,
+    )
+    r = NS(
+        choices=[NS(message=NS(content="<think>x</think>ok", tool_calls=None))],
+        usage=usage,
+    )
+    chat = cloud.OpenRouterChat(
+        "anthropic/claude-sonnet-5.5", "k", (2, 10), client=FakeClient([r])
+    )
+    reply = chat.invoke([])
+    assert reply.content == "ok" and chat.last_cost_usd == pytest.approx(0.0123)
+    assert reply.usage.output_tokens == 900
+
+
+def test_reasoning_mandatory_400_is_a_typed_error_naming_the_model_and_not_retried():
+    msg = "Reasoning is mandatory for this endpoint and cannot be disabled"
+    err = HttpError(400)
+    err.args = (msg,)
+    client = FakeClient([err, resp()])
+    chat = cloud.OpenRouterChat("vendor/other-model", "k", (1, 2), client=client)
+    with pytest.raises(ReasoningRequired) as info:
+        invoke_with_retry(chat, [], None)
+    assert info.value.error == "provider_error:reasoning_required:vendor/other-model"
+    assert info.value.error.split(":")[0] == "provider_error"
+    assert isinstance(info.value, ProviderFailure) and len(client.requests) == 1
+    assert msg in str(info.value.__cause__)
+
+
+def test_other_400_is_not_mapped_to_reasoning_required():
+    client = FakeClient([HttpError(400)])
+    chat = cloud.OpenRouterChat("m", "k", (1, 2), client=client)
+    with pytest.raises(ProviderFailure) as info:
+        invoke_with_retry(chat, [], None)
+    assert not isinstance(info.value, ReasoningRequired)
 
 
 def test_tool_call_arguments_parsed_and_bad_json_is_empty():
@@ -398,3 +451,34 @@ def test_e02_test_conversations_sealed(monkeypatch):
     with pytest.raises(PermissionError):
         cc.load_conversations("test")
     assert set(cc.load_conversations("dev")) == {"A-1", "B-1", "E-1"}
+
+
+def test_e02_row_keeps_provider_message_and_provenance_records_reasoning():
+    cc = _compare()
+    msg = "Reasoning is mandatory for this endpoint and cannot be disabled"
+    err = HttpError(400)
+    err.args = (msg,)
+    chat = cloud.OpenRouterChat(
+        "anthropic/claude-sonnet-5.5", "k", (2, 10), client=FakeClient([err])
+    )
+    row = cc.run_row(
+        chat, "anthropic/claude-sonnet-5.5", [], json_expected=False, sleep=None
+    )
+    assert row["error"].startswith("provider_error:reasoning_required")
+    assert msg in row["provider_message"]
+    from evals import common
+
+    prov = common.provenance(
+        model="anthropic/claude-sonnet-5.5,openai/gpt-4.1-mini",
+        seed=0,
+        temperature=0.0,
+        command="c",
+        inputs={},
+    )
+    assert prov["reasoning"] == {
+        "anthropic/claude-sonnet-5.5": "low_effort",
+        "openai/gpt-4.1-mini": "off",
+    }
+    assert "reasoning" not in common.provenance(
+        model="none", seed=0, temperature=0.0, command="c", inputs={}
+    )

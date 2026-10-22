@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from milo.errors import ReasoningRequired
 from milo.llm.think import strip_think
 from milo.settings import CALL_TIMEOUT_S
 from milo.spend import SpendLedger
@@ -17,6 +18,33 @@ from milo.types import ChatReply, ToolCall, ToolSpec, Usage
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
 DEFAULT_EMBEDDING_MODEL = "google/gemini-embedding-2"
+
+# D159: models whose endpoint refuses `reasoning.enabled=false` (HTTP 400 "Reasoning is mandatory"). They get the
+# lowest effort instead. The live runners do not load `supported_parameters` from the catalogue, so a model joins
+# this set when a live call shows the 400 (the typed `ReasoningRequired` error names it).
+REASONING_REQUIRED = frozenset({"anthropic/claude-sonnet-5.5"})
+# OpenRouter's unified `reasoning.effort` ("low" is the lowest value every endpoint is documented to accept;
+# "minimal" is not accepted by all providers, and `max_tokens` is rejected by effort-only endpoints). Thinking text
+# is still stripped by `strip_think`; reasoning tokens are billed as output and are inside `usage.cost`.
+REASONING_LOW_EFFORT = {"effort": "low"}
+REASONING_OFF = {"enabled": False}
+
+
+def reasoning_mode(model: str) -> str:
+    """`"low_effort"` for a model that requires reasoning, else `"off"` (recorded in result provenance)."""
+    return "low_effort" if model in REASONING_REQUIRED else "off"
+
+
+def _is_reasoning_refusal(exc: BaseException) -> bool:
+    status = getattr(exc, "status_code", None)
+    if status is None:
+        status = getattr(getattr(exc, "response", None), "status_code", None)
+    text = str(exc).lower()
+    return (
+        status == 400
+        and "reasoning" in text
+        and ("mandatory" in text or "cannot be disabled" in text)
+    )
 
 
 def _make_client(api_key: str, timeout: float) -> Any:
@@ -127,15 +155,22 @@ class OpenRouterChat:
             "messages": to_openai_messages(messages),
             "extra_body": {"usage": {"include": True}},
         }
-        if (
-            self.disable_thinking
-        ):  # D23b; a model that cannot disable it is stripped in `strip_think`
-            kwargs["extra_body"]["reasoning"] = {"enabled": False}
+        if self.disable_thinking:  # D23b, amended by D159
+            kwargs["extra_body"]["reasoning"] = dict(
+                REASONING_LOW_EFFORT
+                if self.model in REASONING_REQUIRED
+                else REASONING_OFF
+            )
         if self.temperature is not None:
             kwargs["temperature"] = self.temperature
         if tools:
             kwargs["tools"] = [tool_json(t) for t in tools]
-        resp = self._client.chat.completions.create(**kwargs)
+        try:
+            resp = self._client.chat.completions.create(**kwargs)
+        except Exception as exc:
+            if _is_reasoning_refusal(exc):
+                raise ReasoningRequired(self.model) from exc
+            raise
         msg = resp.choices[0].message
         served = getattr(resp, "model", None)
         self.last_response_model = served if isinstance(served, str) else None
@@ -147,6 +182,7 @@ class OpenRouterChat:
         tokens_in = getattr(usage, "prompt_tokens", 0) or 0
         tokens_out = getattr(usage, "completion_tokens", 0) or 0
         cost = getattr(usage, "cost", None)
+        # `usage.cost` already includes reasoning tokens (billed as output); `completion_tokens` includes them too.
         if cost is not None:  # the provider's own figure wins (SPEC 2A)
             self.last_cost_usd = float(cost)
         elif (
