@@ -14,6 +14,7 @@ from milo.pricing.rate_card import get_rate_card
 from milo.protocol.loader import get_protocol
 from milo.report import (
     MissingRateCardKey,
+    ReportError,
     SnapshotError,
     attach_fields,
     build_report,
@@ -286,3 +287,26 @@ def test_bad_snapshots_are_refused():
         )
     with pytest.raises(SnapshotError):
         build_report({})
+
+
+def test_conflicting_pii_fact_is_not_quoted():
+    snap = with_fact(
+        snapshot_of("A-1"),
+        field_id="owner_email", value=["a@example.invalid", "b@example.invalid"],
+        status="conflicting", evidence_text="mail me at a@example.invalid",
+    )  # fmt: skip
+    dump = json.dumps(build_report(snap))
+    assert "example.invalid" not in dump.replace("lena@example.invalid", "")
+    assert "mail me at" not in dump
+
+
+def test_derived_sources_must_name_a_real_derivation():
+    for ok in (
+        "derived.monthly_total",
+        "derived.recommended_modules",
+        "derived.hours.phone-intake",
+    ):
+        assert resolve_source(ok, CARD, PROTOCOL, []) is None
+    for bad in ("derived.nope", "derived.hours", "derived.hours.nope", "derived."):
+        with pytest.raises(ReportError):
+            resolve_source(bad, CARD, PROTOCOL, [])

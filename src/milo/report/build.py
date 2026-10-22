@@ -71,6 +71,8 @@ MODULE_SIGNALS: dict[str, tuple[tuple[str, tuple[str, ...]], ...]] = {
     ),
 }
 
+DERIVED = ("monthly_total", "recommended_modules")
+
 ASSUMPTION_TEXT = {
     "needs": "A required answer is still missing: {f}.",
     "conflict": "The owner gave conflicting answers for {f}; this must be confirmed.",
@@ -161,7 +163,12 @@ def resolve_source(
             raise ReportError(f"source {source} names no fact")
         return rest
     if kind == "derived":
-        return None
+        head, _, tail = rest.partition(".")
+        if (head in DERIVED and not tail) or (
+            head == "hours" and tail in MODULE_SIGNALS
+        ):
+            return None
+        raise ReportError(f"source {source} names no derivation")
     if kind == "protocol":
         node: Any = protocol.model_dump()
         for part in rest.split("."):
@@ -375,7 +382,7 @@ def build_report(
         {
             "field": c,
             "question": engine.question_text(f"confirm_{c}"),
-            "evidence": _evidence(facts, c),
+            "evidence": None if protocol.field_by_id(c).pii else _evidence(facts, c),
             "source": [f"fact.{c}"],
         }
         for c in view.conflicts
