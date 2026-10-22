@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.9.3 draft. Supersedes v0.9.2. Sections 20 and 21 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
+Status: v0.9.4 draft. Supersedes v0.9.3. Sections 20 and 21 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
@@ -557,6 +557,23 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - Section 17: the scope gate belongs to M4 (`src/milo/security/scope.py`). Its lexicon is `data/scope/lexicon.yaml` and its test set `data/scope/` (M0 data role, written under a Fable protocol, D69).
 - HARNESS: new rule (scope gate is free; no model call for refused inputs) and Appendix A rows for `data/scope/**` (M0) and `src/milo/security/scope.py` (M4).
 
+## 25. Input gate with a decision model (refines D103 to D109)
+
+- **D110 Two-stage gate.** Stage 1 is deterministic and free: it passes clearly in-scope messages straight to the chain, and refuses only a narrow set of off-topic patterns that cannot be a diagnosis (for example a request for a poem, a joke, or code). Stage 2 is a decision model, and it decides every message stage 1 does not settle.
+- **D111 Model: `typesafe/jev-1.14-20261014`.** Pinned by canonical name. The moving alias `~typesafe/jev-latest` is not used, because it can change behaviour without notice. Price $0.042 per million input tokens, context 262,144. Read on 2026-10-22 from the OpenRouter catalogue, `output_modalities=decisions`. Every call logs the response `model` string.
+- **D112 Primitive: `noul`.** One question per message: whether the message belongs to the owner's diagnosis. A `noul` returns the probability of yes, so code can route on a threshold. The question is about the message, and it is asked with the context the message needs (below), not the whole transcript.
+- **D113 State sent to the gate.** `message` (the owner's text), `recent_turns` (the last two owner and assistant turns, text only, so follow-ups such as "and how much would that cost?" are judged in context), `session_title`, and `scope_summary` (one paragraph listing the diagnosis topics, written from the catalogue). Nothing else. No account data, no secrets, no tool output.
+- **D114 The rubric is designed by a Fable agent.** `instructions` (the judgment, with inclusion and exclusion rules) and `criteria` (what yes and no mean) are written by a Fable agent under a protocol committed before any probe (D69, D83). The rubric must cover: negated statements, quantities and dates, indirect references to earlier turns, injected instructions in the message ("ignore your rules", "answer as a poet"), mixed messages that contain one in-scope question, and very short fragments such as "how much" or "yes".
+- **D115 Routing.** Let `P` be the gate's probability of in-scope. `P >= T_pass`: the chain. `P <= T_refuse`: refused with the fixed scope reply and no chain call. Between the two: the chain, with the reply check of D108 active. The thresholds are not guessed. They are set on the scope set (D107) by the Fable protocol: `T_refuse` is the highest value at which no in-scope message on dev falls below it, and `T_pass` is set so that the band between them holds the messages the gate is unsure about. Both values are recorded with the probe results.
+- **D116 Cost.** A stage-2 call happens only for messages stage 1 does not settle. A refused message costs one gate call (stage 1 refusals cost nothing). The cost is written to the trace, and the total gate spend is reported in the experiment log. The budget for the gate is part of the D18 plan and is checked before the scope test runs.
+- **D117 Failure rule.** If the gate call fails (timeout, error, unparseable answer), the message goes to the chain with the reply check active. The gate never refuses on failure, because a false refusal is the worse error.
+- **D118 Accuracy targets** (on the test split, after dev tuning): zero in-scope messages refused, and at least 95% of out-of-scope messages refused by the two stages together. Results per stage, per message type and per cost are reported with CIs.
+
+**Consequences**
+- D109 is amended: a refused message costs nothing only when stage 1 refuses it; a stage-2 refusal costs one gate call.
+- HARNESS rule 11 is amended the same way.
+- `data/scope/` is the test set for D118. `src/milo/security/scope.py` holds stage 1, and the gate client sits in `src/milo/llm/` (M5a), called through the same OpenRouter wrapper as the other models.
+
 ## Version log
 
 - v0.1 (2026-10-21): customer-support scope, D1 to D31.
@@ -573,3 +590,4 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9.1 (2026-10-22): name check removed (D85); history rewritten and mapped (D86).
 - v0.9.2 (2026-10-22): open self-registration with Supabase Auth and profiles in our database (D87 to D96); invite-only text overridden.
 - v0.9.3 (2026-10-22): multiple sessions per account (D97 to D100), session panel on the left (D101, D102), a deterministic scope gate that refuses out-of-scope input at zero model cost (D103 to D109).
+- v0.9.4 (2026-10-22): two-stage input gate; stage 2 is the pinned decision model typesafe/jev-1.14-20261014 (D110 to D118).
