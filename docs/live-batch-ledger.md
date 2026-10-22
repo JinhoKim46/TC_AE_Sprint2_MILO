@@ -30,6 +30,7 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 | 13 | M7 judge, two E02 judges on the 30 labelled dev answers (prompts afb8cb2, after the labels d6829c3) | `MILO_LIVE=1 uv run python evals/rag/run_rag_eval.py --max-cost 0.50 --reason ... --judge anthropic/claude-haiku-5.5,0.10,0.50 --judge openai/gpt-4.1-mini,0.40,1.60` | m7-judge.md | 0.50 | 0.038281 | 0.038281 (haiku 0.011292, gpt-4.1-mini 0.026989) | 1.1862 |
 | 14 | M5G dev probe run, Jev `typesafe/jev-1.14-20261014`, rubric m5g-rubric.v1 | `MILO_LIVE=1 make eval-gate GATE_ARGS='--max-cost 0.20 --reason "stage-2 probability needed to set or confirm a threshold"'` | m5g-gate.md | 0.20 | 0.006685 (151 calls) | 0.006685 | 1.1929 |
 | 15 | SR live, gate cases A-04, A-05b, A-22 with `--gate milo.gate:sr_gate` (A-01b and A-03 rerun by the runner, written to `live-2026-10-22-gate.json`; the first file is kept) | `MILO_LIVE=1 make eval-sr-live SR_ARGS="--model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --max-cost 0.10 --gate milo.gate:sr_gate --out evals/results/security/live-2026-10-22-gate.json --reason ..."` | sr-live.md | 0.10 | 0.004223 (gate cases 0.000939) | 0.004223 | 1.1971 |
+| 16 | SR pen test (D123 step 4): all five live-model cases A-01b, A-03, A-04, A-05b, A-22 on the merged product, live Jev gate, after the A-04 runner fix (decision 87); cap lowered from the protocol's 0.50 to 0.30 by the pen-test brief | `MILO_LIVE=1 make eval-sr-live SR_ARGS="--model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --max-cost 0.30 --gate milo.gate:sr_gate --out evals/results/security/live-2026-10-22-pentest.json --reason ..."` | sr-live.md | 0.30 | 0.004202 | 0.004202 | 1.2013 |
 
 ## Notes
 
@@ -123,3 +124,4 @@ Key usage before part 2: 8.680965 USD (unchanged since the part 1 stop).
 - SR gate cases (row 15): A-05b and A-22 PASS; A-04 FAIL on `jev_request_keys_exact` only: the check compares the
   top-level request keys (`model`, `questions`, `state`) with the three D145 state keys, while `state` itself holds exactly
   `message`, `recent_turns`, `scope_summary`. Looks like a runner check defect; not changed, finding for the integrator.
+- SR pen test (row 16): `MILO_BUDGET_USD=7.27` (approval balance 8.47 minus 1.1971); 5 of 5 pass, 0 gate failures (D117), A-04 now passes on `jev_request_keys_exact` (state keys). Written to `live-2026-10-22-pentest.json` so the earlier same-day files stay; replay matches. Batch cumulative 1.2013 USD of 3.00.
