@@ -34,6 +34,7 @@ class PgApprovals:
         args: dict[str, Any],
         *,
         turn_id: str | None = None,
+        ttl_s: float | None = None,
     ) -> dict[str, Any]:
         who, sid = user_hex(owner_id), uid(session_id)
         tid = uid(turn_id) if turn_id is not None else None
@@ -50,7 +51,13 @@ class PgApprovals:
                 "insert into approvals (session_id, turn_id, tool_name, args_hash, expires_at) values "
                 "(%s::uuid, %s::uuid, %s, %s, now() + make_interval(secs => %s)) "
                 f"returning {APPROVAL_COLS}",
-                (sid, tid, tool_name, args_hash(args), self.ttl_s),
+                (
+                    sid,
+                    tid,
+                    tool_name,
+                    args_hash(args),
+                    self.ttl_s if ttl_s is None else ttl_s,
+                ),
             )
         if row is None:
             raise NotFound()

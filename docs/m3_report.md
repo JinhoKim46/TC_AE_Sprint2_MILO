@@ -38,14 +38,16 @@ Status: built on `agent/m3` from S0 (`f42d8f1`); verification and owner review p
 
 ## Open items
 
-- `data/tool_cases.jsonl` is still stale (M0 scope, SPEC 6 and 17): tc04 and tc13 carry `daily_request_volume`,
-  which the `estimate_cost` schema rejects (the dry result lists them in `expected_schema_invalid_cases`), and
-  tc07 asks owner-b to withdraw submission 1 (owner-a's). After M0 merges, rerun `--dry` to refresh the stored file.
+- `data/tool_cases.jsonl` was stale at M3 (tc04 and tc13 carried `daily_request_volume`, which the `estimate_cost`
+  schema rejects; tc07 asked owner-b to withdraw submission 1, owner-a's). M0 fixed all three (the manifest hash
+  is `ae1b8aa3...`) and the dry run lists no schema-invalid expectation. The live run refuses if the file differs
+  from `data/MANIFEST.json`.
 - The rate card has no `automated_minutes_per_request` or `eligible_share` yet (M0, section 5.2); not needed here.
 - Range factors applied to the one-time setup fee as well as the monthly total: SPEC says only "the base
   estimate". M5c may report monthly only. The `submissions.cost_*` columns hold one figure; M5c chooses.
-- The live run needs a protocol in `evals/protocols/` first (D83; ownership is asked in `docs/requests/m3.md`) and an E02 model choice (D148). Both
-  are open. `App.resume_approval` still calls `tools.call` directly: it is safe because `call` validates and
+- The live run is specified in `evals/protocols/m3-tools.md` and uses the product model `claude-sonnet-5.5`
+  (integrator decision 43), not the E02 development model: the run measures the product's tool choice. The
+  runner has `--max-cost`, per-row latency, a raw replay file and records temperature 0.0. `App.resume_approval` still calls `tools.call` directly: it is safe because `call` validates and
   binds identity itself, but it does not re-run the policy. M4 may want that.
 - Look-alike stripping lives in `tools/args.py`; M4 may fold it into `security/identity.py`.
 

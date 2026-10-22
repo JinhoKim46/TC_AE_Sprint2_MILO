@@ -1,0 +1,50 @@
+[
+ {
+  "time": "18:18",
+  "event": "M5b verified (pass 2); held behind M5-store"
+ },
+ {
+  "time": "17:42",
+  "event": "M7 offline build merged"
+ },
+ {
+  "time": "17:39",
+  "event": "Scope data merged after four audit passes"
+ },
+ {
+  "time": "17:31",
+  "event": "M5-store Postgres pass blocked by the permission check; owner asked"
+ },
+ {
+  "time": "17:21",
+  "event": "Session switched to Opus after the Fable limit"
+ },
+ {
+  "time": "16:51",
+  "event": "Gate design flaw found by the scope audit; D157 strong/weak rule"
+ },
+ {
+  "time": "16:44",
+  "event": "M4 merged after a FAIL (approval race) and the integrator's fix"
+ },
+ {
+  "time": "16:31",
+  "event": "Usage limit reset; three verifiers resumed"
+ },
+ {
+  "time": "14:00",
+  "event": "Usage limit hit"
+ },
+ {
+  "time": "13:29",
+  "event": "S0 scaffold committed"
+ },
+ {
+  "time": "13:10",
+  "event": "Threat model back; 21 gaps decided"
+ },
+ {
+  "time": "13:00",
+  "event": "Owner: start"
+ }
+]

@@ -1,0 +1,38 @@
+[
+ {
+  "start": "13:00",
+  "end": "14:00",
+  "kind": "active",
+  "label": "Threat model, protocols, S0, M5a, M3"
+ },
+ {
+  "start": "14:00",
+  "end": "16:31",
+  "kind": "paused",
+  "label": "Claude usage limit"
+ },
+ {
+  "start": "16:31",
+  "end": "17:06",
+  "kind": "active",
+  "label": "M6 shell, M4, M0b, gate rule D157"
+ },
+ {
+  "start": "17:06",
+  "end": "17:21",
+  "kind": "paused",
+  "label": "Fable model limit; switched to Opus"
+ },
+ {
+  "start": "17:21",
+  "end": "18:18",
+  "kind": "active",
+  "label": "M1, M0, M2, live prep, scope data, M7, M5b"
+ },
+ {
+  "start": "18:18",
+  "end": "19:18",
+  "kind": "waiting",
+  "label": "Waiting for the owner: balance and Postgres permission"
+ }
+]

@@ -1,31 +1,56 @@
-"""Embedding comparison on the dev split (SPEC D5, D24). Uses OpenRouter embeddings.
+"""Embedding comparison on the dev split (SPEC D5, D24). Uses OpenRouter embeddings through `milo.llm.cloud`.
 
-Run from the repo root with OPENROUTER_API_KEY set:
-    python evals/retrieval/compare_embeddings.py
+The arms (the five models in order, the reference, the chunk settings) are read from
+`evals/protocols/e01-rerun.md`; this file holds only the fallback price per model, used when a response carries no
+cost. Run from the repo root; it spends OpenRouter budget and refuses without MILO_LIVE=1 (SPEC D126):
+    MILO_LIVE=1 python evals/retrieval/compare_embeddings.py
 
 Metrics per question (binary relevance; a chunk is relevant when it contains the gold quote):
     recall@5, nDCG@5, MRR (full ranking), precision@5, average precision (full ranking).
 Comparisons: paired bootstrap of the per-question difference between each model and the chosen
 reference model (2000 resamples, seed 0). Chunk configurations: 800/100, 400/50, 1500/150 characters.
-Never reads the test split. Writes evals/results/retrieval/embedding_dev_v2.json.
+Never reads the test split. Writes evals/results/retrieval/embedding_dev_v3.json (the file e01-rerun.md names).
 """
-import hashlib, json, math, os, random, re, sys, time, urllib.request
+import hashlib, json, math, os, random, re, sys, time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 from evals.common import load_gold  # the only reader of the gold file (SPEC 10.1)
 OUT = Path(os.environ.get("EMBED_OUT", REPO / "evals" / "results" / "retrieval"))
-KEY = os.environ["OPENROUTER_API_KEY"]
-MODELS = [
-    ("google/gemini-embedding-2", 0.0000002),
-    ("openai/text-embedding-3-large", 0.00000013),
-    ("mistralai/mistral-embed-2312", 0.0000001),
-    ("qwen/qwen3-embedding-8b", 0.00000001),
-    ("openai/text-embedding-3-small", 0.00000002),
-]
-CHUNK_CONFIGS = [(800, 100), (400, 50), (1500, 150)]
-REFERENCE = "google/gemini-embedding-2"
+PROTOCOL = REPO / "evals" / "protocols" / "e01-rerun.md"
+RESULT_NAME = "embedding_dev_v3.json"
+# Fallback USD per token when a response has no cost field (the listed prices of E01/E01b).
+LISTED_PRICE = {
+    "google/gemini-embedding-2": 0.0000002,
+    "openai/text-embedding-3-large": 0.00000013,
+    "mistralai/mistral-embed-2312": 0.0000001,
+    "qwen/qwen3-embedding-8b": 0.00000001,
+    "openai/text-embedding-3-small": 0.00000002,
+}
+
+
+def protocol_arms(text):
+    """(models in table order, reference slug, chunk settings) from the protocol text."""
+    models = re.findall(r"^\| `([a-z0-9-]+/[A-Za-z0-9._-]+)` \| (reference|candidate)", text, re.M)
+    if not models:
+        raise SystemExit(f"no model table found in {PROTOCOL}")
+    refs = [m for m, role in models if role == "reference"]
+    if len(refs) != 1:
+        raise SystemExit("the protocol must name exactly one reference model")
+    configs = []
+    m = re.search(r"Chunk settings.*?(\d+) characters with (\d+) overlap.*?,\s*(\d+)/(\d+),\s*(\d+)/(\d+)", text, re.S)
+    if not m:
+        raise SystemExit("no chunk settings found in the protocol")
+    a1, a2, b1, b2, c1, c2 = (int(x) for x in m.groups())
+    configs = [(a1, a2), (b1, b2), (c1, c2)]
+    missing = [slug for slug, _ in models if slug not in LISTED_PRICE]
+    if missing:
+        raise SystemExit(f"no fallback price for {missing}; add it to LISTED_PRICE")
+    return [(slug, LISTED_PRICE[slug]) for slug, _ in models], refs[0], configs
+
+
+MODELS, REFERENCE, CHUNK_CONFIGS = protocol_arms(PROTOCOL.read_text(encoding="utf-8"))
 K = 5
 BOOT, SEED = 2000, 0
 
@@ -56,22 +81,6 @@ def chunks_from_kb(size, overlap):
                     break
                 start += size - overlap
     return [{"chunk_id": f"{d}#{i}", "doc_id": d, "text": t} for i, (d, t) in enumerate(out)]
-
-
-def embed(model, texts):
-    body = json.dumps({"model": model, "input": texts}).encode()
-    req = urllib.request.Request("https://openrouter.ai/api/v1/embeddings", data=body,
-                                 headers={"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"})
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(req, timeout=180) as r:
-                d = json.load(r)
-            vecs = [x["embedding"] for x in sorted(d["data"], key=lambda x: x["index"])]
-            return vecs, d.get("usage", {}).get("total_tokens", 0)
-        except Exception:
-            if attempt == 2:
-                raise
-            time.sleep(3 + attempt * 3)
 
 
 def cos(a, b):
@@ -112,6 +121,10 @@ def paired_diff(a, b):
 
 
 def main():
+    from milo.rag.embed import live_embedder  # the only client path: milo.llm.cloud (HARNESS rule 1)
+
+    if os.environ.get("MILO_LIVE") != "1":
+        raise SystemExit("refusing to run: embedding calls spend OpenRouter budget (SPEC D126) and need MILO_LIVE=1")
     dev = [g for g in load_gold("dev") if g["gold_evidence"]]
     results = {"configs": []}
     total_cost = 0.0
@@ -133,12 +146,13 @@ def main():
                "models": {}, "paired_vs_reference": {}}
         per_model = {}
         for model, price in MODELS:
-            cvecs, ctok = [], 0
-            for i in range(0, len(chunks), 64):
-                v, t = embed(model, [c["text"] for c in chunks[i:i + 64]])
-                cvecs += v; ctok += t
-            qvecs, qtok = embed(model, [q["question"] for q in queries])
-            ctok += qtok
+            try:
+                emb = live_embedder(model, price_usd_per_mtok=price * 1_000_000)  # refuses without MILO_LIVE=1
+            except PermissionError as exc:
+                raise SystemExit(f"refusing to run: {exc}")
+            cvecs = emb.embed([c["text"] for c in chunks])  # batches of 64, retried at the one retry site
+            qvecs = emb.embed([q["question"] for q in queries])
+            ctok = emb.total_tokens
             rows = []
             for q, qv in zip(queries, qvecs):
                 scored = sorted(((cos(qv, cv), c["chunk_id"]) for cv, c in zip(cvecs, chunks)), reverse=True)
@@ -146,7 +160,7 @@ def main():
                 m = per_question_metrics(ranked, set(q["relevant"]))
                 m.update({"qid": q["qid"], "type": q["type"]})
                 rows.append(m)
-            cost = ctok * price
+            cost = emb.total_cost_usd  # the response's own cost, else tokens times the fallback price
             total_cost += cost
             per_model[model] = rows
             summary = {}
@@ -169,10 +183,10 @@ def main():
         results["configs"].append(cfg)
     results.update({"split": "dev", "k": K, "bootstrap": BOOT, "seed": SEED, "reference": REFERENCE,
                     "query_prefix": "none", "total_cost_usd": round(total_cost, 6),
-                    "command": "OPENROUTER_API_KEY=... python evals/retrieval/compare_embeddings.py",
-                    "date": "2026-10-22"})
+                    "command": "MILO_LIVE=1 python evals/retrieval/compare_embeddings.py",
+                    "protocol": "evals/protocols/e01-rerun.md", "date": time.strftime("%Y-%m-%d")})
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "embedding_dev_v2.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+    (OUT / RESULT_NAME).write_text(json.dumps(results, indent=2), encoding="utf-8")
     print(f"TOTAL cost this run: ${total_cost:.5f}")
 
 

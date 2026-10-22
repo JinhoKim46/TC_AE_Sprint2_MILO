@@ -57,9 +57,10 @@ def seed(r: Repositories, a: str) -> Ids:
     tid = r.turns.start(a, sid)["id"]
     r.turns.add_event(a, tid, "token", {"t": "x"})
     r.traces.record(a, tid, "model_call", detail={"model": "m/x"})
-    apid = r.approvals.create(a, sid, "delete_item", {"item_id": "1"}, turn_id=tid)[
-        "id"
-    ]
+    # A day's expiry, so a slow run cannot lapse the approval between the seed and the checks.
+    apid = r.approvals.create(
+        a, sid, "delete_item", {"item_id": "1"}, turn_id=tid, ttl_s=86400.0
+    )["id"]
     r.field_requests.add(a, "daily_request_volume", session_id=sid)
     r.deletion_requests.add(a, "alpha reason")
     return {
@@ -365,6 +366,13 @@ def sql_probes(url: str, a: str, b: str) -> list[str]:
             row = conn.execute(sql, params).fetchone()
             return next(iter(row.values())) if row else None
 
+    def col(db: Database, sql: str, params: tuple[Any, ...] = ()) -> list[str]:
+        with op.probe("milo_operator", None) as conn:
+            return [
+                str(next(iter(r.values())))
+                for r in conn.execute(sql, params).fetchall()
+            ]
+
     def expect_state(
         label: str,
         db: Database,
@@ -447,24 +455,71 @@ def sql_probes(url: str, a: str, b: str) -> list[str]:
             "insert into sessions (user_id, title) values (%s, 'x')",
             (str(uuid.UUID(a)),),
         )
-        # A-09b: owner B sees none of A's rows and changes none.
-        for t in owner_tables:
-            if t == "audit_log":
-                continue
+        # A-09b: owner B sees none of A's rows (counted by A's ids, not B's own rows) and changes none.
+        a_uuid = str(uuid.UUID(a))
+        a_sessions = col(
+            op, "select id::text from sessions where user_id = %s", (a_uuid,)
+        )
+        a_turns = col(
+            op,
+            "select id::text from turns where session_id = any(%s::uuid[])",
+            (a_sessions,),
+        )
+        if not a_sessions or not a_turns:
+            fails.append("A-09b: owner A has no seeded sessions or turns to probe")
+        by_user = ("user_id = %s", (a_uuid,))
+        by_session = ("session_id = any(%s::uuid[])", (a_sessions,))
+        by_turn = ("turn_id = any(%s::uuid[])", (a_turns,))
+        where = {
+            "profiles": ("id = %s", (a_uuid,)),
+            "customers": by_user, "consents": by_user, "sessions": by_user,
+            "field_requests": by_user, "deletion_requests": by_user,
+            "messages": by_session, "turns": by_session, "facts": by_session,
+            "fact_history": by_session, "evidence": by_session,
+            "submissions": by_session, "approvals": by_session,
+            "turn_events": by_turn, "traces": by_turn,
+        }  # fmt: skip
+        for t, (pred, params) in where.items():
+            if (
+                scalar(
+                    op,
+                    "milo_operator",
+                    None,
+                    f"select count(*) from {t} where {pred}",
+                    params,
+                )
+                == 0
+            ):
+                fails.append(f"A-09b {t}: no row of owner A to probe")
             try:
-                n = scalar(app, "milo_app", b, f"select count(*) from {t}")
+                n = scalar(
+                    app, "milo_app", b, f"select count(*) from {t} where {pred}", params
+                )
             except Exception as exc:
                 if _state(exc) != "42501":
                     fails.append(f"A-09b {t}: select raised {_state(exc)}")
                 continue
             if n:
-                fails.append(f"A-09b {t}: owner B sees {n} rows")
-        with app.probe("milo_app", b) as conn:
-            if conn.execute("update sessions set title = 'hijack'").rowcount != 0:
-                fails.append("A-09b sessions: owner B updated A's rows")
-        expect_state(
-            "A-09b delete customers", app, "milo_app", b, "delete from customers"
-        )
+                fails.append(f"A-09b {t}: owner B sees {n} of A's rows")
+            # B's write against A's rows: refused (no grant) or touching zero rows. Updates re-set a column to itself.
+            col_name = (
+                "title" if t == "sessions" else "id" if t in ("profiles",) else None
+            )
+            writes = [f"delete from {t} where {pred}"]
+            if col_name:
+                writes.append(f"update {t} set {col_name} = {col_name} where {pred}")
+            for sql in writes:
+                try:
+                    with app.probe("milo_app", b) as conn:
+                        touched = conn.execute(sql, params).rowcount
+                except Exception as exc:
+                    if _state(exc) != "42501":
+                        fails.append(f"A-09b {t}: write raised {_state(exc)}")
+                    continue
+                if touched:
+                    fails.append(
+                        f"A-09b {t}: owner B's write touched {touched} of A's rows"
+                    )
         # A-10b: an owner cannot change roles, and no one but the grants allows it.
         expect_state(
             "A-10b owner update profiles.role",
