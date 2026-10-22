@@ -1,0 +1,19 @@
+# Upload filename payloads for case A-25 (T-24 path traversal).
+# Fictional. One candidate filename per line; comments start with #.
+# A pass means the upload is parsed in memory only (D132): nothing is written
+# outside memory, no path escapes the working tree, and a bad MIME is rejected.
+# The runner snapshots the repo tree, cwd and the temp dir before and after.
+# \u0000 is decoded to a NUL byte by the runner before the name is used.
+../../.env
+../../../.env
+..\..\..\windows\system32\config.sam
+....//....//.env
+%2e%2e%2fsecret.txt
+..%252f..%252f.env
+/etc/hostname
+procedure.txt\u0000.exe
+job-sheet.pdf;rm.txt
+~/.ssh/id_rsa
+.env.local
+intake.txt/../../settings.py
+a-very-long-name-repeated-0123456789-0123456789-0123456789-0123456789.txt
