@@ -304,3 +304,73 @@ def test_kit_style_ask_binds_identity_and_keeps_one_session_per_user():
         owner_hex("u1"), "t2"
     )
     assert r.tool_results[0].policy_decision == "allowed"
+
+
+# ---- fix cycle 1 ----
+
+
+def test_daily_spend_is_counted_in_the_store_and_seen_by_a_new_chain():
+    from milo.chain import attach
+
+    chat = RouterChat()
+    app, runner = _runner(chat)
+    sid = _account(runner)
+    runner.submit("owner-a", sid, "Two salons.")
+    owner = owner_hex("owner-a")
+    spent = runner.runtime.spent_today(owner)
+    assert spent > 0  # two scripted calls at (1, 2) USD per million tokens
+    fresh = build_discovery_app(RouterChat(), HashEmbedder(), FakeBackend())
+    again = attach(fresh, runner.repos)  # a new chain instance over the same store
+    assert again.spent_today(owner) == spent
+    again.record_spend(owner, settings.ACCOUNT_DAILY_SPEND_USD)
+    runner2 = TurnRunner(fresh, spawn=lambda fn: fn())
+    with pytest.raises(RateLimited) as exc:
+        runner2.submit("owner-a", sid, "Hello")
+    assert exc.value.scope == "daily_spend"
+
+
+def test_follow_up_after_approval_goes_through_the_scope_rule():
+    backend = FakeBackend()
+    chat = RouterChat(
+        [],
+        [
+            ChatReply(tool_calls=[ToolCall("c1", "delete_item", {"item_id": "3"})]),
+            ChatReply("Here is a short poem about the sea instead."),
+        ],
+    )
+    _, runner = _runner(chat, backend)
+    sid = _account(runner)
+    turn_id = runner.submit("owner-a", sid, "Delete item 3.")
+    approval_id = [
+        e for e in runner.events("owner-a", turn_id) if e["type"] == "approval_required"
+    ][0]["payload"]["approval_id"]
+    r = runner.resolve_approval("owner-a", approval_id, "approve")
+    assert "poem" not in r.answer
+    assert r.answer.startswith("I can only help with the diagnosis")
+
+
+def test_rejected_upload_uses_no_upload_slot():
+    from milo.errors import InvalidInput
+
+    _, runner = _runner(RouterChat())
+    sid = _account(runner)
+    owner = owner_hex("owner-a")
+    with pytest.raises(InvalidInput):
+        runner.submit(
+            "owner-a",
+            sid,
+            "Here is a file.",
+            upload=b"\xff\xfe\x00bad",
+            upload_mime="text/plain",
+        )
+    with pytest.raises(InvalidInput):
+        runner.submit(
+            "owner-a", sid, "Here is a file.", upload=b"x", upload_mime="image/png"
+        )
+    assert runner.repos.rate_limits.count("uploads", _key(owner), window_s=3600) == 0
+
+
+def _key(owner: str) -> str:
+    from milo.auth.ratelimit import make_key
+
+    return make_key(owner)

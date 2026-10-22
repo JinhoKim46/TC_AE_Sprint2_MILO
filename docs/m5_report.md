@@ -81,16 +81,20 @@ All nine rows match the prediction. Raw output: `make discovery-table` (exits 0)
    confirmations at taint high. The approve-time policy (`decide_on_approve`, m4 request) gets this taint. The loop
    classifies its own texts, so a sticky-high session passes a fixed marker phrase into it.
 6. **Money in replies is always removed** (D108, section 5 step 7): the model never sees the figures, so any amount
-   it writes is invented. This makes the premature-estimate rate 0 by code, whatever the model writes.
+   it writes is invented. Before the protocol allows an estimate, a bare number next to a price word ("about 900 a
+   month", "a setup fee of 900") is removed too, unless the owner wrote that number in the session or a volume unit
+   follows it (fix cycle 1). The guard and the evaluation's premature-estimate metric call the same function
+   (`replycheck.shows_figure`). The approval follow-up goes through the same check, scope rule included.
 7. **Estimate modules:** the model's `estimate_cost` module ids when it called the tool, else a keyword match over
    goals and channels (provisional; M5c owns the recommendation). Blocked turns emit a status-only
    `estimate_updated`; `collecting` emits none.
 8. **Approvals over the table:** the `approvals` table stores the argument hash, so the arguments and the saved
    messages are kept in process; a restart loses them and the hash check then runs nothing (fail closed).
    `denied_at_approve` is stored as `kept` (or `expired` once claimed), the statuses the table allows.
-9. **Per-account limits** (D131): messages per minute and uploads per hour through `RateLimiter`; the daily spend is
-   counted in process per account (a persistent counter is requested); one running turn per account comes from the
-   turns repository.
+9. **Per-account limits** (D131): messages per minute and uploads per hour through `RateLimiter` (a rejected upload
+   uses no slot); the daily spend is counted in the store's `rate_limits` repository (D142) in units of 0.001 USD,
+   rounded up, so a new chain instance sees earlier spend; one running turn per account comes from the turns
+   repository.
 10. **The evaluation's retrieval** uses the hashed embedder at `min_score` 0.10, so knowledge replies in the eval are
     a lower bound; M1 measures retrieval.
 

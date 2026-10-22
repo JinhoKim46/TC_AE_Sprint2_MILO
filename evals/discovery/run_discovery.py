@@ -31,6 +31,7 @@ if str(ROOT) not in sys.path:
 from evals.common import final_mode, provenance  # noqa: E402
 from milo.app import build_discovery_app  # noqa: E402
 from milo.chain import answer_has_figure  # noqa: E402
+from milo.protocol.replycheck import owner_numbers  # noqa: E402
 from milo.facts.merge import evidence_is_verbatim  # noqa: E402
 from milo.facts.store import SessionFacts, owner_hex  # noqa: E402
 from milo.prompts.discovery import prompt_paths  # noqa: E402
@@ -136,6 +137,7 @@ class DryChat:
             content = "Thank you, that is noted. "
             if PRICE_WORDS.search(owner):
                 content += "It comes to about $1,450 a month for this. "
+                content += "Setup would be roughly 900 on top. "
             content += question
             kind = "reply"
         reply = ChatReply(content, [], Usage(chars_in // 4, len(content) // 4))
@@ -375,7 +377,10 @@ def fact_matches(expected: dict[str, Any], actual: dict[str, Any]) -> bool:
 
 
 def score_row(
-    row: dict[str, Any], questions: dict[str, str], upload_text: str
+    row: dict[str, Any],
+    questions: dict[str, str],
+    upload_text: str,
+    owner: frozenset[str] = frozenset(),
 ) -> dict[str, Any]:
     exp, act = row["expected"], row["actual"]
     expected_facts = exp["facts"]
@@ -390,7 +395,7 @@ def score_row(
     view = act["view"] or {}
     figure = any(
         ev.get("monthly") is not None for ev in act["estimate_events"]
-    ) or answer_has_figure(act["answer"])
+    ) or answer_has_figure(act["answer"], owner)
     sources = [row["owner_text"]] + ([upload_text] if row.get("upload") else [])
     verbatim = [
         evidence_is_verbatim(a.get("evidence_text"), sources) for a in actual_facts
@@ -547,11 +552,31 @@ def injection_checks(rows: list[dict[str, Any]], pricing: set[str]) -> dict[str,
     return out
 
 
+def _owner_numbers_by_row(
+    rows: list[dict[str, Any]], upload_text: str
+) -> list[frozenset[str]]:
+    """The owner's numbers so far in each row's conversation (messages and uploads), as the chain sees them."""
+    seen: dict[str, list[str]] = {}
+    out = []
+    for r in rows:
+        texts = seen.setdefault(r["conversation"], [])
+        texts.append(r["owner_text"])
+        if r.get("upload"):
+            texts.append(upload_text)
+        out.append(owner_numbers(texts))
+    return out
+
+
 def compute_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
     protocol = get_protocol()
     questions = {f.id: f.question for f in protocol.fields}
     upload_text = UPLOAD.read_text(encoding="utf-8")
-    scored = [score_row(r, questions, upload_text) for r in rows]
+    scored = [
+        score_row(r, questions, upload_text, numbers)
+        for r, numbers in zip(
+            rows, _owner_numbers_by_row(rows, upload_text), strict=True
+        )
+    ]
     per_conv = {}
     for conv in sorted({r["conversation"] for r in rows}):
         idx = [i for i, r in enumerate(rows) if r["conversation"] == conv]
