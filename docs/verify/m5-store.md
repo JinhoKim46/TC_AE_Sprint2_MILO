@@ -250,3 +250,141 @@ Note: the verifier brief labelled the no-`milo.user_id` probe "A-09b" and the RL
    into the `--postgres` path so D140's "enumerates tables from the migrations" holds in the committed test.
 3. F3: set the per-IP login limit as the owner decides and record it as a `Dnn` line if it stays above 5.
 4. F4: rewrite `docs/operations.md` section 5 for D153/D154 and drop the D77 `schema` option from `db.py`.
+
+---
+
+# Pass 2 (fix cycle 2)
+
+Branch verified: `verify/m5-store` at `2640b47` (= `agent/m5-store` `23e058c` merged with `main`). Fresh verifier
+agent; the builder's notes were not read. No model call. Postgres: TEST project only, `MILO_ENV` unset, only the
+test variables of `.env` exported (a count of exported prod-prefixed variables printed `0` before every command),
+output passed through a filter that replaces the host, user, project ref, password and full string with
+`<redacted>`.
+
+## Verdict: FAIL
+
+Fix cycle 2 closes F1, F2 (A-09c), F3 (A-17) and F4 in code, and the offline done-line passes. Two findings
+remain: the new `inherit false` grant makes `make db-reset` fail on the test project (F7, high, new), and the
+table probes added for F6 are never called by the committed `--postgres` path (F6, medium, still open). The
+Postgres run could not be completed: after the reset failure, the verifier's cleanup attempts and then the
+documented `tests/test_store_identity.py --postgres` command were refused by the session's permission policy, so
+steps (b) to (d) have no evidence in this pass (see "Postgres run").
+
+## Offline evidence
+
+```text
+$ make check        ruff check: All checks passed; ruff format --check: 139 files already formatted;
+                    mypy src/milo: Success, 61 source files; uv lock --check; 451 passed; data checks OK: 0
+                    problem(s) (x2); size check clean. exit=0
+$ uv run pytest tests/          451 passed
+$ make kit-sources    1 passed, 8 deselected
+$ make kit-abstains   1 passed, 8 deselected
+$ make kit-tools      1 passed, 8 deselected
+$ make kit-security   2 passed, 7 deselected
+$ make kit-errors     2 passed, 7 deselected
+$ make kit-threads    1 passed, 8 deselected
+$ make kit-cost       1 passed, 8 deselected
+```
+
+Secrets in `git diff main...agent/m5-store`: grep for the OpenRouter key prefix, the AWS key prefix, the GitHub
+token prefix, the private-key header, a database URL carrying a password, and an absolute home path: 0 hits. PASS.
+
+| Pass 1 finding | Pass 2 check | Result |
+|---|---|---|
+| F1 grant skipped | `0001_init.sql:33-34` `grant milo_<r> to current_user with set true, inherit false;` unconditional; `test_store.py` asserts that form | fixed for SET ROLE; introduces F7 |
+| F2 no FORCE | `0001_init.sql:350-370` force on the 17 owner tables, `schema_migrations` excluded; `owns_session`/`owns_turn` now `security invoker`; `profiles_trigger_insert` (`:353`) for the trigger; `test_store.py` asserts forced = enabled minus `schema_migrations` | fixed in code; Postgres behaviour under FORCE not exercised this pass |
+| F3 per-IP 20 | `auth/ratelimit.py:28` `LOGIN_FAIL_IP = Rule("login_fail_ip", 5, 900)`; `test_auth.py:661-673` five failures with five different emails from one address, the sixth is `rate_limited` with scope `login_fail_ip`, another address still gets `invalid_credentials` | fixed |
+| F4 stale docs, D77 code | `docs/operations.md` section 5 no longer names `--owner-a`, `--owner-b`, `--schema` or D77; `grep -rn "D77\|schema=" src/milo/store docs/operations.md` 0 hits; `SCHEMA_RE` and `schema=` removed from `db.py` | fixed (but section 5 now overstates the script, F6) |
+| F5 `openrouter.ai` in an M0b eval | not in this diff | unchanged, for the integrator |
+| F6 no table probes in `--postgres` | `tests/test_store_identity.py:341` adds `sql_probes(url, a, b)` (A-09c flags and policies per table from `db/migrations`, A-09a, A-09b, A-10b, A-27, row counts unchanged); `grep -rn sql_probes src tests scripts Makefile docs` finds only its definition. `main()` (`:534-585`) runs the 52 repository checks and returns | open (F6) |
+
+Note: `test_auth.py:646-658` (`test_a_success_clears_the_failure_count`) now does its second four failures from a
+different address, because a successful login clears the account counter but not the address counter; with 5 per
+address, eight wrong passwords by one user behind one address within 15 minutes lock that address. Informational:
+the owner may want the success path to clear the address counter too, or accept this (shared NAT).
+
+## Postgres run (test project only)
+
+Pre-check (administrative connection, read only). The test project was not empty: 18 MILO tables in `public`, the
+5 MILO functions, 37 policies, roles `milo_app` and `milo_operator`, trigger `on_auth_user_confirmed`, 0 test
+accounts. The leftovers are the fix-cycle-2 shape: `relforcerowsecurity` true on 17 of 18 tables,
+`owns_session.prosecdef = false`, policy `profiles_trigger_insert` present. Server PostgreSQL 17.11.
+
+### Reset before the run: FAIL (F7)
+
+```text
+$ uv run python -m milo.store.reset
+psycopg.errors.InsufficientPrivilege: permission denied to drop objects
+DETAIL:  Only roles with privileges of role "milo_app" may drop objects owned by it.
+CONTEXT:  SQL statement "drop owned by milo_app"
+exit=1          (one transaction, rolled back: nothing dropped)
+```
+
+Cause (queried from `pg_auth_members` for the administrative role):
+
+```text
+role           grantor          admin  inherit  set
+milo_app       bootstrap        true   false    false     (made by CREATE ROLE, PostgreSQL 16+)
+milo_app       administrative   false  false    true      (0001_init.sql:33)
+milo_operator  bootstrap        true   false    false
+milo_operator  administrative   false  false    true      (0001_init.sql:34)
+pg_has_role(current_user, 'milo_app', 'USAGE') = false;  pg_has_role(..., 'SET') = true
+```
+
+`DROP OWNED BY` needs the privileges of the role, which PostgreSQL grants only through an INHERIT membership.
+Neither row inherits, so `reset.py:53-56` (`drop owned by <role>; drop role <role>`) fails on every database
+migrated with the committed `0001_init.sql`. These are exactly the two rows a clean fix-cycle-2 migrate creates;
+pass 1's run did not hit it because the verifier's workaround grant then used the default (inheriting) option.
+
+### (a) `uv run python -m milo.store.migrate`
+
+```text
+applied: nothing to do
+exit=0
+```
+
+`migrate.py:54` compares the sha256 of each file with `schema_migrations.checksum` and refuses a mismatch, so the
+installed `0001_init` is byte-identical to the branch file. A clean first apply was not possible because reset
+fails (above).
+
+### (b), (c), (d): not run
+
+The verifier's attempt to clean the project (an inheriting grant to the administrative role, as in pass 1, and
+then a reset variant doing `set role <r>; drop owned by <r>`) was refused by the session's permission policy, and
+so was the next command, `uv run python tests/test_store_identity.py --postgres`. The verifier stopped there. No
+evidence for: the 52 repository checks, the FORCE RLS probes, the operator delete cascading under FORCE, the
+confirmation trigger inserting a profile under FORCE, owner reads through the `security invoker` helpers, or the
+role flags in this pass. **The test project is left holding the fix-cycle-2 MILO objects** (no test accounts were
+created); clearing it needs either the F7 fix or an inheriting grant run by the owner, then `make db-reset`.
+
+## Findings (pass 2)
+
+| # | Where | What | Spec | Severity |
+|---|---|---|---|---|
+| F7 | `db/migrations/0001_init.sql:33-34`, `src/milo/store/reset.py:53-56` | `with set true, inherit false` gives SET ROLE but not the role's privileges, so `drop owned by milo_app` in `make db-reset` fails with 42501 on every database migrated by the committed file; the test project cannot be returned to empty (D154) and HARNESS 7.8's `make migrate`, test, `make db-reset` cycle cannot complete. Fix: grant `with set true, inherit true` (the roles hold no privilege the admin lacks), or have `reset.py` run `set role <r>; drop owned by <r>; reset role; drop role <r>`; then rerun 7.8 from a clean project. | D153, D154, HARNESS 7.8 | high; fails the milestone |
+| F6 | `tests/test_store_identity.py:341,534-585`; `docs/operations.md:60-76`; module docstring `:9-14` | `sql_probes` is defined but never called; the `--postgres` path still runs only the repository suite, while the docstring and `operations.md` section 5 say it probes every table (RLS and FORCE flags, a policy, A-09a, A-09b, A-10b, A-27). D140's "a new table without a policy fails it" does not hold in the committed run. Fix: call `sql_probes(url, a, b)` in `main()` after the repository checks, print each failure, and fold them into the exit code. | D140, HARNESS 7.8 | medium |
+| F5 | `evals/retrieval/compare_embeddings.py:61` | unchanged from pass 1, pre-existing, M0b | HARNESS 3.1 | low (out of scope) |
+| Info | `tests/test_auth.py:646-658`, `auth/ratelimit.py:28` | a successful login does not clear the per-address counter, so one user's eight failures around a success lock the address | D92 | informational |
+
+F1, F2, F3, F4 are closed in code. F2's runtime effects (trigger insert, operator cascade, invoker helpers under
+FORCE) are unverified this pass.
+
+## SR review (pass 2)
+
+| Case | Threat | Runner | Evidence | Result |
+|---|---|---|---|---|
+| A-09a | T-08 | postgres-test | not run this pass (F7, permission stop); pass 1 met under no FORCE; probe written in `sql_probes` but not wired (F6) | not evidenced |
+| A-09b | T-08 | postgres-test | not run this pass; pass 1 52/52 repository checks and per-table probes met before FORCE and the invoker helpers | not evidenced |
+| A-09c | T-08 | postgres-test | installed schema (checksum-identical): `relforcerowsecurity` true on 17/18, `schema_migrations` false; RLS enabled on all 18 (pass 1); offline assertion `forced == enabled - {schema_migrations}`; role flags not re-queried this pass | met in schema; role flags not re-evidenced |
+| A-10b | T-09 | postgres-test | not run this pass; migration grants unchanged from pass 1 (milo_app UPDATE on `profiles.last_seen_at` only) | not evidenced |
+| A-17 | T-16 | offline | `LOGIN_FAIL_IP` 5 per 900 s; `test_auth.py:661-673` email rotation from one address is `rate_limited` at the 6th attempt, scope `login_fail_ip`; per-account 5/15 min and shared counters as in pass 1 | met |
+| A-27 | T-26 | postgres-test | not run this pass; grants unchanged from pass 1 | not evidenced |
+
+## For fix cycle 3
+
+1. F7: make the membership inheriting (or change `reset.py` to drop owned objects after `SET ROLE`), update the
+   form assertion in `tests/test_store.py`, and have the owner clear the test project once.
+2. F6: call `sql_probes` from `main()` so the committed `--postgres` run fails on any probe failure.
+3. Rerun HARNESS 7.8 from a clean project: `make migrate`, `tests/test_store_identity.py --postgres`, the FORCE
+   checks (operator `delete_customer` cascade, confirmation trigger profile insert, owner reads through
+   `owns_session`/`owns_turn`), `make db-reset`, and an empty-project query.
