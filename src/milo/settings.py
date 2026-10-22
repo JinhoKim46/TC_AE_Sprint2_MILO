@@ -131,6 +131,37 @@ def auth_config(environ: Mapping[str, str] | None = None) -> AuthConfig:
     )
 
 
+# Chat model for the web app (`create_app`). The slug and its prices come from the environment (owner-set).
+CHAT_MODEL_VAR = "MILO_CHAT_MODEL"
+CHAT_PRICE_IN_VAR = "MILO_CHAT_PRICE_IN"
+CHAT_PRICE_OUT_VAR = "MILO_CHAT_PRICE_OUT"
+
+# Consent text (D81, D121): v0 is the build's placeholder; production refuses to start while it is in effect.
+CONSENT_TEXT_VERSION = "v0"
+PLACEHOLDER_CONSENT_VERSIONS = frozenset({"v0"})
+
+
+@dataclass(frozen=True)
+class ChatModelConfig:
+    model: str
+    price_usd_per_mtok: tuple[float, float]
+
+
+def chat_model_config(environ: Mapping[str, str] | None = None) -> ChatModelConfig:
+    """The web app's chat model and its prices per million tokens. Raises when the owner has not set them."""
+    env = _env(environ)
+    model = env.get(CHAT_MODEL_VAR, "").strip()
+    try:
+        price = (float(env[CHAT_PRICE_IN_VAR]), float(env[CHAT_PRICE_OUT_VAR]))
+    except (KeyError, ValueError):
+        model = ""
+    if not model:
+        raise RuntimeError(
+            f"{CHAT_MODEL_VAR}, {CHAT_PRICE_IN_VAR} and {CHAT_PRICE_OUT_VAR} are required (see .env.example)"
+        )
+    return ChatModelConfig(model, price)
+
+
 def production_problems(
     environ: Mapping[str, str] | None = None,
     example_values: frozenset[str] = frozenset(),

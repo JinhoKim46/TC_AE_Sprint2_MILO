@@ -333,6 +333,152 @@ def build_discovery_app(
     return app
 
 
-def create_app(settings: Any = None, app: Any = None, db: Any = None) -> Any:
-    """The Flask app with persistent stores (SPEC D2). A stub until M5-store and M6 land."""
-    raise NotImplementedError("create_app lands in milestones M5-store and M6")
+def _example_secret_values() -> frozenset[str]:
+    """`MILO_SECRET_KEY` values written in `.env.example` (D137: production refuses any of them)."""
+    from pathlib import Path
+
+    path = Path(__file__).resolve().parents[2] / ".env.example"
+    try:
+        lines = path.read_text().splitlines()
+    except OSError:
+        return frozenset()
+    found = set()
+    for line in lines:
+        key, sep, value = line.partition("=")
+        if sep and key.strip() == "MILO_SECRET_KEY" and value.strip():
+            found.add(value.strip().strip("'\""))
+    return frozenset(found)
+
+
+def create_app(
+    settings: Any = None,
+    app: Any = None,
+    db: Any = None,
+    *,
+    repos: Any = None,
+    accounts: Any = None,
+    environ: Any = None,
+    debug: bool = False,
+) -> Any:
+    """The Flask app over persistent stores (SPEC D2, 16, D71): the web layer, the real discovery `App`, the
+    turn runner (background threads), Supabase Auth and the Postgres repositories.
+
+    Production refuses to start while `settings.production_problems` finds anything, or with the debugger on
+    (D121, D137). Every database, auth and model import happens inside this function (SPEC 11.12). Tests inject
+    `repos`, `accounts` and `app` (in-memory store, scripted model) and never open a connection.
+    """
+    import os
+
+    from milo import settings as cfg_mod
+    from milo.web.data import WebData
+    from milo.web.routes import create_flask_app
+
+    env = os.environ if environ is None else environ
+    cfg = settings or cfg_mod.Settings.from_env(env)
+    if cfg.env == "prod":
+        problems = cfg_mod.production_problems(
+            env, example_values=_example_secret_values()
+        )
+        if debug:
+            problems.append("the Werkzeug debugger is enabled")
+        if problems:
+            raise RuntimeError("production refuses to start: " + "; ".join(problems))
+    if repos is None:
+        from milo.store import pg_repositories
+        from milo.store.db import Database
+
+        database = db or Database(cfg_mod.app_database_url(env))
+        database.open()
+        op_url = cfg_mod.operator_database_url(env)
+        operator = (
+            Database(op_url)
+            if op_url
+            else Database(cfg_mod.admin_database_url(env), set_role="milo_operator")
+        )
+        operator.open()
+        repos = pg_repositories(database, operator)
+    if accounts is None:
+        from milo.auth.accounts import SupabaseAuth
+        from milo.auth.jwt import JwtVerifier
+        from milo.auth.login import LoginService
+        from milo.auth.ratelimit import RateLimiter
+        from milo.web.accounts import SupabaseAccounts
+
+        auth = cfg_mod.auth_config(env)
+        accounts = SupabaseAccounts(
+            LoginService(
+                SupabaseAuth(auth.url, auth.publishable_key),
+                JwtVerifier(issuer=auth.issuer, jwks_url=auth.jwks_url),
+                RateLimiter(repos.rate_limits),
+                repos,
+            )
+        )
+    if cfg.env == "prod":
+        placeholders = []
+        if cfg_mod.CONSENT_TEXT_VERSION in cfg_mod.PLACEHOLDER_CONSENT_VERSIONS:
+            placeholders.append(
+                f"consent text is the placeholder {cfg_mod.CONSENT_TEXT_VERSION}"
+            )
+        if not repos.operator.has_operator():
+            placeholders.append("no operator profile exists")
+        if placeholders:  # D121, section 18 items 2 and 3 (verify m6 F5)
+            raise RuntimeError(
+                "production refuses to start: " + "; ".join(placeholders)
+            )
+    if app is None:
+        app = _discovery_app_for_web(cfg, repos, env)
+    elif getattr(app, "discovery_runtime", None) is None:
+        chain.attach(app, repos)
+    return create_flask_app(WebData(app, accounts), cfg, debug=debug)
+
+
+def _discovery_app_for_web(cfg: Any, repos: Any, env: Any) -> App:
+    """The production discovery App: the chat model from `settings.chat_model_config`, the default embedding
+    model over the persisted index under `data/index/` (built once, and logged, only when it is missing), the
+    M5G gate from `build_gate` (live two-stage with a key, stage 1 only without), and `MiloBackend` sharing the
+    runtime's `SessionFacts`."""
+    import logging
+    from pathlib import Path
+
+    from milo import settings as cfg_mod
+    from milo.facts.store import SessionFacts
+    from milo.gate import build_gate
+    from milo.llm.client import build_chat
+    from milo.protocol.loader import get_protocol
+    from milo.rag.chunk import DEFAULT_OVERLAP, DEFAULT_SIZE
+    from milo.rag.embed import OpenRouterEmbedder
+    from milo.rag.ingest import INDEX_ROOT, build_index
+    from milo.rag.vectors import VectorStore
+    from milo.spend import SpendLedger
+    from milo.tools.backend import MiloBackend
+
+    chat = cfg_mod.chat_model_config(env)
+    if not cfg.openrouter_api_key:
+        raise RuntimeError("OPENROUTER_API_KEY is required")
+    embedder = OpenRouterEmbedder(cfg.openrouter_api_key)
+    model = str(embedder.model)
+    index_dir = (
+        INDEX_ROOT / f"{model.replace('/', '_')}-{DEFAULT_SIZE}-{DEFAULT_OVERLAP}"
+    )
+    store = VectorStore(index_dir)
+    manifest = store.read_manifest() or {}
+    if store.count() == 0 or manifest.get("model") != model:
+        logging.getLogger("milo.app").warning(
+            "knowledge-base index missing at %s; embedding data/kb once", index_dir
+        )
+        kb = Path(__file__).resolve().parents[2] / "data" / "kb"
+        store, _ = build_index(kb, index_dir, embedder, model=model)
+    ledger = SpendLedger(budget_usd=float(cfg.budget_usd))
+    facts = SessionFacts(repos, get_protocol())
+    backend = MiloBackend(retriever=None, store=facts)  # type: ignore[arg-type]
+    app = build_discovery_app(
+        build_chat(chat.model, chat.price_usd_per_mtok, settings=cfg, ledger=ledger),
+        embedder,
+        backend,
+        repos=repos,
+        session_facts=facts,
+        gate=build_gate(cfg, ledger=ledger),
+    )
+    app.retriever = Retriever(embedder, store=store)
+    backend.retriever = app.retriever
+    return app

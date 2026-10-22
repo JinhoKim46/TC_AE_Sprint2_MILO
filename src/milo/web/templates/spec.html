@@ -1,7 +1,10 @@
 {% extends "base.html" %}{% from "_macros.html" import status, csrf with context %}
 {% block content %}
 <h1>Specification review</h1>
+{% if session %}<p class="muted plain-text">{{ session.title }} · <a href="{{ url_for('web.session_open', session_id=session.id) }}">Open the conversation</a></p>{% endif %}
+{% if requested %}<p class="msg" role="status">Your change request was sent. An operator will look at it.</p>{% endif %}
 {% if spec and spec.fields %}
+<p class="small muted">{{ spec.progress }} of {{ spec.total }} required fields covered · state {{ spec.state|replace('_', ' ') }}</p>
 <table class="table">
   <thead><tr><th scope="col">Field</th><th scope="col">Value</th><th scope="col">Status</th><th scope="col">Evidence</th><th scope="col">Request a change</th></tr></thead>
   <tbody>
@@ -11,7 +14,7 @@
     <td class="plain-text">{{ f.value }}</td>
     <td>{{ status(f.status) }}</td>
     <td class="plain-text">{{ f.quote }}</td>
-    <td><form method="post" action="{{ url_for('web.spec_request', field_id=f.id) }}" class="row">{{ csrf() }}<label class="sr" for="req-{{ f.id }}">Change request for {{ f.label }}</label><input id="req-{{ f.id }}" name="text" type="text" maxlength="500"><button class="btn btn-quiet btn-small" type="submit">Send</button></form></td>
+    <td><form method="post" action="{{ url_for('web.spec_request', field_id=f.id) }}" class="row">{{ csrf() }}<input type="hidden" name="session_id" value="{{ session.id }}"><label class="sr" for="req-{{ f.id }}">Change request for {{ f.label }}</label><input id="req-{{ f.id }}" name="text" type="text" maxlength="500"><button class="btn btn-quiet btn-small" type="submit">Send</button></form></td>
   </tr>
   {% endfor %}
   </tbody>

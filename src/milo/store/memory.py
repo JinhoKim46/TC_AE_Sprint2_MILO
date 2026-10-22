@@ -1075,6 +1075,43 @@ class MemoryAudit(_Base):
 
 
 class MemoryOperator(_Base):
+    def _ops_row(self, row: dict[str, Any]) -> dict[str, Any]:
+        owner = row["owner_id"]
+        session = self.find("sessions", owner, uuid=row["session_id"]) or {}
+        profile = self.find("profiles", owner) or {}
+        return {
+            "id": row["id"],
+            "session_id": row["session_id"],
+            "revision": row["revision"],
+            "submitted_at": row["submitted_at"],
+            "status": row["status"],
+            "estimate_status": row["estimate_status"],
+            "report_json": copy.deepcopy(row["report_json"]),
+            "title": session.get("title"),
+            "owner_id": owner,
+            "owner_email": profile.get("email"),
+        }
+
+    def submissions(self, limit: int = 200) -> list[dict[str, Any]]:
+        """Every owner's submissions, newest first (the operator read of D130)."""
+        rows = sorted(
+            self.store._tables.get("submissions", {}).values(), key=lambda r: -r["id"]
+        )
+        return [self._ops_row(r) for r in rows[: max(1, min(limit, 1000))]]
+
+    def has_operator(self) -> bool:
+        """Whether any profile holds the operator role (D94, D121)."""
+        return any(
+            r.get("role") == "operator"
+            for r in self.store._tables.get("profiles", {}).values()
+        )
+
+    def submission(self, submission_id: int) -> dict[str, Any]:
+        row = self.store._tables.get("submissions", {}).get(int(submission_id))
+        if row is None:
+            raise NotFound()
+        return self._ops_row(row)
+
     def delete_customer(self, actor_user_id: str, customer_id: str) -> None:
         actor = user_hex(actor_user_id)
         target = user_hex(customer_id)

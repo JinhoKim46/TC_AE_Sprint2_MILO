@@ -1,0 +1,7 @@
+{# The indicative estimate card (D39, D62): figures computed in code, labelled separately from the model cost. #}
+<div class="estimate card" id="estimate-card"{% if not estimate %} hidden{% endif %}>
+  <h3>Estimate <span class="chip chip-estimated"><span class="dot" aria-hidden="true"></span><span id="estimate-status">{{ estimate.status if estimate else '' }}</span></span></h3>
+  <p class="small" id="estimate-monthly">{% if estimate and estimate.monthly %}Monthly {{ '%.0f'|format(estimate.monthly.low) }} to {{ '%.0f'|format(estimate.monthly.high) }} {{ estimate.currency or 'USD' }} (base {{ '%.0f'|format(estimate.monthly.base) }}){% elif estimate %}No figure yet: {{ estimate.status }}.{% endif %}</p>
+  <p class="small" id="estimate-setup">{% if estimate and estimate.setup %}Setup {{ '%.0f'|format(estimate.setup.base) }} {{ estimate.currency or 'USD' }} one time{% endif %}</p>
+  <p class="small muted">Indicative estimate. Not a quote.</p>
+</div>

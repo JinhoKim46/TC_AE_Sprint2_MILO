@@ -14,4 +14,22 @@
 {%- endif -%}
 </svg></span>{% endmacro %}
 
-{% macro status(value) %}<span class="chip chip-{{ value }}"><span class="dot" aria-hidden="true"></span>{{ value }}</span>{% endmacro %}
+{% macro status(value) %}<span class="chip chip-{{ value }}" data-status><span class="dot" aria-hidden="true"></span><span class="chip-text">{{ value }}</span></span>{% endmacro %}
+
+{# Renders M5c's canonical report JSON (D40) as escaped text; owner text arrives as `quoted` (D139). #}
+{% macro render_json(v) -%}
+{%- if v is mapping -%}
+{%- if 'value' in v and 'source' in v and v.value is not mapping -%}
+<span class="figure">{{ render_json(v.value) }}</span> <span class="src small muted">source: {{ v.source|join(', ') if v.source is not string else v.source }}</span>
+{%- for k, x in v.items() if k not in ('value', 'source') %}<span class="small muted"> · {{ label(k) }}: {{ render_json(x) }}</span>{% endfor -%}
+{%- else -%}
+<dl class="json">{% for k, x in v.items() %}{% if k == 'quoted' %}<dt class="sr">Quoted</dt><dd><blockquote class="plain-text quote">{{ x }}</blockquote></dd>{% elif k == 'source' %}<dt class="small muted">Source</dt><dd class="small muted">{{ x|join(', ') if x is not string else x }}</dd>{% else %}<dt>{{ label(k) }}</dt><dd>{{ render_json(x) }}</dd>{% endif %}{% endfor %}</dl>
+{%- endif -%}
+{%- elif v is string -%}<span class="plain-text">{{ v }}</span>
+{%- elif v is none -%}<span class="muted">none</span>
+{%- elif v is sameas true -%}yes
+{%- elif v is sameas false -%}no
+{%- elif v is sequence -%}{% if v %}<ul class="json">{% for x in v %}<li>{{ render_json(x) }}</li>{% endfor %}</ul>{% else %}<span class="muted">none</span>{% endif %}
+{%- else -%}{{ v }}
+{%- endif -%}
+{%- endmacro %}

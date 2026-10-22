@@ -1,10 +1,25 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from "_macros.html" import csrf, render_json with context %}
 {% block content %}
 <h1>{{ report.title }}</h1>
-<p><a class="btn btn-quiet" href="{{ url_for('web.report_download', report_id=report.id) }}">Download</a></p>
-{% for s in report.sections %}
-<section class="card"><h2>{{ s.heading }}</h2><div class="plain-text">{{ s.text }}</div></section>
-{% else %}
-<p class="card empty muted">This report has no sections yet.</p>
+<p class="row"><span class="chip"><span class="dot" aria-hidden="true"></span>{{ report.status }}</span>
+{% if report.json %}<a class="btn btn-quiet" href="{{ url_for('web.report_download', report_id=report.id) }}">Download JSON</a>{% endif %}
+{% if report.status != 'withdrawn' %}
+<form method="post" action="{{ url_for('web.withdraw', submission_id=report.id) }}" class="inline" data-confirm="Withdraw this submission? The report stays readable.">{{ csrf() }}<button class="btn btn-danger" type="submit">Withdraw</button></form>
+{% endif %}</p>
+{% set r = report.json %}
+{% if r %}
+<p class="muted small">Report {{ r.version }} · protocol {{ r.protocol_version }} · rate card {{ r.rate_card_version }} · state {{ r.protocol_state }}</p>
+{% if r.numbers and not r.numbers.allowed %}<p class="msg" role="status">No figures are shown in this report ({{ r.numbers.reason }}).</p>{% endif %}
+{% for s in r.sections %}
+<section class="card report-section" id="{{ s.id }}"><h2>{{ loop.index }}. {{ s.title }}</h2>
+{% for key, value in s.items() if key not in ('id', 'title') %}
+<div class="report-entry"><h3>{{ label(key) }}</h3>{{ render_json(value) }}</div>
 {% endfor %}
+</section>
+{% else %}
+<p class="card empty muted">This report has no sections.</p>
+{% endfor %}
+{% else %}
+<p class="card empty muted">{% if report.status == 'failed' %}The report could not be built. An operator will look at it.{% else %}The report is being prepared.{% endif %}</p>
+{% endif %}
 {% endblock %}

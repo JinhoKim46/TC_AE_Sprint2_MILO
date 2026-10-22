@@ -197,6 +197,7 @@ OWN: dict[str, Call] = {
 NOT_OWNER_FACING = {
     "rate_limits.hit", "rate_limits.count", "rate_limits.reset", "rate_limits.prune",
     "audit.record", "audit.recent", "operator.delete_customer",
+    "operator.submissions", "operator.submission", "operator.has_operator",
     "profiles.create_confirmed", "profiles.set_role_for_test",
 }  # fmt: skip
 HELPERS = {"now", "find", "need", "session"}

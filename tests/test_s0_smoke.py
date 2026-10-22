@@ -417,10 +417,10 @@ def test_cloud_wrapper_converts_tools_and_reads_cost_without_network():
     assert chat.last_cost_usd == 0.0001
 
 
-def test_create_app_is_a_stub_until_m6_wiring():
-    # build_discovery_app landed in M5b; create_app (the web factory) lands with the M6 wiring.
-    with pytest.raises(NotImplementedError):
-        create_app()
+def test_create_app_refuses_without_settings():
+    # create_app landed with the M6 wiring; without a database URL it refuses before opening anything.
+    with pytest.raises(RuntimeError):
+        create_app(environ={})
     assert (
         build_discovery_app(ScriptedChat(), HashEmbedder(), FakeBackend()) is not None
     )

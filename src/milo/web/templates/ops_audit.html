@@ -3,6 +3,6 @@
 <h1>Audit log</h1>
 {% if rows %}
 <table class="table"><thead><tr><th scope="col">When</th><th scope="col">Actor</th><th scope="col">Action</th><th scope="col">Target</th></tr></thead>
-<tbody>{% for r in rows %}<tr><td>{{ r.at.strftime('%Y-%m-%d %H:%M') }}</td><td>{{ r.actor }}</td><td>{{ r.action }}</td><td>{{ r.target }}</td></tr>{% endfor %}</tbody></table>
+<tbody>{% for r in rows %}<tr><td>{{ r.at.strftime('%Y-%m-%d %H:%M') if r.at else '' }}</td><td>{{ r.actor_user_id or 'system' }}</td><td>{{ r.action }}</td><td>{{ r.target }}</td></tr>{% endfor %}</tbody></table>
 {% else %}<p class="card empty muted">The audit log is empty.</p>{% endif %}
 {% endblock %}

@@ -1,8 +1,14 @@
 {% extends "base.html" %}{% from "_macros.html" import csrf with context %}
 {% block content %}
-<h1>{{ row.title }}</h1>
-<section class="card"><dl><dt>Customer</dt><dd>{{ row.customer }}</dd><dt>Status</dt><dd>{{ row.status }}</dd></dl>
+<h1>{{ row.title or 'Diagnosis' }}</h1>
+<section class="card"><dl class="facts">
+<dt>Submission</dt><dd>{{ row.id }} (revision {{ row.revision }})</dd>
+<dt>Customer</dt><dd>{{ row.owner_email or '' }} <span class="muted small">{{ row.owner_id }}</span></dd>
+<dt>Status</dt><dd>{{ row.status }}</dd>
+<dt>Estimate status</dt><dd>{{ row.estimate_status or 'none' }}</dd>
+</dl>
 <p><a class="btn btn-quiet" href="{{ url_for('web.ops_export', submission_id=row.id) }}">Export JSON</a></p></section>
 <section class="card"><h2>Delete customer data</h2>
-<form method="post" action="{{ url_for('web.ops_customer_delete', customer_id=row.customer) }}">{{ csrf() }}<button class="btn btn-danger" type="submit">Delete customer</button></form></section>
+<p>Deletes the customer and every diagnosis they made. An audit row is written.</p>
+<form method="post" action="{{ url_for('web.ops_customer_delete', customer_id=row.owner_id) }}">{{ csrf() }}<button class="btn btn-danger" type="submit">Delete customer</button></form></section>
 {% endblock %}
