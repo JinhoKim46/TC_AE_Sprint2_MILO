@@ -1,0 +1,180 @@
+<style>
+.mb { font-family: var(--font-anthropic-sans); display: flex; flex-direction: column; gap: var(--cds-gap-lg); }
+.mb h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+.mb h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+.mb .takeaway { color: var(--color-fg-muted); margin: 0; max-width: 65ch; }
+.mb .note { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; }
+.mb .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr)); gap: var(--cds-gap-md); }
+.mb .tile, .mb .card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); min-width: 0; }
+.mb .tile .lbl { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.mb .tile .big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; }
+.mb .tile .unit { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.mb .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+.mb .chart { position: relative; min-height: 150px; }
+.mb .tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); max-width: 16rem; }
+.mb .legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.mb .legend span { display: inline-flex; align-items: center; gap: var(--cds-gap-xs); }
+.mb .sw { width: .75rem; height: .75rem; border-radius: 3px; display: inline-block; }
+.mb .scroll { overflow: auto; max-height: 28rem; }
+.mb table { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-body); font-variant-numeric: tabular-nums; }
+.mb th { text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); position: sticky; top: 0; background: var(--color-panel); padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); }
+.mb td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+.mb .pill { display: inline-block; padding: 0 .5rem; border-radius: 999px; font-size: var(--cds-font-size-caption); border: 1px solid currentColor; white-space: nowrap; }
+.mb .s-merged { color: var(--color-ok); }
+.mb .s-verified { color: var(--color-ok); }
+.mb .s-blocked { color: var(--color-bad); }
+.mb .s-planned { color: var(--color-fg-muted); }
+.mb .hide-narrow { }
+@media (max-width: 34rem) { .mb .hide-narrow { display: none; } }
+.mb [data-dash-source-state=empty] { color: transparent; }
+.mb [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+.mb .fail { display: flex; align-items: center; justify-content: center; gap: var(--cds-gap-xs); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); min-height: inherit; }
+.mb .fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+</style>
+
+<div class="mb">
+  <header>
+    <h1 id="title">MILO build monitor</h1>
+    <p class="takeaway" id="takeaway">
+      <span data-source="run" data-field="merged" data-row="0" class="dash-skeleton">—</span> pieces merged and
+      <span data-source="run" data-field="verified_waiting" data-row="0" class="dash-skeleton">—</span> verified and waiting.
+      The run is stopped on <span data-source="run" data-field="owner_blockers" data-row="0" class="dash-skeleton">—</span> answers only the owner can give.
+    </p>
+  </header>
+
+  <section class="tiles" id="tiles" aria-label="Run figures">
+    <div class="tile"><span class="lbl">Active work since the start</span><span class="big"><span data-source="run" data-field="active_min" data-row="0" class="dash-skeleton">—</span></span><span class="unit">minutes</span></div>
+    <div class="tile"><span class="lbl">Paused or waiting</span><span class="big"><span data-source="run" data-field="paused_min" data-row="0" class="dash-skeleton">—</span></span><span class="unit">minutes, limits and owner</span></div>
+    <div class="tile"><span class="lbl">Merged to main</span><span class="big"><span data-source="run" data-field="merged" data-row="0" class="dash-skeleton">—</span></span><span class="unit">milestones and lanes</span></div>
+    <div class="tile"><span class="lbl">Tests on main</span><span class="big"><span data-source="run" data-field="tests_on_main" data-row="0" class="dash-skeleton">—</span></span><span class="unit">passing, offline</span></div>
+    <div class="tile"><span class="lbl">Integrator decisions</span><span class="big"><span data-source="run" data-field="decisions" data-row="0" class="dash-skeleton">—</span></span><span class="unit">logged with reasons</span></div>
+    <div class="tile"><span class="lbl">OpenRouter spend</span><span class="big"><span data-source="run" data-field="openrouter_usd" data-row="0" class="dash-skeleton">—</span></span><span class="unit">USD in this run</span></div>
+  </section>
+
+  <section class="card" id="run-timeline">
+    <h2>Run timeline</h2>
+    <p class="note">From the owner's start instruction. Dots mark merges to main; hover for details.</p>
+    <div class="legend" id="legend"></div>
+    <div class="chart" id="timeline-chart" data-source="timeline merges"></div>
+  </section>
+
+  <div class="grid">
+    <section class="card" id="blockers">
+      <h2>Waiting on the owner</h2>
+      <p class="note">Nothing below can move until these are answered.</p>
+      <div class="scroll">
+        <table data-source="blockers" data-row-key="item">
+          <thead><tr><th data-field="item">Item</th><th data-field="why">What it unlocks</th><th data-field="estimate_usd">Est. USD</th></tr></thead>
+          <tbody id="blockers-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" id="events">
+      <h2>Recent events</h2>
+      <p class="note">Times are git commit times or clock readings, local time.</p>
+      <div class="scroll">
+        <table data-source="events" data-row-key="time">
+          <thead><tr><th data-field="time">Time</th><th data-field="event">Event</th></tr></thead>
+          <tbody id="events-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="milestones">
+    <h2>Milestones</h2>
+    <p class="note">Merged means verified by a separate agent and on main; offline means its live run is still to come.</p>
+    <div class="scroll">
+      <table data-source="milestones" data-row-key="id">
+        <thead><tr><th data-field="id">Milestone</th><th data-field="name">What it is</th><th data-field="phase" class="hide-narrow">Phase</th><th data-field="state">State</th><th data-field="note" class="hide-narrow">Note</th></tr></thead>
+        <tbody id="milestones-body"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const toMin = (hm) => { const [h, m] = String(hm).split(':').map(Number); return h * 60 + m; };
+  const fmtHM = (m) => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+  const KIND = {
+    active: { name: 'Active work', color: () => dash.colors[0] },
+    paused: { name: 'Paused by a model limit', color: () => 'var(--cds-chart-muted)' },
+    waiting: { name: 'Waiting for the owner', color: () => 'var(--color-warn)' }
+  };
+
+  function fill(el, text) { el.textContent = text; el.classList.remove('dash-skeleton'); }
+
+  function failLine(box) { box.innerHTML = ''; const d = document.createElement('div'); d.className = 'fail'; d.textContent = 'Failed to load'; box.appendChild(d); }
+
+  function drawTiles() {
+    const r = dash.data('run');
+    document.querySelectorAll('[data-source="run"]').forEach((el) => {
+      if (r.status !== 'ok') { if (r.status === 'error') { el.classList.remove('dash-skeleton'); el.textContent = '—'; } return; }
+      const row = r.data[0] || {};
+      const f = el.getAttribute('data-field');
+      const v = row[f];
+      if (f === 'openrouter_usd') fill(el, Number(v).toFixed(2));
+      else fill(el, d3.format(',')(Number(v)));
+    });
+  }
+
+  function drawTimeline() {
+    const box = document.getElementById('timeline-chart');
+    const legend = document.getElementById('legend');
+    const t = dash.data('timeline'), m = dash.data('merges');
+    if (t.status === 'error' || m.status === 'error') { failLine(box); return; }
+    if (t.status !== 'ok' || m.status !== 'ok') { box.innerHTML = ''; return; }
+    legend.innerHTML = '';
+    Object.values(KIND).forEach((k) => { const s = document.createElement('span'); const sw = document.createElement('i'); sw.className = 'sw'; sw.style.background = k.color(); s.appendChild(sw); s.appendChild(document.createTextNode(k.name)); legend.appendChild(s); });
+    const segs = t.data.map((d) => ({ ...d, a: toMin(d.start), b: toMin(d.end) }));
+    const merges = m.data.map((d) => ({ ...d, x: toMin(d.time) }));
+    const lo = d3.min(segs, (d) => d.a), hi = d3.max(segs, (d) => d.b);
+    const W = Math.max(280, box.clientWidth), H = 150, M = { l: 8, r: 8, t: 34, b: 26 };
+    const x = d3.scaleLinear([lo, hi], [M.l, W - M.r]);
+    box.innerHTML = '';
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Run timeline');
+    const bandY = 60, bandH = 34;
+    const ticks = d3.range(Math.ceil(lo / 60) * 60, hi + 1, 60);
+    svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', x).attr('x2', x).attr('y1', M.t).attr('y2', H - M.b).attr('stroke', 'var(--cds-chart-grid)');
+    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', x).attr('y', H - 8).attr('text-anchor', 'middle').attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text((d) => fmtHM(d));
+    const tip = d3.select(box).append('div').attr('class', 'tip').style('display', 'none');
+    const show = (ev, lines) => { const [px, py] = d3.pointer(ev, box); tip.style('display', null).html(''); lines.forEach((l, i) => tip.append('div').style('color', i ? null : 'var(--cds-text-secondary)').text(l)); const tw = tip.node().offsetWidth; tip.style('left', `${Math.max(0, Math.min(px + 10, box.clientWidth - tw))}px`).style('top', `${py + 12}px`); };
+    const hide = () => tip.style('display', 'none');
+    svg.append('g').selectAll('rect').data(segs).join('rect')
+      .attr('x', (d) => x(d.a)).attr('width', (d) => Math.max(1, x(d.b) - x(d.a) - 1)).attr('y', bandY).attr('height', bandH).attr('rx', 4)
+      .style('fill', (d) => (KIND[d.kind] || KIND.active).color())
+      .on('mousemove', (ev, d) => show(ev, [`${d.start} to ${d.end}`, `${(KIND[d.kind] || KIND.active).name}: ${d.label}`, `${d.b - d.a} min`]))
+      .on('mouseleave', hide);
+    svg.append('g').selectAll('circle').data(merges).join('circle')
+      .attr('cx', (d) => x(d.x)).attr('cy', bandY - 12).attr('r', 5)
+      .style('fill', 'var(--color-ok)').style('stroke', 'var(--color-panel)').style('stroke-width', 1.5)
+      .on('mousemove', (ev, d) => show(ev, [d.time, `Merged: ${d.milestone}`]))
+      .on('mouseleave', hide);
+    svg.append('text').attr('x', M.l).attr('y', 16).attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(`${merges.length} merges`);
+  }
+
+  function drawTable(id, bodyId, cols, cell) {
+    const r = dash.data(id), body = document.getElementById(bodyId);
+    body.innerHTML = '';
+    if (r.status !== 'ok') return;
+    r.data.forEach((row) => {
+      const tr = document.createElement('tr');
+      cols.forEach((c) => { const td = document.createElement('td'); if (c.cls) td.className = c.cls; cell(td, c.f, row); tr.appendChild(td); });
+      body.appendChild(tr);
+    });
+  }
+
+  dash.onData(() => {
+    drawTiles();
+    drawTimeline();
+    drawTable('blockers', 'blockers-body', [{ f: 'item' }, { f: 'why' }, { f: 'estimate_usd' }], (td, f, row) => { td.textContent = f === 'estimate_usd' ? Number(row[f]).toFixed(2) : String(row[f]); });
+    drawTable('events', 'events-body', [{ f: 'time' }, { f: 'event' }], (td, f, row) => { td.textContent = String(row[f]); });
+    drawTable('milestones', 'milestones-body', [{ f: 'id' }, { f: 'name' }, { f: 'phase', cls: 'hide-narrow' }, { f: 'state' }, { f: 'note', cls: 'hide-narrow' }], (td, f, row) => {
+      if (f === 'state') { const p = document.createElement('span'); p.className = `pill s-${row.state}`; p.textContent = String(row.state); td.appendChild(p); }
+      else td.textContent = String(row[f]);
+    });
+  });
+})();
+</script>

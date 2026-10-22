@@ -1,0 +1,54 @@
+[
+ {
+  "time": "13:29",
+  "milestone": "S0"
+ },
+ {
+  "time": "13:37",
+  "milestone": "M5a"
+ },
+ {
+  "time": "13:45",
+  "milestone": "M3"
+ },
+ {
+  "time": "16:35",
+  "milestone": "M6 shell"
+ },
+ {
+  "time": "16:44",
+  "milestone": "M4"
+ },
+ {
+  "time": "16:57",
+  "milestone": "M0b"
+ },
+ {
+  "time": "17:24",
+  "milestone": "M1"
+ },
+ {
+  "time": "17:25",
+  "milestone": "M0"
+ },
+ {
+  "time": "17:31",
+  "milestone": "Live prep"
+ },
+ {
+  "time": "17:33",
+  "milestone": "M2"
+ },
+ {
+  "time": "17:39",
+  "milestone": "SR runner"
+ },
+ {
+  "time": "17:39",
+  "milestone": "M5G data"
+ },
+ {
+  "time": "17:42",
+  "milestone": "M7"
+ }
+]

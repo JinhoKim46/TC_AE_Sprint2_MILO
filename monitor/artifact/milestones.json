@@ -1,0 +1,135 @@
+[
+ {
+  "id": "S0",
+  "name": "Scaffold",
+  "phase": "0",
+  "state": "merged",
+  "note": "9 of 9 kit tests"
+ },
+ {
+  "id": "SR",
+  "name": "Threat model, 50 attack cases",
+  "phase": "0",
+  "state": "merged",
+  "note": "28 threats, 21 gaps closed"
+ },
+ {
+  "id": "M0b",
+  "name": "Gold set (120 questions)",
+  "phase": "0",
+  "state": "merged",
+  "note": "two audit passes, all ok"
+ },
+ {
+  "id": "M5a",
+  "name": "LLM client and errors",
+  "phase": "1a",
+  "state": "merged",
+  "note": "verifier PASS"
+ },
+ {
+  "id": "M3",
+  "name": "Tools and pricing",
+  "phase": "1a",
+  "state": "merged",
+  "note": "verifier PASS"
+ },
+ {
+  "id": "M6 shell",
+  "name": "Web shell",
+  "phase": "1a",
+  "state": "merged",
+  "note": "SR 0 critical, 0 high"
+ },
+ {
+  "id": "M0",
+  "name": "Data, remaining scope",
+  "phase": "1a",
+  "state": "merged",
+  "note": "verifier PASS"
+ },
+ {
+  "id": "M5-store",
+  "name": "Store, auth, RLS",
+  "phase": "1a",
+  "state": "blocked",
+  "note": "Postgres run needs owner permission"
+ },
+ {
+  "id": "M1",
+  "name": "Retrieval",
+  "phase": "1b",
+  "state": "merged",
+  "note": "offline; live index pending"
+ },
+ {
+  "id": "M4",
+  "name": "Security",
+  "phase": "2",
+  "state": "merged",
+  "note": "FAIL, fix, PASS"
+ },
+ {
+  "id": "M2",
+  "name": "Advanced RAG",
+  "phase": "2",
+  "state": "merged",
+  "note": "offline; live A/B pending"
+ },
+ {
+  "id": "M5b",
+  "name": "Discovery core",
+  "phase": "2",
+  "state": "verified",
+  "note": "PASS twice; waits for M5-store"
+ },
+ {
+  "id": "M5G data",
+  "name": "Scope set and lexicon",
+  "phase": "3",
+  "state": "merged",
+  "note": "four audit passes"
+ },
+ {
+  "id": "M7",
+  "name": "Evaluation",
+  "phase": "3",
+  "state": "merged",
+  "note": "offline; labels after live run"
+ },
+ {
+  "id": "Live batch",
+  "name": "OpenRouter runs",
+  "phase": "1b-3",
+  "state": "blocked",
+  "note": "needs the owner's balance; est. 2.40 USD"
+ },
+ {
+  "id": "M5c",
+  "name": "Report",
+  "phase": "3",
+  "state": "planned",
+  "note": "after M5b"
+ },
+ {
+  "id": "M5G",
+  "name": "Scope and Jev gate",
+  "phase": "3",
+  "state": "planned",
+  "note": "after M5b"
+ },
+ {
+  "id": "M6",
+  "name": "Web wiring",
+  "phase": "3",
+  "state": "planned",
+  "note": "after M5b"
+ },
+ {
+  "id": "F1-F4",
+  "name": "Final steps and pen test",
+  "phase": "final",
+  "state": "planned",
+  "note": "after all"
+ }
+]

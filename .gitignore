@@ -19,3 +19,4 @@ __pycache__/
 evals/results/**/*.tmp
 monitor/status.js
 .worktrees/
+monitor/artifact/page_doc.json
