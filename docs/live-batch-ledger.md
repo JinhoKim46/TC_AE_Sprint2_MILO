@@ -19,6 +19,8 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 | 4a | E02 chat compare, attempt 1 | `MILO_LIVE=1 make eval-chat` | e02-chat-compare.md (ac31ea3) | 1.20 (plan check) | 0 (failed at the first embedding request, before any chat call) | none | 0.0201 |
 | 4b | E02 chat compare, dev (retry) | `MILO_LIVE=1 make eval-chat` | e02-chat-compare.md (ac31ea3) | 1.20 (plan 0.195) | 0.175178 | 0.172928 chat + 0.00225 embedding | 0.1953 |
 | 5 | M2 A/B, dev | `MILO_LIVE=1 make eval-ab AB_ARGS="--max-cost 0.25 --chat-model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --reason ..."` | m2-ab.md (2e1abdc) | 0.25 | 0.01328 (key usage delta; includes query embeddings) | 0.01214 chat | 0.2086 |
+| 6a | M3 tools, product model | `MILO_LIVE=1 uv run python evals/agent/run_tools.py --model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 0.30 --reason ...` | m3-tools.md (16fef06) | 0.30 | 0 (all 15 calls refused with HTTP 400) | 0 | 0.2086 |
+| 6b | M3 tools, one retry | same | m3-tools.md (16fef06) | 0.30 | 0 (same 400 on all 15) | 0 | 0.2086 |
 
 ## Notes
 
@@ -50,3 +52,14 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 - E02 skipped steps: step 7 (single test-split run, needs `MILO_FINAL=1`) is not run because this batch is dev only;
   step 8 (blind answer grading) is session work outside this batch.
 - M2: no arm adopted (rerank +0.072 with CI [-0.019, 0.167]; every other arm significantly worse).
+- **Batch stopped at M3.** OpenRouter refuses every `anthropic/claude-sonnet-5.5` call with HTTP 400 "Reasoning is
+  mandatory for this endpoint and cannot be disabled". `cloud.OpenRouterChat` sends `reasoning: {enabled: false}`
+  (D23b), and m3-tools.md step 3 fixes `reasoning.enabled=false`, so the run cannot follow its protocol on the
+  product model. The runner still wrote a result (15 provider errors, pass rate 0.27 from the four no-call cases);
+  both attempts' files were kept out of the repo (not a measurement). The retry gave the same error, so under the
+  batch rule (stop after one retry on an unexpected error) the remaining runs were not made: M3, M4, SR (A-01b, A-03)
+  and M7 generation. M7 generation would hit the same error (product model). Needs an integrator decision: allow
+  reasoning on the product model (D23b strips the thinking output; cost per call rises) and amend m3-tools.md and
+  m7-judge.md before a rerun, or pin a product endpoint that accepts disabled reasoning. Request 2 in
+  `docs/requests/live-batch.md`.
+- Key usage cross-check at the stop: 8.680965 USD, 0.207705 above the baseline, against 0.2086 from the result files.
