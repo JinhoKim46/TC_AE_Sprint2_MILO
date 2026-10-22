@@ -8,9 +8,13 @@ A domain chatbot for the Sprint 2 project. An owner signs in, talks to an AI ass
 
 ## Status
 
-Specification v0.9.1 is complete. The embedding comparison is done and provisional. The build has not started: no application code exists yet. The data (knowledge base, demo companies, conversations, tool cases, attacks, protocol) is committed and passes the course checker. The gold expansion (M0b) is next, then the scaffold (S0).
+Built (2026-10-22). Every milestone from S0 to M7 is merged after an independent verifier, and the security lane (SR) is done: threat model, 50 attack cases, a pen test with no open critical or high finding (`docs/security_report.md`). The single sealed test-split run (F2) is done; `docs/final_report.md` puts dev and test side by side, misses included. OpenRouter spend for the whole build: about 2.09 USD.
 
-Read `SPEC.md` for the specification and `HARNESS.md` for how the build runs. `docs/experiments.html` logs every experiment, and `docs/embedding-report.html` is the interactive embedding report.
+Not ready for production until the owner closes the checklist in `SPEC.md` section 18 (consent text, operator, role passwords and app connection strings, Supabase Auth settings, operator MFA, the access-token residual). The app refuses to start in production while those are open.
+
+Where to look: `SPEC.md` (specification, decisions D1 to D160), `HARNESS.md` (how the build ran), `docs/integrator-decisions.md` (every build decision with its reason), `docs/owner/CHECKPOINTS_PENDING.md` (one block per milestone, with owner questions), `docs/verify/` (verifier verdicts), `docs/live-batch-ledger.md` (every paid run), `docs/m*_report.md` (milestone reports), `docs/reflection.md` (limits and lessons).
+
+Run it locally: `uv sync`, then `make check` (offline tests and lint), `make eval` (replays every stored evaluation), and `uv run flask --app milo.web.dev:create_dev_app run` for the web app on the in-memory store.
 
 ## Stack
 

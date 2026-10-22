@@ -84,3 +84,11 @@
 
 - Verifier PASS and SR review 53 of 57 (4 low, fixed); T1 (refresh token readable in the signed cookie) fixed by encrypting the tokens; production guard refuses consent v0 and no operator; live gate wired; record.py 24 of 24 on Chromium.
 - Owner question: the muted text colour (D45 #909090 fails AA) and the consent text (checklist item 2) before production.
+
+## F1 to F4 — Final steps (2026-10-22)
+
+- F1: every branch integrated on main. F2: one sealed test-split run (docs/final_report.md; misses reported: M5G test 1 of 142 in-scope refused and 92.6 percent off-topic refused; M5b fact F1 0.643; no M7 judge validated). F3: make check, seven kit targets, make eval, privacy check (0 findings), dependency audit (chromadb server advisories, not reachable). Pen test: 50 of 50 cases, no critical or high (docs/security_report.md).
+- Owner questions, collected:
+  1. Production checklist, SPEC section 18 items 1 to 10 (consent text, first operator, role passwords and app strings, Supabase Auth URL and key, MFA, token residual).
+  2. Muted text colour: D45 #909090 fails AA contrast; a darker colour is in use. Confirm or choose.
+  3. Product findings to accept or schedule: M3 tool choice 9 of 15 on the product model; no abstention on unanswerable RAG questions (D160 keeps min_score 0.30); M5G test misses; M5b extraction F1 below 0.85.

@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 # MILO Makefile (SPEC 11.10). Integrator-owned.
 # A target whose milestone has not merged still runs its command's guard and fails with a clear message,
 # so no stub can pass. `kit-*` run the kit contract tests against MILO, offline.
@@ -29,7 +30,7 @@ test:
 	uv run pytest
 
 audit:
-	uv run pip-audit
+	uvx --from pip-audit==2.7.3 pip-audit --desc on -r <(uv export --frozen --no-hashes --no-dev)
 
 migrate:
 	uv run python -m milo.store.migrate
