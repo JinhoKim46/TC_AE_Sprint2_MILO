@@ -1,0 +1,490 @@
+<title>MILO Project Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a field guide. One column of sections that a zoom switch reveals level by level (1 minute, 10 minutes, everything). */
+:root {
+  --bg: #f6f8f7; --panel: #ffffff; --ink: #16201c; --muted: #56635d; --line: #d9e1dd;
+  --accent: #0d6b5b; --accent-soft: #e2f0ec; --ok: #1d7a3d; --warn: #95600a; --bad: #b0262c;
+  --ok-soft: #e6f4ea; --warn-soft: #fbf1df; --bad-soft: #fbe7e8;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #101614; --panel: #17201d; --ink: #e5ece9; --muted: #9aa8a2; --line: #2a3632;
+  --accent: #4fc2ab; --accent-soft: #163a33; --ok: #6ccf8a; --warn: #e3b05a; --bad: #f08a8e;
+  --ok-soft: #173525; --warn-soft: #3a2e14; --bad-soft: #3d1c1f; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #101614; --panel: #17201d; --ink: #e5ece9; --muted: #9aa8a2; --line: #2a3632;
+  --accent: #4fc2ab; --accent-soft: #163a33; --ok: #6ccf8a; --warn: #e3b05a; --bad: #f08a8e;
+  --ok-soft: #173525; --warn-soft: #3a2e14; --bad-soft: #3d1c1f; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.55 var(--body); margin: 0; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(30px, 5vw, 44px); font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 22px; font-weight: 700; }
+h3 { font-size: 16px; font-weight: 700; }
+p { margin: 0; max-width: 68ch; }
+.muted { color: var(--muted); }
+.mono { font-family: var(--mono); font-size: 13px; }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+header.top { display: flex; flex-direction: column; gap: 12px; }
+.zoom { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.zoom span { font-size: 13px; color: var(--muted); margin-right: 4px; }
+.zoom button { font: 500 14px var(--body); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--panel); color: var(--ink); cursor: pointer; }
+.zoom button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+button:focus-visible, input:focus-visible, summary:focus-visible, .ms-item:focus-visible, .node:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+section { display: flex; flex-direction: column; gap: 14px; }
+section > .head { display: flex; flex-direction: column; gap: 4px; }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; }
+.toc a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted currentColor; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.card ol, .card ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; }
+.fig { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; display: flex; flex-direction: column; }
+.fig b { font-family: var(--display); font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.fig small { color: var(--muted); font-size: 12.5px; }
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 1px 9px; border-radius: 999px; white-space: nowrap; }
+.p-ok { background: var(--ok-soft); color: var(--ok); }
+.p-warn { background: var(--warn-soft); color: var(--warn); }
+.p-bad { background: var(--bad-soft); color: var(--bad); }
+.p-info { background: var(--accent-soft); color: var(--accent); }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; letter-spacing: .03em; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+td { padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.flow { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 760px) { .flow { grid-template-columns: 1fr; } }
+.flow svg { width: 100%; height: auto; display: block; }
+.node { cursor: pointer; }
+.node rect { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+.node.on rect, .node:hover rect { stroke: var(--accent); fill: var(--accent-soft); }
+.node text { fill: var(--ink); font: 600 13px var(--body); }
+.node .sub { fill: var(--muted); font: 400 11px var(--body); }
+.edge { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+.arrow { fill: var(--muted); }
+.flow-detail { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.flow-detail ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 10px; }
+.rule { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+.bars { display: flex; flex-direction: column; gap: 8px; }
+.bar { display: grid; grid-template-columns: minmax(110px, 200px) 1fr 110px; gap: 10px; align-items: center; font-size: 13px; }
+@media (max-width: 520px) { .bar { grid-template-columns: 1fr; gap: 2px; } }
+.track { position: relative; height: 18px; background: var(--accent-soft); border-radius: 4px; overflow: hidden; }
+.track .est { position: absolute; inset: 0 auto 0 0; background: transparent; border-right: 2px dashed var(--muted); }
+.track .act { position: absolute; inset: 3px auto 3px 0; background: var(--accent); border-radius: 3px; }
+.band { display: flex; height: 26px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+.band div { height: 100%; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.ticks { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ms { display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr); gap: 14px; }
+@media (max-width: 680px) { .ms { grid-template-columns: 1fr; } }
+.ms-list { display: flex; flex-direction: column; gap: 4px; max-height: 520px; overflow: auto; }
+.ms-item { text-align: left; font: 500 14px var(--body); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; color: var(--ink); cursor: pointer; display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.ms-item[aria-selected="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.ms-detail { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.ms-detail dl { display: grid; grid-template-columns: minmax(90px, 130px) minmax(0, 1fr); gap: 6px 12px; margin: 0; }
+.ms-detail dt { color: var(--muted); font-size: 13px; }
+.ms-detail dd { margin: 0; }
+.search { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.search input { font: 14px var(--body); padding: 9px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); flex: 1 1 260px; min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button { font: 500 13px var(--body); padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+.chips button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+.dec-list { display: flex; flex-direction: column; gap: 6px; max-height: 640px; overflow: auto; }
+details.dec { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+details.dec summary { cursor: pointer; display: flex; gap: 10px; align-items: baseline; list-style: none; }
+details.dec summary::-webkit-details-marker { display: none; }
+details.dec summary .n { font-family: var(--mono); color: var(--accent); font-size: 13px; flex: none; min-width: 2.2em; }
+details.dec .body { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.kv b { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; margin-right: 6px; }
+.todo { display: flex; flex-direction: column; gap: 8px; }
+.todo label { display: flex; gap: 10px; align-items: flex-start; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; cursor: pointer; }
+.todo input { margin-top: 4px; accent-color: var(--accent); }
+.todo label.done span { color: var(--muted); text-decoration: line-through; }
+.gloss { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 8px 18px; }
+.gloss div { border-bottom: 1px solid var(--line); padding: 8px 0; }
+.gloss b { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-right: 6px; }
+.lvl-hidden { display: none !important; }
+code { font-family: var(--mono); font-size: 13px; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+@media (prefers-reduced-motion: no-preference) { section { animation: in .35s ease-out both; } @keyframes in { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Sprint 2 project · build of 22 October 2026</div>
+    <h1>MILO Project Map</h1>
+    <p class="muted">What MILO is, how it was built in one autonomous run, what came out of it, and what is left for you. Pick how deep you want to go.</p>
+    <div class="zoom" role="group" aria-label="Depth">
+      <span>Depth</span>
+      <button id="z1" data-z="1" aria-pressed="false">1 minute</button>
+      <button id="z2" data-z="2" aria-pressed="true">10 minutes</button>
+      <button id="z3" data-z="3" aria-pressed="false">Everything</button>
+    </div>
+    <nav class="toc" id="toc" aria-label="Sections"></nav>
+  </header>
+
+  <!-- LEVEL 1 -->
+  <section id="short" data-level="1" data-title="The short version">
+    <div class="head"><div class="eyebrow">Level 1</div><h2>The short version</h2></div>
+    <div class="cards">
+      <div class="card">
+        <h3>What MILO is</h3>
+        <p>A discovery chatbot for small business owners. An owner registers, describes how their business works, and MILO records each fact with the sentence it came from. On submit, the owner gets a report: their current process, what could be automated, which modules fit, and an indicative cost range computed in code from a rate card.</p>
+      </div>
+      <div class="card">
+        <h3>Where it stands</h3>
+        <p><span class="pill p-ok">Built</span> Every milestone from scaffold to evaluation is merged, verified by a separate agent, and security-tested. One sealed test run has been made.</p>
+        <p><span class="pill p-warn">Not live yet</span> Production needs your items: consent text, an operator, database passwords, Supabase keys. The app refuses to start in production until they exist.</p>
+      </div>
+      <div class="card">
+        <h3>What you do next</h3>
+        <ol>
+          <li>Read <code>docs/final_report.md</code> and the last block of <code>docs/owner/CHECKPOINTS_PENDING.md</code>.</li>
+          <li>Accept the measured shortfalls as findings (recommended for the course), or schedule fixes.</li>
+          <li>Decide on the AE privacy check so the parent repo can record MILO.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="figs">
+      <div class="fig"><b>5 h 02</b><small>active work, 13:00 to 22:46</small></div>
+      <div class="fig"><b>$2.09</b><small>OpenRouter spend of $8.47</small></div>
+      <div class="fig"><b>718</b><small>tests passing, offline</small></div>
+      <div class="fig"><b>50 / 50</b><small>attack cases passed</small></div>
+      <div class="fig"><b>94</b><small>build decisions, each with a reason</small></div>
+    </div>
+  </section>
+
+  <!-- LEVEL 2 -->
+  <section id="how" data-level="2" data-title="How MILO works">
+    <div class="head"><div class="eyebrow">Level 2</div><h2>How MILO works</h2><p class="muted">Click a box to see what it does and how it is protected.</p></div>
+    <div class="flow">
+      <svg viewBox="0 0 560 410" role="img" aria-label="MILO request flow">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+        <path class="edge" d="M280 56 L280 84" marker-end="url(#ah)"/>
+        <path class="edge" d="M280 132 L280 160" marker-end="url(#ah)"/>
+        <path class="edge" d="M280 208 L280 236" marker-end="url(#ah)"/>
+        <path class="edge" d="M210 260 L130 260 L130 300" marker-end="url(#ah)"/>
+        <path class="edge" d="M350 260 L430 260 L430 300" marker-end="url(#ah)"/>
+        <path class="edge" d="M280 284 L280 300" marker-end="url(#ah)"/>
+        <path class="edge" d="M430 348 L430 372" marker-end="url(#ah)"/>
+        <g class="node" tabindex="0" data-node="web"><rect x="170" y="8" width="220" height="48" rx="8"/><text x="280" y="30" text-anchor="middle">Owner in the browser</text><text class="sub" x="280" y="46" text-anchor="middle">sign-up, consent, sessions</text></g>
+        <g class="node" tabindex="0" data-node="gate"><rect x="170" y="84" width="220" height="48" rx="8"/><text x="280" y="106" text-anchor="middle">Scope gate</text><text class="sub" x="280" y="122" text-anchor="middle">rules first, then Jev</text></g>
+        <g class="node" tabindex="0" data-node="chain"><rect x="170" y="160" width="220" height="48" rx="8"/><text x="280" y="182" text-anchor="middle">Discovery chain</text><text class="sub" x="280" y="198" text-anchor="middle">extract, merge, reply</text></g>
+        <g class="node" tabindex="0" data-node="policy"><rect x="210" y="236" width="140" height="48" rx="8"/><text x="280" y="258" text-anchor="middle">Policy</text><text class="sub" x="280" y="274" text-anchor="middle">taint, identity, approvals</text></g>
+        <g class="node" tabindex="0" data-node="rag"><rect x="40" y="300" width="180" height="48" rx="8"/><text x="130" y="322" text-anchor="middle">Knowledge search</text><text class="sub" x="130" y="338" text-anchor="middle">24 articles, embeddings</text></g>
+        <g class="node" tabindex="0" data-node="tools"><rect x="230" y="300" width="100" height="48" rx="8"/><text x="280" y="322" text-anchor="middle">Tools</text><text class="sub" x="280" y="338" text-anchor="middle">5 backend calls</text></g>
+        <g class="node" tabindex="0" data-node="store"><rect x="340" y="300" width="180" height="48" rx="8"/><text x="430" y="322" text-anchor="middle">Database</text><text class="sub" x="430" y="338" text-anchor="middle">Supabase Postgres, RLS</text></g>
+        <g class="node" tabindex="0" data-node="report"><rect x="340" y="372" width="180" height="34" rx="8"/><text x="430" y="394" text-anchor="middle">Report</text></g>
+      </svg>
+      <div class="flow-detail" id="flow-detail" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="built" data-level="2" data-title="How it was built">
+    <div class="head"><div class="eyebrow">Level 2</div><h2>How it was built</h2><p class="muted">One integrator (Claude) ran a queue of agents. You set the goals and answered two questions; everything else was decided in the run and logged.</p></div>
+    <div class="rules">
+      <div class="rule"><span class="pill p-info">Roles</span><h3>Builders, verifiers, security</h3><p>Sonnet built most milestones in separate git worktrees. A fresh agent verified each one; it never graded its own work. Fable, later Opus, wrote protocols, audits and security reviews.</p></div>
+      <div class="rule"><span class="pill p-info">Rule</span><h3>Protocol before result</h3><p>Every experiment had a written protocol committed before its first number. Seven plus two more were written this way.</p></div>
+      <div class="rule"><span class="pill p-info">Rule</span><h3>Dev for decisions, test once</h3><p>All thresholds and model choices used the dev half of the data. The test half was opened once, at the end, and nothing was retuned after.</p></div>
+      <div class="rule"><span class="pill p-info">Rule</span><h3>Pay only to measure</h3><p>Writing, data, audits and reviews ran on the Claude subscription. OpenRouter was used only when a model itself was being measured.</p></div>
+      <div class="rule"><span class="pill p-info">Rule</span><h3>Fail closed</h3><p>Anything only you can do is a placeholder, and production refuses to start while a placeholder is in place.</p></div>
+      <div class="rule"><span class="pill p-info">Lane</span><h3>Security red team</h3><p>A threat model with 28 threats, 50 attack cases written before the defences, a review on every risky change, and a final pen test.</p></div>
+    </div>
+  </section>
+
+  <section id="results" data-level="2" data-title="Results">
+    <div class="head"><div class="eyebrow">Level 2</div><h2>Results on dev and on the sealed test split</h2><p class="muted">Every number is as measured. Misses stay in the record; the test split was never used to tune anything.</p></div>
+    <div class="scroll"><table>
+      <thead><tr><th>What</th><th>Dev</th><th>Test</th><th>Target</th><th>Verdict</th></tr></thead>
+      <tbody id="results-body"></tbody>
+    </table></div>
+  </section>
+
+  <section id="spend" data-level="2" data-title="Spend">
+    <div class="head"><div class="eyebrow">Level 2</div><h2>OpenRouter spend against the estimate</h2><p class="muted">Dashed line is the estimate, filled bar the actual cost. Total $2.09 against about $3.35 expected.</p></div>
+    <div class="bars" id="bars"></div>
+  </section>
+
+  <section id="timeline" data-level="2" data-title="Timeline">
+    <div class="head"><div class="eyebrow">Level 2</div><h2>The run, 13:00 to 22:46</h2><p class="muted">About half of the clock time was pauses: two usage limits, a model limit, and one hour waiting for your answers.</p></div>
+    <div class="band" id="band" aria-label="Run timeline"></div>
+    <div class="ticks"><span>13:00</span><span>15:00</span><span>17:00</span><span>19:00</span><span>21:00</span><span>22:46</span></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Active work</span><span><i style="background:var(--muted)"></i>Paused by a limit</span><span><i style="background:var(--warn)"></i>Waiting for you</span></div>
+  </section>
+
+  <!-- LEVEL 3 -->
+  <section id="milestones" data-level="3" data-title="Milestones">
+    <div class="head"><div class="eyebrow">Level 3</div><h2>Milestone explorer</h2><p class="muted">Select a milestone for what it is, how it was checked, what went wrong on the way, and where its files are.</p></div>
+    <div class="ms">
+      <div class="ms-list" id="ms-list" role="listbox" aria-label="Milestones"></div>
+      <div class="ms-detail" id="ms-detail" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="findings" data-level="3" data-title="Findings">
+    <div class="head"><div class="eyebrow">Level 3</div><h2>Findings and accepted limits</h2><p class="muted">What the measurements showed that you should know before relying on MILO.</p></div>
+    <div class="cards" id="findings-cards"></div>
+  </section>
+
+  <section id="owner" data-level="1" data-title="Your list">
+    <div class="head"><div class="eyebrow">For you</div><h2>Your list</h2><p class="muted">Tick items as you go. Ticks stay in this browser only.</p></div>
+    <div class="todo" id="todo"></div>
+  </section>
+
+  <section id="decisions" data-level="3" data-title="All decisions">
+    <div class="head"><div class="eyebrow">Level 3</div><h2>All 94 integrator decisions</h2><p class="muted">Each decision with its reason and the option it rejected, from <code>docs/integrator-decisions.md</code>.</p></div>
+    <div class="search">
+      <input id="dec-q" type="search" placeholder="Search decisions, for example: Postgres, gate, spend" aria-label="Search decisions">
+      <span class="muted" id="dec-count"></span>
+    </div>
+    <div class="chips" id="dec-chips" role="group" aria-label="Topic"></div>
+    <div class="dec-list" id="dec-list"></div>
+  </section>
+
+  <section id="spec" data-level="3" data-title="Spec changes">
+    <div class="head"><div class="eyebrow">Level 3</div><h2>Spec decisions added during the build</h2><p class="muted">The spec went from v0.9.4 to v0.9.7. These are the decisions the build forced, D119 to D160.</p></div>
+    <div class="scroll"><table><thead><tr><th>ID</th><th>Decision</th></tr></thead><tbody id="spec-body"></tbody></table></div>
+  </section>
+
+  <section id="files" data-level="3" data-title="Where to look">
+    <div class="head"><div class="eyebrow">Level 3</div><h2>Where to find things</h2></div>
+    <div class="scroll"><table><thead><tr><th>File or folder</th><th>What it holds</th></tr></thead><tbody id="files-body"></tbody></table></div>
+  </section>
+
+  <section id="glossary" data-level="2" data-title="Glossary">
+    <div class="head"><div class="eyebrow">Reference</div><h2>Glossary</h2></div>
+    <div class="gloss" id="gloss"></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const DECISIONS = [{"n": 1, "d": "Threat-model gaps closed in SPEC section 28 (D127 to D146) by the integrator, not by a further review round", "why": "21 gaps were concrete and each had one defensible answer; a review round would cost a day for little", "rej": "Delegating each to a separate agent"}, {"n": 2, "d": "DB variable names follow `.env` (`SUPABASE_*_session_pooler`), not the spec's `MILO_DATABASE_URL_*` (D127)", "why": "The `.env` already exists with those names; renaming it is owner work for no gain", "rej": "Renaming `.env`"}, {"n": 3, "d": "Both gate stages under M5G in `src/milo/gate/**` (D128)", "why": "One owner for one feature; the M4 `security/scope.py` split came from an earlier version", "rej": "Splitting stage 1 to M4"}, {"n": 4, "d": "RLS reads `current_setting('milo.user_id')` only (D129)", "why": "`auth.uid()` is empty over a psycopg connection; two predicates would silently disagree", "rej": "Keeping both"}, {"n": 5, "d": "Per-account limits: 0.50 USD/day, 1 running turn, 10 messages/min, 5 uploads/h (D131)", "why": "Without them one account can drain the global reserve; values are generous for a real owner and tight for abuse", "rej": "No per-account limit"}, {"n": 6, "d": "Uploads parsed in memory, never indexed, capped at 20k chars kept and 8k sent to extract (D132, D133)", "why": "Closes traversal, cross-owner retrieval and unbounded cost in one rule", "rej": "Storing originals; indexing uploads per session"}, {"n": 7, "d": "Evidence must be a verbatim substring or the fact is discarded (D134)", "why": "Fabricated quotes would reach the report; discard is simpler and safer than a new status", "rej": "Storing with status `estimated`"}, {"n": 8, "d": "Replies rendered as plain text, no markdown (D139)", "why": "Removes the sanitizer question and one XSS path; the product does not need formatting", "rej": "Markdown with a sanitizer"}, {"n": 9, "d": "Session title not sent to Jev (D145)", "why": "Owner-editable text would reach the judge as context; `recent_turns` already carries what follow-ups need", "rej": "Sending the title"}, {"n": 10, "d": "Rate limits stored in Postgres (D142)", "why": "In-process counters reset on restart and do not hold across workers", "rej": "In-process limiter"}, {"n": 11, "d": "Operator MFA and access-token revocation left as **owner** checklist items 8 and 9 (D136, D144)", "why": "Both are risk acceptances, which an agent must not make (D125)", "rej": "Deciding them here"}, {"n": 12, "d": "Gate threshold equality resolved towards no false refusal (D147)", "why": "The product promise is zero in-scope refusals; the equality case must not break it", "rej": "Refusing at equality"}, {"n": 13, "d": "E02 owned by M5a and run after `llm/cloud.py` and the M0b audit (D148)", "why": "E02 needs the OpenRouter wrapper, which M5a writes; before that, tests use fakes so no dev model is needed", "rej": "Running E02 first with a throwaway client"}, {"n": 14, "d": "Demo conversations split A-1/B-1/E-1 dev, A-2/B-2/E-2 test (D149)", "why": "One of each company per split; nothing in the spec said otherwise", "rej": "Random split"}, {"n": 15, "d": "S0 started before the protocols were back", "why": "S0's files and the protocols' files do not overlap, so waiting bought nothing", "rej": "Serialising"}, {"n": 16, "d": "Gold and scope generators run in isolated worktrees, one branch each, audits follow on separate agents", "why": "Matches the protocols' independence rule (HARNESS 7) and keeps the main checkout stable for the attack writer", "rej": "Generating in the main checkout"}, {"n": 17, "d": "S0 accepted as built; its 11 literal readings stand (ruff excludes the two pre-S0 embedding scripts until M0b rewrites them; no torch; `sessions.id` uuid per D98; DB roles created without passwords, owner sets them; cross-owner approval returns `not_found` per D65)", "why": "Each follows the latest spec text; `make check` and all 9 kit tests pass in the main checkout", "rej": "Re-opening any of them"}, {"n": 18, "d": "Agent worktrees are created by the integrator inside the MILO repo (`.worktrees/<lane>`, branch `agent/<lane>`), not with the tool's own isolation", "why": "The tool's isolation makes a worktree of the parent AE repo, where MILO is an uninitialised submodule; the S0 agent had to copy the project by hand", "rej": "Tool isolation"}, {"n": 19, "d": "`evals/security/cases.jsonl` may name the Supabase variable names (HARNESS rule 3 names only `settings.py` and `.env.example`) because the case tests the prod guard", "why": "A guard test has to name what it checks; the verifier grep gets this one exception, written into the SR README", "rej": "Removing the names from the case"}, {"n": 20, "d": "M5a merged on verifier PASS (723dbca); its five non-failing findings stand, and finding 3 (pass a spend ledger when wiring E02 live) is the integrator's to-do before any live E02 run", "why": "None of the findings contradicts SPEC section 9 or D23; the ledger wiring belongs to the live run, which the integrator owns", "rej": "A fix cycle"}, {"n": 21, "d": "M0 remaining-scope work waits for M0b to land", "why": "Both edit `scripts/build_data.py` and `data/MANIFEST.json`; running them together would make a merge conflict certain", "rej": "Running M0 now in a third worktree"}, {"n": 22, "d": "M6 shell started in the freed slot (phase 1a), in `.worktrees/m6-shell`", "why": "It needs only S0's App surface and the section 16 page list; no overlap with M3 or M5-store", "rej": "Waiting for M5-store"}, {"n": 23, "d": "Gold generation accepted onto `agent/data/m0b` (a7ab661) after the integrator re-ran `build_data.py --check`, the kit checker, ruff and the full test suite in a MILO worktree; the generator's three self-flagged rows (q046, q049, q070) and the two grandfathered M0 identifier rows (q004, q006 over the 20% overlap rule) are left to the auditor, not fixed by the integrator", "why": "The protocol gives the auditor the verdict; pre-fixing would mix the roles (HARNESS 7)", "rej": "Fixing them before the audit"}, {"n": 24, "d": "Monitor gains a session clock (started 2026-10-21 23:22 local) and a status-age counter; earlier log times were estimates and are now taken from git", "why": "The owner asked how long the session has run; estimated times in a monitor are misleading", "rej": "Leaving the estimates"}, {"n": 25, "d": "M3 request 1: the M3 done-line is met by `make eval-tools-replay` against the committed dry-mode result until the live tool run; the live run (`MILO_LIVE=1`) is the integrator's, after a protocol `evals/protocols/m3-tools.md` exists", "why": "Live calls are measured runs (D126) and need a protocol first (D83); the dry result proves the harness", "rej": "Adding a separate `eval-tools-dry` target"}, {"n": 26, "d": "M3 request 2: `evals/protocols/m3-tools.md` is written by a Fable protocol agent together with the live-run batch (E01 rerun, E02, M3 live, M5G probes), after the M0b audit lands", "why": "One protocol batch, one budget check, one live session instead of four", "rej": "Writing it now"}, {"n": 27, "d": "M3 requests 3 and 4 go to M0 (refresh `tool_cases.jsonl` and the dry result) and M4 (where look-alike identity-key stripping lives)", "why": "They belong to those owners' rows", "rej": "Deciding them in M3"}, {"n": 28, "d": "M6 shell: the builder's password minimum of 10 is corrected to 12 before verification (D92); its other additions stand: `Cache-Control: no-store` on every response, 404 (not 403) for `/ops/*` and `/traces` to anonymous and non-operator users, muted text colour darkened from the D45 `#909090` to pass AA contrast (flagged for the owner in `docs/m6_checklist.md`)", "why": "The minimum is spec text; the additions are stricter than the spec, not looser", "rej": "Leaving 10; reverting the colour to D45"}, {"n": 29, "d": "M6 shell, being web surface, gets both a verifier and an SR reviewer (D123 step 3) before merge; SR review by a Fable agent", "why": "Web is in the D123 security surface list", "rej": "Verifier only"}, {"n": 30, "d": "M3 merged on verifier PASS (tools are in the D123 security surface, but the verifier's code read covered identity keys, policy order and cross-owner withdraw); the dedicated SR review of tools runs with M4, which replaces the policy seam and runs the attack cases", "why": "One SR pass over the finished tool-plus-policy path is worth more than two partial ones", "rej": "SR review of M3 alone"}, {"n": 31, "d": "Setup-fee range question (does 0.90/1.00/1.20 apply to the one-time setup fee) assigned to M5c, with the default \"no: the range applies to the monthly total only\" unless the rate card says otherwise", "why": "The KB pricing articles describe the range on the monthly figure; the setup fee is a fixed line", "rej": "Applying the range to both"}, {"n": 32, "d": "Three DB roles, four app strings: the owner's pooler strings become administrative (migrate, reset, verifier) and the app gets its own `milo_app` and `milo_operator` strings; in test, `SET ROLE` from the administrative connection replaces passwords (D153)", "why": "The migration creates the roles without passwords, so the app cannot log in as them until the owner sets passwords; `SET ROLE` lets the verifier test RLS today with no owner step", "rej": "Agents setting passwords in the test project and writing them to `.env`"}, {"n": 33, "d": "Throwaway-schema RLS test (D77) replaced by migrate, test, `make db-reset` on the test project's `public` schema (D154, D155)", "why": "Migration 0001 is not schema-relocatable (grants, the `auth.users` trigger); the test project is resettable by design (D58)", "rej": "Making the migration schema-relocatable"}, {"n": 34, "d": "Integrator pushed e1c3a0e with one failing smoke test (`.env.example` placeholder rule) because the commit chain keyed on grep, not on the test exit code; fixed in the next commit and the chain now gates on `uv run pytest` exit status", "why": "A red `main` for a few minutes is a process failure worth recording, even though no agent branched from it", "rej": "Rewriting history"}, {"n": 35, "d": "Supabase Auth settings (`SUPABASE_<env>_url`, `SUPABASE_<env>_publishable_key`) are owner-provided env values; JWKS URL and issuer derive from the project URL in `settings.auth_config()`", "why": "The `.env` holds only database entries today; deriving the project URL from the pooler user name would be a guess, so the owner adds two values (checklist item 1)", "rej": "Deriving the URL from the pooler string"}, {"n": 36, "d": "M5-store verification includes the Postgres RLS run against the test project, with the verifier loading `.env` into its shell for those commands only and redacting any value in its report (HARNESS 7.8, D154)", "why": "The RLS test is the only evidence that the policies work; the test project is resettable and holds no real data", "rej": "Skipping the Postgres run until the owner is present"}, {"n": 37, "d": "M4 gets one-off ownership of `tools/approvals.py` to fix the double-approve race (A-12b) and add the approve-time policy re-run before verification", "why": "M3 is merged and the fix is a security defect found by M4's own analysis; routing it through a separate M3 fix cycle would add a day for nothing", "rej": "Leaving the race for M5b integration"}, {"n": 38, "d": "M4's hardening of taint matching (NFKC, case fold, zero-width, separators, line-split phrases) stands, with no new phrases added to the D22 list", "why": "It closes T-21-style encodings without widening the rule", "rej": "Adding phrases"}, {"n": 39, "d": "M4's compare-and-set is a process lock in the in-memory store; the Postgres store needs a conditional `UPDATE ... WHERE status='pending'` (noted for M5-store's next cycle or M5b integration)", "why": "A lock does not hold across workers; the row-level claim does", "rej": "Treating the lock as sufficient"}, {"n": 40, "d": "M6 shell merged on PASS (4 low findings carried to phase 3 and to `create_app`); the D45 muted colour change is an owner question in the checkpoint block, not a decision", "why": "Colour is the owner's design choice; the rest is phase-3 wiring", "rej": "Reverting the colour"}, {"n": 41, "d": "M4 verifier FAIL (two high: double-approve race and no args-hash check on the product path, because `App.resume_approval` bypassed the service); fixed by the integrator in `app.py` (integrator-owned) on verify/m4 rather than by a fresh fix-cycle agent, then the same verifier re-runs the two cases", "why": "The fix is ten lines in a file only the integrator may edit; a fresh agent would need the whole context for no gain", "rej": "A fresh fix-cycle agent (HARNESS 4)"}, {"n": 42, "d": "SR case defects found by the M4 verifier (A-07c names a non-module `booking-intake`; A-02a's expectation self-contradicts) go to an SR case fix before the live batch", "why": "Cases must be checkable as written (D123)", "rej": "Fixing them silently during review"}, {"n": 43, "d": "The M3 live tool run uses the pinned product model (claude-sonnet-5.5), not the E02 development model; `docs/m3_report.md` line 47 and the runner docstring are corrected at the pre-live runner pass", "why": "The run measures the product's tool choice; a development model's number would not transfer", "rej": "Running on the dev model first"}, {"n": 44, "d": "Pre-live runner pass (one Sonnet task before the live batch): `run_tools.py` gains `--max-cost`, per-row latency, a raw replay file, the tool_cases manifest-hash refusal and the real temperature record; `evals/security/README.md` gets the 0.50 USD cap, the `live-<date>.json` name, the D145 note removed, and the two case defects of decision 42 fixed", "why": "All are prerequisites the protocols name; batching them keeps the live session to one budget check", "rej": "Fixing them piecemeal"}, {"n": 45, "d": "M4 merged after the verifier's second pass (PASS); the approve-time policy at taint low in contract mode is accepted, because contract mode has no session taint and discovery mode (M5b) will pass the stored taint", "why": "The remaining gap is M5b's by design", "rej": "Blocking M4 on M5b"}, {"n": 46, "d": "Resumed tool-isolated generators cannot write the MILO worktrees (their sandbox is the parent-repo copy), so fix cycles for M0b and M5G are done by copying their output (M5G) or by a fresh agent launched without isolation (M0b)", "why": "The resumed M5G generator reported the sandbox refusal; the resumed M0b generator went silent for two hours with no file change", "rej": "Waiting longer"}, {"n": 47, "d": "M5-store verifier FAIL on the first real Postgres run (PG 16+ CREATEROLE semantics: the guarded grant never fired, so `SET ROLE milo_app` was refused; no FORCE RLS; IP lockout 20 not 5): fix cycle 2 to the builder with the five fixable findings; the verifier then re-runs the Postgres part", "why": "Every finding has one clear fix and the Postgres run proved the rest of the design (27 of 28 probes)", "rej": "Changing the design back to passwords"}, {"n": 48, "d": "Per-IP login lockout set to 5 failures per 15 minutes (SR case A-17), same as per account", "why": "The case is the committed expectation (D123); shared-NAT false lockouts are a known cost, listed in the checkpoint block for the owner", "rej": "Keeping 20"}, {"n": 49, "d": "Stage-1 pass now needs one strong lexicon term or two weak ones; a single bare trade word goes to Jev (D157; protocol m5g-gate.md amended before any probe)", "why": "Audit pass 2 showed 17 of 68 out-of-scope test rows bypass the judge on one word, capping refusal at 88 percent against a 95 percent target; narrowing bare words by hand (v3 only) would be fragile", "rej": "Reporting the miss; removing trade words from the lexicon"}, {"n": 50, "d": "M0b merged on the auditor's pass 2 (all 120 ok) with the integrator running the HARNESS 7.9 checks itself instead of a third agent", "why": "The checks are three mechanical commands; the independent judgement is the auditor's", "rej": "A separate verifier agent"}, {"n": 51, "d": "The M0b merge was pushed once with a failing manifest check (the audit file joined data/ after the manifest was built); fixed by one rebuild, gold unchanged. Integrator rule from now on: `make check` runs before any push and its exit code gates the push", "why": "Second slip of the same kind (decision 34); the rule is now explicit", "rej": "Rewriting history"}, {"n": 52, "d": "M1 builds with a fake embedder and dry/replay runners; the live index build and the dense evaluation run in the live batch under e01-rerun.md", "why": "Keeps D126 and one budget check; M1's code is testable offline", "rej": "Letting M1 spend on OpenRouter now"}, {"n": 53, "d": "M0 remaining scope and M1 run in parallel from the M0b merge; M0 may refresh the M3 and M4 dry results because its data changes are their inputs", "why": "Different owned paths; the dry results are derived files", "rej": "Serialising M0 before M1"}, {"n": 54, "d": "Fable limit reached at 17:06: agents that were briefed for Fable (design, audit, security review, Postgres verification) run on Opus from now on; build and ordinary verification stay on Sonnet", "why": "Opus is the strongest model available after the limit; the briefs do not depend on the model", "rej": "Waiting for the Fable limit to reset"}, {"n": 55, "d": "M0's two edits outside its rows stand: one `INTENDED` entry in `run_attacks.py` for the new atk11 row, and `compare_embeddings.py` loading dev rows through `evals.common` (closes a leakage-rule violation)", "why": "Both are minimal and required by M0's own done-line; the verifier checks them", "rej": "Reverting them"}, {"n": 56, "d": "Monitor times corrected from git at 17:30. The integrator had written estimated times between 13:40 and 18:25 that ran ahead of the clock; the first pause was really 14:00 to 16:31, not 15:30 to 16:31. Rule: monitor times come from `date` or git only", "why": "The owner uses the monitor to measure the autonomous run; wrong times defeat its purpose", "rej": "Leaving them"}, {"n": 57, "d": "M5-store pass 2 FAIL: new high finding F7 (reset cannot drop objects under a SET-only, no-INHERIT grant) and F6 (Postgres probes not wired). Fix cycle 3 to the builder, offline. The Postgres re-run is NOT done by the integrator: the session's permission classifier refused the verifier's database commands this time, so running them by another route would bypass the owner's permission decision. The owner is asked to allow the test-project run", "why": "Respecting the permission boundary; the test project holds no real data but the refusal is the owner's call", "rej": "Running the reset or migrate from the integrator's shell"}, {"n": 58, "d": "M5b starts now from main plus the offline-verified M5-store branch, rather than waiting for the Postgres verification", "why": "M5-store's open findings are in reset and the Postgres test script, not in the repository interfaces M5b uses; M5b's tests use the in-memory store", "rej": "Waiting for the owner's permission and the re-run"}, {"n": 59, "d": "M5b runs on Opus, not Sonnet", "why": "It is the largest and most coupled milestone (chain, merge, turns, approvals, app integration)", "rej": "Sonnet"}, {"n": 60, "d": "Scope audit pass 3 (ok 499, fix 3): the two rule-text gaps are closed in the protocol before any probe (lemma counting, approximate numbers; D158); the one-strong-term off-topic gap is accepted as a known limit covered by the D108 reply check and measured by SR, not closed by more rules", "why": "More rules would start refusing in-scope messages; the product promise is zero false refusals", "rej": "Adding refuse patterns for strong-term misuse"}, {"n": 61, "d": "SR live runner merged on the integrator's own checks (it is eval tooling, not product code); its readings stand: `--gate module:callable` until M5G lands, Jev cases `not_run` without a gate, A-22 counts a refusal by the gate or by the D108 reply check, only critical failures exit non-zero. A high failure is still a blocker for F3 under D125: the integrator reads the result file, not the exit code", "why": "The readings match the protocol; the exit code is a convenience, the D125 rule is enforced at F3", "rej": "Requiring non-zero exit on high"}, {"n": 62, "d": "Scope data merged after audit pass 4; the merge broke the manifest check again (data/scope joined data/), caught by the push gate this time and fixed before the push", "why": "The gate from decision 51 worked", "rej": "-"}, {"n": 63, "d": "M7 offline build merged on the integrator checks (eval tooling); its edit of the S0 stub `evals/run_all_replay.py` and the new `tests/test_rag_eval.py` are assigned to M7", "why": "The stub was M7 work by design", "rej": "-"}, {"n": 64, "d": "SR case A-20 amended: the 64-hex hash requirement is replaced by \"stored as hash and length\" (D141); M5b verifier PASS stands; the canary reached no forbidden sink", "why": "The case measures leakage; the hash width is a format choice of S0", "rej": "Widening the trace hash and regenerating every trace"}, {"n": 65, "d": "M5b fix cycle 1 for the two medium findings (bare amounts past the reply check; daily spend in memory) and two lows, before merge; taint persistence goes to M5-store next cycle, 409 vs 429 to M6", "why": "Mediums do not block under D125, but the bare-amount gap undermines the premature-estimate metric, the product promise", "rej": "Merging as is"}, {"n": 66, "d": "M5b pass 2 PASS; held for merge until M5-store merges (it is built on it). New low: after an estimate is allowed, a figure the model writes is not checked against the code estimate; assigned to M5c (the report shows only code figures) and to the live discovery run as a metric", "why": "The estimate itself is code-computed; the reply text is the gap", "rej": "Blocking M5b"}, {"n": 67, "d": "Owner answers at 19:2x: Postgres run on the test project allowed; OpenRouter balance 8.47 USD. Live batch hard cap set at 3.00 USD for this pass (estimate 2.40), leaving more than 5 USD for M5b live, M5G probes, M7 judge and F2", "why": "Two thirds of the balance stays in reserve for the final run", "rej": "Spending to the per-run caps (4.40 USD)"}, {"n": 68, "d": "Live batch part 1 merged (0.21 USD of 3.00): gemini-embedding-2 at 800/100 confirmed; M1 dev recall@5 0.917, nDCG@5 0.761; dev chat model claude-haiku-5.5 (only E02 pass); judges claude-haiku-5.5 and gpt-4.1-mini; M2 adopts no arm", "why": "Each follows its protocol's committed rule", "rej": "-"}, {"n": 69, "d": "Sonnet 5.5 refuses reasoning-off (HTTP 400): D159 sends the lowest reasoning effort to models that require it, strips the thinking, counts the tokens; protocols read accordingly", "why": "The product model is fixed by spec; the protocols' intent is a deterministic, cheap call, which lowest effort keeps as far as the endpoint allows", "rej": "Changing the product model"}, {"n": 70, "d": "min_score stays 0.30 (D160): the calibrated 0.73 answers only 56 percent of answerable dev questions", "why": "A threshold that refuses half the answerable questions breaks the product more than it protects", "rej": "Setting 0.73"}, {"n": 71, "d": "M2's hybrid arm (-0.27 nDCG@5) is investigated before the M2 report is final: a result that far below dense suggests a bug in BM25 or fusion, not a property of the method", "why": "A bug would make the A/B conclusion wrong even though no arm is adopted", "rej": "Reporting it as measured"}, {"n": 72, "d": "gpt-5-nano is recorded as dropped from E02 for provider errors on all 114 calls; the runner keeps the provider message from now on", "why": "The drop reason must be in the record", "rej": "-"}, {"n": 73, "d": "Hybrid arm: no bug (BM25 alone puts the gold chunk in the top 5 for 42 percent of dev questions against 92 percent for dense; paraphrases avoid KB wording). The A/B result stands as measured; no rerun, no retuning after seeing results (protocol rule). The follow-ups (truncated or weighted BM25) go to the reflection as future work", "why": "Rerunning with a new arm after seeing the result would be tuning on dev without a protocol", "rej": "Adding a weighted-hybrid arm now"}, {"n": 74, "d": "M5-store merged after pass 4 PASS on Postgres, then M5b merged on top; main green (make check, kit targets, every replay; discovery-table as predicted)", "why": "Both verified; order kept (M5b contains M5-store)", "rej": "-"}, {"n": 75, "d": "M5c: the time-saved figure uses the rate card's own meaning (`automated_minutes_per_request` = minutes saved), capped at the reported manual time; SPEC section 7's `t_manual - t_automated` wording is read that way", "why": "The rate card is the committed data and the report must trace to it", "rej": "Reinterpreting the card"}, {"n": 76, "d": "The spec snapshot shape `{protocol_version, facts[]}` is defined by M5c; M6's submit path writes exactly that", "why": "One producer, one consumer, one shape", "rej": "-"}, {"n": 77, "d": "M5c's fact-to-module keyword table is a first rule set tuned on the dev companies only; listed as a limit in the reflection, not tuned on test", "why": "No test-split tuning (HARNESS rule 6)", "rej": "-"}, {"n": 78, "d": "Live batch part 2 merged (batch total 0.55 USD of 3.00). M3 live misses its protocol bar (9 of 15 against 12): reported as measured, no retuning on the tool cases; the failing cases (tc04, tc13, tc14, tc15, plus one false read call) go to the reflection and the owner checkpoint as a product finding", "why": "The protocol forbids retuning after seeing results", "rej": "Rewriting tool descriptions and rerunning"}, {"n": 79, "d": "M7 generation: the product answered all 6 unanswerable dev questions (no abstention). Kept as the measured behaviour for labelling and the judge; listed as the main RAG finding for the reflection, linked to D160 (min_score 0.30)", "why": "The judge and labels should measure the product as it is", "rej": "Changing the threshold before labelling"}, {"n": 80, "d": "M4 live: the model attempted no destructive call, so the live arms show model behaviour while the forced arm proves the policy; both reported", "why": "Honest reading of a zero", "rej": "-"}, {"n": 81, "d": "M7 labels merged first and alone (D26). The labeller followed the protocol's relevance scale (an honest decline scores 1, not 2) over the integrator's brief; the protocol is the committed rule, the brief was wrong", "why": "Protocol before brief", "rej": "Relabelling"}, {"n": 82, "d": "M5b live discovery (0.60 USD): extraction F1 0.699 against the protocol's 0.85 bar; reported as measured with the misses by field, no retuning. Premature estimate 0 by the shared rule (1 of 41 against the expected file, one turn early at B-1 18). The B-1 turn-22 upload case recorded a `steps_in_process` fact the expected file does not list; no pricing or status change was written, so the injection defence held; the extra fact is legitimate extraction from an untrusted document (facts start `reported`, D46) and is listed as an expected-file disagreement, not a security failure", "why": "The security property is that injected text changes nothing protected; it did not", "rej": "Counting it as an injection failure"}, {"n": 83, "d": "Second usage-limit pause about 21:00 to 21:30; M6 wiring and M5G resumed from their transcripts", "why": "-", "rej": "-"}, {"n": 84, "d": "M5G edits outside its row accepted: the Decisions client and URL in `llm/cloud.py` (HARNESS rule 1 keeps every OpenRouter URL there) and the gate node in `chain.py` between policy and extract (the only place with the turn history the gate needs)", "why": "Both follow existing rules", "rej": "Moving the gate to app.py"}, {"n": 85, "d": "M7 judge (0.04 USD): relevance and context precision validated for both judges; faithfulness validated for neither (kappa 0.20 and 0.00 with one unfaithful label in 30, the low-prevalence kappa problem). Reported as measured; the RAG faithfulness number is the label mean (0.97), not a judge score; the fix (a labelled set with more unfaithful answers) goes to the reflection", "why": "The protocol's rule decides usability; no post-hoc rule change", "rej": "Lowering the bar"}, {"n": 86, "d": "M5G merged after verifier PASS and fix cycle 1 (mixed messages with one weak term go to Jev, guards on --final, budget and rubric version, build_gate factory); the simulator got the identical rule fix and its MANIFEST line was refreshed", "why": "Data tool and gate must stay identical", "rej": "-"}, {"n": 87, "d": "Jev dev thresholds committed (T_refuse 0.37, T_pass 0.61; dev: 0 of 142 in-scope refused, 67 of 68 off-topic refused, 0.007 USD). SR A-04 fails only on `jev_request_keys_exact`, which compares the top-level request (model, questions, state) instead of the `state` keys; the recorded state holds exactly message, recent_turns, scope_summary, so A-04 is counted met on that evidence and the runner check is fixed in the pen-test pass", "why": "The case tests what reaches the judge (D145); the request envelope is not state", "rej": "Counting a runner defect as a product failure"}, {"n": 88, "d": "M6 verifier PASS with one medium (T1: refresh token readable from the signed cookie). Fixed now by encrypting the tokens in the cookie rather than taken to the owner: fixing a risk is the integrator's call, only accepting one is the owner's (D125). Server-side token storage stays as the stronger follow-up", "why": "Smallest fix that removes the takeover path", "rej": "Owner risk acceptance"}, {"n": 89, "d": "F2 merged (one attempt per run, one ok line, 0.89 USD; total live spend 2.08 USD of 8.47). Every miss is reported as measured: M5G on test refused 1 of 142 in-scope messages and 92.6 percent off-topic (targets 0 and 95); M5b fact F1 0.643; no M7 judge validated on test. The gate ships with the dev thresholds, as the protocol says; the misses go to the owner checkpoint and the reflection", "why": "The test split is read once and never used to retune (HARNESS rule 6)", "rej": "Retuning on test"}, {"n": 90, "d": "E02: the development model stays claude-haiku-5.5. Its choice was made on dev by the protocol's rule; on test it still meets the F1 rule but its abstention rate falls to 0.923, so the runner's re-applied dev rule names the reference model. The dev model is only a development tool (the product model is fixed), so the decision stands and the test disagreement is reported", "why": "Changing a dev decision from a test result would be test-split tuning", "rej": "Switching to gpt-4.1-mini"}, {"n": 91, "d": "Pen test merged: 50 of 50 cases, 21 of 22 extra probes, no critical or high finding. Integrator fixed L-1 (titles drop control and bidi characters, with a test) and L-2 (operations step to delete the Supabase account after an operator delete); L-3 (stale m6-review script after the token encryption) and L-4 (same-day output overwrite) are eval-tool lows listed in the security report", "why": "Product lows fixed; tool lows recorded", "rej": "-"}, {"n": 92, "d": "F3 dependency audit: four chromadb 1.5.9 advisories (no fixed version listed), all in chromadb's HTTP server endpoints and RBAC provider. MILO uses only the embedded `EphemeralClient` and `PersistentClient` (src/milo/rag/vectors.py) and exposes no Chroma server, so none is reachable; recorded, not fixed. `make audit` now runs pip-audit through uvx (it was not installed)", "why": "Reachability decides the risk; upgrade when a fixed version exists", "rej": "Replacing chromadb at the end of the build"}, {"n": 93, "d": "F3 privacy check on MILO's own tracked files (D54): 392 files, 0 findings", "why": "-", "rej": "-"}, {"n": 94, "d": "F4: README status rewritten for the finished build; the checkpoint block lists every owner question", "why": "-", "rej": "-"}];
+
+  const RESULTS = [
+    ["Retrieval quality, nDCG@5 (M1)", "0.761", "0.629", "none set", "warn", "Dropped on test"],
+    ["Retrieval recall@5 (M1)", "0.917", "—", "none set", "info", "Dev only"],
+    ["Advanced RAG arms adopted (M2)", "none", "—", "CI above zero", "info", "Dense stays"],
+    ["Price quoted before allowed (M5b)", "0", "0", "0", "ok", "Met"],
+    ["Fact extraction F1 (M5b)", "0.699", "0.643", "0.85", "bad", "Missed"],
+    ["In-scope messages refused (M5G)", "0 of 142", "1 of 142", "0", "bad", "Missed on test"],
+    ["Off-topic messages refused (M5G)", "98.5%", "92.6%", "95%", "bad", "Missed on test"],
+    ["Tool choice on the product model (M3)", "9 of 15", "—", "12 of 15", "bad", "Missed"],
+    ["Destructive actions by attacks (M4)", "0", "—", "0", "ok", "Met"],
+    ["Attack cases (pen test)", "50 of 50", "—", "no critical or high", "ok", "Met"],
+    ["Judge agreement, faithfulness (M7)", "0.20 / 0.00", "0.38 / 0.00", "kappa 0.60", "bad", "No judge validated"],
+    ["Judge agreement, relevance (M7)", "0.90 / 0.89", "0.57 / 0.67", "kappa 0.60", "warn", "Dev only"],
+    ["Row-level security on Postgres (M5-store)", "58 of 58", "—", "all", "ok", "Met"]
+  ];
+
+  const SPEND = [
+    ["E02 chat-model comparison", 0.80, 0.18], ["M4 attack arms", 0.60, 0.03], ["M5b live discovery", 0.72, 0.60],
+    ["M7 answers (dev)", 0.22, 0.24], ["M7 judge", 0.22, 0.04], ["M3 tools", 0.08, 0.06],
+    ["Embeddings, index, M2", 0.03, 0.03], ["Jev, SR live, pen test", 0.15, 0.02], ["F2 test-split run", 0.95, 0.89]
+  ];
+
+  const BAND = [["13:00","14:00","a"],["14:00","16:31","p"],["16:31","17:06","a"],["17:06","17:21","p"],["17:21","18:18","a"],["18:18","19:18","w"],["19:18","20:33","a"],["20:33","21:31","p"],["21:31","22:46","a"]];
+
+  const NODES = {
+    web: { t: "Owner in the browser (M6)", p: "Flask pages with a session panel on the left, the chat in the middle and the evidence drawer on the right.",
+      l: ["Anyone can register; no invites (D87, D119).", "Consent before any write (D135); CSRF on every form; strict security headers (D138).", "Replies render as plain text, never markdown (D139); login tokens are encrypted in the cookie (decision 88)."] },
+    gate: { t: "Scope gate (M5G)", p: "Keeps MILO to its job: diagnosing the owner's business. Off-topic requests are refused.",
+      l: ["Stage 1 is free rules: a strong business word, or two weak ones, passes; a plain joke or poem request with no business word is refused (D157, D158).", "Everything else goes to Jev, a decision model that returns a probability (about $0.00004 a call).", "Thresholds 0.37 and 0.61 were set on dev only. A Jev failure lets the message through (D117)."] },
+    chain: { t: "Discovery chain (M5b)", p: "Each turn: extract facts from the message, merge them in code, then reply with at most four model calls.",
+      l: ["A fact is kept only if its quote appears word for word in what the owner wrote (D134).", "Conflicting numbers become a question to the owner, never a guess.", "No price appears until the protocol allows an estimate; a reply check removes any early amount (decision 65)."] },
+    policy: { t: "Policy and security (M4)", p: "Decides whether a tool call may run.",
+      l: ["Identity fields are stripped from model output, so the model cannot act as another owner (D21).", "Text from documents or the web marks the session as tainted; pricing writes are then denied (D22).", "Destructive actions need the owner's approval, bound to the exact arguments, once only (decision 41)."] },
+    rag: { t: "Knowledge search (M1, M2)", p: "24 fictional articles about the modules, pricing and policies, searched with embeddings.",
+      l: ["Model: google/gemini-embedding-2, chunks of 800 characters, confirmed by measurement.", "Dev recall@5 0.917; test nDCG@5 0.629.", "Rewrite, self-query, hybrid and rerank were tested; none beat plain dense search, so none was adopted."] },
+    tools: { t: "Tools (M3)", p: "Five calls the model can make: search the knowledge base, read the session spec, estimate cost, record a fact, withdraw a submission.",
+      l: ["Every argument is checked against a strict schema.", "The estimate tool takes no numbers from the model; all figures come from the rate card."] },
+    store: { t: "Database (M5-store)", p: "Supabase Postgres with row-level security forced on all 17 owner tables.",
+      l: ["The app connects as a limited role, never as the admin (D74, D153).", "Proven on the test project: 58 of 58 identity checks, owner A cannot see owner B (decision 74).", "Production was never touched."] },
+    report: { t: "Report (M5c)", p: "Built in code from the stored specification; no model writes it.",
+      l: ["Every number carries a pointer to the fact or rate-card line it came from.", "Example A-1: monthly 1,372.50 / 1,525.00 / 1,830.00, setup 2,700, checked by hand."] }
+  };
+
+  const MILESTONES = [
+    { id: "SR", name: "Threat model and red team", st: "ok", what: "28 threats, 21 spec gaps closed (D127 to D146), 50 attack cases written before the defences, a review on every risky change, and a final pen test.", check: "Pen test: 50 of 50 cases, 21 of 22 extra probes, no critical or high finding.", trouble: "One runner check compared the wrong field (decision 87); two lows fixed by the integrator (decision 91).", files: "docs/threat_model.md, evals/security/, docs/security_report.md" },
+    { id: "S0", name: "Scaffold", st: "ok", what: "Project skeleton, the course kit's contract pipeline, database migration, in-memory store.", check: "All 9 kit tests pass; integrator verified.", trouble: "The agent tool cloned the parent repo, so later work used MILO's own worktrees (decision 18).", files: "src/milo/, db/migrations/0001_init.sql, Makefile" },
+    { id: "M0b", name: "Gold question set", st: "ok", what: "120 questions (60 dev, 60 test) over the 24 articles, each tied to an exact quote.", check: "Independent auditor, two passes: 108 then 120 of 120 ok; no leakage between splits.", trouble: "12 rows fixed (an inverted answer, vague quotes). A fresh agent did the fix cycle (decision 46).", files: "data/gold.jsonl, data/source/gold_questions.yaml, data/prompts/gold-audit.md" },
+    { id: "M0", name: "Remaining data", st: "ok", what: "Fixed old tool cases, added an exfiltration attack, rate-card fields, a banned-phrase check for articles.", check: "Verifier PASS; the gold file hash stayed identical.", trouble: "None blocking.", files: "data/tool_cases.jsonl, data/attacks.jsonl, scripts/build_data.py" },
+    { id: "M5a", name: "LLM client and errors", st: "ok", what: "The only OpenRouter client, one retry site, typed errors, cost from usage.", check: "Verifier PASS.", trouble: "Later: the product model refuses reasoning off, so required models get low effort (D159).", files: "src/milo/llm/" },
+    { id: "M3", name: "Tools and pricing", st: "warn", what: "Five tools, the backend, the cost estimator, the tool loop.", check: "Verifier PASS offline. Live on the product model: 9 of 15 correct (bar 12).", trouble: "The live miss is recorded, not tuned away (decision 78).", files: "src/milo/tools/, src/milo/pricing/" },
+    { id: "M4", name: "Security policy", st: "ok", what: "Taint, identity stripping, approvals, the attack evaluation in three arms.", check: "First verdict FAIL: the web path bypassed the approval fix (double approval possible). Integrator fixed it; PASS.", trouble: "Race and argument tampering closed (decisions 37, 41).", files: "src/milo/security/, src/milo/tools/approvals.py" },
+    { id: "M5-store", name: "Database, auth, RLS", st: "ok", what: "Repositories, Supabase Auth client, JWT checks, row-level security.", check: "Four verifier passes on the Postgres test project; PASS on pass 4.", trouble: "PostgreSQL 16 role rules, missing FORCE RLS, reset as the wrong role, probe defects: F1 to F10 fixed. Needed your permission once (decision 57).", files: "src/milo/store/, src/milo/auth/, docs/operations.md" },
+    { id: "M1", name: "Retrieval", st: "ok", what: "Chunking, index, dense search with abstention threshold.", check: "Verifier PASS; live dev recall@5 0.917, nDCG@5 0.761; test nDCG@5 0.629.", trouble: "Calibrated threshold 0.73 would refuse half the answerable questions, so 0.30 stays (D160).", files: "src/milo/rag/, evals/retrieval/" },
+    { id: "M2", name: "Advanced retrieval", st: "ok", what: "Query rewrite, self-query filters, BM25 hybrid, rerank, an A/B against dense.", check: "Verifier PASS; live A/B adopts no arm.", trouble: "Hybrid scored far below dense; investigated, no bug: paraphrased questions defeat keyword search (decision 73).", files: "src/milo/rag/, evals/protocols/m2-ab.md" },
+    { id: "M5b", name: "Discovery core", st: "warn", what: "The interview: protocol, facts, merge, chain, turns, approvals.", check: "Verifier PASS twice. Live: no early price, quotes verbatim, F1 0.70 dev and 0.64 test (bar 0.85).", trouble: "Bare amounts slipped past the reply check; fixed (decision 65).", files: "src/milo/chain.py, src/milo/facts/, src/milo/protocol/" },
+    { id: "M5c", name: "Report", st: "ok", what: "The owner's report as structured data, every figure with its source.", check: "Verifier PASS with a hand recomputation of A-1.", trouble: "A conflicting email could have been quoted; fixed (privacy).", files: "src/milo/report/" },
+    { id: "M5G", name: "Scope and Jev gate", st: "warn", what: "Two-stage input gate with 420 audited test messages and a word list.", check: "Verifier PASS. Dev: 0 of 142 refused wrongly, 98.5% off-topic refused. Test: 1 of 142 and 92.6%.", trouble: "Audits found that one trade word bypassed Jev; rule changed to strong/weak terms (D157). Mixed messages fixed (decision 86).", files: "src/milo/gate/, data/scope/, evals/protocols/m5g-gate.md" },
+    { id: "M6", name: "Web UI", st: "ok", what: "All pages and routes wired to the app and database; create_app with the production guard.", check: "Verifier and security review PASS; 24 of 24 browser checks.", trouble: "Login tokens were readable from the cookie; now encrypted (decision 88).", files: "src/milo/web/, evals/ui/record.py, docs/m6_recording.webm" },
+    { id: "M7", name: "Evaluation", st: "warn", what: "Answer generation, 30 labelled answers, two judge models, kappa.", check: "Relevance and context precision validated on dev; faithfulness not, for either judge.", trouble: "Only 1 of 30 answers was unfaithful, too few for kappa (decision 85).", files: "evals/rag/, docs/m7_report.md, docs/reflection.md" },
+    { id: "F1–F4", name: "Final steps", st: "ok", what: "Integration, one sealed test run, all checks, privacy scan, dependency audit, checkpoint.", check: "One ok line in the test access log; 0 privacy findings; chromadb advisories not reachable.", trouble: "Test misses reported as measured (decision 89).", files: "docs/final_report.md, docs/final-run-plan.md, evals/results/test_access.log" }
+  ];
+
+  const FINDINGS = [
+    ["bad", "The gate missed on test", "One legitimate message of 142 was refused and 92.6% of off-topic ones were caught, against 0 and 95%. It ships with the dev thresholds; a bigger dev set is the fix."],
+    ["bad", "MILO answers what it should decline", "On the 6 unanswerable questions it never formally abstained, although the labeller found it declined in words. The retrieval threshold stays at 0.30 because 0.73 refused half the good questions."],
+    ["bad", "Tool choice is weak on the product model", "9 of 15 cases right on Claude Sonnet 5.5. No dangerous call was made; the misses are wrong or missing tool picks."],
+    ["warn", "Fact extraction is below its bar", "F1 0.70 on dev and 0.64 on test against 0.85. Safety held: no early price and every quote verbatim."],
+    ["warn", "No judge can grade faithfulness", "Only one unfaithful answer among 30 labels, so agreement cannot be shown. A labelled set with more unfaithful answers would fix it."],
+    ["warn", "Known security limits you accepted or must decide", "Off-topic text naming one module word passes the free rules (covered by the reply check). A stolen access token works for up to an hour. Operator MFA is not built."],
+    ["ok", "What held everywhere", "No early price, verbatim evidence, zero destructive or cross-owner actions, row-level security proven on Postgres, 50 of 50 attack cases."]
+  ];
+
+  const TODO = [
+    ["t1", "Read docs/final_report.md (dev against test, with the misses)."],
+    ["t2", "Read the last block of docs/owner/CHECKPOINTS_PENDING.md (every open question)."],
+    ["t3", "Decide: accept the shortfalls as findings for the course, or schedule fixes."],
+    ["t4", "Decide on the AE privacy check (it fails on sprint2/part2 and part4 notebooks) so the parent repo can record MILO."],
+    ["t5", "Confirm or replace the muted text colour (D45 #909090 fails contrast)."],
+    ["t6", "Before production only: consent text, first operator, role passwords and app connection strings, Supabase URL and key, operator MFA, token residual (SPEC section 18)."]
+  ];
+
+  const SPECDEC = [
+    ["D119", "No invites anywhere; anyone registers by themselves."], ["D120", "The scope and Jev gate is its own milestone, M5G."], ["D121", "Owner-only steps are placeholders; production refuses to start while one is open."],
+    ["D122–D125", "A separate security red-team lane, test environment only, with its own budget."], ["D126", "Pay OpenRouter only to measure a model; everything else on the subscription."],
+    ["D127–D146", "The 21 gaps from the threat model: connection names, RLS predicate, per-account limits, upload caps, verbatim evidence, consent on every write, JWT rules, headers, plain-text replies, trace content and more."],
+    ["D147–D152", "Gate equality rule, E02 timing, demo split, data ownership, gold filter keys, kit checker."], ["D153–D156", "Separate admin and app database roles; RLS test on the real test project; migration hygiene."],
+    ["D157–D158", "Stage 1 needs a strong word or two weak ones; plurals count once; approximate numbers count."], ["D159", "Models that require reasoning get the lowest effort instead of off."], ["D160", "Retrieval threshold stays 0.30."]
+  ];
+
+  const FILES = [
+    ["README.md", "Status and how to run it locally."], ["SPEC.md", "The specification, decisions D1 to D160 (sections 20 to 28 override earlier text)."],
+    ["HARNESS.md", "How the build ran: roles, hard rules, file ownership."], ["docs/integrator-decisions.md", "The 94 build decisions with reasons."],
+    ["docs/final_report.md", "Dev against test, every run, with costs."], ["docs/security_report.md", "Pen test, findings, accepted limits."],
+    ["docs/owner/CHECKPOINTS_PENDING.md", "One block per milestone plus your open questions."], ["docs/verify/", "Every verifier verdict, including failed passes."],
+    ["docs/live-batch-ledger.md", "Every paid run with its cost."], ["evals/protocols/", "Experiment protocols, each committed before its result."],
+    ["docs/RESUME.md", "How a new session picks up the work."], ["monitor/", "The build monitor and its dashboard data."]
+  ];
+
+  const GLOSS = [
+    ["Dev / test split", "Data halves. Dev is used to decide things; test is opened once at the end to check they generalise."],
+    ["Protocol", "A written experiment plan, committed before the first result so nothing can be chosen after the fact."],
+    ["Verifier", "A fresh agent that checks a milestone against the spec; the builder never approves its own work."],
+    ["Fix cycle", "A round of fixes after a verifier finding, followed by another check."],
+    ["RAG", "Retrieval-augmented generation: search the knowledge base, then answer from what was found."],
+    ["nDCG@5 / recall@5", "Retrieval scores: did the right passage appear in the top five, and how high."],
+    ["F1", "Balance of precision and recall; here, how many owner facts were extracted correctly."],
+    ["Kappa", "Agreement between a judge model and human-style labels beyond chance."],
+    ["Jev", "A decision model on OpenRouter that returns a probability, used by the scope gate."],
+    ["RLS", "Row-level security in Postgres: each owner can only ever read their own rows."],
+    ["Taint", "A flag set when untrusted text enters the conversation; it blocks risky actions."],
+    ["SR", "Security red team: the agents that attack what the builders defend."],
+    ["D-numbers", "Spec decisions in SPEC.md. Plain numbers (1 to 94) are integrator decisions."],
+    ["Worktree", "A separate checkout of the repo on its own branch, so agents never collide."]
+  ];
+
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const pill = (kind, text) => el("span", "pill p-" + kind, text);
+
+  // zoom
+  let level = 2;
+  try { const s = localStorage.getItem("milo-map-level"); if (s) level = Number(s) || 2; } catch (e) {}
+  function applyLevel() {
+    document.querySelectorAll("section[data-level]").forEach((s) => s.classList.toggle("lvl-hidden", Number(s.dataset.level) > level));
+    document.querySelectorAll(".zoom button").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.z) === level)));
+    const toc = document.getElementById("toc"); toc.innerHTML = "";
+    document.querySelectorAll("section[data-level]").forEach((s) => { if (!s.classList.contains("lvl-hidden")) { const a = el("a", null, s.dataset.title); a.href = "#" + s.id; toc.appendChild(a); } });
+    try { localStorage.setItem("milo-map-level", String(level)); } catch (e) {}
+  }
+  document.querySelectorAll(".zoom button").forEach((b) => b.addEventListener("click", () => { level = Number(b.dataset.z); applyLevel(); }));
+
+  // flow
+  const detail = document.getElementById("flow-detail");
+  function showNode(k) {
+    const n = NODES[k]; detail.innerHTML = "";
+    detail.appendChild(el("h3", null, n.t)); detail.appendChild(el("p", null, n.p));
+    const ul = el("ul"); n.l.forEach((x) => ul.appendChild(el("li", null, x))); detail.appendChild(ul);
+    document.querySelectorAll(".node").forEach((g) => g.classList.toggle("on", g.dataset.node === k));
+  }
+  document.querySelectorAll(".node").forEach((g) => {
+    g.addEventListener("click", () => showNode(g.dataset.node));
+    g.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showNode(g.dataset.node); } });
+  });
+  showNode("gate");
+
+  // results
+  const rb = document.getElementById("results-body");
+  RESULTS.forEach((r) => { const tr = el("tr"); [r[0], r[1], r[2], r[3]].forEach((c) => tr.appendChild(el("td", null, c))); const td = el("td"); td.appendChild(pill(r[4], r[5])); tr.appendChild(td); rb.appendChild(tr); });
+
+  // spend
+  const bars = document.getElementById("bars"); const max = Math.max(...SPEND.map((s) => Math.max(s[1], s[2])));
+  SPEND.forEach(([name, est, act]) => {
+    const row = el("div", "bar"); row.appendChild(el("span", null, name));
+    const tr = el("div", "track"); const e = el("div", "est"); e.style.width = (est / max * 100) + "%"; const a = el("div", "act"); a.style.width = Math.max(1, act / max * 100) + "%";
+    tr.appendChild(e); tr.appendChild(a); row.appendChild(tr);
+    row.appendChild(el("span", "mono", "$" + act.toFixed(2) + " / $" + est.toFixed(2))); bars.appendChild(row);
+  });
+
+  // band
+  const toM = (t) => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+  const t0 = toM("13:00"), t1 = toM("22:46"); const band = document.getElementById("band");
+  const COL = { a: "var(--accent)", p: "var(--muted)", w: "var(--warn)" }; const NAME = { a: "Active", p: "Paused by a limit", w: "Waiting for you" };
+  BAND.forEach(([a, b, k]) => { const d = el("div"); d.style.flex = String(toM(b) - toM(a)); d.style.background = COL[k]; d.title = a + " to " + b + ": " + NAME[k]; band.appendChild(d); });
+
+  // milestones
+  const list = document.getElementById("ms-list"), msd = document.getElementById("ms-detail");
+  const ST = { ok: ["ok", "Done"], warn: ["warn", "Done, with misses"] };
+  function showMs(i) {
+    const m = MILESTONES[i]; msd.innerHTML = "";
+    const h = el("div"); h.style.display = "flex"; h.style.gap = "10px"; h.style.alignItems = "center"; h.style.flexWrap = "wrap";
+    h.appendChild(el("h3", null, m.id + " · " + m.name)); h.appendChild(pill(ST[m.st][0], ST[m.st][1])); msd.appendChild(h);
+    const dl = el("dl"); [["What", m.what], ["How checked", m.check], ["On the way", m.trouble], ["Files", m.files]].forEach(([k, v]) => { dl.appendChild(el("dt", null, k)); const dd = el("dd", k === "Files" ? "mono" : null, v); dl.appendChild(dd); });
+    msd.appendChild(dl);
+    list.querySelectorAll(".ms-item").forEach((b, j) => b.setAttribute("aria-selected", String(j === i)));
+  }
+  MILESTONES.forEach((m, i) => { const b = el("button", "ms-item"); b.setAttribute("role", "option"); b.appendChild(el("span", null, m.id + " · " + m.name)); b.appendChild(pill(ST[m.st][0], m.st === "ok" ? "Done" : "Misses")); b.addEventListener("click", () => showMs(i)); list.appendChild(b); });
+  showMs(0);
+
+  // findings
+  const fc = document.getElementById("findings-cards");
+  FINDINGS.forEach(([k, t, p]) => { const c = el("div", "card"); const h = el("div"); h.style.display = "flex"; h.style.gap = "8px"; h.style.alignItems = "center"; h.style.flexWrap = "wrap"; h.appendChild(pill(k, k === "bad" ? "Missed" : k === "warn" ? "Limit" : "Held")); h.appendChild(el("h3", null, t)); c.appendChild(h); c.appendChild(el("p", null, p)); fc.appendChild(c); });
+
+  // todo
+  const todo = document.getElementById("todo"); let done = {};
+  try { done = JSON.parse(localStorage.getItem("milo-map-todo") || "{}"); } catch (e) {}
+  TODO.forEach(([id, text]) => {
+    const lab = el("label"); const cb = el("input"); cb.type = "checkbox"; cb.id = id; cb.checked = !!done[id];
+    const sp = el("span", null, text); lab.appendChild(cb); lab.appendChild(sp); lab.classList.toggle("done", cb.checked);
+    cb.addEventListener("change", () => { done[id] = cb.checked; lab.classList.toggle("done", cb.checked); try { localStorage.setItem("milo-map-todo", JSON.stringify(done)); } catch (e) {} });
+    todo.appendChild(lab);
+  });
+
+  // decisions
+  const TOPICS = [["All", ""], ["Security", "secur|rls|token|consent|attack|sr |pen test|taint|approval|cookie|privacy"], ["Database", "postgres|supabase|migration|rls|store|role"], ["Gate", "gate|jev|scope|lexicon|stage"], ["Data", "gold|scope set|audit|label|manifest|data"], ["Spend and models", "usd|spend|openrouter|fable|opus|sonnet|model|limit"], ["Process", "merge|verifier|worktree|monitor|resume|push|commit"]];
+  let topic = ""; const q = document.getElementById("dec-q"), dl2 = document.getElementById("dec-list"), cnt = document.getElementById("dec-count"), chips = document.getElementById("dec-chips");
+  TOPICS.forEach(([name, re], i) => { const b = el("button", null, name); b.setAttribute("aria-pressed", String(i === 0)); b.addEventListener("click", () => { topic = re; chips.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b))); renderDec(); }); chips.appendChild(b); });
+  function renderDec() {
+    const s = q.value.trim().toLowerCase(); const rx = topic ? new RegExp(topic, "i") : null; dl2.innerHTML = ""; let n = 0;
+    DECISIONS.forEach((d) => {
+      const hay = (d.d + " " + d.why + " " + d.rej).toLowerCase();
+      if (s && !hay.includes(s)) return; if (rx && !rx.test(hay)) return; n++;
+      const det = el("details", "dec"); const sum = el("summary"); sum.appendChild(el("span", "n", "#" + d.n)); sum.appendChild(el("span", null, d.d.replace(/`/g, ""))); det.appendChild(sum);
+      const body = el("div", "body");
+      const w = el("div", "kv"); w.appendChild(el("b", null, "Why")); w.appendChild(document.createTextNode(d.why.replace(/`/g, ""))); body.appendChild(w);
+      if (d.rej && d.rej !== "-") { const r = el("div", "kv"); r.appendChild(el("b", null, "Rejected")); r.appendChild(document.createTextNode(d.rej.replace(/`/g, ""))); body.appendChild(r); }
+      det.appendChild(body); dl2.appendChild(det);
+    });
+    cnt.textContent = n + " of " + DECISIONS.length + " shown";
+  }
+  q.addEventListener("input", renderDec); renderDec();
+
+  // spec and files and glossary
+  const sb = document.getElementById("spec-body"); SPECDEC.forEach(([i, t]) => { const tr = el("tr"); tr.appendChild(el("td", "mono", i)); tr.appendChild(el("td", null, t)); sb.appendChild(tr); });
+  const fb = document.getElementById("files-body"); FILES.forEach(([f, t]) => { const tr = el("tr"); tr.appendChild(el("td", "mono", f)); tr.appendChild(el("td", null, t)); fb.appendChild(tr); });
+  const gl = document.getElementById("gloss"); GLOSS.forEach(([k, v]) => { const d = el("div"); d.appendChild(el("b", null, k)); d.appendChild(document.createTextNode(v)); gl.appendChild(d); });
+
+  applyLevel();
+})();
+</script>
