@@ -117,3 +117,7 @@ These picks make each assertion script-checkable; they are SR conventions, not s
 ## Verifier exception (integrator decision 19)
 
 `cases.jsonl` names the two Supabase connection variables because case A-21 checks the prod guard. HARNESS rule 3's grep (names only in `settings.py` and `.env.example`) treats this file as its one exception.
+
+## Case amendment (integrator decision 64)
+
+A-20: the expected field `evidence_text_hash_is_64hex` is replaced by `evidence_text_stored_as_hash_and_length`. The case tests leakage (D141); the hash length is a format detail of `trace.py` (16 hex characters of SHA-256), not a defence.
