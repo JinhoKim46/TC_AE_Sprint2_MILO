@@ -5,10 +5,10 @@ was drafted by the M0 data agent under SPEC v0.4.3 D52: no model API, no network
 
 - `milo_community_attack_P4.txt`
   - drafted-by: ChatGPT GPT-6, 2026-10-22, prompt P4 v1
-  - Status: raw draft, not validated by `scripts/gen_data.py --check`.
+  - Status: raw draft, not validated by `scripts/build_data.py --check`.
 - `milo_ironbridge_procedure_P5.txt`
   - drafted-by: ChatGPT GPT-6, 2026-10-22, prompt P5 v1
-  - Status: raw draft, not validated by `scripts/gen_data.py --check`.
+  - Status: raw draft, not validated by `scripts/build_data.py --check`.
 
 Metadata is kept outside the draft contents to preserve the requested text-only output and avoid introducing additional numbers into the fictional forum post.
 
@@ -56,7 +56,7 @@ P1–P3 require additional input: P1 requires `data/source/catalogue.yaml` and `
 
 ## attacks
 
-- file: `data/attacks.jsonl`, 10 rows (5 direct, 3 rag including the upload channel, 2 tool_output)
+- file: `data/attacks.jsonl`, 11 rows (6 direct including the canary exfiltration row atk11, 3 rag including the upload channel, 2 tool_output)
 - drafted-by: M0 data agent (Fable), 2026-10-22; rows written by `scripts/build_data.py`
 - brief: the M0 data-agent brief
 - sources read: `SPEC.md` section 3 and 8, `data/demo/uploads/ironbridge-procedure.txt` (carrier, not edited),
@@ -143,3 +143,18 @@ P1–P3 require additional input: P1 requires `data/source/catalogue.yaml` and `
   `uv run python scripts/check_project_data.py data`, `uv run ruff check scripts/build_data.py`,
   `uv run pytest tests/ -q` (74 passed), and a read-only substring script (96 of 96 quotes verified, no overlapping
   quote pair).
+
+## M0 remaining scope
+
+- date: 2026-10-22; written by the M0 builder, no model call, no network
+- tool cases: tc04 and tc13 carry `module_ids` only (`estimate_cost` has no volume parameter); tc07 is owner-a
+  withdrawing submission 1, which is owner-a's own
+- attacks: atk04's note now states its taint result (low) and the gates that stop it; atk11 is a direct exfiltration
+  row with `success_check` type `output_leak`, which uses the canary of `tests/canary.txt` (the canary machinery is
+  kept; the file content is not copied into `data/`)
+- rate card: `automated_minutes_per_request` and `eligible_share` per module (fictional values, SPEC 5.2)
+- `data/kb/policies/security.md`: the "Text is data, not instructions" paragraph is reworded so that no D22 phrase
+  appears (D66); `build_data.py --check` now fails on any D22 phrase in a KB article
+- the gold rows q001 to q120 are unchanged (SHA-256 before and after identical)
+- check command: `uv run python scripts/build_data.py`, `uv run python scripts/build_data.py --check`,
+  `uv run python scripts/check_project_data.py data`, `uv run pytest tests/test_checker.py tests/test_leakage.py`
