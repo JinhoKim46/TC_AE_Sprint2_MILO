@@ -1,0 +1,62 @@
+[project]
+name = "milo"
+version = "0.1.0"
+description = "MILO: a discovery interview chatbot for company owners (fictional course project)"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "chromadb==1.5.9",
+    "flask==3.1.3",
+    "httpx==0.28.1",
+    "jsonschema==4.26.0",
+    "langchain-core==1.6.13",
+    "langchain-openai==1.7.2",
+    "openai==3.36.1",
+    "psycopg[binary,pool]==3.3.6",
+    "pydantic==2.14.1",
+    "pyjwt[crypto]==2.15.1",
+    "pypdf==6.21.2",
+    "pyyaml==6.0.3",
+    "rank-bm25==0.2.2",
+    "werkzeug==3.1.9",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/milo"]
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+# The two pre-S0 embedding scripts are owned by M0b, which rewrites them (SPEC D83); until then they are excluded.
+extend-exclude = [
+    "contract",
+    "scripts/check_project_data.py",
+    "evals/retrieval/compare_embeddings.py",
+    "evals/retrieval/build_embedding_report.py",
+]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["rank_bm25.*", "chromadb.*"]
+ignore_missing_imports = true
+
+[dependency-groups]
+dev = [
+    "mypy==2.4.0",
+    "playwright==1.64.0",
+    "pytest==9.1.1",
+    "pytest-socket==0.8.1",
+    "ruff==0.17.1",
+    "types-jsonschema==4.26.0.20261006",
+    "types-pyyaml==6.0.12.20260906",
+]

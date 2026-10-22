@@ -8,7 +8,6 @@ docs/design/
 
 # Generated data and runtime state
 data/index/
-data/milo.sqlite
 logs/
 .env
 .venv/
