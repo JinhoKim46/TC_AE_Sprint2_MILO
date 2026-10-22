@@ -8,11 +8,13 @@ import hashlib
 import math
 import os
 import re
+import time
+from collections.abc import Callable
+from functools import partial
 from typing import Any
 
-from milo.errors import ProviderFailure
 from milo.llm import cloud
-from milo.llm.retry import classify_exception
+from milo.llm.retry import call_with_retry
 from milo.settings import Settings
 
 BATCH = 64  # texts per embedding request (as in E01)
@@ -40,7 +42,11 @@ class FakeEmbedder:
 
 
 class OpenRouterEmbedder:
-    """Batches texts and calls `cloud.OpenRouterEmbeddings`. One attempt per batch; a failure is typed."""
+    """Batches texts and calls `cloud.OpenRouterEmbeddings`. Each batch goes through the one retry site
+    (`llm/retry.py`, at most 3 attempts); a final failure is a typed `ProviderFailure`.
+
+    `total_tokens` and `total_cost_usd` add up the usage of the successful batches (see `cloud`).
+    """
 
     def __init__(
         self,
@@ -49,26 +55,42 @@ class OpenRouterEmbedder:
         *,
         batch: int = BATCH,
         client: Any = None,
+        price_usd_per_mtok: float | None = None,
+        sleep: Callable[[float], None] = time.sleep,
     ) -> None:
         self.model = model
         self.batch = batch
         self.calls = 0
-        self._inner = cloud.OpenRouterEmbeddings(api_key, model, client=client)
+        self._sleep = sleep
+        self._inner = cloud.OpenRouterEmbeddings(
+            api_key, model, client=client, price_usd_per_mtok=price_usd_per_mtok
+        )
+
+    @property
+    def total_tokens(self) -> int:
+        return self._inner.total_tokens
+
+    @property
+    def total_cost_usd(self) -> float:
+        return self._inner.total_cost_usd
+
+    @property
+    def cost_unknown_calls(self) -> int:
+        return self._inner.cost_unknown_calls
 
     def embed(self, texts: list[str]) -> list[list[float]]:
         out: list[list[float]] = []
         for i in range(0, len(texts), self.batch):
-            try:
-                out += self._inner.embed(texts[i : i + self.batch])
-            except ProviderFailure:
-                raise
-            except Exception as exc:
-                raise ProviderFailure(classify_exception(exc)) from exc
+            chunk = texts[i : i + self.batch]
+            out += call_with_retry(partial(self._inner.embed, chunk), sleep=self._sleep)
             self.calls += 1
         return out
 
 
-def live_embedder(model: str = cloud.DEFAULT_EMBEDDING_MODEL) -> OpenRouterEmbedder:
+def live_embedder(
+    model: str = cloud.DEFAULT_EMBEDDING_MODEL,
+    price_usd_per_mtok: float | None = None,
+) -> OpenRouterEmbedder:
     """The OpenRouter embedder from the process environment. Refuses without `MILO_LIVE=1` (D126)."""
     if os.environ.get("MILO_LIVE") != "1":
         raise PermissionError(
@@ -77,4 +99,4 @@ def live_embedder(model: str = cloud.DEFAULT_EMBEDDING_MODEL) -> OpenRouterEmbed
     key = Settings.from_env().openrouter_api_key
     if not key:
         raise PermissionError("OPENROUTER_API_KEY is not set in the environment")
-    return OpenRouterEmbedder(key, model)
+    return OpenRouterEmbedder(key, model, price_usd_per_mtok=price_usd_per_mtok)

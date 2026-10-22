@@ -1,0 +1,37 @@
+{
+ "note": "Synthetic fixture for the offline dry A/B (M2). Invented scripted model replies for the questions of retrieval_dry_fixture.json; not MILO knowledge-base text and not gold data. Results from it are never MILO results. Covers: a correct filter, an unparseable reply, a valid filter that matches nothing (fallback), a filter that excludes the relevant chunk, a rewrite that helps, an unusable rerank reply.",
+ "base": "retrieval_dry_fixture.json",
+ "scripts": {
+  "rewrite": {
+   "Does the alpha desk module take card payments over the phone?": "alpha desk module never takes card payments over the phone",
+   "Will beta mail ever delete a message?": "beta mail module never deletes a message",
+   "How long does it take to get the alpha desk running?": "alpha desk set-up takes two working days",
+   "What extra charge applies to urgent requests?": "urgent requests surcharge percent monthly fee",
+   "Is there a surcharge for CSV export?": "exporting records as CSV surcharge",
+   "What access does beta mail need before it can start?": "beta mail set-up needs read access shared inbox",
+   "Which tractor model has the best fuel economy in winter?": "tractor fuel economy winter"
+  },
+  "selfquery": {
+   "Does the alpha desk module take card payments over the phone?": "{\"product\": \"alpha-desk\"}",
+   "alpha desk module never takes card payments over the phone": "{\"product\": \"alpha-desk\"}",
+   "Will beta mail ever delete a message?": "I could not find any filter.",
+   "beta mail module never deletes a message": "```json\n{\"product\": \"beta-mail\"}\n```",
+   "How long does it take to get the alpha desk running?": "{\"section\": \"solutions\"}",
+   "alpha desk set-up takes two working days": "{\"section\": \"solutions\", \"product\": \"alpha-desk\"}",
+   "What extra charge applies to urgent requests?": "{\"section\": \"pricing\"}",
+   "urgent requests surcharge percent monthly fee": "{\"section\": \"pricing\", \"product\": \"alpha-desk\"}",
+   "Is there a surcharge for CSV export?": "{\"section\": \"cases\"}",
+   "exporting records as CSV surcharge": "{\"section\": \"pricing\"}",
+   "What access does beta mail need before it can start?": "{\"product\": \"beta-mail\", \"colour\": \"red\"}",
+   "beta mail set-up needs read access shared inbox": "{\"product\": \"beta-mail\"}"
+  },
+  "rerank": {
+   "Does the alpha desk module take card payments over the phone?": "[2, 1, 3]",
+   "Will beta mail ever delete a message?": "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+   "How long does it take to get the alpha desk running?": "[3, 1, 2]",
+   "What extra charge applies to urgent requests?": "The best is passage 4.",
+   "Is there a surcharge for CSV export?": "[2, 1]",
+   "What access does beta mail need before it can start?": "[1]"
+  }
+ }
+}

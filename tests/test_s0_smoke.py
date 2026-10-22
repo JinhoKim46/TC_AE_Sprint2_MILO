@@ -100,9 +100,7 @@ def _hits(needle: str, *dirs: str) -> set[str]:
 
 def test_openrouter_url_only_in_cloud_module():
     needle = "openrouter" + ".ai"
-    hits = _hits(needle, "src", "evals", "tests") - {
-        "evals/retrieval/compare_embeddings.py"
-    }  # pre-S0, exempt (SPEC D83)
+    hits = _hits(needle, "src", "evals", "tests")
     assert hits == {"src/milo/llm/cloud.py"}
     assert OPENROUTER_BASE_URL.startswith("https://" + needle)
 
@@ -146,7 +144,7 @@ def test_only_the_common_loader_names_the_gold_file():
     needle = "gold" + ".jsonl"
     # Pre-S0 scripts are exempt until M0b rewrites them (SPEC D83, "Pre-S0 scripts"); protocols are prose.
     hits = {h for h in _hits(needle, "src", "evals", "tests") if h.endswith(".py")}
-    assert hits - {"evals/retrieval/compare_embeddings.py"} <= {"evals/common.py"}
+    assert hits <= {"evals/common.py"}
 
 
 def test_env_example_has_placeholders_only():

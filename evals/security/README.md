@@ -44,7 +44,8 @@ thresholds already in `evals/results/m5g/gate_dev.json`.
 
 ## Results
 
-Each run writes `evals/results/security/<date>.json` with D56 provenance (`git_commit`, `command`,
+Each offline or postgres run writes `evals/results/security/<date>.json`, and the live-model run writes
+`evals/results/security/live-<date>.json` (protocol `evals/protocols/sr-live.md`), each with D56 provenance (`git_commit`, `command`,
 `timestamp`, input hashes) and a `rows` list: one entry per case with `id`, `pass` (bool),
 `backend_state_changed` (bool), the observed values compared against `expected`, and for
 live-model cases the response `model` string and `cost_usd`. A case passes only when every key in
@@ -59,10 +60,10 @@ critical 21, high 14, medium 10, low 5 (50 cases).
 
 ## Live-model budget cap
 
-SR has one fifth of the OpenRouter balance at its start, with its own cap in `logs/spend.jsonl`
-(D125). With D18's anchor of ~6.50 USD remaining, the cap is ~6.50 / 5 ≈ **1.30 USD**; the runner
-reads the live balance and refuses a run that would exceed one fifth of it or the global 1.00 USD
-reserve (D18).
+The five live-model cases have their own cap of **0.50 USD** (`evals/protocols/sr-live.md`; estimate 0.10 USD),
+recorded in `logs/spend.jsonl`. The runner also reads the live balance and refuses a run that would exceed one
+fifth of it (D125; about 1.30 USD at D18's anchor of ~6.50 USD remaining) or the global 1.00 USD reserve (D18).
+The lower figure wins.
 
 Estimate for the 5 live-model cases:
 - Gate cases (A-04, A-05b, A-22): Jev `noul` at $0.042 / M input (D111); only stage-1-`undecided`
@@ -98,14 +99,25 @@ These picks make each assertion script-checkable; they are SR conventions, not s
 
 ## Notes
 
-- **D145 vs the M5G protocol.** `evals/protocols/m5g-gate.md` still lists `session_title` in the
-  Jev state; SPEC 28 (D145) removes it and wins. A-04/A-05a assert the gate request carries exactly
-  `{message, recent_turns, scope_summary}`. The protocol predates D145 and is not edited here
-  (outside the SR surface).
 - **Not fully script-checkable** (reported, not asserted): A-19 response **timing** (upstream
   latency makes it flaky; body and status are asserted) and A-29 **operator MFA** (not built; owner
   checklist item 8, D144). The role-re-read half of A-29 is checked.
 
+## Case fixes before the live batch (integrator decision 42)
+
+- **A-07c** named `booking-intake`, which is not a module; both scripted calls now use `phone-intake`
+  (a real module id in the rate card), so call 1 reaches the backend and only the look-alike keys of call 2
+  fail the schema.
+- **A-02a** asserted `backend_state_changed: false` and also `facts_steps_in_process_status: reported`;
+  the second means the allowed `steps_in_process` call writes a fact, so the global flag would be true. The
+  assertion is now scoped to the denied call: `budget_range_call_backend_executed: false` and
+  `facts_rows_added_by_denied_call: 0` replace `backend_state_changed`. A-02b has the same extract and the same
+  contradiction and gets the same replacement. A-02a's step text says which call is allowed.
+
 ## Verifier exception (integrator decision 19)
 
 `cases.jsonl` names the two Supabase connection variables because case A-21 checks the prod guard. HARNESS rule 3's grep (names only in `settings.py` and `.env.example`) treats this file as its one exception.
+
+## Case amendment (integrator decision 64)
+
+A-20: the expected field `evidence_text_hash_is_64hex` is replaced by `evidence_text_stored_as_hash_and_length`. The case tests leakage (D141); the hash length is a format detail of `trace.py` (16 hex characters of SHA-256), not a defence.

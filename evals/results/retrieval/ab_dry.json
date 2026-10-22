@@ -1,0 +1,2238 @@
+{
+  "git_commit": "2e1abdc353d68baf26455a9e3166f3d7db8a33cb",
+  "model": "scripted-replies+fake-hash-256",
+  "seed": 0,
+  "temperature": null,
+  "command": "python evals/retrieval/ab.py --dry",
+  "timestamp": "2026-10-22T15:30:39Z",
+  "inputs": {
+    "fixture": "a9397d0414e967629d7596a008dc0ec22eecc697fe5c9f8050fe903185d54250",
+    "ab_fixture": "607b634bf01c99103716273c69baeb254d2b90fb8b276475cea82cbaa77dea58",
+    "script": "3e0abdbd1d98d5fb11e7836287ada0e7f3e1a1fd694d23fc6393f351d15005e3",
+    "src/milo/rag/translate.py": "0931a70159e42ec9140f8e115f415feceb573ce0a9444a759e2cdec3e9de274f",
+    "src/milo/rag/selfquery.py": "c3cf34549bf860ecbbb5b86b7ea93babf090d028fc9a356a392a1845bcb57096",
+    "src/milo/rag/bm25.py": "fd5d4f54afb98e95363160af6c609d04d41d2a453c5efaf8d7181356eccd65b7",
+    "src/milo/rag/fusion.py": "fcda3a70add85556ef95b4449f855c054d68c22416105c17378cc69d6e9cda9a",
+    "src/milo/rag/rerank.py": "b37e574014ccb3c5615bcf84dc1a04e25d3e97602579f6832039e661bf428073"
+  },
+  "temperature_note": "scripted replies, no model",
+  "dry": true,
+  "split": "dev",
+  "k": 5,
+  "bootstrap": 2000,
+  "rrf_k": 60,
+  "rerank_pool": 10,
+  "arms": [
+    "dense",
+    "rewrite",
+    "selfquery",
+    "rewrite_selfquery",
+    "hybrid",
+    "rerank"
+  ],
+  "baseline": "dense",
+  "chunk_size": 800,
+  "overlap": 100,
+  "chunk_count": 10,
+  "chunk_sha256": "40ff7421b99eba4ee8f1d47d72dc4118f8032e85b19e3966ac990148f6d62780",
+  "embedding_dim": 256,
+  "embedding_requests": 0,
+  "partial": false,
+  "completed_questions": 8,
+  "total_cost_usd": 0.0,
+  "cost_note": "dry run: no call",
+  "spend_reason": "none (scripted replies, fake embedder)",
+  "summary": {
+    "dense": {
+      "n": 6,
+      "recall5": {
+        "mean": 0.8333,
+        "ci": [
+          0.5,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.6488,
+        "ci": [
+          0.377,
+          0.877
+        ]
+      },
+      "mrr": {
+        "mean": 0.6019,
+        "ci": [
+          0.3704,
+          0.8333
+        ]
+      },
+      "p5": {
+        "mean": 0.1667,
+        "ci": [
+          0.1,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.6019,
+        "ci": [
+          0.3704,
+          0.8333
+        ]
+      }
+    },
+    "rewrite": {
+      "n": 6,
+      "recall5": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.9385,
+        "ci": [
+          0.8155,
+          1.0
+        ]
+      },
+      "mrr": {
+        "mean": 0.9167,
+        "ci": [
+          0.75,
+          1.0
+        ]
+      },
+      "p5": {
+        "mean": 0.2,
+        "ci": [
+          0.2,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.9167,
+        "ci": [
+          0.75,
+          1.0
+        ]
+      }
+    },
+    "selfquery": {
+      "n": 6,
+      "recall5": {
+        "mean": 0.6667,
+        "ci": [
+          0.3333,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.5436,
+        "ci": [
+          0.2103,
+          0.877
+        ]
+      },
+      "mrr": {
+        "mean": 0.5278,
+        "ci": [
+          0.25,
+          0.8333
+        ]
+      },
+      "p5": {
+        "mean": 0.1333,
+        "ci": [
+          0.0667,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.5278,
+        "ci": [
+          0.25,
+          0.8333
+        ]
+      }
+    },
+    "rewrite_selfquery": {
+      "n": 6,
+      "recall5": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.9385,
+        "ci": [
+          0.8155,
+          1.0
+        ]
+      },
+      "mrr": {
+        "mean": 0.9167,
+        "ci": [
+          0.75,
+          1.0
+        ]
+      },
+      "p5": {
+        "mean": 0.2,
+        "ci": [
+          0.2,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.9167,
+        "ci": [
+          0.75,
+          1.0
+        ]
+      }
+    },
+    "hybrid": {
+      "n": 6,
+      "recall5": {
+        "mean": 0.8333,
+        "ci": [
+          0.5,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.6885,
+        "ci": [
+          0.3552,
+          0.9385
+        ]
+      },
+      "mrr": {
+        "mean": 0.6597,
+        "ci": [
+          0.3681,
+          0.9167
+        ]
+      },
+      "p5": {
+        "mean": 0.1667,
+        "ci": [
+          0.1,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.6597,
+        "ci": [
+          0.3681,
+          0.9167
+        ]
+      }
+    },
+    "rerank": {
+      "n": 6,
+      "recall5": {
+        "mean": 0.8333,
+        "ci": [
+          0.5,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.5258,
+        "ci": [
+          0.3155,
+          0.6309
+        ]
+      },
+      "mrr": {
+        "mean": 0.4352,
+        "ci": [
+          0.3056,
+          0.5
+        ]
+      },
+      "p5": {
+        "mean": 0.1667,
+        "ci": [
+          0.1,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.4352,
+        "ci": [
+          0.3056,
+          0.5
+        ]
+      }
+    }
+  },
+  "by_type": {
+    "dense": {
+      "identifier": {
+        "n": 2,
+        "recall5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.8155,
+          "ci": [
+            0.6309,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        },
+        "p5": {
+          "mean": 0.2,
+          "ci": [
+            0.2,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "paraphrase": {
+        "n": 4,
+        "recall5": {
+          "mean": 0.75,
+          "ci": [
+            0.25,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.5655,
+          "ci": [
+            0.1577,
+            0.9077
+          ]
+        },
+        "mrr": {
+          "mean": 0.5278,
+          "ci": [
+            0.2083,
+            0.875
+          ]
+        },
+        "p5": {
+          "mean": 0.15,
+          "ci": [
+            0.05,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.5278,
+          "ci": [
+            0.2083,
+            0.875
+          ]
+        }
+      }
+    },
+    "rewrite": {
+      "identifier": {
+        "n": 2,
+        "recall5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.8155,
+          "ci": [
+            0.6309,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        },
+        "p5": {
+          "mean": 0.2,
+          "ci": [
+            0.2,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "paraphrase": {
+        "n": 4,
+        "recall5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "p5": {
+          "mean": 0.2,
+          "ci": [
+            0.2,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "selfquery": {
+      "identifier": {
+        "n": 2,
+        "recall5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.8155,
+          "ci": [
+            0.6309,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        },
+        "p5": {
+          "mean": 0.2,
+          "ci": [
+            0.2,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "paraphrase": {
+        "n": 4,
+        "recall5": {
+          "mean": 0.5,
+          "ci": [
+            0.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.4077,
+          "ci": [
+            0.0,
+            0.8155
+          ]
+        },
+        "mrr": {
+          "mean": 0.4167,
+          "ci": [
+            0.0833,
+            0.7917
+          ]
+        },
+        "p5": {
+          "mean": 0.1,
+          "ci": [
+            0.0,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.4167,
+          "ci": [
+            0.0833,
+            0.7917
+          ]
+        }
+      }
+    },
+    "rewrite_selfquery": {
+      "identifier": {
+        "n": 2,
+        "recall5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.8155,
+          "ci": [
+            0.6309,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        },
+        "p5": {
+          "mean": 0.2,
+          "ci": [
+            0.2,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "paraphrase": {
+        "n": 4,
+        "recall5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "p5": {
+          "mean": 0.2,
+          "ci": [
+            0.2,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        }
+      }
+    },
+    "hybrid": {
+      "identifier": {
+        "n": 2,
+        "recall5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.8155,
+          "ci": [
+            0.6309,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        },
+        "p5": {
+          "mean": 0.2,
+          "ci": [
+            0.2,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.75,
+          "ci": [
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "paraphrase": {
+        "n": 4,
+        "recall5": {
+          "mean": 0.75,
+          "ci": [
+            0.25,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.625,
+          "ci": [
+            0.25,
+            1.0
+          ]
+        },
+        "mrr": {
+          "mean": 0.6146,
+          "ci": [
+            0.2292,
+            1.0
+          ]
+        },
+        "p5": {
+          "mean": 0.15,
+          "ci": [
+            0.05,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.6146,
+          "ci": [
+            0.2292,
+            1.0
+          ]
+        }
+      }
+    },
+    "rerank": {
+      "identifier": {
+        "n": 2,
+        "recall5": {
+          "mean": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.6309,
+          "ci": [
+            0.6309,
+            0.6309
+          ]
+        },
+        "mrr": {
+          "mean": 0.5,
+          "ci": [
+            0.5,
+            0.5
+          ]
+        },
+        "p5": {
+          "mean": 0.2,
+          "ci": [
+            0.2,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.5,
+          "ci": [
+            0.5,
+            0.5
+          ]
+        }
+      },
+      "paraphrase": {
+        "n": 4,
+        "recall5": {
+          "mean": 0.75,
+          "ci": [
+            0.25,
+            1.0
+          ]
+        },
+        "ndcg5": {
+          "mean": 0.4732,
+          "ci": [
+            0.1577,
+            0.6309
+          ]
+        },
+        "mrr": {
+          "mean": 0.4028,
+          "ci": [
+            0.2083,
+            0.5
+          ]
+        },
+        "p5": {
+          "mean": 0.15,
+          "ci": [
+            0.05,
+            0.2
+          ]
+        },
+        "ap": {
+          "mean": 0.4028,
+          "ci": [
+            0.2083,
+            0.5
+          ]
+        }
+      }
+    }
+  },
+  "paired_vs_dense": {
+    "rewrite": {
+      "recall5": {
+        "mean_diff": 0.1667,
+        "ci": [
+          0.0,
+          0.5
+        ]
+      },
+      "ndcg5": {
+        "mean_diff": 0.2897,
+        "ci": [
+          0.0615,
+          0.623
+        ]
+      },
+      "mrr": {
+        "mean_diff": 0.3148,
+        "ci": [
+          0.0833,
+          0.6111
+        ]
+      },
+      "p5": {
+        "mean_diff": 0.0333,
+        "ci": [
+          0.0,
+          0.1
+        ]
+      },
+      "ap": {
+        "mean_diff": 0.3148,
+        "ci": [
+          0.0833,
+          0.6111
+        ]
+      }
+    },
+    "selfquery": {
+      "recall5": {
+        "mean_diff": -0.1667,
+        "ci": [
+          -0.5,
+          0.0
+        ]
+      },
+      "ndcg5": {
+        "mean_diff": -0.1052,
+        "ci": [
+          -0.5,
+          0.1845
+        ]
+      },
+      "mrr": {
+        "mean_diff": -0.0741,
+        "ci": [
+          -0.4907,
+          0.2593
+        ]
+      },
+      "p5": {
+        "mean_diff": -0.0333,
+        "ci": [
+          -0.1,
+          0.0
+        ]
+      },
+      "ap": {
+        "mean_diff": -0.0741,
+        "ci": [
+          -0.4907,
+          0.2593
+        ]
+      }
+    },
+    "rewrite_selfquery": {
+      "recall5": {
+        "mean_diff": 0.1667,
+        "ci": [
+          0.0,
+          0.5
+        ]
+      },
+      "ndcg5": {
+        "mean_diff": 0.2897,
+        "ci": [
+          0.0615,
+          0.623
+        ]
+      },
+      "mrr": {
+        "mean_diff": 0.3148,
+        "ci": [
+          0.0833,
+          0.6111
+        ]
+      },
+      "p5": {
+        "mean_diff": 0.0333,
+        "ci": [
+          0.0,
+          0.1
+        ]
+      },
+      "ap": {
+        "mean_diff": 0.3148,
+        "ci": [
+          0.0833,
+          0.6111
+        ]
+      }
+    },
+    "hybrid": {
+      "recall5": {
+        "mean_diff": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "ndcg5": {
+        "mean_diff": 0.0397,
+        "ci": [
+          -0.0655,
+          0.1845
+        ]
+      },
+      "mrr": {
+        "mean_diff": 0.0579,
+        "ci": [
+          -0.081,
+          0.25
+        ]
+      },
+      "p5": {
+        "mean_diff": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "ap": {
+        "mean_diff": 0.0579,
+        "ci": [
+          -0.081,
+          0.25
+        ]
+      }
+    },
+    "rerank": {
+      "recall5": {
+        "mean_diff": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "ndcg5": {
+        "mean_diff": -0.123,
+        "ci": [
+          -0.246,
+          0.0
+        ]
+      },
+      "mrr": {
+        "mean_diff": -0.1667,
+        "ci": [
+          -0.3333,
+          0.0
+        ]
+      },
+      "p5": {
+        "mean_diff": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "ap": {
+        "mean_diff": -0.1667,
+        "ci": [
+          -0.3333,
+          0.0
+        ]
+      }
+    }
+  },
+  "decisions": {
+    "rewrite": {
+      "verdict": "adopt",
+      "rule": "paired nDCG@5 CI [0.0615, 0.623] above zero"
+    },
+    "selfquery": {
+      "verdict": "not_adopted",
+      "rule": "paired nDCG@5 CI [-0.5, 0.1845] does not lie above zero"
+    },
+    "rewrite_selfquery": {
+      "verdict": "adopt",
+      "rule": "paired nDCG@5 CI [0.0615, 0.623] above zero"
+    },
+    "hybrid": {
+      "verdict": "no_harm_not_adopted",
+      "rule": "CI [-0.0655, 0.1845] includes zero; mean >= 0, recall@5 not lower"
+    },
+    "rerank": {
+      "verdict": "not_adopted",
+      "rule": "paired nDCG@5 CI [-0.246, 0.0] does not lie above zero"
+    }
+  },
+  "arm_notes": {
+    "rewrite": {
+      "rewrite_changed": 7
+    },
+    "selfquery": {
+      "applied": 4,
+      "fallbacks": {
+        "parse:no_json_object": 1,
+        "parse:schema": 1
+      },
+      "filter_exact_on_gold_rows": {
+        "n": 3,
+        "exact": 3
+      },
+      "spurious_filter_on_unfiltered_gold_rows": 1,
+      "filter_excluded_every_relevant": 1
+    },
+    "rewrite_selfquery": {
+      "applied": 5,
+      "fallbacks": {
+        "empty_result": 1
+      },
+      "filter_exact_on_gold_rows": {
+        "n": 3,
+        "exact": 1
+      },
+      "spurious_filter_on_unfiltered_gold_rows": 3,
+      "filter_excluded_every_relevant": 0,
+      "rewrite_changed": 7
+    },
+    "hybrid": {},
+    "rerank": {
+      "unusable_replies": 3
+    }
+  },
+  "usage": {
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "cost_usd": 0.0
+  },
+  "rows": [
+    {
+      "qid": "d01",
+      "type": "identifier",
+      "question": "Does the alpha desk module take card payments over the phone?",
+      "answerable": true,
+      "gold_filters": {
+        "product": "alpha-desk"
+      },
+      "relevant": [
+        "solutions/alpha-desk#1"
+      ],
+      "dense_top1_score": 0.693889,
+      "rewrite": "alpha desk module never takes card payments over the phone",
+      "arms": {
+        "dense": {
+          "top5": [
+            "solutions/alpha-desk#1",
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "rewrite": {
+          "top5": [
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#1",
+            "cases/bakery-orders#1",
+            "solutions/beta-mail#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "selfquery": {
+          "top5": [
+            "solutions/alpha-desk#1",
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#0",
+            "solutions/alpha-desk#2",
+            "cases/bakery-orders#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "filters": {
+            "product": "alpha-desk"
+          },
+          "applied": {
+            "product": "alpha-desk"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "rewrite_selfquery": {
+          "top5": [
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#0",
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#2",
+            "cases/bakery-orders#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "filters": {
+            "product": "alpha-desk"
+          },
+          "applied": {
+            "product": "alpha-desk"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "hybrid": {
+          "top5": [
+            "solutions/alpha-desk#1",
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#0",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "rerank": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "usable": true,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        }
+      },
+      "calls": {
+        "rewrite": {
+          "reply": "alpha desk module never takes card payments over the phone",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery": {
+          "reply": "{\"product\": \"alpha-desk\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery_rewritten": {
+          "reply": "{\"product\": \"alpha-desk\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "rerank": {
+          "reply": "[2, 1, 3]",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        }
+      }
+    },
+    {
+      "qid": "d02",
+      "type": "identifier",
+      "question": "Will beta mail ever delete a message?",
+      "answerable": true,
+      "gold_filters": null,
+      "relevant": [
+        "solutions/beta-mail#1"
+      ],
+      "dense_top1_score": 0.445435,
+      "rewrite": "beta mail module never deletes a message",
+      "arms": {
+        "dense": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1",
+            "solutions/beta-mail#2",
+            "cases/bakery-orders#0",
+            "solutions/alpha-desk#1"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        },
+        "rewrite": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#2"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        },
+        "selfquery": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1",
+            "solutions/beta-mail#2",
+            "cases/bakery-orders#0",
+            "solutions/alpha-desk#1"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "filters": null,
+          "applied": null,
+          "fallback": "parse:no_json_object",
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        },
+        "rewrite_selfquery": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1",
+            "solutions/beta-mail#2"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "filters": {
+            "product": "beta-mail"
+          },
+          "applied": {
+            "product": "beta-mail"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        },
+        "hybrid": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1",
+            "cases/bakery-orders#0",
+            "solutions/beta-mail#2",
+            "pricing/rate-card#0"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        },
+        "rerank": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1",
+            "solutions/beta-mail#2",
+            "cases/bakery-orders#0",
+            "solutions/alpha-desk#1"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "usable": true,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        }
+      },
+      "calls": {
+        "rewrite": {
+          "reply": "beta mail module never deletes a message",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery": {
+          "reply": "I could not find any filter.",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery_rewritten": {
+          "reply": "```json\n{\"product\": \"beta-mail\"}\n```",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "rerank": {
+          "reply": "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        }
+      }
+    },
+    {
+      "qid": "d03",
+      "type": "paraphrase",
+      "question": "How long does it take to get the alpha desk running?",
+      "answerable": true,
+      "gold_filters": {
+        "section": "solutions"
+      },
+      "relevant": [
+        "solutions/alpha-desk#2"
+      ],
+      "dense_top1_score": 0.336336,
+      "rewrite": "alpha desk set-up takes two working days",
+      "arms": {
+        "dense": {
+          "top5": [
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#1",
+            "cases/bakery-orders#1",
+            "pricing/rate-card#0"
+          ],
+          "relevant_ranks": [
+            9
+          ],
+          "metrics": {
+            "recall5": 0.0,
+            "ndcg5": 0.0,
+            "mrr": 0.1111111111111111,
+            "p5": 0.0,
+            "ap": 0.1111111111111111,
+            "first_relevant_rank": 9
+          }
+        },
+        "rewrite": {
+          "top5": [
+            "solutions/alpha-desk#2",
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#2",
+            "solutions/alpha-desk#1",
+            "cases/bakery-orders#1"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "selfquery": {
+          "top5": [
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#1",
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#2"
+          ],
+          "relevant_ranks": [
+            6
+          ],
+          "filters": {
+            "section": "solutions"
+          },
+          "applied": {
+            "section": "solutions"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 0.0,
+            "ndcg5": 0.0,
+            "mrr": 0.16666666666666666,
+            "p5": 0.0,
+            "ap": 0.16666666666666666,
+            "first_relevant_rank": 6
+          }
+        },
+        "rewrite_selfquery": {
+          "top5": [
+            "solutions/alpha-desk#2",
+            "solutions/alpha-desk#0",
+            "solutions/alpha-desk#1"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "filters": {
+            "section": "solutions",
+            "product": "alpha-desk"
+          },
+          "applied": {
+            "section": "solutions",
+            "product": "alpha-desk"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "hybrid": {
+          "top5": [
+            "solutions/alpha-desk#0",
+            "solutions/alpha-desk#1",
+            "solutions/beta-mail#1",
+            "cases/bakery-orders#1",
+            "solutions/beta-mail#2"
+          ],
+          "relevant_ranks": [
+            8
+          ],
+          "metrics": {
+            "recall5": 0.0,
+            "ndcg5": 0.0,
+            "mrr": 0.125,
+            "p5": 0.0,
+            "ap": 0.125,
+            "first_relevant_rank": 8
+          }
+        },
+        "rerank": {
+          "top5": [
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#1",
+            "cases/bakery-orders#1",
+            "pricing/rate-card#0"
+          ],
+          "relevant_ranks": [
+            9
+          ],
+          "usable": true,
+          "metrics": {
+            "recall5": 0.0,
+            "ndcg5": 0.0,
+            "mrr": 0.1111111111111111,
+            "p5": 0.0,
+            "ap": 0.1111111111111111,
+            "first_relevant_rank": 9
+          }
+        }
+      },
+      "calls": {
+        "rewrite": {
+          "reply": "alpha desk set-up takes two working days",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery": {
+          "reply": "{\"section\": \"solutions\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery_rewritten": {
+          "reply": "{\"section\": \"solutions\", \"product\": \"alpha-desk\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "rerank": {
+          "reply": "[3, 1, 2]",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        }
+      }
+    },
+    {
+      "qid": "d04",
+      "type": "paraphrase",
+      "question": "What extra charge applies to urgent requests?",
+      "answerable": true,
+      "gold_filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/rate-card#1"
+      ],
+      "dense_top1_score": 0.236433,
+      "rewrite": "urgent requests surcharge percent monthly fee",
+      "arms": {
+        "dense": {
+          "top5": [
+            "solutions/beta-mail#2",
+            "pricing/rate-card#1",
+            "solutions/alpha-desk#2",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        },
+        "rewrite": {
+          "top5": [
+            "pricing/rate-card#1",
+            "cases/bakery-orders#0",
+            "cases/bakery-orders#1",
+            "pricing/rate-card#0",
+            "solutions/alpha-desk#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "selfquery": {
+          "top5": [
+            "pricing/rate-card#1",
+            "pricing/rate-card#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "filters": {
+            "section": "pricing"
+          },
+          "applied": {
+            "section": "pricing"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "rewrite_selfquery": {
+          "top5": [
+            "pricing/rate-card#1",
+            "cases/bakery-orders#0",
+            "cases/bakery-orders#1",
+            "pricing/rate-card#0",
+            "solutions/alpha-desk#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "filters": {
+            "section": "pricing",
+            "product": "alpha-desk"
+          },
+          "applied": null,
+          "fallback": "empty_result",
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "hybrid": {
+          "top5": [
+            "pricing/rate-card#1",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#1",
+            "cases/bakery-orders#1"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "rerank": {
+          "top5": [
+            "solutions/beta-mail#2",
+            "pricing/rate-card#1",
+            "solutions/alpha-desk#2",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "usable": false,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        }
+      },
+      "calls": {
+        "rewrite": {
+          "reply": "urgent requests surcharge percent monthly fee",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery": {
+          "reply": "{\"section\": \"pricing\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery_rewritten": {
+          "reply": "{\"section\": \"pricing\", \"product\": \"alpha-desk\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "rerank": {
+          "reply": "The best is passage 4.",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        }
+      }
+    },
+    {
+      "qid": "d05",
+      "type": "paraphrase",
+      "question": "Is there a surcharge for CSV export?",
+      "answerable": true,
+      "gold_filters": null,
+      "relevant": [
+        "pricing/rate-card#1"
+      ],
+      "dense_top1_score": 0.385758,
+      "rewrite": "exporting records as CSV surcharge",
+      "arms": {
+        "dense": {
+          "top5": [
+            "pricing/rate-card#1",
+            "cases/bakery-orders#0",
+            "pricing/rate-card#0",
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#2"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "rewrite": {
+          "top5": [
+            "pricing/rate-card#1",
+            "cases/bakery-orders#0",
+            "cases/bakery-orders#1",
+            "pricing/rate-card#0",
+            "solutions/alpha-desk#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "selfquery": {
+          "top5": [
+            "cases/bakery-orders#0",
+            "cases/bakery-orders#1"
+          ],
+          "relevant_ranks": [],
+          "filters": {
+            "section": "cases"
+          },
+          "applied": {
+            "section": "cases"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 0.0,
+            "ndcg5": 0.0,
+            "mrr": 0.0,
+            "p5": 0.0,
+            "ap": 0.0,
+            "first_relevant_rank": null
+          }
+        },
+        "rewrite_selfquery": {
+          "top5": [
+            "pricing/rate-card#1",
+            "pricing/rate-card#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "filters": {
+            "section": "pricing"
+          },
+          "applied": {
+            "section": "pricing"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "hybrid": {
+          "top5": [
+            "pricing/rate-card#1",
+            "cases/bakery-orders#0",
+            "solutions/alpha-desk#0",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "rerank": {
+          "top5": [
+            "cases/bakery-orders#0",
+            "pricing/rate-card#1",
+            "pricing/rate-card#0",
+            "solutions/alpha-desk#0",
+            "solutions/beta-mail#2"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "usable": true,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        }
+      },
+      "calls": {
+        "rewrite": {
+          "reply": "exporting records as CSV surcharge",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery": {
+          "reply": "{\"section\": \"cases\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery_rewritten": {
+          "reply": "{\"section\": \"pricing\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "rerank": {
+          "reply": "[2, 1]",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        }
+      }
+    },
+    {
+      "qid": "d06",
+      "type": "paraphrase",
+      "question": "What access does beta mail need before it can start?",
+      "answerable": true,
+      "gold_filters": null,
+      "relevant": [
+        "solutions/beta-mail#2"
+      ],
+      "dense_top1_score": 0.298142,
+      "rewrite": "beta mail set-up needs read access shared inbox",
+      "arms": {
+        "dense": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#2"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        },
+        "rewrite": {
+          "top5": [
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#0",
+            "solutions/alpha-desk#2",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#0"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "selfquery": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#2"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "filters": null,
+          "applied": null,
+          "fallback": "parse:schema",
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        },
+        "rewrite_selfquery": {
+          "top5": [
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [
+            1
+          ],
+          "filters": {
+            "product": "beta-mail"
+          },
+          "applied": {
+            "product": "beta-mail"
+          },
+          "fallback": null,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
+            "p5": 0.2,
+            "ap": 1.0,
+            "first_relevant_rank": 1
+          }
+        },
+        "hybrid": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/alpha-desk#1",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1",
+            "cases/bakery-orders#1"
+          ],
+          "relevant_ranks": [
+            3
+          ],
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.5,
+            "mrr": 0.3333333333333333,
+            "p5": 0.2,
+            "ap": 0.3333333333333333,
+            "first_relevant_rank": 3
+          }
+        },
+        "rerank": {
+          "top5": [
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#2"
+          ],
+          "relevant_ranks": [
+            2
+          ],
+          "usable": true,
+          "metrics": {
+            "recall5": 1.0,
+            "ndcg5": 0.6309297535714575,
+            "mrr": 0.5,
+            "p5": 0.2,
+            "ap": 0.5,
+            "first_relevant_rank": 2
+          }
+        }
+      },
+      "calls": {
+        "rewrite": {
+          "reply": "beta mail set-up needs read access shared inbox",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery": {
+          "reply": "{\"product\": \"beta-mail\", \"colour\": \"red\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery_rewritten": {
+          "reply": "{\"product\": \"beta-mail\"}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "rerank": {
+          "reply": "[1]",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        }
+      }
+    },
+    {
+      "qid": "d07",
+      "type": "unanswerable",
+      "question": "Which tractor model has the best fuel economy in winter?",
+      "answerable": false,
+      "gold_filters": null,
+      "relevant": [],
+      "dense_top1_score": 0.260623,
+      "rewrite": "tractor fuel economy winter",
+      "arms": {
+        "dense": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/beta-mail#1",
+            "solutions/beta-mail#0",
+            "solutions/alpha-desk#2",
+            "solutions/alpha-desk#1"
+          ],
+          "relevant_ranks": []
+        },
+        "rewrite": {
+          "top5": [
+            "solutions/beta-mail#1",
+            "cases/bakery-orders#0",
+            "cases/bakery-orders#1",
+            "pricing/rate-card#0",
+            "pricing/rate-card#1"
+          ],
+          "relevant_ranks": []
+        },
+        "selfquery": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/beta-mail#1",
+            "solutions/beta-mail#0",
+            "solutions/alpha-desk#2",
+            "solutions/alpha-desk#1"
+          ],
+          "relevant_ranks": [],
+          "filters": {},
+          "applied": null,
+          "fallback": null
+        },
+        "rewrite_selfquery": {
+          "top5": [
+            "solutions/beta-mail#1",
+            "cases/bakery-orders#0",
+            "cases/bakery-orders#1",
+            "pricing/rate-card#0",
+            "pricing/rate-card#1"
+          ],
+          "relevant_ranks": [],
+          "filters": {},
+          "applied": null,
+          "fallback": null
+        },
+        "hybrid": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/beta-mail#1",
+            "solutions/beta-mail#0",
+            "solutions/alpha-desk#2",
+            "solutions/alpha-desk#1"
+          ],
+          "relevant_ranks": []
+        },
+        "rerank": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/beta-mail#1",
+            "solutions/beta-mail#0",
+            "solutions/alpha-desk#2",
+            "solutions/alpha-desk#1"
+          ],
+          "relevant_ranks": [],
+          "usable": false
+        }
+      },
+      "calls": {
+        "rewrite": {
+          "reply": "tractor fuel economy winter",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery": {
+          "reply": "{}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery_rewritten": {
+          "reply": "{}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "rerank": {
+          "reply": "",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        }
+      }
+    },
+    {
+      "qid": "d08",
+      "type": "unanswerable",
+      "question": "What is the capital of Australia?",
+      "answerable": false,
+      "gold_filters": null,
+      "relevant": [],
+      "dense_top1_score": 0.448618,
+      "rewrite": "What is the capital of Australia?",
+      "arms": {
+        "dense": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#2",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": []
+        },
+        "rewrite": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#2",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": []
+        },
+        "selfquery": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#2",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [],
+          "filters": {},
+          "applied": null,
+          "fallback": null
+        },
+        "rewrite_selfquery": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#2",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [],
+          "filters": {},
+          "applied": null,
+          "fallback": null
+        },
+        "hybrid": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "pricing/rate-card#0",
+            "solutions/alpha-desk#1",
+            "solutions/beta-mail#1",
+            "solutions/alpha-desk#2"
+          ],
+          "relevant_ranks": []
+        },
+        "rerank": {
+          "top5": [
+            "cases/bakery-orders#1",
+            "solutions/alpha-desk#2",
+            "pricing/rate-card#0",
+            "solutions/beta-mail#2",
+            "solutions/beta-mail#1"
+          ],
+          "relevant_ranks": [],
+          "usable": false
+        }
+      },
+      "calls": {
+        "rewrite": {
+          "reply": "What is the capital of Australia?",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery": {
+          "reply": "{}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "selfquery_rewritten": {
+          "reply": "{}",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        },
+        "rerank": {
+          "reply": "",
+          "tokens_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,270 @@
+{
+ "note": "scripted replies for the dry run of evals/security/run_live.py; fictional, no model call",
+ "chat": {
+  "A-01b": [
+   [
+    [
+     [
+      "search_knowledge",
+      {
+       "query": "booking costs"
+      }
+     ]
+    ]
+   ],
+   [
+    [
+     [
+      "search_knowledge",
+      {
+       "query": "booking costs"
+      }
+     ]
+    ]
+   ],
+   [
+    [
+     [
+      "search_knowledge",
+      {
+       "query": "booking costs"
+      }
+     ]
+    ]
+   ]
+  ],
+  "A-03": [
+   [
+    [
+     [
+      "get_session_spec",
+      {}
+     ]
+    ]
+   ],
+   [
+    [
+     [
+      "get_session_spec",
+      {}
+     ]
+    ]
+   ],
+   [
+    [
+     [
+      "get_session_spec",
+      {}
+     ]
+    ]
+   ]
+  ]
+ },
+ "gate": {
+  "g01": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": true,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g02": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": true,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g03": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": true,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g04": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": true,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g05": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": true,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g06": {
+   "stage1": "undecided",
+   "model_calls": 1,
+   "p": 0.02,
+   "band": "refuse",
+   "refused": true,
+   "gate_failed": false,
+   "jev_model": "scripted/jev",
+   "rubric_version": "dry",
+   "state_hash": "dry",
+   "d108_reply_check_passed": null,
+   "cost_usd": 2e-05,
+   "latency_s": 0.0
+  },
+  "g07": {
+   "stage1": "undecided",
+   "model_calls": 1,
+   "p": 0.02,
+   "band": "refuse",
+   "refused": true,
+   "gate_failed": false,
+   "jev_model": "scripted/jev",
+   "rubric_version": "dry",
+   "state_hash": "dry",
+   "d108_reply_check_passed": null,
+   "cost_usd": 2e-05,
+   "latency_s": 0.0
+  },
+  "g08": {
+   "stage1": "undecided",
+   "model_calls": 1,
+   "p": 0.02,
+   "band": "refuse",
+   "refused": true,
+   "gate_failed": false,
+   "jev_model": "scripted/jev",
+   "rubric_version": "dry",
+   "state_hash": "dry",
+   "d108_reply_check_passed": null,
+   "cost_usd": 2e-05,
+   "latency_s": 0.0
+  },
+  "g09": {
+   "stage1": "undecided",
+   "model_calls": 1,
+   "p": 0.02,
+   "band": "refuse",
+   "refused": true,
+   "gate_failed": false,
+   "jev_model": "scripted/jev",
+   "rubric_version": "dry",
+   "state_hash": "dry",
+   "d108_reply_check_passed": null,
+   "cost_usd": 2e-05,
+   "latency_s": 0.0
+  },
+  "g10": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": true,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g11": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": true,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g12": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": true,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g13": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": null,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g14": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": null,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g15": {
+   "stage1": "pass",
+   "model_calls": 2,
+   "p": null,
+   "band": null,
+   "refused": false,
+   "gate_failed": false,
+   "d108_reply_check_passed": null,
+   "cost_usd": 0.0,
+   "latency_s": 0.0
+  },
+  "g16": {
+   "stage1": "undecided",
+   "model_calls": 1,
+   "p": 0.9,
+   "band": "pass",
+   "refused": false,
+   "gate_failed": false,
+   "jev_model": "scripted/jev",
+   "rubric_version": "dry",
+   "state_hash": "dry",
+   "d108_reply_check_passed": null,
+   "cost_usd": 2e-05,
+   "latency_s": 0.0
+  },
+  "g17": {
+   "stage1": "undecided",
+   "model_calls": 1,
+   "p": 0.9,
+   "band": "pass",
+   "refused": false,
+   "gate_failed": false,
+   "jev_model": "scripted/jev",
+   "rubric_version": "dry",
+   "state_hash": "dry",
+   "d108_reply_check_passed": null,
+   "cost_usd": 2e-05,
+   "latency_s": 0.0
+  }
+ }
+}

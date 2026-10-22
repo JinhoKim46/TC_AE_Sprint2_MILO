@@ -326,6 +326,18 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
 # ---------------------------------------------------------------- run
 
 
+LISTED_PRICE_USD_PER_MTOK = 0.2  # google/gemini-embedding-2, e01-rerun.md; used only when the response has no cost
+
+
+def cost_note(embedder: Any) -> str:
+    unknown = embedder.cost_unknown_calls
+    return (
+        "from the usage field of each embedding response (provider cost when returned, else tokens times the listed "
+        f"price of {LISTED_PRICE_USD_PER_MTOK} USD per million)"
+        + (f"; {unknown} call(s) had no usage and are not counted" if unknown else "")
+    )
+
+
 def run(args: argparse.Namespace) -> int:
     size, overlap = (int(x) for x in args.chunk.split("/"))
     if not args.dry and os.environ.get("MILO_LIVE") != "1":
@@ -345,7 +357,7 @@ def run(args: argparse.Namespace) -> int:
         from milo.rag.embed import live_embedder
 
         try:
-            embedder = live_embedder()
+            embedder = live_embedder(price_usd_per_mtok=LISTED_PRICE_USD_PER_MTOK)
         except PermissionError as exc:
             print(f"refusing to run: {exc}", file=sys.stderr)
             return 2
@@ -388,8 +400,9 @@ def run(args: argparse.Namespace) -> int:
         "chunk_sha256": chunks_sha256(chunks),
         "embedding_dim": dim,
         "embedding_requests": getattr(embedder, "calls", 0) + calls,
-        "total_cost_usd": None if not args.dry else 0.0,
-        "cost_note": "dry run: no call" if args.dry else "pending: cloud.py does not return the usage field of an embedding call (docs/requests/m1.md); the integrator records the spend from the OpenRouter ledger",
+        "total_cost_usd": 0.0 if args.dry else round(embedder.total_cost_usd, 6),
+        "total_tokens": 0 if args.dry else embedder.total_tokens,
+        "cost_note": "dry run: no call" if args.dry else cost_note(embedder),
         "spend_reason": "none (fake embedder)" if args.dry else "dense retrieval baseline needs the product embedding model's vectors for the KB and the dev questions (D126)",
         "queries_without_chunk": [r["qid"] for r in rows if r["answerable"] and not r["relevant"]],
         **derived,

@@ -1,0 +1,12 @@
+[
+ {
+  "item": "OpenRouter balance",
+  "why": "Unlocks the live batch (index, E01, E02, M2 A/B, tools, attacks, discovery, M7 generation, SR live)",
+  "estimate_usd": 2.4
+ },
+ {
+  "item": "Postgres permission (test project)",
+  "why": "Unlocks M5-store, then M5b, M5c, M6 wiring, M5G",
+  "estimate_usd": 0.0
+ }
+]

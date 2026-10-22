@@ -1,0 +1,15 @@
+[
+ {
+  "started": "2026-10-22T13:00:01+02:00",
+  "as_of": "2026-10-22T19:18:00+02:00",
+  "elapsed_min": 378,
+  "paused_min": 226,
+  "active_min": 152,
+  "merged": 13,
+  "verified_waiting": 2,
+  "tests_on_main": 454,
+  "decisions": 66,
+  "openrouter_usd": 0.0,
+  "owner_blockers": 2
+ }
+]

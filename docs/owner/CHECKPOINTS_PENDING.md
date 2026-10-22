@@ -45,3 +45,20 @@
 
 - Builder 86a2ecd; verifier PASS (docs/verify/m0.md). Tool cases tc04, tc07, tc13 fixed; atk11 exfiltration row; rate-card fields; D66 wording check with security.md reworded; checker and leakage tests (28). Gold hash unchanged.
 - Owner question: none.
+
+## M2 — Advanced RAG (merged 2026-10-22, offline)
+
+- Builder 2e1abdc (protocol first), 7692330; verifier PASS offline (docs/verify/m2.md). Six arms; self-query fallback tested; paired bootstrap against dense.
+- Live A/B in the batch after E02 pins the dev model and the index is built. The dry adopt verdicts come from a scripted fixture and must not be quoted.
+- Owner question: none.
+
+## M5G data — Scope set, lexicon, probes (merged 2026-10-22)
+
+- 420 rows (284 in-scope, 136 out-of-scope), lexicon v4 (strong/weak, D157, D158), 80 probes; four audit passes, all 502 rows ok. Stage 1: 0 in-scope refused; 2 of 68 off-topic test rows pass; 56/54 undecided dev rows for the Jev thresholds.
+- Known limit accepted: an off-topic message naming one strong term passes stage 1; D108 and SR A-22 cover it.
+- Owner question: none.
+
+## M7 — Evaluation, offline build (merged 2026-10-22)
+
+- Protocol m7-judge.md first (5e3c8a9), then runner, replays, report skeletons. `make eval` replays every stored eval. Labels, generation and judge runs are pending the live batch, in the order the M7 report gives (generation, template, labelling agent, labels commit, judge prompts, judge run).
+- Owner question: none.

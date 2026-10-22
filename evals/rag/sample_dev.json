@@ -1,0 +1,173 @@
+{
+ "git_commit": "5e3c8a9cd1309b7e7b1ed2e8b422a95402da6525",
+ "model": "none",
+ "seed": 26,
+ "temperature": 0.0,
+ "command": "python evals/rag/run_rag_eval.py --sample",
+ "timestamp": "2026-10-22T15:39:32Z",
+ "inputs": {
+  "gold": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+  "evals/rag/sample.py": "4ba2fce198533673e103e5f304ce030d1b9ef3119e9c10efc59e60784a3d845e"
+ },
+ "split": "dev",
+ "n": 30,
+ "dev_rows": 60,
+ "strata": {
+  "identifier": 6,
+  "paraphrase": 18,
+  "unanswerable": 6
+ },
+ "gold_sha256": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+ "rows": [
+  {
+   "qid": "q001",
+   "type": "identifier",
+   "question": "What activities fall outside the scope of phone-intake?"
+  },
+  {
+   "qid": "q003",
+   "type": "identifier",
+   "question": "Can ticket-creation mark a job as finished by itself?"
+  },
+  {
+   "qid": "q007",
+   "type": "identifier",
+   "question": "Is there a recurring charge when using csv-export?"
+  },
+  {
+   "qid": "q009",
+   "type": "paraphrase",
+   "question": "How much does the call answering product cost each month before any factors?"
+  },
+  {
+   "qid": "q012",
+   "type": "paraphrase",
+   "question": "What do reminders and confirmations to clients cost per month at the base rate?"
+  },
+  {
+   "qid": "q016",
+   "type": "paraphrase",
+   "question": "What happens if my daily workload is larger than the top tier?"
+  },
+  {
+   "qid": "q020",
+   "type": "paraphrase",
+   "question": "How is the lower end of the price bracket calculated?"
+  },
+  {
+   "qid": "q022",
+   "type": "paraphrase",
+   "question": "Does a file-based link keep my software permanently connected?"
+  },
+  {
+   "qid": "q029",
+   "type": "paraphrase",
+   "question": "Does needing emergency cover make the modules more expensive?"
+  },
+  {
+   "qid": "q039",
+   "type": "unanswerable",
+   "question": "What training do my staff receive after setup?"
+  },
+  {
+   "qid": "q045",
+   "type": "identifier",
+   "question": "for the customer updates, if we go with api-connector does it still need a file from us?"
+  },
+  {
+   "qid": "q053",
+   "type": "identifier",
+   "question": "in the dog groomer story, could phone-intake take a deposit?"
+  },
+  {
+   "qid": "q056",
+   "type": "identifier",
+   "question": "emergency emails. does email-triage flag them somehow?"
+  },
+  {
+   "qid": "q061",
+   "type": "paraphrase",
+   "question": "does it just name someone or does it say why it picked them?"
+  },
+  {
+   "qid": "q074",
+   "type": "paraphrase",
+   "question": "guaranteed savings?"
+  },
+  {
+   "qid": "q075",
+   "type": "paraphrase",
+   "question": "about 100 jobs daily. multiplier?"
+  },
+  {
+   "qid": "q077",
+   "type": "paraphrase",
+   "question": "phone and tickets together. do i pay the 900 once or twice?"
+  },
+  {
+   "qid": "q079",
+   "type": "paraphrase",
+   "question": "mine says 'blocked' - so i get nothing?? what now"
+  },
+  {
+   "qid": "q084",
+   "type": "paraphrase",
+   "question": "why did the groomer get an indicative figure straight away?"
+  },
+  {
+   "qid": "q086",
+   "type": "paraphrase",
+   "question": "accounts office case: what did the typist end up doing instead, and who did the first go?"
+  },
+  {
+   "qid": "q088",
+   "type": "paraphrase",
+   "question": "accounts case, main takeaway?"
+  },
+  {
+   "qid": "q092",
+   "type": "paraphrase",
+   "question": "should i give you our mad december numbers or a typical week?"
+  },
+  {
+   "qid": "q094",
+   "type": "paraphrase",
+   "question": "jan vs june start. dearer?"
+  },
+  {
+   "qid": "q098",
+   "type": "paraphrase",
+   "question": "havent ticked the consent box yet. can we still chat?"
+  },
+  {
+   "qid": "q104",
+   "type": "paraphrase",
+   "question": "could my business partner see my stuff by typing my name into the chat?"
+  },
+  {
+   "qid": "q107",
+   "type": "unanswerable",
+   "question": "2fa on the login?"
+  },
+  {
+   "qid": "q109",
+   "type": "unanswerable",
+   "question": "can i pay by direct debit?"
+  },
+  {
+   "qid": "q111",
+   "type": "unanswerable",
+   "question": "whats the voice like on the phone bot, can i pick a different one?"
+  },
+  {
+   "qid": "q115",
+   "type": "unanswerable",
+   "question": "are you insured if the bot books something wrong and it costs me?"
+  },
+  {
+   "qid": "q119",
+   "type": "unanswerable",
+   "question": "how long have u been going, when were you founded?"
+  }
+ ]
+}
