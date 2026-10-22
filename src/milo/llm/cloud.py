@@ -2,7 +2,7 @@
 
 `OpenRouterChat` and `OpenRouterEmbeddings` wrap `openai.OpenAI(base_url=...)`. The `openai` package is
 imported inside the constructors, so `import milo.app` loads no client. The conversion of `ToolSpec` to the
-OpenAI tool JSON lives here. Retries are not done here (`llm/retry.py`); this module makes one attempt.
+OpenAI tool JSON lives here. Retries are not done here (`llm/retry.py`); this module makes one attempt per call.
 """
 
 from __future__ import annotations
@@ -110,6 +110,9 @@ class OpenRouterChat:
         self.disable_thinking = disable_thinking
         self.price_usd_per_mtok = price_usd_per_mtok
         self.last_cost_usd: float | None = None
+        self.last_response_model: str | None = (
+            None  # the `model` string the provider answered with
+        )
         self._client = client or _make_client(api_key, timeout)
         self._ledger = ledger
         self._purpose = purpose
@@ -134,6 +137,8 @@ class OpenRouterChat:
             kwargs["tools"] = [tool_json(t) for t in tools]
         resp = self._client.chat.completions.create(**kwargs)
         msg = resp.choices[0].message
+        served = getattr(resp, "model", None)
+        self.last_response_model = served if isinstance(served, str) else None
         calls = [
             ToolCall(c.id, c.function.name, _tool_args(c.function.arguments))
             for c in (getattr(msg, "tool_calls", None) or [])
@@ -165,6 +170,13 @@ class OpenRouterChat:
 
 
 class OpenRouterEmbeddings:
+    """Embedding client. Keeps the usage of every call: `last_tokens`, `last_cost_usd`, and running totals.
+
+    Cost is the provider's `usage.cost` when OpenRouter returns it, else tokens times `price_usd_per_mtok`
+    when a price is given, else unknown (`None`; the totals then count only the known calls and
+    `cost_unknown_calls` says how many were not priced).
+    """
+
     def __init__(
         self,
         api_key: str,
@@ -172,10 +184,35 @@ class OpenRouterEmbeddings:
         *,
         timeout: float = CALL_TIMEOUT_S,
         client: Any = None,
+        price_usd_per_mtok: float | None = None,
     ) -> None:
         self.model = model
+        self.price_usd_per_mtok = price_usd_per_mtok
         self._client = client or _make_client(api_key, timeout)
+        self.last_tokens: int | None = None
+        self.last_cost_usd: float | None = None
+        self.total_tokens = 0
+        self.total_cost_usd = 0.0
+        self.cost_unknown_calls = 0
 
     def embed(self, texts: list[str]) -> list[list[float]]:
         resp = self._client.embeddings.create(model=self.model, input=texts)
-        return [list(d.embedding) for d in resp.data]
+        usage = getattr(resp, "usage", None)
+        tokens = getattr(usage, "total_tokens", None)
+        if tokens is None:
+            tokens = getattr(usage, "prompt_tokens", None)
+        cost = getattr(usage, "cost", None)
+        if cost is not None:
+            self.last_cost_usd = float(cost)
+        elif tokens is not None and self.price_usd_per_mtok is not None:
+            self.last_cost_usd = tokens * self.price_usd_per_mtok / 1_000_000
+        else:
+            self.last_cost_usd = None
+        self.last_tokens = int(tokens) if tokens is not None else None
+        self.total_tokens += self.last_tokens or 0
+        if self.last_cost_usd is None:
+            self.cost_unknown_calls += 1
+        else:
+            self.total_cost_usd += self.last_cost_usd
+        data = sorted(resp.data, key=lambda d: getattr(d, "index", 0) or 0)
+        return [list(d.embedding) for d in data]

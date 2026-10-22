@@ -12,7 +12,7 @@ endef
 .PHONY: check test audit migrate db-reset index record eval final-test discovery-table \
 	kit-sources kit-abstains kit-tools kit-security kit-errors kit-threads kit-cost \
 	eval-retrieval eval-retrieval-replay eval-tools eval-tools-replay eval-attacks eval-attacks-replay \
-	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay
+	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay live-check
 
 check:
 	uv run ruff check .
@@ -129,3 +129,8 @@ eval-chat:
 
 eval-chat-replay:
 	uv run python evals/chat/compare_chat.py --replay
+
+# The whole live batch in one table: command, protocol and its commit, estimated cost, and whether each runner
+# refuses without MILO_LIVE=1. No network, no key, no spend (integrator decision 44).
+live-check:
+	uv run python scripts/live_check.py
