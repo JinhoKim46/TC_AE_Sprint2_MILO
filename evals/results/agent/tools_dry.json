@@ -1,6 +1,6 @@
 {
   "command": "uv run python evals/agent/run_tools.py --dry",
-  "git_commit": "f42d8f1a3de609a4cddef0107c482cffb148bc77",
+  "git_commit": "fb656b6923112b41d0970a2d6164b0840835049f",
   "inputs": {
     "tool_cases": "159ec03896adac6af7bec88e1f86d71495d95148ac3b659370464d72f6f11708"
   },
@@ -520,6 +520,6 @@
   ],
   "seed": 0,
   "temperature": 0.0,
-  "timestamp": "2026-10-22T11:38:32Z",
+  "timestamp": "2026-10-22T11:42:07Z",
   "why_this_run": "offline harness check: a scripted model emits the expected calls; no external model was needed"
 }

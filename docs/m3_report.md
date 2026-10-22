@@ -44,8 +44,8 @@ Status: built on `agent/m3` from S0 (`f42d8f1`); verification and owner review p
 - The rate card has no `automated_minutes_per_request` or `eligible_share` yet (M0, section 5.2); not needed here.
 - Range factors applied to the one-time setup fee as well as the monthly total: SPEC says only "the base
   estimate". M5c may report monthly only. The `submissions.cost_*` columns hold one figure; M5c chooses.
-- The live run needs a protocol in `evals/protocols/` first (D83) and an E02 model choice (D148); both are the
-  integrator's. `App.resume_approval` still calls `tools.call` directly: it is safe because `call` validates and
+- The live run needs a protocol in `evals/protocols/` first (D83; ownership is asked in `docs/requests/m3.md`) and an E02 model choice (D148). Both
+  are open. `App.resume_approval` still calls `tools.call` directly: it is safe because `call` validates and
   binds identity itself, but it does not re-run the policy. M4 may want that.
 - Look-alike stripping lives in `tools/args.py`; M4 may fold it into `security/identity.py`.
 
