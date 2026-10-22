@@ -20,18 +20,8 @@ Purpose: if the session stops (usage limit, crash, compaction loss), a fresh ses
 3. For each branch that exists: if `verify/<x>` has a `docs/verify/<x>.md` with PASS, merge it into main (`git merge --no-ff`), rerun `make check` and the seven kit targets on main, remove the worktrees, append the checkpoint block to `docs/owner/CHECKPOINTS_PENDING.md`. If a build branch has no verifier yet, open `verify/<x>` from it and launch a verifier with the HARNESS section 7 checklist. If an agent was mid-task, its branch holds whatever it committed; relaunch the task with the same brief (the briefs are in this session's transcript; the file ownership is in HARNESS Appendix A).
 4. Update `monitor/status.js` and this file.
 
-## State at last update (2026-10-22 17:42 local)
+## State at last update (2026-10-22 22:46 local): BUILD FINISHED
 
-Pauses so far: 14:00 to 16:31 (usage limit), 17:06 to 17:21 (Fable limit). Session on Opus since 17:21.
-
-Merged on main: S0, M5a, M3, M6 shell, M4, M0b, M1 (offline), M0, M2 (offline), live-prep, M5G scope data, SR live runner, M7 (offline). Seven protocols plus m2-ab and m7-judge.
-
-| Branch | Where | Status | Next |
-|---|---|---|---|
-| agent/m5-store (bdcf7a3) + verify/m5-store (2b13e7b) | `.worktrees/m5-store`, `.worktrees/verify-m5-store` | Offline green (507 tests). Postgres pass 3 BLOCKED: the permission classifier refused the verifier's DB commands; owner asked for permission. The test project still holds fix-cycle-2 objects (reset.py now handles them) | On owner yes: relaunch an Opus verifier for reset, migrate, RLS test, reset; on PASS merge |
-| agent/m5b (27a4701) + verify/m5b (2908e58, PASS pass 2) | `.worktrees/m5b`, `.worktrees/verify-m5b` | Verified PASS; held because it contains agent/m5-store | Merge right after M5-store merges |
-
-Blocked on the owner: (1) OpenRouter balance before the live batch (estimate 1.65 USD; `make live-check`); (2) Postgres permission for M5-store.
-Not started: live batch (E01c, M1 index and eval, E02, M2 A/B, M3 tools, M4 arms, M7 generation, then labels, judge prompts, judge; SR live; M5G probes after M5G), M5c, M5G build, M6 wiring, SR pen test, F1 to F4.
-
-Owner checklist (SPEC section 18): items 1 to 10; none blocks the build.
+All milestones S0 to M7, SR (threat model, cases, pen test) and F1 to F4 are merged on main. No worktree or agent branch is open.
+Autonomous run: 13:00 to 22:46 (586 min), paused 284 min (usage limits 14:00-16:31 and 20:33-21:31, Fable limit 17:06-17:21, waiting for the owner 18:18-19:18), active 302 min. OpenRouter spend 2.09 USD.
+Open: only owner items (docs/owner/CHECKPOINTS_PENDING.md, final block). The AE parent repo's submodule pointer is not updated, because SPEC section 19 blocks AE commits until the owner decides on the AE privacy check.

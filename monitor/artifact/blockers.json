@@ -1,12 +1,17 @@
 [
  {
-  "item": "OpenRouter balance",
-  "why": "Unlocks the live batch (index, E01, E02, M2 A/B, tools, attacks, discovery, M7 generation, SR live)",
-  "estimate_usd": 2.4
+  "item": "Production checklist (SPEC section 18)",
+  "why": "Consent text, first operator, role passwords and app strings, Supabase Auth URL and key, MFA, token residual",
+  "estimate_usd": 0.0
  },
  {
-  "item": "Postgres permission (test project)",
-  "why": "Unlocks M5-store, then M5b, M5c, M6 wiring, M5G",
+  "item": "Muted text colour",
+  "why": "D45 #909090 fails AA contrast; a darker colour is in use",
+  "estimate_usd": 0.0
+ },
+ {
+  "item": "Product findings",
+  "why": "Accept or schedule: M3 tool choice, no RAG abstention, M5G test misses, M5b extraction F1",
   "estimate_usd": 0.0
  }
 ]

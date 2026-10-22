@@ -37,8 +37,8 @@
     <h1 id="title">MILO build monitor</h1>
     <p class="takeaway" id="takeaway">
       <span data-source="run" data-field="merged" data-row="0" class="dash-skeleton">—</span> pieces merged and
-      <span data-source="run" data-field="verified_waiting" data-row="0" class="dash-skeleton">—</span> verified and waiting.
-      The run is stopped on <span data-source="run" data-field="owner_blockers" data-row="0" class="dash-skeleton">—</span> answers only the owner can give.
+      <span data-source="run" data-field="verified_waiting" data-row="0" class="dash-skeleton">—</span> waiting.
+      <span data-source="run" data-field="owner_blockers" data-row="0" class="dash-skeleton">—</span> owner items remain before production.
     </p>
   </header>
 
@@ -60,8 +60,8 @@
 
   <div class="grid">
     <section class="card" id="blockers">
-      <h2>Waiting on the owner</h2>
-      <p class="note">Nothing below can move until these are answered.</p>
+      <h2>Owner items before production</h2>
+      <p class="note">The build is finished; these need the owner.</p>
       <div class="scroll">
         <table data-source="blockers" data-row-key="item">
           <thead><tr><th data-field="item">Item</th><th data-field="why">What it unlocks</th><th data-field="estimate_usd">Est. USD</th></tr></thead>

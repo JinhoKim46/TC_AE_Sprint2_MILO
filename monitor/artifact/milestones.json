@@ -8,10 +8,10 @@
  },
  {
   "id": "SR",
-  "name": "Threat model, 50 attack cases",
-  "phase": "0",
+  "name": "Threat model, attack cases, pen test",
+  "phase": "0-F3",
   "state": "merged",
-  "note": "28 threats, 21 gaps closed"
+  "note": "50 of 50 cases; no critical or high"
  },
  {
   "id": "M0b",
@@ -21,8 +21,8 @@
   "note": "two audit passes, all ok"
  },
  {
-  "id": "M5a",
-  "name": "LLM client and errors",
+  "id": "M0",
+  "name": "Data, remaining scope",
   "phase": "1a",
   "state": "merged",
   "note": "verifier PASS"
@@ -32,18 +32,11 @@
   "name": "Tools and pricing",
   "phase": "1a",
   "state": "merged",
-  "note": "verifier PASS"
+  "note": "live 9 of 15 (below bar)"
  },
  {
-  "id": "M6 shell",
-  "name": "Web shell",
-  "phase": "1a",
-  "state": "merged",
-  "note": "SR 0 critical, 0 high"
- },
- {
-  "id": "M0",
-  "name": "Data, remaining scope",
+  "id": "M5a",
+  "name": "LLM client and errors",
   "phase": "1a",
   "state": "merged",
   "note": "verifier PASS"
@@ -52,84 +45,70 @@
   "id": "M5-store",
   "name": "Store, auth, RLS",
   "phase": "1a",
-  "state": "blocked",
-  "note": "Postgres run needs owner permission"
+  "state": "merged",
+  "note": "Postgres PASS on pass 4"
  },
  {
   "id": "M1",
   "name": "Retrieval",
   "phase": "1b",
   "state": "merged",
-  "note": "offline; live index pending"
+  "note": "nDCG@5 dev 0.761, test 0.629"
  },
  {
   "id": "M4",
   "name": "Security",
   "phase": "2",
   "state": "merged",
-  "note": "FAIL, fix, PASS"
+  "note": "live: 0 destructive executions"
  },
  {
   "id": "M2",
   "name": "Advanced RAG",
   "phase": "2",
   "state": "merged",
-  "note": "offline; live A/B pending"
+  "note": "no arm adopted"
  },
  {
   "id": "M5b",
   "name": "Discovery core",
   "phase": "2",
-  "state": "verified",
-  "note": "PASS twice; waits for M5-store"
+  "state": "merged",
+  "note": "premature estimate 0; F1 0.70 dev"
  },
  {
-  "id": "M5G data",
-  "name": "Scope set and lexicon",
+  "id": "M5c",
+  "name": "Report",
   "phase": "3",
   "state": "merged",
-  "note": "four audit passes"
+  "note": "A-1 figures hand-checked"
+ },
+ {
+  "id": "M5G",
+  "name": "Scope and Jev gate",
+  "phase": "3",
+  "state": "merged",
+  "note": "dev 0/142 false refusals; test 1/142"
+ },
+ {
+  "id": "M6",
+  "name": "Web UI",
+  "phase": "3",
+  "state": "merged",
+  "note": "tokens encrypted; 24/24 browser checks"
  },
  {
   "id": "M7",
   "name": "Evaluation",
   "phase": "3",
   "state": "merged",
-  "note": "offline; labels after live run"
- },
- {
-  "id": "Live batch",
-  "name": "OpenRouter runs",
-  "phase": "1b-3",
-  "state": "blocked",
-  "note": "needs the owner's balance; est. 2.40 USD"
- },
- {
-  "id": "M5c",
-  "name": "Report",
-  "phase": "3",
-  "state": "planned",
-  "note": "after M5b"
- },
- {
-  "id": "M5G",
-  "name": "Scope and Jev gate",
-  "phase": "3",
-  "state": "planned",
-  "note": "after M5b"
- },
- {
-  "id": "M6",
-  "name": "Web wiring",
-  "phase": "3",
-  "state": "planned",
-  "note": "after M5b"
+  "note": "no judge validated on faithfulness"
  },
  {
   "id": "F1-F4",
-  "name": "Final steps and pen test",
+  "name": "Final steps",
   "phase": "final",
-  "state": "planned",
-  "note": "after all"
+  "state": "merged",
+  "note": "one sealed test run; checks green"
  }
 ]

@@ -49,6 +49,54 @@
  },
  {
   "time": "17:42",
-  "milestone": "M7"
+  "milestone": "M7 offline"
+ },
+ {
+  "time": "20:04",
+  "milestone": "Live batch 1"
+ },
+ {
+  "time": "20:18",
+  "milestone": "M5-store"
+ },
+ {
+  "time": "20:18",
+  "milestone": "M5b"
+ },
+ {
+  "time": "20:24",
+  "milestone": "Live batch 2"
+ },
+ {
+  "time": "20:26",
+  "milestone": "M5c"
+ },
+ {
+  "time": "21:31",
+  "milestone": "M7 labels"
+ },
+ {
+  "time": "21:41",
+  "milestone": "M7 judge"
+ },
+ {
+  "time": "21:45",
+  "milestone": "M5G"
+ },
+ {
+  "time": "21:48",
+  "milestone": "Jev thresholds"
+ },
+ {
+  "time": "22:08",
+  "milestone": "M6"
+ },
+ {
+  "time": "22:39",
+  "milestone": "F2"
+ },
+ {
+  "time": "22:42",
+  "milestone": "Pen test"
  }
 ]

@@ -34,5 +34,23 @@
   "end": "19:18",
   "kind": "waiting",
   "label": "Waiting for the owner: balance and Postgres permission"
+ },
+ {
+  "start": "19:18",
+  "end": "20:33",
+  "kind": "active",
+  "label": "Live batch, M5-store Postgres PASS, M5c, labels, M5b live"
+ },
+ {
+  "start": "20:33",
+  "end": "21:31",
+  "kind": "paused",
+  "label": "Claude usage limit"
+ },
+ {
+  "start": "21:31",
+  "end": "22:46",
+  "kind": "active",
+  "label": "M7 judge, M5G, M6, Jev probes, pen test, F2, F3, F4"
  }
 ]

@@ -1,47 +1,51 @@
 [
  {
+  "time": "22:46",
+  "event": "F3 and F4 done; build finished"
+ },
+ {
+  "time": "22:42",
+  "event": "Pen test merged: 50 of 50 cases, no critical or high"
+ },
+ {
+  "time": "22:39",
+  "event": "F2 sealed test run merged (one ok line, 0.89 USD)"
+ },
+ {
+  "time": "22:08",
+  "event": "M6 web wiring merged (tokens encrypted)"
+ },
+ {
+  "time": "21:48",
+  "event": "Jev thresholds set on dev"
+ },
+ {
+  "time": "21:31",
+  "event": "Resumed after the second usage limit"
+ },
+ {
+  "time": "20:18",
+  "event": "M5-store passed Postgres; M5-store and M5b merged"
+ },
+ {
+  "time": "19:20",
+  "event": "Owner: Postgres allowed, balance 8.47 USD"
+ },
+ {
   "time": "18:18",
-  "event": "M5b verified (pass 2); held behind M5-store"
- },
- {
-  "time": "17:42",
-  "event": "M7 offline build merged"
- },
- {
-  "time": "17:39",
-  "event": "Scope data merged after four audit passes"
- },
- {
-  "time": "17:31",
-  "event": "M5-store Postgres pass blocked by the permission check; owner asked"
+  "event": "Waiting for the owner"
  },
  {
   "time": "17:21",
-  "event": "Session switched to Opus after the Fable limit"
- },
- {
-  "time": "16:51",
-  "event": "Gate design flaw found by the scope audit; D157 strong/weak rule"
- },
- {
-  "time": "16:44",
-  "event": "M4 merged after a FAIL (approval race) and the integrator's fix"
+  "event": "Switched to Opus after the Fable limit"
  },
  {
   "time": "16:31",
-  "event": "Usage limit reset; three verifiers resumed"
- },
- {
-  "time": "14:00",
-  "event": "Usage limit hit"
+  "event": "Resumed after the first usage limit"
  },
  {
   "time": "13:29",
   "event": "S0 scaffold committed"
- },
- {
-  "time": "13:10",
-  "event": "Threat model back; 21 gaps decided"
  },
  {
   "time": "13:00",
