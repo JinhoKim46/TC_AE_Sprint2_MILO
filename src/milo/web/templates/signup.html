@@ -7,7 +7,7 @@
     {{ csrf() }}
     <label>First name<input type="text" name="first_name" autocomplete="given-name" required></label>
     <label>Email<input type="email" name="email" autocomplete="username" required></label>
-    <label>Password (10 characters or more)<input type="password" name="password" autocomplete="new-password" minlength="10" required></label>
+    <label>Password (12 characters or more)<input type="password" name="password" autocomplete="new-password" minlength="12" required></label>
     <button class="btn btn-primary" type="submit">Create account</button>
   </form>
   <p class="muted"><a href="{{ url_for('web.login') }}">I already have an account</a></p>

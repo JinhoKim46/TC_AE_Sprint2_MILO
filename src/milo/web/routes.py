@@ -30,7 +30,7 @@ from milo.settings import Settings
 
 TAGLINE = "Indicative estimate. Not a quote. Non-binding."
 CONSENT_TEXT_VERSION = "v0"  # placeholder consent text (D81, D121)
-MIN_PASSWORD_LEN = 10
+MIN_PASSWORD_LEN = 12
 SAFE_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
 
 CSP = (

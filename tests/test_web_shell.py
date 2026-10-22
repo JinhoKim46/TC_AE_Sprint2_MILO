@@ -547,3 +547,24 @@ def test_dev_factory_refuses_prod(monkeypatch):
 def test_prod_requires_secret_key():
     with pytest.raises(RuntimeError):
         create_flask_app(FakeApp(), DevStore(), Settings(env="prod", secret_key=""))
+
+
+def test_password_minimum_is_12():
+    flask_app, store = make()
+    c = flask_app.test_client()
+    tok = CSRF_RE.search(c.get("/signup").get_data(as_text=True)).group(1)
+
+    def attempt(email: str, password: str) -> int:
+        return c.post(
+            "/signup",
+            data={
+                "email": email,
+                "password": password,
+                "first_name": "Z",
+                "csrf_token": tok,
+            },
+        ).status_code
+
+    assert attempt("a@example.test", "x" * 11) == 400
+    assert attempt("b@example.test", "x" * 12) == 200
+    assert not any(u["email"] == "a@example.test" for u in store.users.values())
