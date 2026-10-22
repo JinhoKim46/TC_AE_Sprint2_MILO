@@ -1,8 +1,7 @@
 # M1 report: chunking, ingest, vector store, dense retrieval, retrieval eval runner
 
-Status: built and checked offline. No model call, network call or key use happened in this milestone (SPEC D126,
-HARNESS rule 14). **The live index build and the dense dev evaluation are pending live run**; the integrator runs
-them in one batch under `evals/protocols/e01-rerun.md`.
+Status: built and checked offline; the live index build and the dense dev evaluation ran in the live batch on
+2026-10-22 (`docs/live-batch-ledger.md`), after the E01c rerun confirmed the embedding model.
 
 ## What exists
 
@@ -18,8 +17,27 @@ them in one batch under `evals/protocols/e01-rerun.md`.
 
 ## Results
 
-- Live dense baseline on the 60 dev rows (recall@5, nDCG@5, MRR, P@5, AP per type with bootstrap CI, weakest type,
-  `min_score` calibration, abstention rate): **pending live run**. No number from this milestone is a MILO result yet.
+- Embedding choice (E01c, `evals/results/retrieval/embedding_dev_v3.json`, protocol `e01-rerun.md`): at 800/100 on
+  48 answerable dev questions `google/gemini-embedding-2` has nDCG@5 0.761; no candidate's paired interval lies above
+  zero (runner-up `mistralai/mistral-embed-2312` -0.087 [-0.176, -0.004]; `openai/text-embedding-3-large` -0.089
+  [-0.192, 0.009]). D5 stays: confirmed on 48 dev questions, runner-up excluded. Chunk setting stays 800/100 (D9).
+- Live dense baseline, `evals/results/retrieval/retrieval_dev.json` (60 dev rows, 48 answerable, 167 chunks, 3072
+  dimensions, `google/gemini-embedding-2`, 800/100; command `MILO_LIVE=1 python evals/retrieval/run_retrieval.py`):
+
+  | Slice | n | recall@5 | nDCG@5 | MRR | P@5 | AP |
+  |---|---|---|---|---|---|---|
+  | all answerable | 48 | 0.917 [0.833, 0.979] | 0.761 [0.660, 0.848] | 0.716 [0.609, 0.815] | 0.183 | 0.716 |
+  | identifier | 12 | 0.917 [0.750, 1.000] | 0.797 [0.610, 0.958] | 0.767 | 0.183 | 0.767 |
+  | paraphrase | 36 | 0.917 [0.806, 1.000] | 0.749 [0.636, 0.853] | 0.700 | 0.183 | 0.700 |
+
+  Weakest type: paraphrase (nDCG@5 0.749). No answerable row lacks a relevant chunk. With the gold filter (22 rows):
+  nDCG@5 0.807 against 0.732 unfiltered.
+- `min_score` calibration (D25): answerable top-1 minimum 0.638, unanswerable top-1 maximum 0.756 over 12 rows, so
+  the two are **not separable**. The balanced-accuracy rule picks 0.73: 56 percent of answerable questions answered,
+  83 percent of unanswerable ones abstained. At the current 0.30 every question is answered and none abstains. The
+  value is filed as a request (`docs/requests/live-batch.md`); `settings.py` is the integrator's.
+- Cost: index build about 0.002 USD and evaluation 0.00225 USD (11,248 tokens), from the usage field.
+  `make eval-retrieval-replay` matches (rows recomputed; 60 stored query vectors re-ranked within 0.005).
 - The dry result `evals/results/retrieval/retrieval_dry.json` comes from a synthetic fixture and the fake embedder. It
   exercises the harness only and is not evidence about retrieval quality.
 - Offline check on real data: every answerable dev quote lands whole in a chunk at 800/100
@@ -42,6 +60,5 @@ them in one batch under `evals/protocols/e01-rerun.md`.
 
 ## Limits
 
-- Cost of the live run is not recorded by the result file: `cloud.py` drops the embedding usage field (see
-  `docs/requests/m1.md`).
+- Cost is recorded from the embedding usage field (the `cloud.py` gap of `docs/requests/m1.md` item 1 is closed).
 - Embedding calls make one attempt per batch; the single retry site `llm/retry.py` serves chat only.
