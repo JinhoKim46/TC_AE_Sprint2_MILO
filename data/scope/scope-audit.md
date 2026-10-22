@@ -256,3 +256,107 @@ SHA-256 of the audited files at commit `530133f`:
 61101f89cd16759e50c4d72a5b5fff6fbf8a1dd7dd009d9cffd323cc380de004  lexicon.yaml
 56a1d5585e9c772912aba29934c520ff90716226718e4f9a538f5f8c313a197b  probes.jsonl
 ```
+
+---
+
+# Pass 2 (after fix cycle 1)
+
+| Field | Value |
+|---|---|
+| Auditor | the same independent session agent as pass 1 |
+| Date | 2026-10-22 |
+| Commit audited | `edcb5d9` (merge of the generator's fix cycle 1, `9c3f3b0`, into `agent/audit/m5g`) |
+| Protocol id | `m5g-gate` |
+| Files | `scope_set.jsonl` 420 rows (284 in-scope, 142 / 142; 136 out-of-scope, 68 / 68), `lexicon.yaml` `scope-lexicon.v2`, `probes.jsonl` 80 rows |
+| Method | the pass-1 script re-run unchanged except that `product_words` is a rule-2 list; every changed row and every new row read by eye; the pass-1 counter-examples re-run; no model or network call, `.env` not read |
+
+## P2.1 Pass-1 `fix` sids, one by one
+
+All 46 are now `ok`. Scope rows s018, s038, s054, s056, s058, s062, s066, s070, s072, s076, s081, s084, s086, s088, s097, s099, s108, s116, s123, s126, s128, s132, s134, s148, s154, s158, s164, s166, s184, s198, s210, s214, s260, s261, s278, s310, s337, s351, s355, s357 and probes p005, p011, p042, p047, p049, p063 were each re-read against the reason given in pass 1: the leakage rows carry new facts or new numbers (s058, s128, s184, s198 now share one consistent 26 / 45 / 550 conflict inside test, which is fine), the translations are original messages in their language, the two fragments are decidable, the two "other" rows are plain off-topic text, and the probes no longer mirror a scope row.
+
+Three of them with a note: s357 ("can you order me a pizza?") is labelled correctly but passes stage 1 by the bare trade word `order`, so dev has nine stage-1 false passes, not the eight the README counts. s018 now asks whether the monthly price includes support, which is also the in-scope clause of probe p057 and the theme of test s090; not a rewording, noted only. p042 answers the error-types question, as do dev s183 and new dev s383, with three different picks; not a rewording, noted only.
+
+## P2.2 New rows s361 to s420
+
+Read with the full pass-1 checklist.
+
+- Labels: all 60 agree with the protocol rules. s361 to s370 are bare business statements or stop requests (in scope under the rubric's "how work is done today" and "wants to stop" clauses); s383 to s388 are follow-ups decidable from their context; s389 to s396 (new style `colloquial`) describe a process in trade words that happen to be refuse-pattern nouns; s397, s398 greet and describe; s399 to s404 pair a creative request with a session or account action, in scope by the mixed-message rule; s405 to s420 are off topic and contain a bare trade word or a number with a unit on purpose.
+- Decidability: s366 ("the lad on the desk does it") has no context and "it" has no referent; a careful person cannot tell what the lad does. Flagged `fix`. s364 ("mondays are carnage") and s365 ("it's all in my head") are decidable only because an owner in a diagnosis is the speaker; kept `ok` with a note, since that framing is exactly what stage 2 is given.
+- Realism: s361 to s376 and s389 to s398 read like owners; s377 to s382 share one manufactured pattern (one key word with a dropped letter each); s399 to s404 share one frame ("[creative request], then [action]"), which is the point of the rows but makes them a frame. s389 to s394, s399 to s401 and nine of s405 to s420 are the pass-1 auditor's own counter-examples taken verbatim or near-verbatim; they do the job they were written for, but the second-pass reader should not count them as independent evidence about the patterns.
+- Duplicates: no pair above Jaccard 0.6 inside the set. Across scope and probes, s371 "paper. all of it." against p003 "our bookings are all on paper" is 0.67 only after stop-word removal (0.25 with the full word sets); not a duplicate. s399 contains test s266 "tell me a joke" by design (the rule-2 rescue of a rule-4 phrase).
+- Shared context: s384 ("nope") answers the same personal-data question as test s174 ("no, never") in the same split with the same answer; s387 ("we'll see") answers the same start-date question as dev s187 ("not yet, ask me again later") in the same split with the same meaning. Both flagged `fix`: give each a different protocol question. s383 shares its question with dev s183 but answers differently; `ok`.
+- Split leakage: s371 (dev, "paper. all of it.") and s398 (test, "everything on paper") share a fact in different form; noted, not a rewording. No other cross-split pair.
+- Safety: no D22 phrase (the only two remain in s328 and s332, out of scope), no demo name, no URL, path or key. New capitalised tokens are German nouns and "Sam". One new row's text contains a word this file may not use; it is not quoted here.
+- Counts: styles per split still split exactly in half (short 25 / 25, typo 23 / 23, fragment 18 / 18, multi_part 18 / 18, follow_up 18 / 18, greeting_business 11 / 11, long 15 / 15, session_action 10 / 10, colloquial 4 / 4; chat 15 / 15, unrelated_advice 11 / 11, other_products 8 / 8, the rest unchanged). Non-English: in-scope dev 10, test 8; out-of-scope 5 / 5. Short rows under 8 words, long rows 40 to 120 words, every follow_up with context. Probe categories unchanged and above the minimums.
+
+## P2.3 Realism over the whole set (pass-1 method)
+
+- Templated by wording: s148, s149, s164 (aside-then-question frame, now in natural prose but still the frame), s399 to s404 (request-then-action frame), s377 to s381 (uniform dropped-letter typos), s018 (clause shared with p057). 15 of 420, **3.6 percent** (pass 1: 18.6 percent). Under the 10 percent target.
+- Recycled demo facts in differently worded rows: no heat / gas smell (s085, s125); the volume conflict (s155 in dev; s058, s128, s184, s198 in test with the new numbers); re-keying paper sheets at night (s043, s059, s094, s127); approvals of refunds and quotes over a threshold (s049, s080, s116, s159, s192); CSV out, nothing back in (s057, s066, s091, s158); two sites, about 30 to 35 a day (s041, s060, s206); budget unknown (s009, s083, s121, s162, s178, s219); setup fee charged once (s044, s149). 31 of 420, 7.4 percent (pass 1: 13.6 percent).
+- Union: 45 of 420, 10.7 percent (pass 1: 29.2 percent). The remaining cluster that is also a rewording is s091 (dev) / s158 (test): both end "won't take anything back in"; s091 is flagged `fix` (change the clause, e.g. "csv out yes, nothing goes back in, we retype it"). s066 and s158, both test, also share "a till that prints / spits out a CSV at night / at close of day"; noted.
+
+## P2.4 Stage-1 simulation with lexicon v2
+
+Same simulator as pass 1, with `product_words` as a rule-2 list. Two readings of rule 4's "no lexicon term" were run again: the protocol's literal rule order (rule 4 before rule 5, action words not counted) and the lexicon v2 header's definition (action words are rule-2 terms).
+
+| Split | Label | greeting | pass | refuse | undecided |
+|---|---|---|---|---|---|
+| dev | in_scope (142) | 2 | 91 | 0 | **49** |
+| dev | out_of_scope (68) | 0 | 9 | 14 | **45** |
+| test | in_scope (142) | 1 | 101 | 0 | 40 |
+| test | out_of_scope (68) | 0 | 8 | 14 | 46 |
+
+(The table is under the lexicon v2 reading. The README's own counts are 50 / 46 dev and 41 / 46 test; the one-row differences are matching detail, as in pass 1.)
+
+- Undecided dev rows: 49 in-scope and 45 out-of-scope, both at or above the 40 the protocol needs for the threshold rule. In-scope dev composition: follow_up 17, typo 9, fragment 7, short 7, colloquial 4, greeting_business 3, long 1, multi_part 1; `min_in` is no longer hostage to the one-line follow-ups alone. Test: 40 in-scope, 46 out-of-scope.
+- In-scope rows refused: 0 under the lexicon v2 reading. Under the protocol's literal rule order, 5 in-scope rows are refused: s399 and s402 (joke), s400 and s401 (poem), s404 (story); s403 passes by rule 5 only because "sing me something" matches no poem pattern. `evals/protocols/m5g-gate.md` was not changed in fix cycle 1, so its rule table still says what the literal reading says. This must be settled in the protocol text before the gate code is written: rule 4 fires only when no term from any list, session and account actions included, matched (or rule 5 moves above rule 4). The data now exercises the point (two dev rows would fail `tests/test_gate.py`'s zero-refusal assertion under the wrong order), which is what pass 1 asked for.
+- Deliberate collision rows: all 16 (s405 to s420) pass stage 1 and are labelled out_of_scope, by `the office`, `people`, `staff`, `one off`, `order`, `tier`, `job`, `shift`, `client`, `minutes`, `templates`, `request`, `customer`, `api`, `ticketing`, `tier`. Plus s357 by `order`. Consequence, stated in the README and repeated here: the two-stage refusal rate on test is capped at 60 of 68 (88.2 percent) and on dev at 59 of 68, below the D118 target of 95 percent, by construction. This is a decision for the protocol owner before the first probe, not a data defect: either narrow the bare trade words to two-word forms in a lexicon v3 (and re-run the pass-1 collision list) or run as is and report the miss under the decision rule's failure path.
+- Out-of-scope rows refused by rule 4: 28 of 136 (code_named_language 6, homework 6, poem 4, story 4, joke 3, poem_es_de_ko 2, lyrics 1, horoscope 1, translation 1). Five creative or code rows go to stage 2 (s269, s272, s282, s287, s290), as before.
+- Probes: no `expected: pass` probe refused, no `expected: refuse` probe passed; 35 pass probes settle at stage 1 and 18 go to stage 2 (p005 is now undecided by design); 5 refuse probes settle at stage 1, 8 go to stage 2, 2 never reach the gate; all 12 band probes go to stage 2.
+- Greeting list: s001, s004, s035 still land as `greeting`; no other row is swallowed by rule 1.
+
+## P2.5 The three lexicon findings, re-tested
+
+1. Product words. `product_words` added with the two-word forms recommended in pass 1 and nothing bare. s096 (`modules`), s118 (`module`), s133 (`report by`) and s209 (`contract length`) now pass by rule 2. s296 ("for my book report") is still refused by rule 4 (`for my book report`), and bare `report`, `estimate`, `fee`, `price`, `cost` are absent, as recommended. Closed.
+2. Verb-plus-object refuse patterns. The six pass-1 in-scope counter-examples (recipe card, "sounds like a joke", homework questions, lyrics sheets, horoscope column, a regex in the form) now go `undecided`, not `refuse`, and the same six sentences are in the set as s389 to s394. The out-of-scope rows that were refused in pass 1 are still refused (28 now against 27), and p010, p012, p013, p049, p050 still refuse. Closed, with the reservation in P2.2 that the evidence rows are the auditor's own sentences.
+3. Action words before rule 4. The lexicon header now defines "lexicon term" to include session and account actions, and under that definition the three pass-1 counter-examples pass by rule 2 (verified: 0 in-scope refusals). Under the unchanged protocol rule table they are still refused (verified: 5 rows). Open on the protocol side only; see P2.4.
+
+Collision counter-examples re-run: all 16 still pass stage 1 under v2, as expected, since the bare trade words were kept on purpose.
+
+## P2.6 Spot check of 30 unchanged rows
+
+s001, s005, s009, s013, s021, s025, s029, s041, s043, s047, s051, s055, s063, s069, s077, s089, s101, s115, s119, s131, s141, s161, s175, s183, s191, s201, s225, s241, s289, s326: confirmed byte-identical to commit 530133f (absent from the diff), re-read, labels and decidability as in pass 1, all `ok`.
+
+## P2.7 Flagged rows, pass 2
+
+| sid | Verdict | Reason | Proposed change |
+|---|---|---|---|
+| s091 | fix | still shares its closing clause ("won't take anything back in") with test s158 | e.g. "csv out yes, nothing goes back in, we retype it" |
+| s366 | fix | not decidable without context: "it" has no referent | add one assistant turn (e.g. the approval or the steps question) or name the task ("the lad on the desk books them in") |
+| s384 | fix | same question and same answer as test s174 in the same split | a different protocol question, e.g. after "Do you get urgent requests ...": "nope" |
+| s387 | fix | same question and same meaning as dev s187 in the same split | a different protocol question, e.g. after the budget question: "we'll see" |
+
+All other sids in `scope_set.jsonl` (s001 to s420) and `probes.jsonl` (p001 to p080) are `ok`.
+
+## P2.8 Summary
+
+| Verdict | scope_set.jsonl | probes.jsonl | Total |
+|---|---|---|---|
+| ok | 416 | 80 | 496 |
+| fix | 4 | 0 | 4 |
+| remove | 0 | 0 | 0 |
+
+- All 46 pass-1 fixes confirmed; 4 small new fixes, none of which changes a count or a stage-2 undecided total.
+- Realism 3.6 percent templated by wording (target under 10 percent met), 10.7 percent including recycled demo facts.
+- Stage 1 under lexicon v2: 0 in-scope refusals; undecided dev 49 in-scope / 45 out-of-scope, test 40 / 46, so the threshold rule has at least 40 rows on each side.
+- Two items sit outside the data and must be settled before the first probe: the protocol's rule-4 wording (P2.4), and the 95 percent target that the deliberate collision rows cap at 88.2 percent on test (P2.4).
+
+SHA-256 of the audited files at commit `edcb5d9`:
+
+```
+994185c6ab4203c64f1a8ba25b3bab523a2d36766de60719b8531dfbc1575002  scope_set.jsonl
+927cde09aecc6d5b129c3b5c2287cf9bf718bd0d9c6b7fe369e2eeff0993a4ce  lexicon.yaml
+4249ba0acf9f4d7001d3a40397c31ab7ab8443283e8b58a1339aebb824768edc  probes.jsonl
+```
+
+Fitness: fit for threshold setting once the four `fix` rows are reworded and the protocol's rule-4 wording matches lexicon v2; the 95 percent out-of-scope target is not reachable on this set as built, and that choice belongs to the protocol owner, not to the data.
