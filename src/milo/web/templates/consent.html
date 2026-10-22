@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% from "_macros.html" import csrf with context %}
+{% block content %}
+<section class="card narrow">
+  <h1>Before we start</h1>
+  <p>MILO asks about your business to prepare an indicative estimate. We store your answers and uploaded documents for this purpose. Placeholder consent text, version {{ version }}.</p>
+  <form method="post" action="{{ url_for('web.consent_post') }}" class="stack">
+    {{ csrf() }}
+    <label class="check"><input type="checkbox" name="agree" value="yes" required> I agree to the use of my answers for the interview.</label>
+    <button class="btn btn-primary" type="submit">Continue</button>
+  </form>
+</section>
+{% endblock %}

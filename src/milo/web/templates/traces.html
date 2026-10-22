@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Traces</h1>
+{% if traces %}
+<table class="table"><thead><tr><th scope="col">Event</th><th scope="col">Thread</th><th scope="col">Status</th><th scope="col">Detail</th></tr></thead>
+<tbody>{% for t in traces %}<tr><td>{{ t.get('event', t.get('name', '')) }}</td><td>{{ t.get('thread_id', '') }}</td><td>{{ t.get('status', '') }}</td><td class="plain-text">{{ t }}</td></tr>{% endfor %}</tbody></table>
+{% else %}<p class="card empty muted">No traces yet.</p>{% endif %}
+{% endblock %}

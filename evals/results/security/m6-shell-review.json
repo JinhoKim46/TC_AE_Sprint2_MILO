@@ -1,0 +1,296 @@
+{
+  "git_commit": "27e8fde765467347e0aa882348ea04cf5ee91fed",
+  "model": null,
+  "seed": null,
+  "temperature": null,
+  "command": "uv run python evals/results/security/m6-shell-review.py",
+  "timestamp": "2026-10-22T14:33:58+00:00",
+  "inputs": {
+    "evals/security/payloads/xss.txt": "cfcfc6f184df91984f01720f9e209332c8650777a174f5deecfdf1ff812f1eb1",
+    "evals/security/payloads/traversal_names.txt": "23ca084c6c8d5016d3b67e64874dea028b7525e0f53c9506caecb730d8485537",
+    "evals/security/cases.jsonl": "8fc0a0a95f5d1d9fdb0e4cb5fa366d9ff4486516b10990eb29fec496c24039de",
+    "src/milo/web/routes.py": "ea56c1ba1fa66e56a105b79ea0a36a291baca834a9484c09ae85f2c967692266"
+  },
+  "note": "SR review of the M6 phase-1a shell; offline, no model call (model/seed/temperature do not apply)",
+  "summary": {
+    "checks": 39,
+    "pass": 37,
+    "fail": 2,
+    "fail_high_or_critical": 0
+  },
+  "rows": [
+    {
+      "case": "A-15",
+      "check": "every POST/PATCH/DELETE without a token, with another session's token (form and header) and anonymous -> 403 csrf_failed",
+      "result": "pass",
+      "evidence": "18 write rules x 4 variants; failures: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-15",
+      "check": "store unchanged after the CSRF walk",
+      "result": "pass",
+      "evidence": "deepcopy of the store equal before and after",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-15",
+      "check": "CSP form-action 'self'",
+      "result": "pass",
+      "evidence": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-ancestors 'none'; form-action 'self'",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-15",
+      "check": "app.js sends X-CSRF-Token from the meta tag; every template form carries csrf()",
+      "result": "pass",
+      "evidence": "app.js: api() header; templates: _macros.html csrf()",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-13b",
+      "check": "D138 headers exact on every response (every route x anon/owner/operator, 404, 405, 500, static, 401, 403, 501)",
+      "result": "pass",
+      "evidence": "url_map: 22 GET rules, 18 write rules; 125 responses; mismatches: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-13b",
+      "check": "500 renders the error page without a traceback (T-19)",
+      "result": "pass",
+      "evidence": "/boom -> 500, body has heading=True, traceback=False",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-13b",
+      "check": "prod adds Strict-Transport-Security: max-age=31536000",
+      "result": "pass",
+      "evidence": "prod GET /login -> 'max-age=31536000'",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-13b/A-14",
+      "check": "no inline <script>, <style>, style= or on*= in templates; no |safe or Markup( in web/",
+      "result": "pass",
+      "evidence": "matches: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a",
+      "check": "session cookie flags HttpOnly, SameSite=Lax, Secure (debug off)",
+      "result": "pass",
+      "evidence": "session=<value>; Secure; HttpOnly; Path=/; SameSite=Lax",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a/D137",
+      "check": "session regenerated at sign-in: cookie value and CSRF token both change",
+      "result": "pass",
+      "evidence": "cookie changed=True, csrf changed=True",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a/D137",
+      "check": "session regenerated at sign-out: cookie cleared, old CSRF token no longer accepted, new token differs",
+      "result": "pass",
+      "evidence": "logout -> 302; Set-Cookie 'session=<value>; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0; Secure; HttpOnly; Path=/; SameSite=Lax'; new csrf differs=True",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a",
+      "check": "old CSRF token rejected after sign-out",
+      "result": "pass",
+      "evidence": "POST /sessions with pre-logout token -> 403 {'error': 'csrf_failed'}",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a",
+      "check": "dev factory (debug) drops Secure only; HttpOnly and SameSite=Lax kept",
+      "result": "pass",
+      "evidence": "session=<value>; HttpOnly; Path=/; SameSite=Lax",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "D137",
+      "check": "prod without MILO_SECRET_KEY refuses",
+      "result": "pass",
+      "evidence": "MILO_SECRET_KEY is required in production",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "D137",
+      "check": "web factory alone does not refuse prod+debug (guard lives in settings.production_problems; create_app must call it)",
+      "result": "FAIL",
+      "evidence": "constructed with env=prod, debug=True",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "A-13a",
+      "check": "every xss.txt payload placed in every shell-rendered field (title, message, reply, evidence quote/value, name, report, consent version, 404 path) comes back escaped; no live tag, handler, javascript: href, markdown anchor or evaluated template",
+      "result": "pass",
+      "evidence": "13 payloads x 195 page reads; failures: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-14",
+      "check": "operator pages (/ops/submissions, /ops/submissions/<id>, /ops/audit, /traces) escape owner text",
+      "result": "pass",
+      "evidence": "included in the A-13a walk above",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-13a",
+      "check": "error text and consent text are constants, not owner-controlled",
+      "result": "pass",
+      "evidence": "routes.py: fixed strings in login_post, signup_post, reset_token_post, error_page; upload_filename is not rendered in 1a (501)",
+      "severity_if_fails": "n/a"
+    },
+    {
+      "case": "A-08/A-13b",
+      "check": "anonymous: owner pages redirect to /login, owner JSON routes 401, /ops/* and /traces 404",
+      "result": "pass",
+      "evidence": "30 non-auth rules walked anonymously; failures: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-08f",
+      "check": "owner (non-operator) gets 404 on every /ops/* and /traces route, store unchanged",
+      "result": "pass",
+      "evidence": "6 operator rules; failures: none; store unchanged=True",
+      "severity_if_fails": "critical"
+    },
+    {
+      "case": "A-08",
+      "check": "JSON 404 error code is `not_found` as the cases expect",
+      "result": "FAIL",
+      "evidence": "fetch GET /ops/submissions as owner -> {'error': 'page_not_found'}; html 404 json=None",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "A-08a/A-08b",
+      "check": "owner-b reading owner-a's session and report (page and download) -> 404, no company text",
+      "result": "pass",
+      "evidence": "{\"GET /sessions/c6721e4de09e\": 404, \"GET /reports/r1\": 404, \"GET /reports/r1/download\": 404}",
+      "severity_if_fails": "critical"
+    },
+    {
+      "case": "A-08b",
+      "check": "owner-b PATCH/archive/restore on owner-a's session -> 501 not_built before any owner check; title and status unchanged (phase-3 must add the owner filter, D102)",
+      "result": "pass",
+      "evidence": "{\"PATCH /sessions/c6721e4de09e\": 501, \"POST /sessions/c6721e4de09e/archive\": 501, \"POST /sessions/c6721e4de09e/restore\": 501}; store unchanged=True",
+      "severity_if_fails": "critical"
+    },
+    {
+      "case": "A-29/D144",
+      "check": "operator role re-read per request: demotion in the store takes effect without a new cookie",
+      "result": "pass",
+      "evidence": "before=200, after demotion=404",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-11",
+      "check": "GET / without an interview consent row -> 302 /consent",
+      "result": "pass",
+      "evidence": "302 /consent",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-11",
+      "check": "every owner write route (POST/PATCH/DELETE) before consent -> 403 consent_required; no row written",
+      "result": "pass",
+      "evidence": "11 write rules; failures: none; store unchanged=True",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-11",
+      "check": "/consent and the D93 auth pages stay reachable before consent",
+      "result": "pass",
+      "evidence": "{\"/consent\": 200, \"/login\": 200, \"/signup\": 200, \"/reset\": 200, \"/reset/x\": 200, \"/confirm?token=x\": 400}",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-11",
+      "check": "POST /logout allowed before consent -> 302",
+      "result": "pass",
+      "evidence": "302",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-11",
+      "check": "POST /consent agree=yes -> 302, consent row recorded, GET / then 200",
+      "result": "pass",
+      "evidence": "302; rows=[{'purpose': 'interview', 'version': 'v0', 'at': datetime.datetime(2026, 10, 22, 16, 33, 57, 228204)}]",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-11",
+      "check": "POST /consent without agree=yes -> 400 invalid_input, no row",
+      "result": "pass",
+      "evidence": "400 {'error': 'invalid_input'}",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-19",
+      "check": "sign-up, sign-in and reset: identical status and body for a known and an unknown email",
+      "result": "pass",
+      "evidence": "{\"/signup\": {\"status_equal\": true, \"body_equal\": true, \"status\": 200}, \"/login\": {\"status_equal\": true, \"body_equal\": true, \"status\": 401}, \"/reset\": {\"status_equal\": true, \"body_equal\": true, \"status\": 200}}",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "D92",
+      "check": "sign-up refuses an 11-character password (400) and accepts 12",
+      "result": "pass",
+      "evidence": "11 chars -> 400; 12 chars -> 200",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "D92",
+      "check": "reset refuses an 11-character password and accepts 12",
+      "result": "pass",
+      "evidence": "11 chars -> 400; 12 chars -> 302",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-10a/H12",
+      "check": "sign-up with role=operator creates an owner",
+      "result": "pass",
+      "evidence": "role=owner",
+      "severity_if_fails": "critical"
+    },
+    {
+      "case": "D92",
+      "check": "sign-in refused before email confirmation",
+      "result": "pass",
+      "evidence": "login unconfirmed -> 401",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-25",
+      "check": "traversal upload names: every upload -> 501 not_built (or refused by the client), git tree, cwd, parent dir, temp dir and .env mtime unchanged",
+      "result": "pass",
+      "evidence": "{\"../../.env\": \"501 not_built\", \"../../../.env\": \"501 not_built\", \"..\\\\..\\\\..\\\\windows\\\\system32\\\\config.sam\": \"501 not_built\", \"....//....//.env\": \"501 not_built\", \"%2e%2e%2fsecret.txt\": \"501 not_built\", \"..%252f..%252f.env\": \"501 not_built\", \"/etc/hostname\": \"501 not_built\", \"procedure.txt\\\\u0000.exe\": \"501 not_built\", \"job-sheet.pdf;rm.txt\": \"501 not_built\", \"~/.ssh/id_rsa\": \"501 not_built\", \".env.local\": \"501 not_built\", \"intake.txt/../../settings.py\": \"501 not_built\", \"a-very-long-name-repeated-0123456789-0123456789-0123456789-0123456789.txt\": \"501 not_built\"}; tree unchanged=True (changed keys: none); .env present before=False",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-25",
+      "check": "shell writes no upload to disk by construction",
+      "result": "pass",
+      "evidence": "routes.py has no save( or open( call; upload returns not_built; MAX_CONTENT_LENGTH=10 MiB (D46/D132 5 MB cap is phase 3)",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "D139",
+      "check": "replies render as escaped plain text with newlines kept; no markdown, no clickable links",
+      "result": "pass",
+      "evidence": "markdown literal in .plain-text bubble=True; .plain-text pre-wrap=True; app.js uses textContent only=True",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "D139",
+      "check": "no markdown or nl2br filter in templates",
+      "result": "pass",
+      "evidence": "grep templates for markdown/nl2br/urlize: none",
+      "severity_if_fails": "high"
+    }
+  ]
+}

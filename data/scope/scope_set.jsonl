@@ -88,7 +88,7 @@
 {"sid": "s088", "text": "we keep names n mobile nos, no cards, some vet notes", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "test"}
 {"sid": "s089", "text": "cud we start nxt month or is that too quick", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "dev"}
 {"sid": "s090", "text": "whats included in the monthy price? support? changes?", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "test"}
-{"sid": "s091", "text": "booking widget exports csv but wont take anything back in", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "dev"}
+{"sid": "s091", "text": "booking widget exports csv fine but nothin goes back in, we retype the lot", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "dev"}
 {"sid": "s092", "text": "i wnat fewer wrong adresses, every wrong one is a wasted van trip", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "test"}
 {"sid": "s093", "text": "how does the ticket thing handle dupes? same cust emails and rings", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "dev"}
 {"sid": "s094", "text": "ppl re-key the paper sheets at nite, 3 mins a job, 400 jobs a mnth", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "test"}
@@ -363,7 +363,7 @@
 {"sid": "s363", "text": "we write it all in a notebook", "label": "in_scope", "style": "short", "recent_turns": [], "split": "dev"}
 {"sid": "s364", "text": "mondays are carnage", "label": "in_scope", "style": "short", "recent_turns": [], "split": "test"}
 {"sid": "s365", "text": "it's all in my head", "label": "in_scope", "style": "short", "recent_turns": [], "split": "dev"}
-{"sid": "s366", "text": "the lad on the desk does it", "label": "in_scope", "style": "short", "recent_turns": [], "split": "test"}
+{"sid": "s366", "text": "the lad on reception books them in", "label": "in_scope", "style": "short", "recent_turns": [], "split": "test"}
 {"sid": "s367", "text": "nothing gets written down", "label": "in_scope", "style": "short", "recent_turns": [], "split": "dev"}
 {"sid": "s368", "text": "my wife does the paperwork at night", "label": "in_scope", "style": "short", "recent_turns": [], "split": "test"}
 {"sid": "s369", "text": "let's pause here", "label": "in_scope", "style": "short", "recent_turns": [], "split": "dev"}
@@ -381,10 +381,10 @@
 {"sid": "s381", "text": "nobody chases the quoets", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "dev"}
 {"sid": "s382", "text": "the wb form sends to an address nobody checks", "label": "in_scope", "style": "typo", "recent_turns": [], "split": "test"}
 {"sid": "s383", "text": "the middle one", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "When mistakes happen, what kind are they? Missed, duplicated, delayed or wrong?"}], "split": "dev"}
-{"sid": "s384", "text": "nope", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Do you store customer personal data, such as phone numbers, addresses or payment details?"}], "split": "test"}
+{"sid": "s384", "text": "nope", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Do you get urgent requests that must be handled straight away, at any hour?"}], "split": "test"}
 {"sid": "s385", "text": "roughly, yes", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Recorded: about 20 requests per day. Is that a normal day?"}], "split": "dev"}
 {"sid": "s386", "text": "can't say really", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "What matters most to you here: saving time, fewer errors, lower cost or room to grow?"}], "split": "test"}
-{"sid": "s387", "text": "we'll see", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "When would you want to start? Next month, next quarter, or not decided yet?"}], "split": "dev"}
+{"sid": "s387", "text": "we'll see", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Do you have a budget range in mind? It is fine to say you do not know yet."}], "split": "dev"}
 {"sid": "s388", "text": "same, nothing to add", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Anything else you would want handed over to an automated system?"}], "split": "test"}
 {"sid": "s389", "text": "we're a bakery, every recipe card gets typed up by hand", "label": "in_scope", "style": "colloquial", "recent_turns": [], "split": "dev"}
 {"sid": "s390", "text": "I know it sounds like a joke but we still run everything off a fax machine", "label": "in_scope", "style": "colloquial", "recent_turns": [], "split": "test"}
