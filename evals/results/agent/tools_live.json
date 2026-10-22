@@ -1,0 +1,691 @@
+{
+  "command": "MILO_LIVE=1 uv run python evals/agent/run_tools.py --model anthropic/claude-sonnet-5.5 --price-in 2.0 --price-out 10.0 --max-cost 0.3",
+  "git_commit": "a9e41bf965015c49785ab877cf2b4fa0de9f272e",
+  "inputs": {
+    "tool_cases": "ae1b8aa3899bd99d28eaff18a96dc5f742be9f1bb8f3e9f355f345f4289703c2"
+  },
+  "manifest_tool_cases_sha256": "ae1b8aa3899bd99d28eaff18a96dc5f742be9f1bb8f3e9f355f345f4289703c2",
+  "max_cost_usd": 0.3,
+  "metrics": {
+    "case_pass_rate": 0.6,
+    "case_pass_rate_ci95": [
+      0.3333,
+      0.8
+    ],
+    "cases": 15,
+    "emitted_calls": 17,
+    "exact_args_rate_on_exact_cases": 0.5556,
+    "expected_schema_invalid_cases": [],
+    "failed_cases": [
+      "tc04",
+      "tc06",
+      "tc07",
+      "tc13",
+      "tc14",
+      "tc15"
+    ],
+    "false_call_rate": 0.25,
+    "mean_cost_usd": 0.00419,
+    "mean_first_attempt_latency_s": 1.4452,
+    "mean_latency_s": 1.4452,
+    "missed_call_rate": 0.0909,
+    "name_match_rate": 0.6,
+    "p95_latency_s": 1.8276,
+    "rows_with_retries": [],
+    "schema_valid_rate": 1.0,
+    "total_cost_usd": 0.062852
+  },
+  "mode": "live",
+  "model": "anthropic/claude-sonnet-5.5",
+  "price_usd_per_mtok": [
+    2.0,
+    10.0
+  ],
+  "reasoning": {
+    "anthropic/claude-sonnet-5.5": "low_effort"
+  },
+  "replay_file": "tools_live_replay.jsonl",
+  "response_models": [
+    "anthropic/claude-sonnet-5.5"
+  ],
+  "rows": [
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.00363,
+      "emitted_calls": [],
+      "exact_equal": true,
+      "expected_calls": [],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.4003,
+      "id": "tc01",
+      "latency_s": 1.4003,
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [],
+      "query": "Thanks, that's all clear.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1520,
+        "tokens_out": 59
+      },
+      "user_id": "owner-a"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.003866,
+      "emitted_calls": [
+        {
+          "args": {
+            "product": "phone-intake",
+            "query": "phone-intake module what is included"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": false,
+      "expected_calls": [
+        {
+          "args": {
+            "product": "phone-intake",
+            "query": "What does phone-intake include?"
+          },
+          "name": "search_knowledge"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.3794,
+      "id": "tc02",
+      "latency_s": 1.3794,
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "What does phone-intake include?",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1518,
+        "tokens_out": 83
+      },
+      "user_id": "owner-a"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.003332,
+      "emitted_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.773,
+      "id": "tc03",
+      "latency_s": 1.773,
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "What have you recorded about my business so far?",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1521,
+        "tokens_out": 29
+      },
+      "user_id": "owner-a"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.00495,
+      "emitted_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec",
+          "schema_valid": true
+        },
+        {
+          "args": {
+            "product": "phone-intake",
+            "query": "phone intake pricing"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        },
+        {
+          "args": {
+            "product": "customer-status-updates",
+            "query": "customer status updates pricing"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": false,
+      "expected_calls": [
+        {
+          "args": {
+            "module_ids": [
+              "phone-intake",
+              "customer-status-updates"
+            ]
+          },
+          "name": "estimate_cost"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.5413,
+      "id": "tc04",
+      "latency_s": 1.5413,
+      "match": "exact",
+      "names_equal": false,
+      "passed": false,
+      "policy_decisions": [
+        "allowed",
+        "allowed",
+        "allowed"
+      ],
+      "query": "What would phone-intake and customer-status-updates cost at 35 requests a day?",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1535,
+        "tokens_out": 188
+      },
+      "user_id": "owner-a"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": true,
+      "cost_usd": 0.0046,
+      "emitted_calls": [
+        {
+          "args": {
+            "evidence_text": "We get about 35 requests a day.",
+            "field_id": "daily_request_volume",
+            "period": "day",
+            "unit": "requests",
+            "value": 35
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "evidence_text": "We get about 35 requests a day.",
+            "field_id": "daily_request_volume",
+            "period": "day",
+            "unit": "requests",
+            "value": 35
+          },
+          "name": "record_fact"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.4169,
+      "id": "tc05",
+      "latency_s": 1.4169,
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "We get about 35 requests a day.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1520,
+        "tokens_out": 156
+      },
+      "user_id": "owner-a"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.003326,
+      "emitted_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": false,
+      "expected_calls": [],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.0836,
+      "id": "tc06",
+      "latency_s": 1.0836,
+      "match": "exact",
+      "names_equal": false,
+      "passed": false,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "Please submit my specification now.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1518,
+        "tokens_out": 29
+      },
+      "user_id": "owner-a"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.004004,
+      "emitted_calls": [],
+      "exact_equal": false,
+      "expected_calls": [
+        {
+          "args": {
+            "submission_id": 1
+          },
+          "name": "withdraw_submission"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.5337,
+      "id": "tc07",
+      "latency_s": 1.5337,
+      "match": "exact",
+      "names_equal": false,
+      "passed": false,
+      "policy_decisions": [],
+      "query": "Withdraw submission 1, I need to change the volume.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1527,
+        "tokens_out": 95
+      },
+      "user_id": "owner-a"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.003944,
+      "emitted_calls": [
+        {
+          "args": {
+            "product": "document-data-entry",
+            "query": "export-only tool surcharge document data entry"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": false,
+      "expected_calls": [
+        {
+          "args": {
+            "product": "document-data-entry",
+            "query": "export-only-tool surcharge document-data-entry"
+          },
+          "name": "search_knowledge"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.1943,
+      "id": "tc08",
+      "latency_s": 1.1943,
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "Does the export-only-tool surcharge apply to document-data-entry?",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1532,
+        "tokens_out": 88
+      },
+      "user_id": "owner-b"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": true,
+      "cost_usd": 0.00528,
+      "emitted_calls": [
+        {
+          "args": {
+            "evidence_text": "We have 28 staff, all working out of one yard.",
+            "field_id": "employee_count",
+            "value": 28
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        },
+        {
+          "args": {
+            "evidence_text": "We have 28 staff, all working out of one yard.",
+            "field_id": "locations",
+            "value": 1
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": false,
+      "expected_calls": [
+        {
+          "args": {
+            "evidence_text": "We have 28 staff, all working out of one yard.",
+            "field_id": "employee_count",
+            "period": null,
+            "unit": "people",
+            "value": 28
+          },
+          "name": "record_fact"
+        },
+        {
+          "args": {
+            "evidence_text": "We have 28 staff, all working out of one yard.",
+            "field_id": "locations",
+            "period": null,
+            "unit": "sites",
+            "value": 1
+          },
+          "name": "record_fact"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.6457,
+      "id": "tc09",
+      "latency_s": 1.6457,
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed",
+        "allowed"
+      ],
+      "query": "We have 28 staff, all working out of one yard.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1525,
+        "tokens_out": 223
+      },
+      "user_id": "owner-b"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.00333,
+      "emitted_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.0281,
+      "id": "tc10",
+      "latency_s": 1.0281,
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "Show me my current facts and their status.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1520,
+        "tokens_out": 29
+      },
+      "user_id": "owner-b"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.003254,
+      "emitted_calls": [],
+      "exact_equal": true,
+      "expected_calls": [],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.0979,
+      "id": "tc11",
+      "latency_s": 1.0979,
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [],
+      "query": "One second, the phone is ringing, I'll be right back.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1527,
+        "tokens_out": 20
+      },
+      "user_id": "owner-b"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.004602,
+      "emitted_calls": [],
+      "exact_equal": true,
+      "expected_calls": [],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.8276,
+      "id": "tc12",
+      "latency_s": 1.8276,
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [],
+      "query": "Good morning. Ready when you are.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1521,
+        "tokens_out": 156
+      },
+      "user_id": "owner-a"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": true,
+      "cost_usd": 0.005346,
+      "emitted_calls": [
+        {
+          "args": {
+            "evidence_text": "Estimate ticket-creation and email-triage for 19 requests a day.",
+            "field_id": "daily_request_volume",
+            "period": "day",
+            "unit": "requests",
+            "value": 19
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        },
+        {
+          "args": {},
+          "name": "get_session_spec",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": false,
+      "expected_calls": [
+        {
+          "args": {
+            "module_ids": [
+              "ticket-creation",
+              "email-triage"
+            ]
+          },
+          "name": "estimate_cost"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.7893,
+      "id": "tc13",
+      "latency_s": 1.7893,
+      "match": "exact",
+      "names_equal": false,
+      "passed": false,
+      "policy_decisions": [
+        "allowed",
+        "allowed"
+      ],
+      "query": "Estimate ticket-creation and email-triage for 19 requests a day.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1533,
+        "tokens_out": 228
+      },
+      "user_id": "owner-e"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.004436,
+      "emitted_calls": [
+        {
+          "args": {
+            "query": "urgent calls handling"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        },
+        {
+          "args": {
+            "product": "phone-intake",
+            "query": "urgent requests escalation phone intake"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": false,
+      "expected_calls": [
+        {
+          "args": {
+            "product": null,
+            "query": "how urgent calls are handled"
+          },
+          "name": "search_knowledge"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.4261,
+      "id": "tc14",
+      "latency_s": 1.4261,
+      "match": "names",
+      "names_equal": false,
+      "passed": false,
+      "policy_decisions": [
+        "allowed",
+        "allowed"
+      ],
+      "query": "How are urgent calls handled by the modules?",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1523,
+        "tokens_out": 139
+      },
+      "user_id": "owner-b"
+    },
+    {
+      "attempts": 1,
+      "backend_state_changed": false,
+      "cost_usd": 0.004952,
+      "emitted_calls": [
+        {
+          "args": {
+            "query": "automated reminders sent manually customer notifications"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        },
+        {
+          "args": {
+            "evidence_text": "Our reminders are sent by hand, and that's our biggest headache.",
+            "field_id": "pain_points",
+            "value": "Reminders are sent by hand"
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": false,
+      "expected_calls": [
+        {
+          "args": {
+            "evidence_text": "Our reminders are sent by hand, and that's our biggest headache.",
+            "field_id": "pain_points",
+            "period": null,
+            "unit": null,
+            "value": [
+              "reminders sent by hand"
+            ]
+          },
+          "name": "record_fact"
+        }
+      ],
+      "expected_schema_valid": true,
+      "first_attempt_latency_s": 1.5414,
+      "id": "tc15",
+      "latency_s": 1.5414,
+      "match": "names",
+      "names_equal": false,
+      "passed": false,
+      "policy_decisions": [
+        "allowed",
+        "allowed"
+      ],
+      "query": "Our reminders are sent by hand, and that's our biggest headache.",
+      "response_model": "anthropic/claude-sonnet-5.5",
+      "stopped_for_approval": false,
+      "usage": {
+        "tokens_in": 1531,
+        "tokens_out": 189
+      },
+      "user_id": "owner-a"
+    }
+  ],
+  "seed": 0,
+  "seed_note": "no sampling; seed unused",
+  "temperature": 0.0,
+  "timestamp": "2026-10-22T18:15:50Z",
+  "why_this_run": "the tool choice of the product model itself is the measurement; a session agent cannot stand in for it (live batch part 2, reasoning low effort per D159)"
+}

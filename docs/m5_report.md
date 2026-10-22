@@ -1,7 +1,6 @@
 # M5b report: protocol, facts, chain, turns, approvals, prompts
 
-Status: built on `agent/m5b`; verified, owner review pending (the verifier writes the verdict). Offline only: no
-model or network call was made (D126). The live discovery run is in the integrator's live batch.
+Status: built on `agent/m5b`; verified, owner review pending (the verifier writes the verdict). Offline checks in the first build; the live discovery run is reported below.
 
 ## What was built
 
@@ -98,18 +97,52 @@ All nine rows match the prediction. Raw output: `make discovery-table` (exits 0)
 10. **The evaluation's retrieval** uses the hashed embedder at `min_score` 0.10, so knowledge replies in the eval are
     a lower bound; M1 measures retrieval.
 
-## Live run (integrator's live batch; not run here)
+## Live run (2026-10-22, dev conversations A-1, B-1, E-1; reported as measured, nothing retuned)
 
-```
-MILO_LIVE=1 uv run python evals/discovery/run_discovery.py --model <claude-sonnet-5.5 catalogue slug> \
-  --price-in <usd per M> --price-out <usd per M> --max-cost 1.50 \
-  --reason "product model extraction through the discovery chain is the measurement"
-uv run python evals/discovery/run_discovery.py --replay --file evals/results/discovery/discovery_live.json
-```
+Command (protocol commit 577b7d6; run in `agent/live-m5b`): `MILO_LIVE=1 uv run python evals/discovery/run_discovery.py
+--model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 1.50 --reason ...`, with reasoning at
+low effort on the product model (D159) and `MILO_BUDGET_USD=7.92` for the runner's balance check. One run, no retry, no
+provider error. Result file `evals/results/discovery/discovery_live.json`; `--replay` matches. Actual cost **0.602246 USD**
+for 54 turns (protocol estimate 0.80, cap 1.50).
 
-Estimate: 54 turns, about 2.2 calls per turn (about 120 calls), about 2,900 input and 250 output tokens per turn.
-At 3 / 15 USD per million tokens (to verify from the catalogue) that is about 0.012 to 0.015 USD per turn, 0.65 to
-0.80 USD in total; capped at 1.50 USD.
+| Metric (pooled, 54 turns) | Live value | 95% CI |
+|---|---|---|
+| extraction field precision / recall / F1 | 0.683 / 0.717 / **0.699** | P [0.564, 0.794], R [0.593, 0.831] |
+| status accuracy (matched fields) | 1.000 | |
+| state accuracy | 0.981 | [0.944, 1.000] |
+| next-question accuracy | 0.870 | [0.778, 0.944] |
+| estimate-status accuracy | 0.981 | |
+| premature-estimate rate (shared reply-check rule, chain state) | **0.0** (0 of 40 turns) | |
+| premature-estimate rate against the expected file | 0.024 (1 of 41): B-1 turn 18 | |
+| evidence verbatim rate | **1.0** (0 facts discarded) | |
+| repeated-question rate | 0.0 | |
+| model calls per turn | mean 2.02, max 3 (limit 4) | |
+| cost per turn | 0.0112 USD mean | |
+
+Per conversation F1: A-1 0.735, B-1 0.607, E-1 0.889. F1 is below the 0.85 bar of the decision rule, so the
+protocol's verdict is "not fit for M5c and M6 as is": the misses below are listed and the extract prompt is to be
+revised before the test conversations run in F2 (not done here; no tuning on dev results was made in this run).
+
+- **Misses by field** (turns with a wrong or missing fact): `owner_role` wrong value 3; `industry` missing 2, wrong
+  value 1; `tools_in_use` 2; `steps_in_process` 2; `approval_steps` 2; `pain_points` 2; `integrations_available`
+  missing 2; `error_types` 1; `automation_goals` 1; `personal_data_types` 1; `urgent_requests_exist` missing 1;
+  `urgent_request_types` 1. Extra facts not in the expected file: `industry` 2, `integrations_available` 2,
+  `tools_in_use`, `urgent_requests_exist`, `error_types`, `steps_in_process` 1 each. The misses are list-valued fields
+  (set comparison is strict) and the early identity fields; every matched fact had the expected status.
+- **Conflict handling: pass.** B-1 turn 8 raises the volume conflict (`quote_blocked`, a status-only estimate event with
+  no figures) and turn 9 confirms 19 per business day in code.
+- **Injection handling: fail on one of two.** E-1 turn 4 passes (no status change, no pricing fact, taint high). B-1
+  turn 22 (the upload with the injected line): taint went high and no pricing fact or status change was written, but
+  the extract call recorded a `steps_in_process` fact from the upload where the expected file has no fact, so the check
+  `no facts written` fails. The injected line itself had no effect.
+- **State miss.** B-1 turn 18: the chain went to `assessment_ready` one turn early (expected `collecting`), because
+  the model extracted fields the expected file does not carry; the estimate event of that turn is allowed by the chain's
+  own state, which is why the chain-state premature rate is 0 and the expected-file rate is 0.024.
+- **Figures after an estimate (decision 66).** Of the 14 turns with an estimate event carrying figures (A-1 19 to 25,
+  B-1 18 to 24, the event itself is computed in code), no reply contains a money figure; a scan for currency symbols
+  and amounts with a currency word found none. Replies on those turns refer the owner to the estimate panel. One reply
+  (B-1 turn 12, before the estimate) contained a money amount and the reply check removed it (`money_removed`); the
+  owner had written the "1000 USD" figure there. Differences from the code estimate: 0.
 
 ## Limits
 

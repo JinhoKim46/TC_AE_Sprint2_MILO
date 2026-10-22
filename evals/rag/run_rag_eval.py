@@ -189,19 +189,27 @@ def live_generate(args: argparse.Namespace) -> int:
         return 2
     from milo.app import build_app
     from milo.rag.embed import live_embedder
+    from milo.llm.cloud import DEFAULT_EMBEDDING_MODEL
+    from milo.rag.chunk import DEFAULT_OVERLAP, DEFAULT_SIZE
     from milo.rag.ingest import INDEX_ROOT, kb_sha256
     from milo.rag.retrieve import Retriever
     from milo.rag.vectors import VectorStore
     from milo.tools import MiloBackend
 
-    store = VectorStore(INDEX_ROOT)
-    manifest = store.read_manifest()
+    # `make index` writes to data/index/<model>-<size>-<overlap>/ (ingest.py); read the same folder.
+    index_dir = (
+        INDEX_ROOT
+        / f"{DEFAULT_EMBEDDING_MODEL.replace('/', '_')}-{DEFAULT_SIZE}-{DEFAULT_OVERLAP}"
+    )
+    store = VectorStore(index_dir) if index_dir.exists() else None
+    manifest = store.read_manifest() if store else None
     if not manifest or manifest.get("kb_sha256") != kb_sha256(rr.KB):
         print(
             "refusing to run: the index is missing or stale; run `make index` first",
             file=sys.stderr,
         )
         return 2
+    assert store is not None and manifest is not None
     embedder = live_embedder()
     chat = _chat(args.product_model, (args.price_in, args.price_out), "m7-generate")
     retriever = Retriever(embedder, store=store)
@@ -224,6 +232,17 @@ def live_generate(args: argparse.Namespace) -> int:
         "partial": partial,
         "spend_reason": args.reason,
         "pipeline": "milo.app.build_app, contract mode, dense top 5",
+        "index": {
+            k: manifest.get(k)
+            for k in (
+                "model",
+                "chunk_size",
+                "overlap",
+                "chunk_count",
+                "chunk_sha256",
+                "kb_sha256",
+            )
+        },
         "advanced_rag": os.environ.get("MILO_ADVANCED_RAG", "0"),
         "total_cost_usd": round(sum(r["cost_usd"] for r in rows), 8),
         "rows": rows,
