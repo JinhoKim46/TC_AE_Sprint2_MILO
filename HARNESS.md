@@ -56,6 +56,7 @@ Role slugs for branch names (SPEC D29): `data`, `audit`, `tools`, `llm`, `store`
 11. **Scope gate is free.** A refused input makes no model call and costs 0 (SPEC D103, D109). A verifier test checks this with a fake model that fails if it is called.
 12. **Self-registration only.** Accounts are created by sign-up (SPEC section 23). No invite step, and no sign-up path can create an operator.
 13. **Consent before data.** `POST /messages` and `POST /upload` return 403 `consent_required` until the owner has an `interview` consent row (D81).
+14. **Spend rule (D126).** Work that a session agent can do (writing, generating test data, auditing, labelling, reviewing, coding, verifying, threat modelling) runs in the session on the Claude subscription, not on OpenRouter. OpenRouter is called only when the measurement needs the external model: candidate comparisons (embeddings, chat models, Jev probes), the product's own runs on the test split, and the final run. Tests use recorded replies (rule 2). Each OpenRouter call states in its result file why it was needed.
 
 ## 4. Milestone cycle (no human in the loop)
 

@@ -598,7 +598,7 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9.3 (2026-10-22): multiple sessions per account (D97 to D100), session panel on the left (D101, D102), a deterministic scope gate that refuses out-of-scope input at zero model cost (D103 to D109).
 - v0.9.4 (2026-10-22): two-stage input gate; stage 2 is the pinned decision model typesafe/jev-1.14-20261014 (D110 to D118).
 - v0.9.5 (2026-10-22): no invites anywhere (D119); scope and Jev gate added as milestone M5G (D120); owner-only items as placeholders with a production guard and a checklist (D121). Section 26 overrides earlier text.
-- v0.9.6 (2026-10-22): security red-team lane SR added (section 27, D122 to D125).
+- v0.9.6 (2026-10-22): security red-team lane SR added (section 27, D122 to D125). Spend rule D126: session agents do all writing, data generation, audits and reviews; OpenRouter is used only where a model is being measured or the final run needs it (HARNESS rule 14).
 
 ## 26. Version 0.9.5 decisions (these override earlier text where they conflict)
 
