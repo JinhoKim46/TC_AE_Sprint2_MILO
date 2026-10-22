@@ -722,9 +722,7 @@ def write_result(
     out = Path(args.result) if args.result else RESULT_DIR / f"chat_{args.split}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     tmp = out.with_suffix(".tmp")
-    tmp.write_text(
-        json.dumps(result, indent=1, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    tmp.write_text(json.dumps(result, sort_keys=True) + "\n", encoding="utf-8")
     tmp.replace(out)
     print(decision["line"])
     return 0
