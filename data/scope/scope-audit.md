@@ -459,3 +459,57 @@ ce7f58eed8c07d6dce8cae5959b30d599b078f9489b3ce02e2e670bc8f0a6bd9  scope_set.json
 ```
 
 Fitness: fit for threshold setting (0 in-scope refusals, at least 53 undecided rows on each dev side, two independent simulators agree on every total), provided the two rule-text gaps are pinned first; the three fixes change no undecided count, and the strong-term collision gap limits how far the 95 percent figure generalises, not the thresholds.
+
+---
+
+# Pass 4 (confirmation after fix cycle 3)
+
+| Field | Value |
+|---|---|
+| Auditor | the pass-3 auditor (independent of the generator, HARNESS rule 7) |
+| Date | 2026-10-22 |
+| Commit audited | `3f83e0a` (fix cycle 3) merged into `agent/audit/m5g`; protocol amended by D158 before any probe |
+| Files | `scope_set.jsonl` 420 rows (only s387 changed), `lexicon.yaml` `scope-lexicon.v4`, `probes.jsonl` unchanged |
+| Method | pass-3 stage-1 implementation updated to D158 (weak terms by lemma; optional `~` prefix and `ish` suffix on a number, ranges and "about N" already covered; field `short_forms` strong), compared row by row with `tools/stage1_sim.py`; pass-3 duplicate, leakage and safety script re-run. No model or network call; `.env` not read. |
+
+## P4.1 Pass-3 items
+
+- s387: `ok`. "we'll see" now follows "Shall I add the status updates module to the estimate?", a context no other scope row or probe uses; decidable, in scope, no same-question pair in either split.
+- Lexicon v4, generic kb short forms: `ok`. All 19 named in P3.2 now sit in `weak_forms` (first questions, the questions you ask, export and import, needs a person, can never do, privacy policy, input limits, base price, the estimate, an estimate, surcharge, surcharges, what's included, what is included, whats included, not included, monthly price, monthly fee, per month price); the titles and the product-specific forms stay strong, as D158 says.
+- Lexicon v4, spelling variants: `ok`. `short_forms` added on `request_channels` (walk-in, walkins), `tools_in_use` (spreadsheets) and `urgent_request_types` (call-out), all strong; the four removed from `trade_words`; each field keeps five synonyms. Strong and weak are disjoint (own check and `check_scope.py`: 377 strong, 136 weak including spaced id variants; 353 / 136 in my literal reading).
+- Rule-text gaps from P3.3: closed by D158 (lemma counting; approximate numbers). The one-strong-term collision of P3.4 is recorded in D158 as an accepted limit covered by D108; not a data verdict.
+
+## P4.2 Stage 1 under D158
+
+| Split | Label | n | greeting | pass | refuse | undecided |
+|---|---|---|---|---|---|---|
+| dev | in_scope | 142 | 2 | 84 | **0** | **56** |
+| dev | out_of_scope | 68 | 0 | 0 | 14 | **54** |
+| test | in_scope | 142 | 1 | 88 | **0** | 53 |
+| test | out_of_scope | 68 | 0 | **2** | 14 | 52 |
+
+Row-by-row comparison with `tools/stage1_sim.py` over 420 scope rows and 78 non-empty probes: **0 disagreements** (s071 now passes by rule 3 under D158, s145 is undecided under lemma counting, in both). Requirements met: 0 in-scope refused; 2 of 68 out-of-scope test rows pass (s406, s414, rule 3); 56 in-scope and 54 out-of-scope dev rows undecided. Probes: no `expected: pass` probe refused, no `expected: refuse` probe passed (pass 32 / 21, refuse 5 / 8, band 0 / 12). Approximation spot checks ("about 40 a day", "~40 a day", "40-50 a day", "40ish a day") pass by rule 3 in both implementations.
+
+## P4.3 Duplicates, leakage, safety
+
+Equal text after normalisation: none involving a scope row (probe repeats as in pass 3). Word-set Jaccard above 0.6: 0 pairs. Cross-split stop-word-free Jaccard at least 0.4: 0 pairs. Shared assistant contexts: no same-question, same-meaning pair left. D22 phrases only in out-of-scope s328 and s332; no demo name, no "MILO", no URL, path or key. Counts 142 / 142 in scope, 68 / 68 out of scope; `check_scope.py` passes.
+
+## P4.4 Summary
+
+| Verdict | scope_set.jsonl | probes.jsonl | lexicon.yaml items | Total |
+|---|---|---|---|---|
+| ok | 420 | 80 | 2 | 502 |
+| fix | 0 | 0 | 0 | 0 |
+| remove | 0 | 0 | 0 | 0 |
+
+All rows are `ok`; the M5G scope data is done.
+
+SHA-256 of the audited files at the merge of `3f83e0a`:
+
+```
+dbd26441a39d1c82613cf9afd2601de47ddf6dee74eb68fdf959e24456bf4004  scope_set.jsonl
+385a85bf1ae7d5fc8a27e93973518cbcb6b5e65f5feca361193be1f02f41abfe  lexicon.yaml
+4249ba0acf9f4d7001d3a40397c31ab7ab8443283e8b58a1339aebb824768edc  probes.jsonl
+```
+
+Fitness: fit for threshold setting; two independent stage-1 implementations agree on every row, 0 in-scope refusals and at least 54 undecided dev rows on each side, with the one-strong-term limit accepted under D158.
