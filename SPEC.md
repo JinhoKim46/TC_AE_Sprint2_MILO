@@ -602,7 +602,7 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9.4 (2026-10-22): two-stage input gate; stage 2 is the pinned decision model typesafe/jev-1.14-20261014 (D110 to D118).
 - v0.9.5 (2026-10-22): no invites anywhere (D119); scope and Jev gate added as milestone M5G (D120); owner-only items as placeholders with a production guard and a checklist (D121). Section 26 overrides earlier text.
 - v0.9.6 (2026-10-22): security red-team lane SR added (section 27, D122 to D125). Spend rule D126: session agents do all writing, data generation, audits and reviews; OpenRouter is used only where a model is being measured or the final run needs it (HARNESS rule 14).
-- v0.9.7 (2026-10-22): the 21 gaps in `docs/threat_model.md` v0.1 closed or assigned (section 28, D127 to D146); protocol-review decisions D147 to D152; store-review decisions D153 to D156.
+- v0.9.7 (2026-10-22): the 21 gaps in `docs/threat_model.md` v0.1 closed or assigned (section 28, D127 to D146); protocol-review decisions D147 to D152; store-review decisions D153 to D156; gate-audit decision D157.
 
 ## 26. Version 0.9.5 decisions (these override earlier text where they conflict)
 
@@ -659,3 +659,7 @@ Store-review decisions (added after the M5-store build):
 - **D154 RLS test environment (replaces D77 and HARNESS 7.8's throwaway schema).** Migration 0001 targets the `public` schema of the test project and is not schema-relocatable. The verifier runs `make migrate` against the test project, runs `tests/test_store_identity.py --postgres`, then `make db-reset`, which drops every MILO object in `public` (tables, functions, trigger on `auth.users`, roles) so the project returns to empty. The test project may be reset freely (D58). Production is never a target.
 - **D155 Migration hygiene.** `0001_init.sql` uses `create or replace` for functions and `drop trigger if exists` before `create trigger`, pins no `search_path`, and is idempotent on an empty project. `store/migrate.py` connects with the administrative string only and refuses `MILO_ENV=prod` unless `MILO_MIGRATE_PROD=1` is set by the owner by hand.
 - **D156 Appendix A.** `docs/operations.md`, `docs/m5-store_report.md` and `docs/requests/m5-store.md` belong to the M5-store row.
+
+Gate-audit decision (added after the scope-set audit, before any probe):
+
+- **D157 Stage-1 pass needs a strong term (amends D110, D106).** A lexicon term is `strong` (module id or name, integration id, protocol field id or its synonyms, product words, session and account action words) or `weak` (bare trade words and generic business words). Stage 1 passes a message on one strong term or two weak terms; a single weak term leaves the message `undecided` for stage 2. Reason: with one-word passes, off-topic text that happens to contain a trade word bypasses the judge, and the audit showed the 95 percent target (D118) is unreachable that way. The cost is one Jev call for such messages. The lexicon is versioned v3 with the strength marked per term.

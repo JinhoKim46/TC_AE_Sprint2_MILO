@@ -90,6 +90,7 @@ class LoginService:
             raise
         claims = self.verifier.verify(session.access_token)
         self.limiter.reset(rl.LOGIN_FAIL_ACCOUNT, address)
+        self.limiter.reset(rl.LOGIN_FAIL_IP, ip)
         try:
             self.repos.profiles.touch_last_seen(claims.sub)
         except NotFound:

@@ -69,8 +69,8 @@ make db-reset
 
 The script takes no other option. It opens the administrative connection, creates two confirmed test accounts,
 and runs every check under `SET LOCAL ROLE milo_app` or `milo_operator`, so no role password is needed. It
-refuses production settings, prints PASS or FAIL per repository call, then probes every table named in
-`db/migrations`: row-level security enabled and forced, at least one policy, no rows without an identity, none of
+refuses production settings, prints PASS or FAIL per repository call, then one PASS or FAIL line for each probe
+group (A-09c, A-09a, A-09b, A-10b, A-27, row counts), reading every table named in `db/migrations`: row-level security enabled and forced, at least one policy, no rows without an identity, none of
 another owner's rows, no way to change `profiles.role`, and an append-only `audit_log`. `make db-reset` returns
 the test project to empty.
 

@@ -1,8 +1,8 @@
 {
   "command": "uv run python evals/agent/run_tools.py --dry",
-  "git_commit": "fb656b6923112b41d0970a2d6164b0840835049f",
+  "git_commit": "8e222e1d4049705e5a62b8cdbd7fde5d0f035426",
   "inputs": {
-    "tool_cases": "159ec03896adac6af7bec88e1f86d71495d95148ac3b659370464d72f6f11708"
+    "tool_cases": "ae1b8aa3899bd99d28eaff18a96dc5f742be9f1bb8f3e9f355f345f4289703c2"
   },
   "metrics": {
     "case_pass_rate": 1.0,
@@ -13,15 +13,12 @@
     "cases": 15,
     "emitted_calls": 12,
     "exact_args_rate_on_exact_cases": 1.0,
-    "expected_schema_invalid_cases": [
-      "tc04",
-      "tc13"
-    ],
+    "expected_schema_invalid_cases": [],
     "failed_cases": [],
     "false_call_rate": 0.0,
     "missed_call_rate": 0.0,
     "name_match_rate": 1.0,
-    "schema_valid_rate": 0.8333
+    "schema_valid_rate": 1.0
   },
   "mode": "dry",
   "model": "scripted-expected-calls",
@@ -112,21 +109,19 @@
       "emitted_calls": [
         {
           "args": {
-            "daily_request_volume": 35,
             "module_ids": [
               "phone-intake",
               "customer-status-updates"
             ]
           },
           "name": "estimate_cost",
-          "schema_valid": false
+          "schema_valid": true
         }
       ],
       "exact_equal": true,
       "expected_calls": [
         {
           "args": {
-            "daily_request_volume": 35,
             "module_ids": [
               "phone-intake",
               "customer-status-updates"
@@ -135,13 +130,13 @@
           "name": "estimate_cost"
         }
       ],
-      "expected_schema_valid": false,
+      "expected_schema_valid": true,
       "id": "tc04",
       "match": "exact",
       "names_equal": true,
       "passed": true,
       "policy_decisions": [
-        "denied"
+        "allowed"
       ],
       "query": "What would phone-intake and customer-status-updates cost at 35 requests a day?",
       "stopped_for_approval": false,
@@ -235,7 +230,7 @@
       ],
       "query": "Withdraw submission 1, I need to change the volume.",
       "stopped_for_approval": true,
-      "user_id": "owner-b"
+      "user_id": "owner-a"
     },
     {
       "backend_state_changed": false,
@@ -402,21 +397,19 @@
       "emitted_calls": [
         {
           "args": {
-            "daily_request_volume": 19,
             "module_ids": [
               "ticket-creation",
               "email-triage"
             ]
           },
           "name": "estimate_cost",
-          "schema_valid": false
+          "schema_valid": true
         }
       ],
       "exact_equal": true,
       "expected_calls": [
         {
           "args": {
-            "daily_request_volume": 19,
             "module_ids": [
               "ticket-creation",
               "email-triage"
@@ -425,13 +418,13 @@
           "name": "estimate_cost"
         }
       ],
-      "expected_schema_valid": false,
+      "expected_schema_valid": true,
       "id": "tc13",
       "match": "exact",
       "names_equal": true,
       "passed": true,
       "policy_decisions": [
-        "denied"
+        "allowed"
       ],
       "query": "Estimate ticket-creation and email-triage for 19 requests a day.",
       "stopped_for_approval": false,
@@ -520,6 +513,6 @@
   ],
   "seed": 0,
   "temperature": 0.0,
-  "timestamp": "2026-10-22T11:42:07Z",
+  "timestamp": "2026-10-22T15:01:46Z",
   "why_this_run": "offline harness check: a scripted model emits the expected calls; no external model was needed"
 }

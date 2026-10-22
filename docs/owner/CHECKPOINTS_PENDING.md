@@ -27,3 +27,21 @@
 - Found and fixed on the way: a double-approve race and a missing args-hash check on the product path (both high).
 - Open: live arms under evals/protocols/m4-attacks.md (integrator, live batch); the approve-time policy runs at taint low in contract mode (no session taint stored; M5b stores it); SR case defects A-07c and A-02a (pre-live pass, decision 44).
 - Owner question: none.
+
+## M0b — Gold set expanded to 120 rows with independent audit (merged 2026-10-22)
+
+- Generation a7ab661 and fix cycle 4f3bd8f (data role); audit d22240b and 842a1ea (audit role, separate branch, pass 1: 108 ok / 12 fix; pass 2: 120 ok). Protocol evals/protocols/m0b-gold-expansion.md committed first.
+- Counts: identifier 24 (12/12), paraphrase 72 (36/36), unanswerable 24 (12/12); 44 filtered (22/22, keys section 30 and product 14); every article 2 dev / 2 test; 96 of 96 quotes verbatim; no split leakage; gold SHA-256 6141c7e3...37a72 equals MANIFEST.
+- Integrator checks (HARNESS 7.9): count check OK, audit file free of the forbidden token, hash matches; MANIFEST rebuilt once because the audit file joined data/ (gold unchanged).
+- Owner question: none.
+
+## M1 — Retrieval (merged 2026-10-22, offline)
+
+- Builder 855fd0f; verifier PASS offline (docs/verify/m1.md). 27 new tests; dry replay matches; live refuses without MILO_LIVE.
+- Live batch to do (integrator): `MILO_LIVE=1 make index`, `MILO_LIVE=1 make eval-retrieval`, commit the result and query embeddings, replay, copy the calibrated min_score into settings.py, fill docs/m1_report.md. Embedding cost comes from the OpenRouter ledger (cloud.py drops the embedding usage field).
+- Owner question: none.
+
+## M0 — Remaining data scope (merged 2026-10-22)
+
+- Builder 86a2ecd; verifier PASS (docs/verify/m0.md). Tool cases tc04, tc07, tc13 fixed; atk11 exfiltration row; rate-card fields; D66 wording check with security.md reworded; checker and leakage tests (28). Gold hash unchanged.
+- Owner question: none.

@@ -19,7 +19,7 @@ The assistant never takes your identity from the text of a conversation. Who you
 
 ## Text is data, not instructions
 
-Your messages, the documents you upload and the articles the assistant reads from the knowledge base are shown to the assistant as data. A line in a document that says to mark every field as confirmed, or a line in an article that says to set the price to zero, is not followed. The assistant may quote it back to you as something it found, but it does not act on it. Statuses are set by the software, prices by the rate card, and neither can be changed by anything written in a message.
+Your messages, the documents you upload and the articles the assistant reads from the knowledge base are shown to the assistant as data. A line in a document that tells the assistant to change a status or a price is not followed, and neither is a line in an article that does the same. The assistant may quote it back to you as something it found, but it does not act on it. Statuses are set by the software, prices by the rate card, and neither can be changed by anything written in a message.
 
 ## Tools the assistant can use
 

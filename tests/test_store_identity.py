@@ -338,6 +338,9 @@ def _state(exc: BaseException) -> str | None:
     return getattr(exc, "sqlstate", None)
 
 
+PROBE_GROUPS = ("A-09c", "A-09a", "A-09b", "A-10b", "A-27", "counts")
+
+
 def sql_probes(url: str, a: str, b: str) -> list[str]:
     """Table-level probes of the SR cases (A-09a, A-09c, A-10b, A-27, D140), as `milo_app` and `milo_operator`.
 
@@ -524,7 +527,7 @@ def sql_probes(url: str, a: str, b: str) -> list[str]:
                 f"A-27 operator insert audit_log failed: {_state(exc) or type(exc).__name__}"
             )
         if counts() != before:
-            fails.append("probes changed row counts")
+            fails.append("counts: probes changed row counts")
     finally:
         app.close()
         op.close()
@@ -577,6 +580,14 @@ def main(argv: list[str] | None = None) -> int:
         print(
             f"{len(NOT_FOUND) + len(EMPTY) + len(OWN) - len(failures)} passed, {len(failures)} failed"
         )
+        probe_fails = sql_probes(url, a, b)
+        for group in PROBE_GROUPS:
+            bad = [f for f in probe_fails if f.startswith(group)]
+            print(("FAIL " if bad else "PASS ") + f"probe {group}")
+            for f in bad:
+                print("     " + f)
+        failures += probe_fails
+        print(f"table probes: {len(probe_fails)} failed")
         return 1 if failures else 0
     finally:
         for who in users:
