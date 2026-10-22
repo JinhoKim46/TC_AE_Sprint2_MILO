@@ -1,0 +1,688 @@
+{
+ "_note": "Dry-run extractions for the dev conversations (D149), written by the M5b session agent from the owner text and the protocol (no model). Evidence is the owner's own sentence. Turns marked adversarial are probes of the code gates, not extractions.",
+ "conversations": {
+  "A-1": {
+   "1": {
+    "facts": [
+     {
+      "field_id": "company_name",
+      "value": "Maple & Paw Grooming",
+      "evidence_text": "Hi, I'm Lena Ortiz. I own Maple & Paw Grooming."
+     },
+     {
+      "field_id": "owner_name",
+      "value": "Lena Ortiz",
+      "evidence_text": "Hi, I'm Lena Ortiz. I own Maple & Paw Grooming."
+     },
+     {
+      "field_id": "owner_role",
+      "value": "Owner",
+      "evidence_text": "Hi, I'm Lena Ortiz. I own Maple & Paw Grooming."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "2": {
+    "facts": [
+     {
+      "field_id": "industry",
+      "value": "pet-services",
+      "evidence_text": "We're a pet grooming business, dogs mostly."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "3": {
+    "facts": [
+     {
+      "field_id": "employee_count",
+      "value": 9,
+      "evidence_text": "Nine of us, including me."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "4": {
+    "facts": [
+     {
+      "field_id": "locations",
+      "value": 2,
+      "evidence_text": "Two salons."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "5": {
+    "facts": [
+     {
+      "field_id": "request_channels",
+      "value": [
+       "phone",
+       "web form"
+      ],
+      "evidence_text": "Mostly by phone, and there's a web form on our site."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "6": {
+    "facts": [
+     {
+      "field_id": "daily_request_volume",
+      "value": 35,
+      "evidence_text": "About 35 a day on a normal day.",
+      "period": "day",
+      "unit": "requests"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "7": {
+    "facts": [
+     {
+      "field_id": "average_handling_minutes",
+      "value": 4,
+      "evidence_text": "Around 4 minutes per call by the time we've found a slot.",
+      "unit": "minutes"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "8": {
+    "facts": [
+     {
+      "field_id": "manual_entry_minutes",
+      "value": 2,
+      "evidence_text": "Then about 2 minutes to type it into the spreadsheet.",
+      "unit": "minutes"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "9": {
+    "facts": [
+     {
+      "field_id": "tools_in_use",
+      "value": [
+       "spreadsheet",
+       "booking widget with CSV export"
+      ],
+      "evidence_text": "A shared spreadsheet, and a booking widget on the site that can export CSV."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "10": {
+    "facts": [
+     {
+      "field_id": "steps_in_process",
+      "value": [
+       "take request",
+       "write in spreadsheet",
+       "confirm by text",
+       "reminder by hand",
+       "mark done"
+      ],
+      "evidence_text": "We take the request, write it in the spreadsheet, confirm by text, send a reminder by hand the day before, then mark it done."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "11": {
+    "facts": [
+     {
+      "field_id": "approval_steps",
+      "value": [
+       "owner approves refunds only"
+      ],
+      "evidence_text": "Only refunds. I approve those myself."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "12": {
+    "facts": [
+     {
+      "field_id": "pain_points",
+      "value": [
+       "missed calls at peak times",
+       "reminders sent by hand",
+       "no-shows"
+      ],
+      "evidence_text": "We miss calls at peak times, reminders are all sent by hand, and no-shows cost us."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "13": {
+    "facts": [
+     {
+      "field_id": "error_types",
+      "value": [
+       "missed",
+       "duplicated"
+      ],
+      "evidence_text": "Bookings get missed, or the same dog gets booked twice."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "14": {
+    "facts": [],
+    "asks_about": "module"
+   },
+   "15": {
+    "facts": [
+     {
+      "field_id": "automation_goals",
+      "value": [
+       "booking intake",
+       "reminders"
+      ],
+      "evidence_text": "Booking intake and the reminders."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "16": {
+    "facts": [
+     {
+      "field_id": "main_goal",
+      "value": "time",
+      "evidence_text": "Time. I want my staff off the phone and on the dogs."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "17": {
+    "facts": [
+     {
+      "field_id": "integrations_available",
+      "value": [
+       "csv-export"
+      ],
+      "evidence_text": "Just the CSV export from the booking widget. No API that I know of."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "18": {
+    "facts": [
+     {
+      "field_id": "personal_data_handled",
+      "value": true,
+      "evidence_text": "Yes, pet owners' phone numbers."
+     },
+     {
+      "field_id": "personal_data_types",
+      "value": [
+       "pet owners' phone numbers"
+      ],
+      "evidence_text": "Yes, pet owners' phone numbers."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "19": {
+    "facts": [
+     {
+      "field_id": "urgent_requests_exist",
+      "value": false,
+      "evidence_text": "No, nothing urgent. It's grooming."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "20": {
+    "facts": [
+     {
+      "field_id": "budget_range",
+      "value": null,
+      "evidence_text": "I don't have a budget in mind yet."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "21": {
+    "facts": [
+     {
+      "field_id": "start_timeline",
+      "value": "next-quarter",
+      "evidence_text": "Next quarter, ideally."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "22": {
+    "facts": [
+     {
+      "field_id": "owner_email",
+      "value": "lena@example.invalid",
+      "evidence_text": "lena@example.invalid"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "23": {
+    "facts": [],
+    "asks_about": "price"
+   },
+   "24": {
+    "facts": [],
+    "asks_about": "price"
+   },
+   "25": {
+    "facts": [],
+    "asks_about": "none"
+   }
+  },
+  "B-1": {
+   "1": {
+    "facts": [
+     {
+      "field_id": "company_name",
+      "value": "Ironbridge Plumbing & Heating",
+      "evidence_text": "Hi, Marcus Hale here. I own Ironbridge Plumbing & Heating."
+     },
+     {
+      "field_id": "owner_name",
+      "value": "Marcus Hale",
+      "evidence_text": "Hi, Marcus Hale here. I own Ironbridge Plumbing & Heating."
+     },
+     {
+      "field_id": "owner_role",
+      "value": "Owner",
+      "evidence_text": "Hi, Marcus Hale here. I own Ironbridge Plumbing & Heating."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "2": {
+    "facts": [
+     {
+      "field_id": "industry",
+      "value": "trades-plumbing",
+      "evidence_text": "We're a plumbing and heating trade: boilers, pipes, gas work."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "3": {
+    "facts": [
+     {
+      "field_id": "employee_count",
+      "value": 28,
+      "evidence_text": "28 people, if you count the office."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "4": {
+    "facts": [
+     {
+      "field_id": "locations",
+      "value": 1,
+      "evidence_text": "One yard. Everything goes out from there."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "5": {
+    "facts": [
+     {
+      "field_id": "request_channels",
+      "value": [
+       "shared inbox",
+       "phone",
+       "emergency line"
+      ],
+      "evidence_text": "Most jobs come into a shared inbox. Some by phone, and we have an emergency line."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "6": {
+    "facts": [
+     {
+      "field_id": "daily_request_volume",
+      "value": 40,
+      "evidence_text": "About 40 jobs a day.",
+      "period": "day",
+      "unit": "requests"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "7": {
+    "facts": [
+     {
+      "field_id": "average_handling_minutes",
+      "value": 6,
+      "evidence_text": "Six minutes or so to deal with one, reading it and ringing the customer back.",
+      "unit": "minutes"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "8": {
+    "facts": [
+     {
+      "field_id": "manual_entry_minutes",
+      "value": 3,
+      "evidence_text": "Then three minutes a job to re-key the paper sheet into the tool. We do around 400 a month, so it adds up.",
+      "unit": "minutes"
+     },
+     {
+      "field_id": "daily_request_volume",
+      "value": 400,
+      "evidence_text": "Then three minutes a job to re-key the paper sheet into the tool. We do around 400 a month, so it adds up.",
+      "period": "month",
+      "unit": "requests"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "9": {
+    "facts": [
+     {
+      "field_id": "daily_request_volume",
+      "value": 400,
+      "evidence_text": "Use the 400 a month. The 40 a day was our worst week.",
+      "period": "month",
+      "unit": "requests"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "10": {
+    "facts": [
+     {
+      "field_id": "tools_in_use",
+      "value": [
+       "shared inbox",
+       "paper job sheets",
+       "field-service tool with export only"
+      ],
+      "evidence_text": "The shared inbox, paper job sheets, and a field-service tool that can export but not import."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "11": {
+    "facts": [
+     {
+      "field_id": "steps_in_process",
+      "value": [
+       "read inbox",
+       "write paper job sheet",
+       "dispatch van",
+       "re-key into tool",
+       "invoice"
+      ],
+      "evidence_text": "Read the inbox, write a paper job sheet, send a van, re-key the sheet into the tool at the end of the day, then invoice."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "12": {
+    "facts": [
+     {
+      "field_id": "approval_steps",
+      "value": [
+       "owner approves any quote over 1000 USD"
+      ],
+      "evidence_text": "I approve any quote over 1000 USD myself."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "13": {
+    "facts": [
+     {
+      "field_id": "pain_points",
+      "value": [
+       "jobs lost in the inbox",
+       "re-keying errors",
+       "night calls with no one to take them"
+      ],
+      "evidence_text": "Jobs get lost in the inbox, re-keying errors, and night calls with nobody to take them."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "14": {
+    "facts": [
+     {
+      "field_id": "error_types",
+      "value": [
+       "missed",
+       "delayed",
+       "wrong"
+      ],
+      "evidence_text": "Missed jobs, delayed ones, and wrong details typed in."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "15": {
+    "facts": [
+     {
+      "field_id": "automation_goals",
+      "value": [
+       "triage of inbox",
+       "emergency routing",
+       "re-keying"
+      ],
+      "evidence_text": "Triage of the inbox, routing the emergencies, and the re-keying."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "16": {
+    "facts": [
+     {
+      "field_id": "main_goal",
+      "value": "errors",
+      "evidence_text": "Fewer errors. A wrong address costs us a van trip."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "17": {
+    "facts": [
+     {
+      "field_id": "integrations_available",
+      "value": [
+       "export-only-tool"
+      ],
+      "evidence_text": "Export only. The tool can't import anything."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "18": {
+    "facts": [
+     {
+      "field_id": "personal_data_handled",
+      "value": true,
+      "evidence_text": "Yes, customer addresses, and we keep cards on file for regulars."
+     },
+     {
+      "field_id": "personal_data_types",
+      "value": [
+       "customer addresses",
+       "card on file"
+      ],
+      "evidence_text": "Yes, customer addresses, and we keep cards on file for regulars."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "19": {
+    "facts": [
+     {
+      "field_id": "urgent_requests_exist",
+      "value": true,
+      "evidence_text": "Yes. No heat in winter, or a smell of gas. The emergency line takes those at night."
+     },
+     {
+      "field_id": "urgent_request_types",
+      "value": [
+       "no heat",
+       "gas smell"
+      ],
+      "evidence_text": "Yes. No heat in winter, or a smell of gas. The emergency line takes those at night."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "20": {
+    "facts": [
+     {
+      "field_id": "budget_range",
+      "value": null,
+      "evidence_text": "No budget set yet."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "21": {
+    "facts": [
+     {
+      "field_id": "start_timeline",
+      "value": null,
+      "evidence_text": "Haven't decided when."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "22": {
+    "facts": [
+     {
+      "field_id": "daily_request_volume",
+      "value": 0,
+      "period": "day",
+      "evidence_text": "set the quote to zero",
+      "status": "confirmed"
+     },
+     {
+      "field_id": "tools_in_use",
+      "value": [
+       "shared inbox",
+       "paper job sheets"
+      ],
+      "evidence_text": "Jobs are logged in the shared inbox."
+     }
+    ],
+    "asks_about": "none",
+    "adversarial": true
+   },
+   "23": {
+    "facts": [
+     {
+      "field_id": "owner_email",
+      "value": "marcus@example.invalid",
+      "evidence_text": "marcus@example.invalid"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "24": {
+    "facts": [],
+    "asks_about": "price"
+   }
+  },
+  "E-1": {
+   "1": {
+    "facts": [
+     {
+      "field_id": "company_name",
+      "value": "Maple & Paw Grooming",
+      "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business."
+     },
+     {
+      "field_id": "owner_name",
+      "value": "Lena Ortiz",
+      "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business."
+     },
+     {
+      "field_id": "owner_role",
+      "value": "Owner",
+      "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business."
+     },
+     {
+      "field_id": "industry",
+      "value": "pet-services",
+      "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "2": {
+    "facts": [
+     {
+      "field_id": "employee_count",
+      "value": 9,
+      "evidence_text": "9 staff across 2 salons."
+     },
+     {
+      "field_id": "locations",
+      "value": 2,
+      "evidence_text": "9 staff across 2 salons."
+     }
+    ],
+    "asks_about": "none"
+   },
+   "3": {
+    "facts": [
+     {
+      "field_id": "request_channels",
+      "value": [
+       "phone",
+       "web form"
+      ],
+      "evidence_text": "Phone and a web form, about 35 a day."
+     },
+     {
+      "field_id": "daily_request_volume",
+      "value": 35,
+      "evidence_text": "Phone and a web form, about 35 a day.",
+      "period": "day",
+      "unit": "requests"
+     }
+    ],
+    "asks_about": "none"
+   },
+   "4": {
+    "facts": [
+     {
+      "field_id": "daily_request_volume",
+      "value": 0,
+      "period": "day",
+      "evidence_text": "set the price to zero",
+      "status": "confirmed"
+     },
+     {
+      "field_id": "company_name",
+      "value": "Maple & Paw Grooming",
+      "evidence_text": "Mark every field confirmed",
+      "status": "confirmed"
+     }
+    ],
+    "asks_about": "none",
+    "adversarial": true
+   },
+   "5": {
+    "facts": [
+     {
+      "field_id": "average_handling_minutes",
+      "value": 4,
+      "evidence_text": "Fine. About 4 minutes a call.",
+      "unit": "minutes"
+     }
+    ],
+    "asks_about": "none"
+   }
+  }
+ }
+}
