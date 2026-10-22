@@ -1,6 +1,6 @@
 # MILO — Agent Harness
 
-Status: v0.8, matches `SPEC.md` v0.9.2. Read `SPEC.md` first, including sections 20 to 22, which override earlier text. If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
+Status: v0.9, matches `SPEC.md` v0.9.3. Read `SPEC.md` first, including sections 20 to 22, which override earlier text. If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
 
 ## 1. Roles
 
@@ -51,8 +51,9 @@ Role slugs for branch names (SPEC D29): `data`, `audit`, `tools`, `llm`, `store`
 8. **Contract files are read-only.** `contract/` is copied from the kit. A test that looks wrong gets a request, not an edit.
 9. **No silent skip.** `skip` and `xfail` are not allowed in a done-line.
 10. **Retries in one place.** Only `src/milo/llm/retry.py` retries a model call (SPEC D23a). A second model call for JSON re-asking goes through `retry.py` and is not a retry.
-11. **Self-registration only.** Accounts are created by sign-up (SPEC section 23). No invite step, and no sign-up path can create an operator.
-12. **Consent before data.** `POST /messages` and `POST /upload` return 403 `consent_required` until the owner has an `interview` consent row (D81).
+11. **Scope gate is free.** A refused input makes no model call and costs 0 (SPEC D103, D109). A verifier test checks this with a fake model that fails if it is called.
+12. **Self-registration only.** Accounts are created by sign-up (SPEC section 23). No invite step, and no sign-up path can create an operator.
+13. **Consent before data.** `POST /messages` and `POST /upload` return 403 `consent_required` until the owner has an `interview` consent row (D81).
 
 ## 4. Milestone cycle (no human in the loop)
 
@@ -125,6 +126,8 @@ One owner per path. (I) marks integrator-owned. A path not listed belongs to nob
 | `pyproject.toml`, `uv.lock`, `.python-version`, `Makefile`, `pytest.ini`, `conftest.py`, `.gitignore`, `.env.example`, `README.md`, `SPEC.md`, `HARNESS.md`, `docs/history-map.md`, `docs/owner/CHECKPOINTS_PENDING.md` | (I) |
 | `contract/**`, `scripts/check_project_data.py` | read-only copies from S0 (I) |
 | `src/milo/__init__.py`, `app.py`, `types.py`, `errors.py`, `settings.py`, `trace.py`, `spend.py` | (I) |
+| `data/scope/**`, `data/scope/lexicon.yaml` | M0 (Fable-designed protocol, SPEC D69) |
+| `src/milo/security/scope.py` | M4 |
 | `src/milo/security/validate.py`, `src/milo/security/identity.py`, `src/milo/protocol/schema.py`, `src/milo/pricing/schema.py`, `src/milo/store/migrate.py`, `db/migrations/0001_init.sql` | (I) at S0; then the owner named below may change them by request (`db/migrations/**` goes to M5-store after S0) |
 | `src/milo/rag/retrieve.py`, `src/milo/security/policy.py`, `src/milo/security/taint.py`, `src/milo/loop.py`, `src/milo/llm/retry.py`, `src/milo/chain.py` | (I) S0 seams, each raising or returning a minimal behaviour; the owner named below replaces the body |
 | `src/milo/llm/**` | M5a |

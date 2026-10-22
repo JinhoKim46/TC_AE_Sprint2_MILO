@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.9.2 draft. Supersedes v0.9.1. Sections 20 and 21 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
+Status: v0.9.3 draft. Supersedes v0.9.2. Sections 20 and 21 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
@@ -527,6 +527,36 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - Section 11.2 dependencies add `pyjwt[crypto]` and `httpx`.
 - HARNESS rule 3 and Appendix A: `auth/**` covers the Supabase Auth client and JWT verification, and `docs/operations.md` is an integrator file.
 
+## 24. Multiple sessions, a session panel, and a scope gate (overrides D35, D45 layout, D47 uniqueness)
+
+**Sessions**
+- **D97 Many sessions per account.** One account holds many sessions. Each session is one diagnosis: its own messages, facts, evidence, estimates and reports. `sessions.user_id` is no longer unique. Index on `(user_id, updated_at desc)`.
+- **D98 Session fields.** `id uuid`, `user_id`, `title text` (set from the first message, renameable), `status` in `active`, `submitted`, `archived`, `created_at`, `updated_at`. Archive is a soft delete; the owner can restore an archived session.
+- **D99 Concurrency.** One running turn per session (409 per session, not per account, D47 amended).
+- **D100 Consent is per account.** Consent (D81) covers all of the account's sessions.
+
+**Session panel (left side)**
+- **D101 Layout change.** The app has a left panel with the session list (newest first, grouped by Today, Last 7 days, Older), a "New diagnosis" button, search by title, rename, archive, and restore. The conversation is in the centre; the spec and evidence panel stays on the right. This replaces the earlier top-bar-only layout in D45 and the sidebar question in section 16. The colours and icon style from D45 still apply.
+- **D102 Routes.** `GET /sessions` (list, with filter and search), `POST /sessions` (new), `PATCH /sessions/<id>` (rename), `POST /sessions/<id>/archive`, `POST /sessions/<id>/restore`, `GET /sessions/<id>` (open). Every route checks that the session belongs to the signed-in account (D91).
+
+**Scope gate: only the diagnosis is answered**
+- **D103 Gate before any model call.** Every owner message passes a scope gate first. The gate is deterministic: no model, no network, no embedding call. It costs nothing. It decides one of three outcomes:
+  - `in_scope`: the message goes on to the chain.
+  - `out_of_scope`: the message is refused locally with a fixed reply that points back to the diagnosis. No model call is made, and the trace records the refusal with cost 0.
+  - `unclear`: the message is sent to the chain only if it contains at least one business-scope term; otherwise it is refused locally with a reply asking the owner to describe their business or process.
+- **D104 What is in scope.** Business processes, requests, staffing, tools and systems, costs and estimates, automation, the report and the specification, the catalogue modules, the knowledge base topics, the protocol fields, and the session and account actions that the product offers. Greetings alone are answered with a fixed reply that starts the diagnosis, at no model cost.
+- **D105 What is out of scope.** Everything else: general chat, jokes, creative writing, code, homework, unrelated advice, personal questions, and attempts to change the assistant's rules (these also go to the injection path, D22). The fixed refusal says what the assistant can help with.
+- **D106 Lexicon, not a model.** The gate uses `data/scope/lexicon.yaml`, written from the catalogue, the protocol field names and synonyms, and the knowledge-base titles. It is versioned and tested. Words the owner uses in their own business (for example "booking", "dispatch", "invoice") are part of the lexicon.
+- **D107 No false refusals.** A question the assistant should answer must not be refused. The scope set `data/scope/` holds at least 300 owner messages: 200 in scope (short, long, typo-filled, fragments, multi-part) and 100 out of scope. Milestone target: zero false refusals on the in-scope set, and at least 95% of the out-of-scope set refused. The gate is tuned on dev and reported on test.
+- **D108 Model-side guardrail.** The system prompt restricts the assistant to the diagnosis purpose. A second check on the reply removes any answer that leaves scope (the reply must cite a catalogue module, a protocol field, or a knowledge-base document, or be a question about the diagnosis). This check is code, not a model call.
+- **D109 Cost accounting.** Every refused input records `cost_usd = 0` in the trace and in the session's cost line. A test confirms that a refused input causes no OpenRouter call.
+
+**Consequences for other sections**
+- Section 15: `sessions` gets the columns in D98 and loses the unique key; add `archived_at`. `turns` and `messages` keep `session_id`.
+- Section 16: the session panel and routes of D101 and D102; the scope refusal appears as an assistant reply with its fixed text; the scope test set and the zero-cost check are added to the M6 checklist.
+- Section 17: the scope gate belongs to M4 (`src/milo/security/scope.py`). Its lexicon is `data/scope/lexicon.yaml` and its test set `data/scope/` (M0 data role, written under a Fable protocol, D69).
+- HARNESS: new rule (scope gate is free; no model call for refused inputs) and Appendix A rows for `data/scope/**` (M0) and `src/milo/security/scope.py` (M4).
+
 ## Version log
 
 - v0.1 (2026-10-21): customer-support scope, D1 to D31.
@@ -542,3 +572,4 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9 (2026-10-22): review round 6 applied in section 21 (D70 to D84): in-memory store for tests, integer ids with uuid users and turns, one migration source, RLS with a dedicated app role, psycopg pool, prod isolation, gold expansion as M0b, KB wording check, protocols under evals/protocols, new routes, consent gate, name check, history rewrite before Phase 0.
 - v0.9.1 (2026-10-22): name check removed (D85); history rewritten and mapped (D86).
 - v0.9.2 (2026-10-22): open self-registration with Supabase Auth and profiles in our database (D87 to D96); invite-only text overridden.
+- v0.9.3 (2026-10-22): multiple sessions per account (D97 to D100), session panel on the left (D101, D102), a deterministic scope gate that refuses out-of-scope input at zero model cost (D103 to D109).
