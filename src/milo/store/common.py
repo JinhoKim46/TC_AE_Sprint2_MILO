@@ -7,6 +7,7 @@ a row of another owner, or a missing row, is `NotFound` and nothing changes.
 
 from __future__ import annotations
 
+import unicodedata
 import uuid
 from typing import Any
 
@@ -113,6 +114,13 @@ def check_choice(value: str, allowed: frozenset[str], what: str) -> str:
 def clean_title(title: str | None) -> str | None:
     if title is None:
         return None
+    # Drop control and bidi-override characters (pen test L-1): a NUL breaks Postgres text,
+    # and bidi overrides can disguise a title in the session panel.
+    title = "".join(
+        ch
+        for ch in title
+        if unicodedata.category(ch) not in ("Cc", "Cf") or ch in "\t\n"
+    )
     text = " ".join(title.split())
     if not text or len(text) > TITLE_MAX:
         raise InvalidInput("title")

@@ -79,3 +79,10 @@ the test project to empty.
 - Real consent text replaces the placeholder `v0` (D81); the owner reviews it.
 - Production refuses to start with a short or example `MILO_SECRET_KEY`, or with `FLASK_DEBUG` set (D137).
 - Tests and evals never run with the production variables set (D76).
+
+## Deleting a customer completely (pen test L-2)
+
+The operator delete (`/ops/customers/<id>/delete`) removes the owner's data and writes an audit row, but it keeps the
+Supabase Auth account, so the person could still sign in to an empty account. To remove the account as well, the owner
+deletes the user in the Supabase dashboard (Authentication, Users, the user, Delete user) on the same project, after the
+operator delete. The profile row goes with it (foreign key to `auth.users`).

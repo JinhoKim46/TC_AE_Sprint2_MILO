@@ -789,3 +789,11 @@ def test_migration_is_idempotent_in_form() -> None:
     assert "security definer" not in sql.split("ownership helpers")[1]
     assert sql.count("$$") % 2 == 0
     assert sql.count("(") == sql.count(")")
+
+
+def test_clean_title_drops_control_and_bidi_characters():
+    # Pen test L-1: NUL and bidi overrides never reach the store.
+    from milo.store.common import clean_title
+
+    assert clean_title("Bookings\x00 plan") == "Bookings plan"
+    assert clean_title("‮evil title") == "evil title"
