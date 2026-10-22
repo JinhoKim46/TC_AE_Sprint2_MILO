@@ -13,7 +13,8 @@ Rules, in order; the first that fires decides (the amended rule table):
    ("job", "jobs") count as one weak term.
 3. pass: a digit sequence followed, within two words, by a number unit. The number may be approximate
    (D158): "40ish", "~40", "about 40" (a word gap), "40-50" (a range), "10k".
-4. refuse: a verb-plus-object refuse pattern matches (only reached when rules 2 and 3 did not pass).
+4. refuse: a verb-plus-object refuse pattern matches, only when the text holds no lexicon term of either
+   strength (a single weak term goes to stage 2, so a mixed message is never refused here).
 6. undecided: anything else, including a single weak term. Only `text` is read; `recent_turns`
    are stage-2 state.
 
@@ -156,9 +157,12 @@ class Stage1:
         m = self.number_re.search(norm(text))
         if m:
             return "pass", "rule 3: " + m.group(0)
-        for pid, rx in self.refuse:
-            if rx.search(norm(text)):
-                return "refuse", "rule 4: " + pid
+        if (
+            not found
+        ):  # rule 4 only when the text holds no lexicon term of either strength
+            for pid, rx in self.refuse:
+                if rx.search(norm(text)):
+                    return "refuse", "rule 4: " + pid
         if weak:
             return "undecided", "one weak: " + weak[0]
         return "undecided", "no term"

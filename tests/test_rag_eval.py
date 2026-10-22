@@ -192,10 +192,20 @@ def test_parse_reply_contract() -> None:
     assert jd.parse_reply("faithfulness", '{"score": true}', 1) is None
 
 
+# Inputs each final prompt carries (protocol m7-judge, metric table): relevance is judged from question and answer
+# only; context precision from question and contexts.
+PROMPT_TOKENS = {
+    "faithfulness": ("{{question}}", "{{contexts}}", "{{answer}}"),
+    "relevance": ("{{question}}", "{{answer}}"),
+    "context_precision": ("{{question}}", "{{contexts}}"),
+}
+
+
 def test_placeholder_prompts_are_detected() -> None:
-    for name in jd.PROMPT_NAMES.values():
+    for metric, name in jd.PROMPT_NAMES.items():
         text = (run.PROMPTS / name).read_text(encoding="utf-8")
-        assert jd.is_placeholder(text) or "{{answer}}" in text
+        assert jd.is_placeholder(text) or all(t in text for t in PROMPT_TOKENS[metric])
+    assert jd.is_placeholder('Placeholder: "Written after labels.jsonl".')
 
 
 def test_dry_replay_matches_and_detects_tampering(tmp_path: Path) -> None:
@@ -289,6 +299,11 @@ def test_judge_refuses_without_labels_and_final_prompts(
     gen_doc = {"rows": [{"qid": q, "contexts": []} for q in run.sample_qids()]}
     (tmp_path / "generation_dev.json").write_text(json.dumps(gen_doc), encoding="utf-8")
     monkeypatch.setattr(schema, "LABELS", tmp_path / "labels.jsonl")
+    prompts = tmp_path / "prompts"
+    prompts.mkdir()
+    for name in jd.PROMPT_NAMES.values():
+        (prompts / name).write_text("written after labels.jsonl\n", encoding="utf-8")
+    monkeypatch.setattr(run, "PROMPTS", prompts)
     rc = run.main(
         ["--judge", "a,1,1", "--judge", "b,1,1", "--max-cost", "1", "--reason", "x"]
     )

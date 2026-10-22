@@ -50,7 +50,7 @@
   "data/scope/scope-audit.md": "7521de9d2aea21098b5630f8af02a5c63b9ab6457f64d055dfab04f63e39f59d",
   "data/scope/scope_set.jsonl": "dbd26441a39d1c82613cf9afd2601de47ddf6dee74eb68fdf959e24456bf4004",
   "data/scope/tools/check_scope.py": "698e9adbc32cb0377e73ff949998f3e407667cdc0e17f21c37fcd302dd5f3acd",
-  "data/scope/tools/stage1_sim.py": "6e10ea1a0f0a1e428a3dd6c989293514810000872caf320492d943463f7817fa",
+  "data/scope/tools/stage1_sim.py": "0c0bcb77df00632556bec776eedd68ee1f275fee74c7e24ecc6b1f7d192f0055",
   "data/source/catalogue.yaml": "1d610bb0b2e672d753843432f7b236cded16094b190feb3ac426dc59481e6b5e",
   "data/source/gold_questions.yaml": "a264512d252520f8b6d0e0d20de4dd0067e1f151c4e1e1ca2b8611d18bd3e674",
   "data/tool_cases.jsonl": "ae1b8aa3899bd99d28eaff18a96dc5f742be9f1bb8f3e9f355f345f4289703c2"

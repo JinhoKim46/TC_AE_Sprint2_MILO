@@ -1,0 +1,19 @@
+{
+ "note": "Decisions API response shapes for the stage-2 parser (tests/test_gate.py). `documented` follows the documented response (answers.<key> with type noul and a noul probability, model, usage.cost); the others are tolerated variants or failures the gate must turn into gate_failed (D117). Written from the documentation, not recorded from a live call; the first live call verifies the shape (protocol m5g-gate.md).",
+ "cases": [
+  {"name": "documented", "p": 0.96, "raw": {"id": "gen-dec-1", "model": "typesafe/jev-1.14-20261014", "provider": "TypeSafe", "answers": {"in_diagnosis": {"type": "noul", "noul": 0.96}}, "usage": {"input_tokens": 980, "output_tokens": 1, "cost": 0.00004116}}},
+  {"name": "zero", "p": 0.0, "raw": {"model": "typesafe/jev-1.14-20261014", "answers": {"in_diagnosis": {"type": "noul", "noul": 0}}}},
+  {"name": "bare number", "p": 0.31, "raw": {"answers": {"in_diagnosis": 0.31}}},
+  {"name": "numeric string", "p": 0.5, "raw": {"answers": {"in_diagnosis": {"type": "noul", "noul": "0.5"}}}},
+  {"name": "probability key", "p": 0.7, "raw": {"answers": {"in_diagnosis": {"probability": 0.7}}}},
+  {"name": "probabilities true", "p": 0.82, "raw": {"answers": {"in_diagnosis": {"type": "noul", "probabilities": {"true": 0.82, "false": 0.18}}}}},
+  {"name": "single unnamed answer", "p": 0.12, "raw": {"answers": {"q": {"type": "noul", "noul": 0.12}}}},
+  {"name": "answers as list", "p": 0.44, "raw": {"answers": [{"key": "other", "type": "noul", "noul": 0.9}, {"key": "in_diagnosis", "type": "noul", "noul": 0.44}]}},
+  {"name": "wrong type", "p": null, "raw": {"answers": {"in_diagnosis": {"type": "choice", "choice": "yes"}}}},
+  {"name": "boolean", "p": null, "raw": {"answers": {"in_diagnosis": {"type": "noul", "noul": true}}}},
+  {"name": "out of range", "p": null, "raw": {"answers": {"in_diagnosis": {"type": "noul", "noul": 1.3}}}},
+  {"name": "missing key among several", "p": null, "raw": {"answers": {"a": {"type": "noul", "noul": 0.1}, "b": {"type": "noul", "noul": 0.2}}}},
+  {"name": "no answers", "p": null, "raw": {"error": {"code": 400, "message": "bad request"}}},
+  {"name": "not an object", "p": null, "raw": ["in_diagnosis", 0.9]}
+ ]
+}
