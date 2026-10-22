@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.9 draft. Supersedes v0.8. Sections 20 and 21 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
+Status: v0.9.2 draft. Supersedes v0.9.1. Sections 20 and 21 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
