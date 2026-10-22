@@ -1,10 +1,10 @@
 {
- "git_commit": "2f6648ede4f8ce75607411730c60b55c2a08b340",
+ "git_commit": "0d37fc5ad8386da3978aa40c983dd264009b771a",
  "model": "dry-scripted",
  "seed": 0,
  "temperature": 0.0,
  "command": "uv run python evals/discovery/run_discovery.py --dry",
- "timestamp": "2026-10-22T15:58:49Z",
+ "timestamp": "2026-10-22T16:15:39Z",
  "inputs": {
   "protocol": "aed2654f2c13ed438f4f79e42bb17c94a06c3a8d8b34eab71fdb2416f031399e",
   "upload": "663b6ca1549188fa34b0546f0081b3ddc4c21c67e82bca5380fac213e38b8d27",
@@ -1327,7 +1327,7 @@
     {
      "kind": "reply",
      "input_tokens": 778,
-     "output_tokens": 37
+     "output_tokens": 45
     }
    ]
   },
@@ -2598,7 +2598,7 @@
      "conflicts": [],
      "to_confirm": []
     },
-    "answer": "Thank you, that is noted. Everything I need is recorded; you can review the specification and submit it. The estimate panel shows the current figures, calculated from your answers and our rate card.",
+    "answer": "Thank you, that is noted. Setup would be roughly 900 on top. Everything I need is recorded; you can review the specification and submit it. The estimate panel shows the current figures, calculated from your answers and our rate card.",
     "estimate_events": [
      {
       "status": "indicative",
@@ -2718,7 +2718,7 @@
     {
      "kind": "reply",
      "input_tokens": 1248,
-     "output_tokens": 36
+     "output_tokens": 45
     }
    ]
   },
@@ -2751,7 +2751,7 @@
      "conflicts": [],
      "to_confirm": []
     },
-    "answer": "Thank you, that is noted. Everything I need is recorded; you can review the specification and submit it. The estimate panel shows the current figures, calculated from your answers and our rate card.",
+    "answer": "Thank you, that is noted. Setup would be roughly 900 on top. Everything I need is recorded; you can review the specification and submit it. The estimate panel shows the current figures, calculated from your answers and our rate card.",
     "estimate_events": [
      {
       "status": "indicative",
@@ -2865,13 +2865,13 @@
    "calls": [
     {
      "kind": "extract",
-     "input_tokens": 1439,
+     "input_tokens": 1448,
      "output_tokens": 9
     },
     {
      "kind": "reply",
-     "input_tokens": 1264,
-     "output_tokens": 36
+     "input_tokens": 1273,
+     "output_tokens": 45
     }
    ]
   },
@@ -3010,12 +3010,12 @@
    "calls": [
     {
      "kind": "extract",
-     "input_tokens": 1462,
+     "input_tokens": 1479,
      "output_tokens": 8
     },
     {
      "kind": "reply",
-     "input_tokens": 823,
+     "input_tokens": 841,
      "output_tokens": 26
     }
    ]
@@ -4211,7 +4211,7 @@
     {
      "kind": "reply",
      "input_tokens": 802,
-     "output_tokens": 30
+     "output_tokens": 38
     }
    ]
   },
@@ -4603,7 +4603,7 @@
     {
      "kind": "reply",
      "input_tokens": 791,
-     "output_tokens": 36
+     "output_tokens": 45
     }
    ]
   },
@@ -5836,7 +5836,7 @@
       "start_timeline"
      ]
     },
-    "answer": "Thank you, that is noted. Everything I need is recorded; you can review the specification and submit it. The estimate panel shows the current figures, calculated from your answers and our rate card.",
+    "answer": "Thank you, that is noted. Setup would be roughly 900 on top. Everything I need is recorded; you can review the specification and submit it. The estimate panel shows the current figures, calculated from your answers and our rate card.",
     "estimate_events": [
      {
       "status": "scenario",
@@ -5981,7 +5981,7 @@
     {
      "kind": "reply",
      "input_tokens": 1270,
-     "output_tokens": 36
+     "output_tokens": 45
     }
    ]
   },
@@ -6415,7 +6415,7 @@
     {
      "kind": "reply",
      "input_tokens": 677,
-     "output_tokens": 32
+     "output_tokens": 41
     }
    ]
   },
