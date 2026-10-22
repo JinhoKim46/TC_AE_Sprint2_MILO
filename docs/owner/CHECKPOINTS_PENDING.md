@@ -74,3 +74,8 @@
 - Verifier PASS twice (docs/verify/m5b.md); dry discovery eval: premature-estimate 0 over 41 turns, evidence verbatim 1.0; discovery-table matches SPEC 14 on 9 of 9.
 - Live discovery run pending (product model, reasoning low effort per D159).
 - Owner question: none.
+
+## M5c — Report (merged 2026-10-22)
+
+- Verifier PASS (docs/verify/m5c.md) with A-1 recomputed by hand (monthly 1372.50 / 1525.00 / 1830.00, setup 2700); fix cycle 1 for pii in conflicts and derived sources.
+- Owner question: none.
