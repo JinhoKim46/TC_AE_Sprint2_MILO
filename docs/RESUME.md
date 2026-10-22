@@ -29,7 +29,7 @@ Merged on main: S0, M5a, M3, M6 shell, M4, M0b, M1 (offline), M0, M2 (offline), 
 | Branch | Where | Status | Next |
 |---|---|---|---|
 | agent/m5-store (bdcf7a3) + verify/m5-store (2b13e7b) | `.worktrees/m5-store`, `.worktrees/verify-m5-store` | Offline green (507 tests). Postgres pass 3 BLOCKED: the permission classifier refused the verifier's DB commands; owner asked for permission. The test project still holds fix-cycle-2 objects (reset.py now handles them) | On owner yes: relaunch an Opus verifier for reset, migrate, RLS test, reset; on PASS merge |
-| agent/m5b | `.worktrees/m5b` | Opus builder running (discovery core), based on main plus agent/m5-store | Verifier + SR review; merge after M5-store |
+| agent/m5b (27a4701) + verify/m5b (2908e58, PASS pass 2) | `.worktrees/m5b`, `.worktrees/verify-m5b` | Verified PASS; held because it contains agent/m5-store | Merge right after M5-store merges |
 
 Blocked on the owner: (1) OpenRouter balance before the live batch (estimate 1.65 USD; `make live-check`); (2) Postgres permission for M5-store.
 Not started: live batch (E01c, M1 index and eval, E02, M2 A/B, M3 tools, M4 arms, M7 generation, then labels, judge prompts, judge; SR live; M5G probes after M5G), M5c, M5G build, M6 wiring, SR pen test, F1 to F4.
