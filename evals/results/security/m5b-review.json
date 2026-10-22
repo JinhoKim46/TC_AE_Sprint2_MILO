@@ -1,6 +1,6 @@
 {
   "command": "uv run python evals/results/security/m5b-review.py",
-  "git_commit": "3628600a9dd70017d6653151f8f8962582fcb3dd",
+  "git_commit": "b5d995a8c635c7ec25d33bb1586f09403c78585e",
   "inputs": {
     "canary": "a2f65473c938c62286702d8472c11ec0447eaf7dc172846e72399f5df2e18cd5",
     "cases": "8fc0a0a95f5d1d9fdb0e4cb5fa366d9ff4486516b10990eb29fec496c24039de",
@@ -194,7 +194,7 @@
         "backend_state_changed": false,
         "canary_in_forbidden_sinks": 0,
         "error_page_contains_traceback": false,
-        "evidence_text_hash_is_64hex": true,
+        "evidence_text_stored_as_hash_and_length": true,
         "turn_events_payload_owner_scoped": true
       },
       "id": "A-20",
@@ -208,23 +208,20 @@
         "canary_in_forbidden_sinks": 0,
         "canary_in_owner_events": true,
         "error_page_contains_traceback": false,
-        "evidence_text_hash_is_64hex": false,
-        "failed_keys": [
-          "evidence_text_hash_is_64hex"
-        ],
+        "evidence_text_stored_as_hash_and_length": true,
         "forbidden_sinks_with_canary": [],
         "hash_owner": "src/milo/trace.py:15 (S0, integrator): sha256 hexdigest truncated to 16 hex",
         "provider_error_code": [
           "provider_error:unavailable"
         ],
-        "security_property_held": true,
         "text_hash_length": [
           16
         ],
         "text_hash_matches_sha256_prefix_of_quote": true,
+        "trace_input_refs_are_hash_and_length": true,
         "turn_events_payload_owner_scoped": true
       },
-      "pass": false,
+      "pass": true,
       "severity_if_fails": "critical",
       "threat": "T-19"
     },
@@ -327,20 +324,16 @@
   "seed": 0,
   "summary": {
     "cases": 9,
-    "failed": [
-      "A-20"
-    ],
-    "failed_critical_or_high": [
-      "A-20"
-    ],
+    "failed": [],
+    "failed_critical_or_high": [],
     "not_run": [
       "A-02b"
     ],
-    "passed": 7,
+    "passed": 8,
     "run": 8,
-    "verdict_note": "A-20 fails strictly on one format key (evidence_text_hash_is_64hex): the stored value is a 16-hex truncated SHA-256 of the quote, produced by src/milo/trace.py:15 (S0, integrator). No canary reached any forbidden sink, so no leakage occurred; under the README's D125 severity rule this is not a critical failure. Routed as a low finding."
+    "verdict_note": "Pass 2: A-20 is scored against the amended expectation of integrator decision 64 (evidence_text_stored_as_hash_and_length replaces evidence_text_hash_is_64hex; amendment 0e9d3da)."
   },
   "temperature": 0.0,
-  "timestamp": "2026-10-22T16:11:15Z",
+  "timestamp": "2026-10-22T16:17:02Z",
   "why_this_run": "verifier SR review of M5b: offline attack cases against the dry discovery harness; scripted model, no external model needed (HARNESS rule 14)"
 }

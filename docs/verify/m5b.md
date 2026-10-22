@@ -101,3 +101,37 @@ Other replays on this tree: `eval-retrieval-replay` MATCH, `eval-tools-replay` O
 | 9 | info | `src/milo/app.py`, `docs/requests/m5b.md` | Integrator-path edit allowed by SPEC 17. The request file name departs from the HARNESS 6 pattern. |
 
 `App.ask` in discovery mode (the kit path) has no consent gate. That is correct for `discovery-table`; the web path goes through `TurnRunner`.
+
+## Pass 2 (fix cycle 1: 0d37fc5, 27a4701, merged as b5d995a)
+
+### Verdict: PASS
+
+The fix cycle closes findings 1, 2, 4 and 5. The SR review now passes 8 of 8 run cases (A-02b is still not run). A-20 is scored against the amended expectation of integrator decision 64: `evidence_text_stored_as_hash_and_length` replaces `evidence_text_hash_is_64hex` (SR amendment 0e9d3da, which is on `main`). Because that amendment is not on this branch's `cases.jsonl` yet, the script carries it as `AMENDED`. Under the amended key, A-20 checks that each evidence row holds `sha256(quote)[:16]` and no text, and that the trace `policy_input` refs are exactly `{hash, length}`. Canary in forbidden sinks: 0.
+
+### Findings rechecked offline (scratch scripts, scripted model)
+
+| # | Result | Evidence |
+|---|---|---|
+| 1 | closed | `check_reply` before an estimate is allowed removes "about 900 a month", "Roughly 1,200 per month.", "A setup fee of 900 applies.", "900k" and "nine hundred dollars". It keeps the owner's own "400 a month" and "40 jobs a day" (`replycheck.py` `shows_figure`, `has_bare_price_number`, `owner_numbers`). The eval's `answer_has_figure` calls `shows_figure` (`chain.py`), which `run_discovery.py` imports, so the guard and the metric share one function. New test: `test_bare_price_numbers_are_removed_before_the_estimate_but_owner_volumes_stay`. |
+| 2 | closed | `record_spend(0.0123)` on one runtime, then a new `DiscoveryRuntime(app, repos)`: `spent_today` = 0.013 (rounded up to 0.001 units) in the `rate_limits` repository, under scope `daily_spend_musd` (`chain.py` `record_spend`, `spent_today`). New test: `test_daily_spend_is_counted_in_the_store_and_seen_by_a_new_chain`. |
+| 4 | closed | An approved withdraw with an off-scope follow-up ("Here is a poem about the sea...") returns the fixed scope reply plus the next question. `resume_approval` now runs `check_reply`. New test: `test_follow_up_after_approval_goes_through_the_scope_rule`. |
+| 5 | closed | Six non-UTF-8 uploads (`invalid_input:not_utf8`), then a valid upload: the turn runs (`done`). The limit is 5 per hour, so the rejected files used no slot (`turns.py:74-77`). New test: `test_rejected_upload_uses_no_upload_slot`. |
+
+Findings 3 (taint persistence, to M5-store) and 6 (409 vs 429, to M6) were routed by integrator decision 65. Finding 7 was resolved by decision 64.
+
+**New, low (non-blocking):** once the estimate is allowed (`scenario` or `indicative`), a bare amount next to a price word is no longer removed, only currency-marked ones are. The new dry probe shows this: "Setup would be roughly 900 on top." reaches the owner in A-1 turns 23 and 24 and B-1 turn 24, next to the panel sentence. This is not a premature estimate, and the metric stays 0. But the model never sees the figures, so the number is invented and can contradict the panel (`replycheck.py` `shows_figure`: `not number_allowed and ...`).
+
+### Reruns (`$HOME` as `~`)
+
+```text
+$ make check                 ruff ok / 174 formatted / mypy ok (76 files) / 555 passed / data checks OK / exit 0
+$ uv run pytest tests/test_protocol.py tests/test_turns.py     49 passed
+$ make kit-sources ... kit-cost (contract mode)                1, 1, 1, 2, 2, 1, 1 passed
+$ make discovery-table       unchanged: sources F, abstains F, tools F, security destructive F / identity P,
+                             errors P P, threads F, cost F (9 of 9 match SPEC 14)
+$ make eval-discovery        replay OK discovery_dry.json: 54 turns, F1 1.0, state 1.0, premature 0.0, verbatim 1.0
+$ run_discovery.py --dry --out <scratch>     rows and metrics identical to the committed file (git_commit 0d37fc5)
+$ uv run python evals/results/security/m5b-review.py
+A-01a P, A-02a P, A-02b not run, A-03 P, A-11 P, A-20 P (amended), A-23 P, A-26 P, A-28 P
+{"cases": 9, "run": 8, "passed": 8, "failed": [], "failed_critical_or_high": []}
+```

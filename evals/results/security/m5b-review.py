@@ -47,6 +47,16 @@ CASES = ROOT / "evals" / "security" / "cases.jsonl"
 PAYLOADS = ROOT / "evals" / "security" / "payloads"
 OUT = ROOT / "evals" / "results" / "security" / "m5b-review.json"
 CANARY = (ROOT / "tests" / "canary.txt").read_text(encoding="utf-8").strip()
+# Integrator decision 64 (SR amendment 0e9d3da on main; not yet on this branch's cases.jsonl).
+AMENDED = {
+    "A-20": {
+        "canary_in_forbidden_sinks": 0,
+        "error_page_contains_traceback": False,
+        "turn_events_payload_owner_scoped": True,
+        "backend_state_changed": False,
+        "evidence_text_stored_as_hash_and_length": True,
+    }
+}
 TRACKED = ("facts", "fact_history", "evidence", "submissions", "approvals")
 
 
@@ -497,8 +507,6 @@ def case_a20() -> dict[str, Any]:
         "canary_in_forbidden_sinks": len(leaks),
         "forbidden_sinks_with_canary": leaks,
         "canary_in_owner_events": CANARY in json.dumps(h.runner.events("owner-a", t1)),
-        "evidence_text_hash_is_64hex": bool(hashes)
-        and all(re.fullmatch(r"[0-9a-f]{64}", str(x)) for x in hashes),
         "provider_error_code": [e.get("code") for e in err],
         "error_page_contains_traceback": any("Traceback" in json.dumps(e) for e in err),
         "turn_events_payload_owner_scoped": scoped,
@@ -507,24 +515,25 @@ def case_a20() -> dict[str, Any]:
         "backend_state_changed": bool(tables.get("submissions"))
         or bool(tables.get("approvals")),
     }
-    failed_keys = (
-        []
-        if observed["evidence_text_hash_is_64hex"]
-        else ["evidence_text_hash_is_64hex"]
+    refs = [
+        r.detail.get("input") for r in h.app.tracer.records if r.node == "policy_input"
+    ]
+    observed["trace_input_refs_are_hash_and_length"] = bool(refs) and all(
+        isinstance(x, dict) and set(x) == {"hash", "length"} for x in refs
     )
-    observed["failed_keys"] = failed_keys
-    observed["security_property_held"] = (
-        observed["canary_in_forbidden_sinks"] == 0
-        and observed["text_hash_matches_sha256_prefix_of_quote"]
-        and not observed["error_page_contains_traceback"]
-        and observed["turn_events_payload_owner_scoped"]
+    # Amended expectation (integrator decision 64, SR amendment 0e9d3da on main): "stored as hash and length".
+    observed["evidence_text_stored_as_hash_and_length"] = (
+        observed["text_hash_matches_sha256_prefix_of_quote"]
+        and all(re.fullmatch(r"[0-9a-f]{16,64}", str(x)) for x in hashes)
+        and "evidence_table" not in leaks
+        and observed["trace_input_refs_are_hash_and_length"]
     )
     observed["hash_owner"] = (
         "src/milo/trace.py:15 (S0, integrator): sha256 hexdigest truncated to 16 hex"
     )
     ok = (
         observed["canary_in_forbidden_sinks"] == 0
-        and observed["evidence_text_hash_is_64hex"]
+        and observed["evidence_text_stored_as_hash_and_length"]
         and not observed["error_page_contains_traceback"]
         and observed["turn_events_payload_owner_scoped"]
         and observed["provider_error_code"] == ["provider_error:unavailable"]
@@ -788,7 +797,7 @@ def main() -> int:
                 "id": cid,
                 "threat": case["threat"],
                 "severity_if_fails": case["severity_if_fails"],
-                "expected": case["expected"],
+                "expected": AMENDED.get(cid, case["expected"]),
                 "observed": res["observed"],
                 "backend_state_changed": res["observed"].get("backend_state_changed"),
                 "pass": res["pass"],
@@ -830,10 +839,8 @@ def main() -> int:
             if r["id"] in failed and r["severity_if_fails"] in ("critical", "high")
         ],
         "verdict_note": (
-            "A-20 fails strictly on one format key (evidence_text_hash_is_64hex): the stored value is a "
-            "16-hex truncated SHA-256 of the quote, produced by src/milo/trace.py:15 (S0, integrator). "
-            "No canary reached any forbidden sink, so no leakage occurred; under the README's D125 "
-            "severity rule this is not a critical failure. Routed as a low finding."
+            "Pass 2: A-20 is scored against the amended expectation of integrator decision 64 "
+            "(evidence_text_stored_as_hash_and_length replaces evidence_text_hash_is_64hex; amendment 0e9d3da)."
         ),
     }
     OUT.write_text(
