@@ -43,6 +43,7 @@
   "data/pricing/rate_card.v1.yaml": "4d5225876d2c39c44b6396f53d8f5bdd14b761e173d099152d1b66f4120ec584",
   "data/prompts/chatgpt-prompts.md": "c48b906e75aac0feb5de82e6739c61629c20d16c6d8c711062009d8f68093544",
   "data/prompts/generation-record.md": "6a6358c894a9b7695dd1fbf59734e8d08dadeea76a0eed92382e3ce94616d23e",
+  "data/prompts/gold-audit.md": "4748d00a179f74d88044bebb7b0e821472296288482598d84d42f32a91641ab3",
   "data/source/catalogue.yaml": "1d610bb0b2e672d753843432f7b236cded16094b190feb3ac426dc59481e6b5e",
   "data/source/gold_questions.yaml": "a264512d252520f8b6d0e0d20de4dd0067e1f151c4e1e1ca2b8611d18bd3e674",
   "data/tool_cases.jsonl": "159ec03896adac6af7bec88e1f86d71495d95148ac3b659370464d72f6f11708"
