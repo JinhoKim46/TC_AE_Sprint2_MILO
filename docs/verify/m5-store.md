@@ -612,3 +612,129 @@ accounts 0. **The test project is empty.**
 2. F9: scope the A-09b probe to A's rows; F10: make the seeded approval outlive a slow run.
 3. Rerun HARNESS 7.8 from the (now empty) test project: migrate, `--postgres` (expect exit 0), reset (expect exit
    0), empty-project query.
+
+---
+
+# Pass 4 (fix cycle 4, Postgres)
+
+Branch verified: `verify/m5-store` at `c5ebdc8` (= `agent/m5-store` `5d1c13b` merged). Same verifier; no model call.
+Postgres: TEST project only, owner's permission of 2026-10-22; `MILO_ENV` unset, the `.env` sourced per command and
+every prod-prefixed variable unset (count printed `0`); output filtered to `<redacted>` as in pass 3. **No manual
+statement was run against the database this pass.**
+
+## Verdict: PASS
+
+F8, F9 and F10 are fixed and the full HARNESS 7.8 cycle runs with the branch code alone: migrate, reset, migrate,
+`--postgres` (every line PASS, exit 0), verifier probes 13/13, reset, empty project. No critical or high finding
+remains; F5 (low, M0b, pre-existing) is for the integrator.
+
+## Offline evidence
+
+```text
+$ make check        ruff check: All checks passed!; ruff format --check: 188 files already formatted;
+                    mypy src/milo: Success, no issues found in 70 source files; uv lock --check;
+                    590 passed; data checks OK; size check clean. exit=0
+$ uv run pytest tests/          590 passed
+$ make kit-sources 1 passed | kit-abstains 1 passed | kit-tools 1 passed | kit-security 2 passed
+$ make kit-errors 2 passed  | kit-threads 1 passed  | kit-cost 1 passed   (each "8 or 7 deselected")
+```
+
+Secrets in `git diff main...5d1c13b` (key prefixes, private-key header, URL with a password, home path): 0 hits.
+
+| Pass 3 finding | Pass 4 check | Result |
+|---|---|---|
+| F8 reset | `reset.py` role block: `revoke all on schema public / all tables / all sequences / all functions in schema public from r; drop owned by r; drop role r`, as the administrative role, no `set role`; `test_store.py` asserts no `set role` | fixed (Postgres below) |
+| F9 A-09b probe | `tests/test_store_identity.py:458-517` counts and writes only owner A's rows by A's ids, and fails if A has no row to probe | fixed (probe A-09b PASS) |
+| F10 approval expiry | seed approval `ttl_s=86400.0` (`:62`) | fixed (813 s run, no false failure) |
+
+## Postgres run (test project only)
+
+Pre-check: project empty (no MILO table, function, policy, trigger, role, membership or test account).
+
+### (a) reset on a migrated database, branch code only
+
+```text
+$ uv run python -m milo.store.migrate   applied: 0001_init                      exit=0
+    18 tables, 37 policies, roles milo_app/milo_operator, 17 forced tables,
+    memberships (admin=t,inherit=f,set=f) and (admin=f,inherit=t,set=t) per role
+$ uv run python -m milo.store.reset     db-reset: ran 26 statements; the test project holds no MILO objects   exit=0
+    tables [], policies 0, roles [], memberships [], forced 0
+$ uv run python -m milo.store.migrate   applied: 0001_init                      exit=0
+    same inventory as the first migrate
+```
+
+### (b) `uv run python tests/test_store_identity.py --postgres`: exit 0 (813 s)
+
+```text
+PASS sessions.get            PASS sessions.rename         PASS sessions.archive        PASS sessions.restore
+PASS sessions.set_status     PASS sessions.touch          PASS turns.start             PASS turns.get
+PASS turns.finish            PASS turns.add_event         PASS turns.events            PASS messages.add
+PASS messages.get            PASS messages.history        PASS facts.upsert            PASS facts.get
+PASS facts.for_session       PASS facts.field_history     PASS evidence.add            PASS evidence.for_session
+PASS submissions.create      PASS submissions.get         PASS submissions.for_session PASS submissions.latest
+PASS submissions.attach_report PASS submissions.set_status PASS approvals.create       PASS approvals.get
+PASS approvals.transition    PASS traces.record           PASS traces.for_turn         PASS field_requests.add
+PASS mixed.fact_source       PASS mixed.evidence_message  PASS mixed.approval_turn     PASS sessions.search
+PASS sessions.search_archived PASS sessions.search_title  PASS customers.get           PASS consents.has
+PASS consents.history        PASS field_requests.history  PASS deletion_requests.history PASS profiles.get
+PASS profiles.role           PASS profiles.touch_last_seen PASS customers.ensure      PASS customers.update
+PASS consents.record         PASS sessions.create         PASS deletion_requests.add   PASS field_requests.add_own
+52 passed, 0 failed
+PASS probe A-09c
+PASS probe A-09a
+PASS probe A-09b
+PASS probe A-10b
+PASS probe A-27
+PASS probe counts
+table probes: 0 failed
+```
+
+(58 PASS lines, 0 FAIL; packed here for space, order kept.) Test accounts in `auth.users` afterwards: 0.
+
+### (c) Verifier probes (administrative connection, `SET LOCAL ROLE`), same script as pass 3
+
+```text
+PASS relrowsecurity and relforcerowsecurity true on all owner tables  [17 owner tables]
+PASS schema_migrations: rls enabled, not forced (migrate writes it as owner)
+PASS milo_app: no SUPERUSER, BYPASSRLS, CREATEROLE, CREATEDB  [(False, False, False, False)]
+PASS milo_operator: no SUPERUSER, BYPASSRLS, CREATEROLE, CREATEDB  [(False, False, False, False)]
+PASS unconfirmed auth user: no profile  [profiles=0]
+PASS confirmation trigger inserts the profile under FORCE RLS  [('owner', True)]
+PASS owner sees exactly its own profile as milo_app  [rows=1]
+PASS owner reads own sessions/messages/turns/turn_events (owns_session, owns_turn invoker)  [1/1/1/1]
+PASS another owner id sees none of them  [0/0/0/0]
+PASS milo_operator deletes the customer row
+PASS cascade removed the owner's sessions, messages, turns, turn_events  [0/0/0/0/0]
+PASS audit row written in the same transaction  [rows=1]
+PASS test auth user deleted; profile cascades away  [profiles=0, auth.users=0]
+verifier probes: 13 passed, 0 failed
+```
+
+### (d) `uv run python -m milo.store.reset`
+
+```text
+db-reset: ran 26 statements; the test project holds no MILO objects
+exit=0
+```
+
+Final inventory: tables in `public` `[]`, MILO functions `[]`, policies 0, trigger on `auth.users` 0, roles `[]`,
+memberships `[]`, test accounts 0. **The test project is empty.**
+
+## Findings (pass 4)
+
+| # | Where | What | Severity |
+|---|---|---|---|
+| F5 | `evals/retrieval/compare_embeddings.py:61` | `openrouter.ai` outside `llm/cloud.py`; pre-existing, M0b, not in this diff | low (integrator) |
+| Info | `0001_init.sql:353` | administrative role has BYPASSRLS on Supabase, so `profiles_trigger_insert` is not exercised | informational |
+| Info | `tests/test_store_identity.py --postgres` | about 14 minutes over the session pooler | informational |
+
+## SR review (pass 4)
+
+| Case | Threat | Runner | Evidence | Result |
+|---|---|---|---|---|
+| A-09a | T-08 | postgres-test | committed `probe A-09a` PASS | met |
+| A-09b | T-08 | postgres-test | committed `probe A-09b` PASS (A's rows only); 36 NOT_FOUND calls `not_found`; `probe counts` PASS; verifier: another owner sees 0 | met |
+| A-09c | T-08 | postgres-test | committed `probe A-09c` PASS; verifier: RLS and FORCE on 17/17 owner tables, roles not SUPERUSER/BYPASSRLS/CREATEROLE | met |
+| A-10b | T-09 | postgres-test | committed `probe A-10b` PASS | met |
+| A-17 | T-16 | offline | per-account and per-address 5/15 min; email rotation `rate_limited` at the 6th attempt; success clears both counters | met |
+| A-27 | T-26 | postgres-test | committed `probe A-27` PASS; operator delete wrote its audit row in the same transaction | met |
