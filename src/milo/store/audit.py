@@ -67,6 +67,14 @@ class PgOperator:
                 (max(1, min(limit, 1000)),),
             )
 
+    def has_operator(self) -> bool:
+        """Whether any profile holds the operator role (D94, D121: production refuses to start without one)."""
+        row = self.db.one(
+            None,
+            "select exists (select 1 from profiles where role = 'operator') as found",
+        )
+        return bool(row and row.get("found"))
+
     def submission(self, submission_id: int) -> dict[str, Any]:
         row = self.db.one(
             None, f"{OPS_SUBMISSION_SQL} where s.id = %s", (int(submission_id),)

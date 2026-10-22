@@ -621,6 +621,7 @@ def _calls(r: Repositories) -> list[tuple[str, str, tuple[Any, ...], dict[str, A
         ("operator", "delete_customer", (o, o), {}),
         ("operator", "submissions", (), {}),
         ("operator", "submission", (1,), {}),
+        ("operator", "has_operator", (), {}),
     ]
 
 

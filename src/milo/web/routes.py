@@ -19,6 +19,8 @@ from typing import Any
 from flask import (
     Blueprint,
     Flask,
+    Request,
+    current_app,
     Response,
     abort,
     g,
@@ -32,11 +34,11 @@ from flask import (
 
 from milo.auth.errors import AuthError, RateLimited
 from milo.errors import InvalidInput, MiloError, NotFound, PolicyDenied
-from milo.settings import Settings
+from milo.settings import CONSENT_TEXT_VERSION, Settings
 from milo.web.data import TurnBusy, WebData, label
+from milo.web.tokens import TokenSeal
 
 TAGLINE = "Indicative estimate. Not a quote. Non-binding."
-CONSENT_TEXT_VERSION = "v0"  # placeholder consent text (D81, D121)
 MIN_PASSWORD_LEN = 12
 SAFE_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024  # D46, D132: the file itself
@@ -121,21 +123,43 @@ def group_sessions(
 def pdf_text(data: bytes) -> str:
     """Text of a PDF, parsed in memory (D132): at most 50 pages; nothing is written to disk."""
     from pypdf import PdfReader
-    from pypdf.errors import PdfReadError
+    from pypdf.errors import PyPdfError
 
     try:
         reader = PdfReader(io.BytesIO(data))
         if len(reader.pages) > MAX_PDF_PAGES:
             raise InvalidInput("too_many_pages")
-        return "\n".join((p.extract_text() or "") for p in reader.pages)
-    except (PdfReadError, ValueError, KeyError, TypeError) as exc:
+        parts: list[str] = []
+        size = 0
+        for (
+            p
+        ) in reader.pages:  # stop extracting once the character cap is reached (D132)
+            text = p.extract_text() or ""
+            parts.append(text)
+            size += len(text)
+            if size > MAX_UPLOAD_TEXT:
+                break
+        return "\n".join(parts)
+    except InvalidInput:
+        raise
+    except (
+        PyPdfError,
+        ValueError,
+        KeyError,
+        TypeError,
+        IndexError,
+        AttributeError,
+        RecursionError,
+        MemoryError,
+        OverflowError,
+        ZeroDivisionError,
+    ) as exc:
+        # a parser error or a decompression bomb (pypdf's LimitReachedError) is the owner's bad file, not a 500
         raise InvalidInput("unreadable_pdf") from exc
 
 
 def upload_text(data: bytes, filename: str, mimetype: str) -> str:
     """Decoded text of an upload (D46): PDF by its signature, else UTF-8 text with a text MIME or `.txt` name."""
-    if len(data) > MAX_UPLOAD_BYTES:
-        raise InvalidInput("file_too_large")
     if not data:
         raise InvalidInput("empty_file")
     if data.startswith(b"%PDF-"):
@@ -194,8 +218,21 @@ def create_web(data: WebData, settings: Settings) -> Blueprint:
         """New session contents at sign-in and sign-out (D137). Only the tokens are kept, never the user id."""
         session.clear()
         if tokens:
-            session["auth"] = tokens
+            session["auth"] = seal().seal(tokens)
         session["csrf"] = secrets.token_urlsafe(32)
+
+    def seal() -> TokenSeal:
+        return TokenSeal(str(current_app.secret_key))
+
+    def stored_tokens() -> dict[str, str] | None:
+        """The sealed tokens of this session; a blob that does not open (tampered, old key) signs the user out."""
+        blob = session.get("auth")
+        if blob is None:
+            return None
+        tokens = seal().open(blob)
+        if tokens is None:
+            session.pop("auth", None)
+        return tokens
 
     def client_ip() -> str:
         return request.remote_addr or "unknown"
@@ -218,15 +255,15 @@ def create_web(data: WebData, settings: Settings) -> Blueprint:
         if ep == "static":
             return None
         g.user = None
-        tokens = session.get("auth")
-        if isinstance(tokens, dict):
+        tokens = stored_tokens()
+        if tokens is not None:
             found = accounts.resolve(tokens)
             if found is None:
                 session.pop("auth", None)
             else:
                 user_id, fresh = found
                 if fresh:
-                    session["auth"] = fresh
+                    session["auth"] = seal().seal(fresh)
                 g.user = data.get_user(user_id)  # role re-read every request (D144)
                 if g.user is None:
                     session.pop("auth", None)
@@ -351,8 +388,8 @@ def create_web(data: WebData, settings: Settings) -> Blueprint:
 
     @bp.post("/logout")
     def logout() -> Any:
-        tokens = session.get("auth")
-        if isinstance(tokens, dict):
+        tokens = stored_tokens()
+        if tokens is not None:
             accounts.logout(tokens)
         regenerate_session(None)
         session.pop("csrf", None)
@@ -441,9 +478,13 @@ def create_web(data: WebData, settings: Settings) -> Blueprint:
 
     @bp.post("/consent")
     def consent_post() -> Any:
-        if request.form.get("agree") != "yes" and not (
-            request.is_json and (request.get_json(silent=True) or {}).get("agree")
-        ):
+        if request.is_json:
+            got = request.get_json(silent=True)
+            agree = got.get("agree") if isinstance(got, dict) else None
+            agreed = agree is True or agree == "yes"
+        else:
+            agreed = request.form.get("agree") == "yes"
+        if not agreed:  # only an explicit agree records consent (D81, verify m6 F1)
             return jsonify({"error": "invalid_input"}), 400
         data.record_consent(uid(), CONSENT_TEXT_VERSION)
         if newest_session(uid()) is None:
@@ -535,6 +576,8 @@ def create_web(data: WebData, settings: Settings) -> Blueprint:
         if file is None:
             raise InvalidInput("no_file")
         raw = file.stream.read(MAX_UPLOAD_BYTES + 1)
+        if len(raw) > MAX_UPLOAD_BYTES:
+            abort(413)  # one status for the one cap (D46, verify m6 F3)
         text = upload_text(raw, file.filename or "", file.mimetype or "")
         sid = session_for_write(request.form.get("session_id"))
         message = request.form.get("text", "").strip() or UPLOAD_DEFAULT_TEXT
@@ -748,6 +791,19 @@ SUGGESTIONS = (
 )
 
 
+class MemoryRequest(Request):
+    """Form parts stay in memory, bounded by `MAX_CONTENT_LENGTH`; nothing spools to a temp file (D132)."""
+
+    def _get_file_stream(
+        self,
+        total_content_length: int | None,
+        content_type: str | None,
+        filename: str | None = None,
+        content_length: int | None = None,
+    ) -> Any:
+        return io.BytesIO()
+
+
 def create_flask_app(
     data: WebData, settings: Settings, *, debug: bool = False
 ) -> Flask:
@@ -755,6 +811,7 @@ def create_flask_app(
     if settings.env == "prod" and debug:
         raise RuntimeError("production refuses to start with the debugger on (D137)")
     flask_app = Flask(__name__)
+    flask_app.request_class = MemoryRequest
     key = settings.secret_key or (
         "" if settings.env == "prod" else secrets.token_hex(32)
     )

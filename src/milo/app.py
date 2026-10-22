@@ -333,10 +333,6 @@ def build_discovery_app(
     return app
 
 
-CHAT_MODEL_VAR = "MILO_CHAT_MODEL"
-CHAT_PRICE_VARS = ("MILO_CHAT_PRICE_IN", "MILO_CHAT_PRICE_OUT")
-
-
 def _example_secret_values() -> frozenset[str]:
     """`MILO_SECRET_KEY` values written in `.env.example` (D137: production refuses any of them)."""
     from pathlib import Path
@@ -417,6 +413,18 @@ def create_app(
                 repos,
             )
         )
+    if cfg.env == "prod":
+        placeholders = []
+        if cfg_mod.CONSENT_TEXT_VERSION in cfg_mod.PLACEHOLDER_CONSENT_VERSIONS:
+            placeholders.append(
+                f"consent text is the placeholder {cfg_mod.CONSENT_TEXT_VERSION}"
+            )
+        if not repos.operator.has_operator():
+            placeholders.append("no operator profile exists")
+        if placeholders:  # D121, section 18 items 2 and 3 (verify m6 F5)
+            raise RuntimeError(
+                "production refuses to start: " + "; ".join(placeholders)
+            )
     if app is None:
         app = _discovery_app_for_web(cfg, repos, env)
     elif getattr(app, "discovery_runtime", None) is None:
@@ -425,36 +433,52 @@ def create_app(
 
 
 def _discovery_app_for_web(cfg: Any, repos: Any, env: Any) -> App:
-    """The production discovery App: the OpenRouter chat model named by `MILO_CHAT_MODEL` and its prices, the
-    default embedding model, `MiloBackend` sharing the runtime's `SessionFacts`, and the knowledge base ingested
-    once at start-up (one embedding call per chunk batch)."""
+    """The production discovery App: the chat model from `settings.chat_model_config`, the default embedding
+    model over the persisted index under `data/index/` (built once, and logged, only when it is missing), the
+    M5G gate from `build_gate` (live two-stage with a key, stage 1 only without), and `MiloBackend` sharing the
+    runtime's `SessionFacts`."""
+    import logging
+    from pathlib import Path
+
+    from milo import settings as cfg_mod
     from milo.facts.store import SessionFacts
+    from milo.gate import build_gate
     from milo.llm.client import build_chat
     from milo.protocol.loader import get_protocol
+    from milo.rag.chunk import DEFAULT_OVERLAP, DEFAULT_SIZE
     from milo.rag.embed import OpenRouterEmbedder
-    from milo.rag.ingest import load_kb
+    from milo.rag.ingest import INDEX_ROOT, build_index
+    from milo.rag.vectors import VectorStore
+    from milo.spend import SpendLedger
     from milo.tools.backend import MiloBackend
 
-    model = env.get(CHAT_MODEL_VAR, "")
-    try:
-        price = (float(env[CHAT_PRICE_VARS[0]]), float(env[CHAT_PRICE_VARS[1]]))
-    except (KeyError, ValueError):
-        model = ""
-    if not model or not cfg.openrouter_api_key:
-        raise RuntimeError(
-            f"{CHAT_MODEL_VAR}, {CHAT_PRICE_VARS[0]}, {CHAT_PRICE_VARS[1]} and OPENROUTER_API_KEY are required"
+    chat = cfg_mod.chat_model_config(env)
+    if not cfg.openrouter_api_key:
+        raise RuntimeError("OPENROUTER_API_KEY is required")
+    embedder = OpenRouterEmbedder(cfg.openrouter_api_key)
+    model = str(embedder.model)
+    index_dir = (
+        INDEX_ROOT / f"{model.replace('/', '_')}-{DEFAULT_SIZE}-{DEFAULT_OVERLAP}"
+    )
+    store = VectorStore(index_dir)
+    manifest = store.read_manifest() or {}
+    if store.count() == 0 or manifest.get("model") != model:
+        logging.getLogger("milo.app").warning(
+            "knowledge-base index missing at %s; embedding data/kb once", index_dir
         )
+        kb = Path(__file__).resolve().parents[2] / "data" / "kb"
+        store, _ = build_index(kb, index_dir, embedder, model=model)
+    ledger = SpendLedger(budget_usd=float(cfg.budget_usd))
     facts = SessionFacts(repos, get_protocol())
     backend = MiloBackend(retriever=None, store=facts)  # type: ignore[arg-type]
     app = build_discovery_app(
-        build_chat(model, price, settings=cfg),
-        OpenRouterEmbedder(cfg.openrouter_api_key),
+        build_chat(chat.model, chat.price_usd_per_mtok, settings=cfg, ledger=ledger),
+        embedder,
         backend,
         repos=repos,
         session_facts=facts,
+        gate=build_gate(cfg, ledger=ledger),
     )
-    from pathlib import Path
-
-    app.ingest(load_kb(Path(__file__).resolve().parents[2] / "data" / "kb"))
+    app.retriever = Retriever(embedder, store=store)
     backend.retriever = app.retriever
     return app

@@ -634,10 +634,12 @@ def test_upload_refusals(owner):
     assert r.get_json()["error"] == "invalid_input:mime_not_allowed"
     r = upload(owner, b"%PDF-1.4 broken", "x.pdf", "application/pdf")
     assert r.get_json()["error"] == "invalid_input:unreadable_pdf"
-    r = upload(owner, b"a" * (MAX_UPLOAD_BYTES + 1), "big.txt", "text/plain")
     assert (
-        r.status_code == 400 and r.get_json()["error"] == "invalid_input:file_too_large"
+        upload(owner, b"a" * MAX_UPLOAD_BYTES, "max.txt", "text/plain").status_code
+        == 200
     )
+    r = upload(owner, b"a" * (MAX_UPLOAD_BYTES + 1), "big.txt", "text/plain")
+    assert r.status_code == 413 and r.get_json() == {"error": "too_large"}
     r = upload(owner, b"a" * (MAX_UPLOAD_BYTES + 200_000), "big.txt", "text/plain")
     assert r.status_code == 413 and r.get_json() == {"error": "too_large"}
 
@@ -870,3 +872,170 @@ def test_script_payload_is_escaped_everywhere(local):
     assert "<script>alert" not in c.get("/%3Cscript%3Ealert(1)%3C/script%3E").get_data(
         as_text=True
     )
+
+
+# ---- fix cycle 1 (verify m6: T1, F1 to F5) ----
+
+
+def _cookie_payload(client, flask_app) -> tuple[str, dict[str, Any]]:
+    cookie = client.get_cookie("session")
+    raw = cookie.value
+    data = flask_app.session_interface.get_signing_serializer(flask_app).loads(raw)
+    return raw, data
+
+
+def test_tokens_are_encrypted_in_the_cookie(local):
+    import base64
+
+    c = signed_in(local)
+    access = next(iter(local.accounts.sessions))
+    sealed = {"a": access, "r": "refresh-" + "x" * 24}
+    from milo.web.tokens import TokenSeal
+
+    with c.session_transaction() as s:
+        s["auth"] = TokenSeal(local.flask.secret_key).seal(sealed)
+    assert c.get("/").status_code == 200
+    raw, data = _cookie_payload(c, local.flask)
+    decoded = ""
+    for part in raw.lstrip(".").split("."):
+        try:
+            decoded += base64.urlsafe_b64decode(part + "=" * (-len(part) % 4)).decode(
+                "latin-1"
+            )
+        except ValueError:
+            pass
+    import zlib
+
+    try:
+        decoded += zlib.decompress(
+            base64.urlsafe_b64decode(raw.lstrip(".").split(".")[0] + "==")
+        ).decode("latin-1")
+    except (ValueError, zlib.error):
+        pass
+    for token in sealed.values():
+        b64 = base64.urlsafe_b64encode(token.encode()).decode().rstrip("=")
+        for hay in (raw, decoded, str(data)):
+            assert token not in hay and b64 not in hay
+    assert isinstance(data["auth"], str)
+
+
+def test_tampered_token_blob_signs_out_and_logout_revokes(local):
+    c = signed_in(local)
+    with c.session_transaction() as s:
+        s["auth"] = s["auth"][:-4] + "AAAA"
+    r = c.get("/")
+    assert r.status_code == 302 and r.headers["Location"].endswith("/login")
+    with c.session_transaction() as s:
+        assert "auth" not in s
+    other = make()
+    c2 = signed_in(local)
+    with c2.session_transaction() as s:
+        blob = s["auth"]
+    from milo.web.tokens import TokenSeal
+
+    assert (
+        TokenSeal("another-secret-" * 3).open(blob) is None
+    )  # a rotated key signs out
+    assert other is not None
+    before = len(local.accounts.sessions)
+    c2.post("/logout", data={"csrf_token": token_of(c2)})
+    assert len(local.accounts.sessions) == before - 1
+
+
+def test_consent_needs_an_explicit_agree():
+    local = make()
+    new = local.accounts.add_confirmed("new@example.test", DEV_PASSWORD, "Nia")
+    c = signed_in(local, "new@example.test")
+    h = hdr(c)
+    for body in ({"agree": "no"}, {"agree": 1}, {"agree": "true"}, [1, 2], "yes"):
+        r = c.post("/consent", json=body, headers=h)
+        assert r.status_code == 400 and r.get_json() == {"error": "invalid_input"}, body
+    r = c.post("/consent", data={"agree": "on", "csrf_token": h["X-CSRF-Token"]})
+    assert r.status_code == 400
+    assert not local.data.has_consent(new)
+    assert c.post("/consent", json={"agree": True}, headers=h).status_code == 200
+    assert local.data.has_consent(new)
+
+
+def test_upload_never_spools_to_disk(owner, monkeypatch):
+    import tempfile
+
+    def refuse(*a: Any, **k: Any) -> Any:
+        raise AssertionError("the upload touched a temporary file")
+
+    monkeypatch.setattr(tempfile, "TemporaryFile", refuse)
+    monkeypatch.setattr(tempfile, "SpooledTemporaryFile", refuse)
+    monkeypatch.setattr(tempfile, "NamedTemporaryFile", refuse)
+    import werkzeug.formparser as fp
+
+    monkeypatch.setattr(fp, "SpooledTemporaryFile", refuse)
+    doc = b"Bookings come in by phone and email, about 40 requests a day. " * 20_000
+    r = upload(owner, doc[: 2 * 1024 * 1024], "notes.txt", "text/plain")
+    assert r.status_code == 200, r.get_json()
+
+
+def test_pdf_parser_errors_and_bombs_are_400(owner, monkeypatch):
+    import pypdf
+    from pypdf.errors import LimitReachedError
+
+    class Bomb:
+        def __init__(self, *a: Any, **k: Any) -> None:
+            raise LimitReachedError("decompression limit")
+
+    monkeypatch.setattr(pypdf, "PdfReader", Bomb)
+    r = upload(owner, b"%PDF-1.7 bomb", "bomb.pdf", "application/pdf")
+    assert r.status_code == 400 and r.get_json() == {
+        "error": "invalid_input:unreadable_pdf"
+    }
+
+
+def test_pdf_page_cap(owner):
+    from pypdf import PdfWriter
+
+    w = PdfWriter()
+    for _ in range(51):
+        w.add_blank_page(width=50, height=50)
+    buf = io.BytesIO()
+    w.write(buf)
+    r = upload(owner, buf.getvalue(), "long.pdf", "application/pdf")
+    assert r.status_code == 400 and r.get_json() == {
+        "error": "invalid_input:too_many_pages"
+    }
+
+
+def test_create_app_refuses_production_placeholders(monkeypatch):
+    from milo import settings as cfg_mod
+
+    local = make()
+    env = {"MILO_ENV": "prod", "MILO_SECRET_KEY": "p" * 40}
+    with pytest.raises(RuntimeError) as exc:
+        create_app(
+            environ=env, repos=local.data.repos, accounts=local.accounts, app=local.app
+        )
+    assert "placeholder v0" in str(exc.value)
+    monkeypatch.setattr(cfg_mod, "CONSENT_TEXT_VERSION", "v1")
+    fresh = build_local(DemoChat(), spawn=INLINE)  # no operator profile
+    with pytest.raises(RuntimeError) as exc:
+        create_app(
+            environ=env, repos=fresh.data.repos, accounts=fresh.accounts, app=fresh.app
+        )
+    assert "no operator profile" in str(exc.value)
+    flask_app = create_app(
+        environ=env, repos=local.data.repos, accounts=local.accounts, app=local.app
+    )
+    assert flask_app.config["SESSION_COOKIE_SECURE"] is True
+
+
+def test_chat_model_config_accessor():
+    from milo.settings import chat_model_config
+
+    cfg = chat_model_config(
+        {
+            "MILO_CHAT_MODEL": "vendor/model",
+            "MILO_CHAT_PRICE_IN": "1",
+            "MILO_CHAT_PRICE_OUT": "2",
+        }
+    )
+    assert cfg.model == "vendor/model" and cfg.price_usd_per_mtok == (1.0, 2.0)
+    with pytest.raises(RuntimeError):
+        chat_model_config({"MILO_CHAT_MODEL": "vendor/model"})

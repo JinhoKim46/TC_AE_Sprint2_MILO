@@ -1099,6 +1099,13 @@ class MemoryOperator(_Base):
         )
         return [self._ops_row(r) for r in rows[: max(1, min(limit, 1000))]]
 
+    def has_operator(self) -> bool:
+        """Whether any profile holds the operator role (D94, D121)."""
+        return any(
+            r.get("role") == "operator"
+            for r in self.store._tables.get("profiles", {}).values()
+        )
+
     def submission(self, submission_id: int) -> dict[str, Any]:
         row = self.store._tables.get("submissions", {}).get(int(submission_id))
         if row is None:
