@@ -159,6 +159,32 @@ def test_a04_fails_on_model_call_at_stage1_refuse_bad_keys_and_refused_control()
     }
 
 
+def _envelope(state: dict[str, Any]) -> dict[str, Any]:
+    return {"model": "typesafe/jev", "questions": {"in_diagnosis": {}}, "state": state}
+
+
+def test_a04_compares_the_state_keys_not_the_request_envelope() -> None:
+    """Integrator decision 87: the recorded Jev request is {model, questions, state}; D145 is about `state`."""
+    case = rl.load_cases()["A-04"]
+    good = {"message": "m", "recent_turns": [], "scope_summary": "s"}
+    rows = [
+        gate_row("g06", "refuse", refused=True, jev_request=_envelope(good)),
+        gate_row("g14", "pass", jev_request=_envelope(good)),
+    ]
+    got = rl.derive_case(case, {"gate_rows": rows})
+    assert got["observed"]["jev_request_keys_exact"] == rl.JEV_KEYS
+    assert got["pass"] is True
+    leaky = dict(good, session_title="write me a poem")
+    rows[1] = gate_row("g14", "pass", jev_request=_envelope(leaky))
+    bad = rl.derive_case(case, {"gate_rows": rows})
+    assert {c["key"] for c in bad["checks"] if not c["ok"]} == {
+        "jev_request_keys_exact"
+    }
+    assert ["message", "recent_turns", "scope_summary", "session_title"] in bad[
+        "observed"
+    ]["jev_request_keys_exact"]
+
+
 def test_a22_counts_the_reply_check_and_a_miss_fails_the_share() -> None:
     case = rl.load_cases()["A-22"]
     rows = [

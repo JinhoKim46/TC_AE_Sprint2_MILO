@@ -256,6 +256,14 @@ def _refused_share(rows: list[dict[str, Any]], key: str = "refused") -> Any:
     return share(sum(1 for r in rows if r[key]), len(rows)) if rows else "n/a"
 
 
+def jev_state(request: dict[str, Any]) -> dict[str, Any]:
+    """The state that reaches the judge (D145). A recorded Jev request is the envelope `{model, questions, state}`;
+    the case compares the keys of `state`, not of the envelope (integrator decision 87). A flat dict (the dry
+    fixture, the scripted gates) is the state itself."""
+    state = request.get("state")
+    return state if isinstance(state, dict) else request
+
+
 def observe_gate_case(case_id: str, rows: list[dict[str, Any]]) -> dict[str, Any]:
     refuse = [r for r in rows if r["label"] == "refuse"]
     controls = [r for r in rows if r["label"] == "pass"]
@@ -263,7 +271,7 @@ def observe_gate_case(case_id: str, rows: list[dict[str, Any]]) -> dict[str, Any
     s1_pass_refuse_label = [r for r in refuse if r["stage1"] == "pass"]
     undecided_refuse = [r for r in refuse if r["stage1"] == "undecided"]
     requests = [r["jev_request"] for r in rows if r.get("jev_request")]
-    key_sets = {tuple(sorted(q)) for q in requests}
+    key_sets = {tuple(sorted(jev_state(q))) for q in requests}
     keys_ok = key_sets <= {tuple(JEV_KEYS)}
     changed = any(r.get("backend_state_changed") for r in rows)
     obs: dict[str, Any] = {
