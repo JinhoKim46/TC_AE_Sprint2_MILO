@@ -1,12 +1,12 @@
 {
-  "git_commit": "bcf6f2ebf979bf962f63fbd3f6583e1be22de2a7",
+  "git_commit": "d88a86397722dad0cdd031ae2a4a621aa6fc1d8b",
   "model": "scripted-demo (milo.web.dev.DemoChat)",
   "seed": 0,
   "temperature": 0.0,
   "command": "uv run python evals/ui/record.py",
-  "timestamp": "2026-10-22T19:38:42Z",
+  "timestamp": "2026-10-22T20:08:17Z",
   "inputs": {
-    "routes": "9d19f0c39733ee87a48133785af677bcf26f4cbf2a0c9ea55db1261ca5d14808",
+    "routes": "9b656bbc1b78b35b95b6532edbaf547903fa6363eabb1f48e9278f7ccd912e0f",
     "app_js": "2781a23c3dd3eaf9ab5318e0d0485495d13ae6f2d9bdb5fa390ca6a1963fccd4",
     "dev": "5f660f990b862006edc14624c9ff57232c552e60ce78fab8aee81b099664b457"
   },
@@ -27,7 +27,7 @@
     {
       "check": "consent_gate_after_sign_in",
       "pass": true,
-      "detail": "http://127.0.0.1:32927/consent"
+      "detail": "http://127.0.0.1:33197/consent"
     },
     {
       "check": "conversation_layout",
@@ -112,7 +112,7 @@
     {
       "check": "signed_out",
       "pass": true,
-      "detail": "http://127.0.0.1:32927/login"
+      "detail": "http://127.0.0.1:33197/login"
     },
     {
       "check": "conversation_restored",
@@ -140,5 +140,5 @@
     "passed": 24,
     "all_pass": true
   },
-  "generated_at": "2026-10-22T19:38:42Z"
+  "generated_at": "2026-10-22T20:08:17Z"
 }
