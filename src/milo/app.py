@@ -123,7 +123,7 @@ class App:
             "validate", thread_id=thread_id, turn_id=turn_id, question=text_ref(text)
         )
         if self.discovery:
-            chain.discovery_turn(self, text, user_id, thread_id, on_event)
+            return chain.discovery_turn(self, text, user_id, thread_id, on_event)
         emit(on_event, "turn_started", turn_id=turn_id)
         started = time.monotonic()
         try:
@@ -192,6 +192,8 @@ class App:
         (compare-and-set, D48): a second approve of the same row runs nothing, and tampered arguments or a
         policy denial at approve time run nothing. The model follow-up happens only after an execution.
         """
+        if self.discovery:
+            return chain.resume_approval(self, approval_id, decision, user_id)
         row = self.approvals.get(approval_id, user_id)
         if row is None:
             return Response(answer=user_message(NOT_FOUND), error=NOT_FOUND)
@@ -303,10 +305,29 @@ def build_app(
 
 
 def build_discovery_app(
-    chat_model: ChatModel, embeddings: Embeddings, tools_backend: ToolsBackend
+    chat_model: ChatModel,
+    embeddings: Embeddings,
+    tools_backend: ToolsBackend,
+    *,
+    repos: Any = None,
+    session_facts: Any = None,
 ) -> App:
-    """`build_app(..., discovery=True, store=MemoryStore())` once M5b lands (SPEC D70). A stub until then."""
-    raise NotImplementedError("build_discovery_app lands in milestone M5b")
+    """Discovery mode over the in-memory store (SPEC D2, D70): `build_app(..., discovery=True)` plus the chain.
+
+    One session per `user_id`; any `thread_id` that is not one of the owner's session ids maps to it. `repos`
+    (default: a fresh `MemoryStore`) and `session_facts` let an evaluation share the fact store with a backend.
+    """
+    from milo.store import memory_repositories
+
+    if session_facts is not None:
+        repos = session_facts.repos
+    app = build_app(chat_model, embeddings, tools_backend, discovery=True)
+    chain.attach(
+        app,
+        repos if repos is not None else memory_repositories(),
+        session_facts=session_facts,
+    )
+    return app
 
 
 def create_app(settings: Any = None, app: Any = None, db: Any = None) -> Any:
