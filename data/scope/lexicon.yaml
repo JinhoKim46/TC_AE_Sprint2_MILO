@@ -1,0 +1,193 @@
+# MILO scope lexicon (SPEC D106, D110; protocol evals/protocols/m5g-gate.md). Fictional.
+# Read by stage 1 of the input gate (src/milo/gate/stage1.py, D128). Loadable with yaml.safe_load.
+#
+# Matching rules the gate applies to every term list below (rules 2, 3 and 5 of the protocol):
+# - case-folded, word-boundary match on the owner text; every term here is lower-case
+# - a short form is matched exactly like its full form; short forms sit next to the form they shorten
+# - `number_units`: rule 3 fires when a number is followed (within two words) by one of these units
+# - `refuse_patterns`: rule 4 only; regular expressions on the case-folded text, request-shaped,
+#   never a bare noun; they never fire when rule 2 or 3 would
+# - `greetings`: rule 1 fires only when the whole text (after stripping punctuation) is one of these
+# - Korean units attach to particles ("30건쯤"), so a word-boundary match misses them; Korean rows that hit
+#   no other term go to stage 2, which is the intended path (the protocol's Limits section)
+#
+# Written by a session agent on 2026-10-22 with no model call (D126). Audited with the scope set.
+version: scope-lexicon.v1
+updated: "2026-10-22"
+
+modules:
+  - id: phone-intake
+    name: ai phone intake
+    short_forms: [phone intake, call intake, call answering, answer the phones, answering the phone, call handling, out-of-hours calls, after-hours calls]
+  - id: email-triage
+    name: email triage
+    short_forms: [triage, inbox triage, triage the inbox, sort the inbox, label emails, draft replies, draft reply]
+  - id: ticket-creation
+    name: ticket creation
+    short_forms: [tickets, ticket, create tickets, ticketing, duplicate check, status tracking]
+  - id: staff-assignment
+    name: staff assignment
+    short_forms: [assignment, assign jobs, assigning jobs, who takes which job, skill tags, availability, override the suggestion]
+  - id: document-data-entry
+    name: document data entry
+    short_forms: [data entry, document entry, read paper forms, scanned sheets, field extraction, flagged items, entry log]
+  - id: customer-status-updates
+    name: customer status updates
+    short_forms: [status updates, status update, status messages, status texts, approved wording, templates, opt-out, opt out, delivery log]
+
+integrations:
+  - id: csv-export
+    name: csv export or import
+    short_forms: [csv, csv export, csv import, export to csv, export a csv, csv file, csv files]
+  - id: api-connector
+    name: api connector
+    short_forms: [api, an api, api key, access key, rest api, api access]
+  - id: crm-connector
+    name: crm connector
+    short_forms: [crm, a crm, our crm, field mapping, crm setup]
+  - id: export-only-tool
+    name: export-only tool
+    short_forms: [export only, export-only, export but not import, can't import, cannot import, cant import, file drop, re-key, rekey, re-keying, rekeying, re-keyed]
+
+# The 25 fields of protocols/discovery.v1.yaml, two to five synonyms each.
+protocol_fields:
+  - id: company_name
+    synonyms: [company name, business name, name of the company, we're called, trading as]
+  - id: industry
+    synonyms: [industry, kind of business, type of business, line of work, sector]
+  - id: employee_count
+    synonyms: [employees, headcount, how many people work, staff count, people on the team]
+  - id: locations
+    synonyms: [locations, sites, branches, premises, how many shops]
+  - id: owner_name
+    synonyms: [my name is, i'm the owner, i am the owner, owner's name, who you're talking to]
+  - id: owner_role
+    synonyms: [my role, job title, i'm the manager, i run the place, i'm the director]
+  - id: request_channels
+    synonyms: [web form, walk-ins, by phone, by email, contact form]
+  - id: daily_request_volume
+    synonyms: [requests a day, calls a day, jobs a day, bookings a day, daily volume]
+  - id: average_handling_minutes
+    synonyms: [minutes per request, minutes per call, handling time, how long each one takes, time per job]
+  - id: manual_entry_minutes
+    synonyms: [typing it in, type it up, typing up, minutes of typing, entering it into]
+  - id: tools_in_use
+    synonyms: [spreadsheet, booking tool, shared inbox, paper forms, which software]
+  - id: steps_in_process
+    synonyms: [the steps, our process, workflow, from start to finish, how we handle]
+  - id: approval_steps
+    synonyms: [needs my approval, sign off, signoff, i approve, manager approves]
+  - id: pain_points
+    synonyms: [pain points, goes wrong, biggest headache, takes the most time, bottleneck]
+  - id: error_types
+    synonyms: [missed calls, missed bookings, double booked, double bookings, wrong details]
+  - id: automation_goals
+    synonyms: [automate, automated, automation, hand over to a system, stop doing by hand]
+  - id: main_goal
+    synonyms: [save time, saving time, fewer errors, lower cost, room to grow]
+  - id: integrations_available
+    synonyms: [can export, can import, has an api, csv files, connect to our tool]
+  - id: personal_data_handled
+    synonyms: [personal data, phone numbers, addresses, card details, customer details]
+  - id: personal_data_types
+    synonyms: [what data we keep, email addresses, dates of birth, cards on file, medical notes]
+  - id: urgent_requests_exist
+    synonyms: [urgent, emergency, emergencies, out of hours, out-of-hours]
+  - id: urgent_request_types
+    synonyms: [what counts as urgent, emergency line, night calls, on call, callout]
+  - id: budget_range
+    synonyms: [budget, how much we can spend, price range, afford, spend on this]
+  - id: start_timeline
+    synonyms: [when to start, start date, next month, next quarter, go live]
+  - id: owner_email
+    synonyms: [email address, send the report to, my email, where to send it]
+
+# Titles of the knowledge-base articles (data/kb/**), lower-cased, with short forms owners use.
+kb_titles:
+  - title: "case: an accounts office stops re-typing forms"
+    short_forms: [accounts office case, re-typing forms, retyping forms]
+  - title: "case: a grooming salon stops missing bookings"
+    short_forms: [grooming salon case, the salon case, salon one, missing bookings]
+  - title: "case: a heating firm gets jobs out of the inbox"
+    short_forms: [heating firm case, jobs out of the inbox, lost in the inbox, lose jobs in the inbox]
+  - title: the first questions we ask
+    short_forms: [first questions, the questions you ask, your questions, skip a question]
+  - title: urgent requests and out-of-hours work
+    short_forms: [urgent requests, out-of-hours work, after hours]
+  - title: volume and timing questions
+    short_forms: [volume, timing, the volume question, two volumes]
+  - title: api connector
+    short_forms: [api connector]
+  - title: crm connector
+    short_forms: [crm connector]
+  - title: csv export and import
+    short_forms: [csv export and import, export and import]
+  - title: export-only tools
+    short_forms: [export-only tools, export-only tool, export only tool]
+  - title: approvals policy
+    short_forms: [approvals policy, approval policy, needs a person, never do on its own, can never do]
+  - title: personal data policy
+    short_forms: [personal data policy, privacy policy, delete everything, delete my data, who can see]
+  - title: security policy
+    short_forms: [security policy, how secure, is it secure, input limits]
+  - title: how we price
+    short_forms: [how you price, how do you price, pricing, rate card, base price, calculation]
+  - title: low, base and high, and what an estimate status means
+    short_forms: ["low, base and high", low base high, estimate status, indicative estimate, indicative, scenario, scenario estimate, the estimate, an estimate, estimate now]
+  - title: setup fees and integration surcharges
+    short_forms: [setup fee, setup fees, set-up fee, setup cost, surcharge, surcharges, one-off, once off, one off]
+  - title: volume tiers
+    short_forms: [volume tier, volume tiers, tier, tiers, over the top tier]
+  - title: what is included and what is not
+    short_forms: [what's included, what is included, whats included, included in the price, not included, monthly price, monthly fee, per month price]
+  - title: ai phone intake
+    short_forms: [phone intake module]
+  - title: email triage
+    short_forms: [email triage module]
+  - title: ticket creation
+    short_forms: [ticket creation module]
+  - title: staff assignment
+    short_forms: [staff assignment module]
+  - title: document data entry
+    short_forms: [document data entry module]
+  - title: customer status updates
+    short_forms: [status update module, status updates module]
+
+# Words the demo-company owners use for their own business (D106).
+trade_words: [booking, bookings, book in, booked, dispatch, dispatcher, job sheet, job sheets, invoice, invoices, invoicing, no-show, no-shows, no shows, van, vans, callout, call-out, groomer, grooming, salon, salons, boiler, boilers, quote, quotes, quoting, appointment, appointments, reminder, reminders, walk-in, walk-ins, walkins, inbox, ticket, tickets, customer, customers, client, clients, job, jobs, order, orders, request, requests, enquiry, enquiries, staff, technician, technicians, engineer, engineers, receptionist, receptionists, front desk, shift, shifts, rota, spreadsheet, spreadsheets, paper forms, paper sheets, re-keying, rekeying, re-key, work order, work orders, refund, refunds, practitioner, practitioners, clinic, repair shop, repairs, yard, office staff, the office]
+
+# Session actions the product offers (D98, D101, D102). Rule 5: verb plus object.
+session_actions: [rename, rename this session, rename the session, change the title, session title, archive, archive this, archive this session, restore, unarchive, restore the session, new diagnosis, start a new diagnosis, start over, start again, redo the diagnosis, delete this session, search my sessions, find my sessions, older sessions, open the session, which session, this session]
+
+# Account actions (section 23, D81, D41).
+account_actions: [sign out, sign me out, log out, log me out, logout, sign in, my account, delete my account, delete my data, delete everything, change my email, consent, withdraw my consent, withdraw consent, export my data, submit, submission, submit this, withdraw the submission, the report, my report, send the report, send me the report, download the report, the spec, the specification, spec panel, what facts you have, my answers]
+
+# Rule 1: the whole text is one of these (after stripping punctuation and emoji); in scope, fixed reply.
+greetings: [hi, hello, hey, hiya, hi there, hello there, hey there, good morning, morning, good afternoon, good evening, evening, thanks, thank you, thanks a lot, many thanks, cheers, ok thanks, thanks that helps, great thanks, bye, goodbye, see you, hola, buenos días, buenas, gracias, hallo, guten tag, guten morgen, danke, 안녕하세요, 안녕, 감사합니다, 고맙습니다]
+
+# Rule 3: a number followed by one of these within two words ("35 a day", "3 vans", "6 minutes each").
+number_units: [a day, per day, each day, /day, daily, a week, per week, a month, per month, /month, monthly, a year, per year, staff, people, employees, person, sites, locations, branches, shops, salons, vans, trucks, minutes, mins, min, hours, hrs, calls, emails, jobs, bookings, requests, tickets, orders, customers, clients, enquiries, repairs, usd, dollars, euros, percent, "%", al día, por día, al mes, por mes, personas, empleados, locales, llamadas, minutos, am tag, pro tag, im monat, pro monat, leute, mitarbeiter, standorte, filialen, anfragen, minuten, 명, 건, 통, 곳, 분]
+
+# Rule 4: narrow refuse patterns, applied only when no lexicon term and no number-unit matched.
+# Regular expressions on the case-folded text. Request-shaped, so "same story every time" does not fire.
+refuse_patterns:
+  - id: poem
+    pattern: "\\b(write|compose|make|give|tell|sing|do|recite)\\b.{0,40}\\b(poem|poems|haiku|limerick|sonnet|song|songs|lyrics|rap|verse|ode|shanty)\\b"
+  - id: joke
+    pattern: "\\b(tell|write|give|know|got|have|do|make up)\\b.{0,30}\\b(a |another |some |any |one more |me a )?(joke|jokes|riddle|riddles|pun|puns)\\b"
+  - id: story
+    pattern: "\\b(write|tell|make up|invent|compose)\\b.{0,40}\\b(story|stories|bedtime story|fairy tale|fable|novel|screenplay|love letter)\\b"
+  - id: horoscope
+    pattern: "\\bhoroscopes?\\b|\\bstar sign\\b|\\bzodiac\\b"
+  - id: recipe
+    pattern: "\\brecipes?\\b|\\bhow (do|to) (i |you )?(cook|bake)\\b"
+  - id: lyrics
+    pattern: "\\blyrics\\b"
+  - id: code_named_language
+    pattern: "\\b(write|code|script|program|implement|debug|fix|refactor|explain)\\b.{0,50}\\b(python|javascript|typescript|java|c\\+\\+|c#|rust|golang|sql|html|css|bash|php|ruby|swift|kotlin|regex)\\b|\\b(python|javascript|typescript|java|sql|bash|css|html) (code|script|function|snippet|query)\\b|\\bregex for\\b|\\bcenter a div\\b"
+  - id: homework
+    pattern: "\\bhomework\\b|\\bmy (school|class|college|uni) assignment\\b|\\bwrite (me )?an essay\\b|\\bessay (on|about)\\b|\\bsolve for [a-z]\\b|\\bderivative of\\b|\\bintegral of\\b|\\bbook report\\b|\\btarea de\\b|\\bhausaufgaben\\b|\\b숙제\\b"
+  - id: translation_unrelated
+    pattern: "\\btranslate (this|the following|these words|this sentence)\\b.{0,80}\\b(into|to|in) (french|spanish|german|italian|portuguese|japanese|chinese|korean|english|latin|dutch)\\b"
+  - id: poem_es_de_ko
+    pattern: "\\b(escr[ií]beme|escribe|cu[eé]ntame|hazme)\\b.{0,30}\\b(un poema|un chiste|una historia|un cuento)\\b|\\b(schreib|schreibe|erz[aä]hl|erz[aä]hle)\\b.{0,30}\\b(ein gedicht|einen witz|eine geschichte)\\b|(시|농담|이야기).{0,6}(써|지어|들려|해)"
