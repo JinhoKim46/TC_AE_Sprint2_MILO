@@ -3,8 +3,8 @@
 <h1>Reports</h1>
 {% if reports %}
 <table class="table">
-  <thead><tr><th scope="col">Report</th><th scope="col">Created</th></tr></thead>
-  <tbody>{% for r in reports %}<tr><th scope="row"><a href="{{ url_for('web.report_view', report_id=r.id) }}">{{ r.title }}</a></th><td>{{ r.created_at.strftime('%Y-%m-%d') }}</td></tr>{% endfor %}</tbody>
+  <thead><tr><th scope="col">Report</th><th scope="col">Status</th><th scope="col">Submitted</th></tr></thead>
+  <tbody>{% for r in reports %}<tr><th scope="row"><a href="{{ url_for('web.report_view', report_id=r.id) }}">{{ r.title }}</a></th><td>{{ r.status }}</td><td>{{ r.created_at.strftime('%Y-%m-%d') if r.created_at else '' }}</td></tr>{% endfor %}</tbody>
 </table>
 {% else %}
 <p class="card empty muted">No reports yet. A report is created when you submit a diagnosis.</p>

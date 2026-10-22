@@ -330,6 +330,128 @@ def build_discovery_app(
     return app
 
 
-def create_app(settings: Any = None, app: Any = None, db: Any = None) -> Any:
-    """The Flask app with persistent stores (SPEC D2). A stub until M5-store and M6 land."""
-    raise NotImplementedError("create_app lands in milestones M5-store and M6")
+CHAT_MODEL_VAR = "MILO_CHAT_MODEL"
+CHAT_PRICE_VARS = ("MILO_CHAT_PRICE_IN", "MILO_CHAT_PRICE_OUT")
+
+
+def _example_secret_values() -> frozenset[str]:
+    """`MILO_SECRET_KEY` values written in `.env.example` (D137: production refuses any of them)."""
+    from pathlib import Path
+
+    path = Path(__file__).resolve().parents[2] / ".env.example"
+    try:
+        lines = path.read_text().splitlines()
+    except OSError:
+        return frozenset()
+    found = set()
+    for line in lines:
+        key, sep, value = line.partition("=")
+        if sep and key.strip() == "MILO_SECRET_KEY" and value.strip():
+            found.add(value.strip().strip("'\""))
+    return frozenset(found)
+
+
+def create_app(
+    settings: Any = None,
+    app: Any = None,
+    db: Any = None,
+    *,
+    repos: Any = None,
+    accounts: Any = None,
+    environ: Any = None,
+    debug: bool = False,
+) -> Any:
+    """The Flask app over persistent stores (SPEC D2, 16, D71): the web layer, the real discovery `App`, the
+    turn runner (background threads), Supabase Auth and the Postgres repositories.
+
+    Production refuses to start while `settings.production_problems` finds anything, or with the debugger on
+    (D121, D137). Every database, auth and model import happens inside this function (SPEC 11.12). Tests inject
+    `repos`, `accounts` and `app` (in-memory store, scripted model) and never open a connection.
+    """
+    import os
+
+    from milo import settings as cfg_mod
+    from milo.web.data import WebData
+    from milo.web.routes import create_flask_app
+
+    env = os.environ if environ is None else environ
+    cfg = settings or cfg_mod.Settings.from_env(env)
+    if cfg.env == "prod":
+        problems = cfg_mod.production_problems(
+            env, example_values=_example_secret_values()
+        )
+        if debug:
+            problems.append("the Werkzeug debugger is enabled")
+        if problems:
+            raise RuntimeError("production refuses to start: " + "; ".join(problems))
+    if repos is None:
+        from milo.store import pg_repositories
+        from milo.store.db import Database
+
+        database = db or Database(cfg_mod.app_database_url(env))
+        database.open()
+        op_url = cfg_mod.operator_database_url(env)
+        operator = (
+            Database(op_url)
+            if op_url
+            else Database(cfg_mod.admin_database_url(env), set_role="milo_operator")
+        )
+        operator.open()
+        repos = pg_repositories(database, operator)
+    if accounts is None:
+        from milo.auth.accounts import SupabaseAuth
+        from milo.auth.jwt import JwtVerifier
+        from milo.auth.login import LoginService
+        from milo.auth.ratelimit import RateLimiter
+        from milo.web.accounts import SupabaseAccounts
+
+        auth = cfg_mod.auth_config(env)
+        accounts = SupabaseAccounts(
+            LoginService(
+                SupabaseAuth(auth.url, auth.publishable_key),
+                JwtVerifier(issuer=auth.issuer, jwks_url=auth.jwks_url),
+                RateLimiter(repos.rate_limits),
+                repos,
+            )
+        )
+    if app is None:
+        app = _discovery_app_for_web(cfg, repos, env)
+    elif getattr(app, "discovery_runtime", None) is None:
+        chain.attach(app, repos)
+    return create_flask_app(WebData(app, accounts), cfg, debug=debug)
+
+
+def _discovery_app_for_web(cfg: Any, repos: Any, env: Any) -> App:
+    """The production discovery App: the OpenRouter chat model named by `MILO_CHAT_MODEL` and its prices, the
+    default embedding model, `MiloBackend` sharing the runtime's `SessionFacts`, and the knowledge base ingested
+    once at start-up (one embedding call per chunk batch)."""
+    from milo.facts.store import SessionFacts
+    from milo.llm.client import build_chat
+    from milo.protocol.loader import get_protocol
+    from milo.rag.embed import OpenRouterEmbedder
+    from milo.rag.ingest import load_kb
+    from milo.tools.backend import MiloBackend
+
+    model = env.get(CHAT_MODEL_VAR, "")
+    try:
+        price = (float(env[CHAT_PRICE_VARS[0]]), float(env[CHAT_PRICE_VARS[1]]))
+    except (KeyError, ValueError):
+        model = ""
+    if not model or not cfg.openrouter_api_key:
+        raise RuntimeError(
+            f"{CHAT_MODEL_VAR}, {CHAT_PRICE_VARS[0]}, {CHAT_PRICE_VARS[1]} and OPENROUTER_API_KEY are required"
+        )
+    facts = SessionFacts(repos, get_protocol())
+    backend = MiloBackend(retriever=None, store=facts)  # type: ignore[arg-type]
+    app = build_discovery_app(
+        build_chat(model, price, settings=cfg),
+        OpenRouterEmbedder(cfg.openrouter_api_key),
+        backend,
+        repos=repos,
+        session_facts=facts,
+    )
+    from pathlib import Path
+
+    app.ingest(load_kb(Path(__file__).resolve().parents[2] / "data" / "kb"))
+    backend.retriever = app.retriever
+    return app

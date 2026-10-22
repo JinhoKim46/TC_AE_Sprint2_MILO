@@ -3,8 +3,21 @@
 {% block shell %}
 <div class="layout">
   {% include "_session_panel.html" %}
-  <main id="main" class="centre" data-session="{{ session_id or '' }}" data-messages-url="{{ url_for('web.messages') }}" data-events-url="/turns/">
-    <h1 class="sr">{{ title }}</h1>
+  <main id="main" class="centre" data-session="{{ session_id or '' }}" data-messages-url="{{ url_for('web.messages') }}" data-events-url="/turns/" data-upload-url="{{ url_for('web.upload') }}">
+    <div class="conv-head">
+      <h1 class="conv-title plain-text">{{ title }}</h1>
+      {% if session_id %}
+      <details class="rename">
+        <summary class="btn btn-quiet btn-small">Rename</summary>
+        <form method="post" action="{{ url_for('web.session_rename_form', session_id=session_id) }}" class="row">
+          {{ csrf() }}
+          <label class="sr" for="rename-input">New title</label>
+          <input id="rename-input" type="text" name="title" maxlength="120" value="{{ title }}" required>
+          <button class="btn btn-quiet btn-small" type="submit">Save</button>
+        </form>
+      </details>
+      {% endif %}
+    </div>
     <div class="thread" id="thread" aria-live="polite">
       {% if not messages %}
       <div class="empty-state">
@@ -20,18 +33,10 @@
       {% for m in messages %}
       <article class="msg-row msg-{{ m.role }}">
         <div class="bubble plain-text">{{ m.text }}</div>
-        {% if m.details %}
+        {% if m.role == 'assistant' %}
         <details class="drawer">
           <summary>Reply details</summary>
-          <h3>Sources</h3>
-          {% if m.details.sources %}
-          <ul>{% for s in m.details.sources %}<li>{{ s.chunk_id }} · {{ s.document }} · score {{ s.score }}</li>{% endfor %}</ul>
-          {% else %}<p class="muted">No sources.</p>{% endif %}
-          <h3>Tool calls</h3>
-          {% if m.details.tool_calls %}
-          <ul>{% for t in m.details.tool_calls %}<li>{{ t.name }} · {{ t.args }} · {{ t.result }} · {{ t.decision }}</li>{% endfor %}</ul>
-          {% else %}<p class="muted">No tool calls.</p>{% endif %}
-          <p class="small muted">Model cost: {{ "%.4f"|format(m.details.cost_usd) }} USD</p>
+          <p class="muted">Sources, tool calls, progress and cost are shown for replies given in this visit.</p>
         </details>
         {% endif %}
       </article>
@@ -43,10 +48,11 @@
     </div>
     <form class="composer" id="composer" method="post" action="{{ url_for('web.messages') }}">
       {{ csrf() }}
+      <input type="hidden" name="session_id" value="{{ session_id or '' }}">
       <label class="sr" for="composer-input">Your message</label>
       <textarea id="composer-input" name="text" rows="2" maxlength="4000" placeholder="Describe your business or answer the question above" required></textarea>
       <label class="btn btn-quiet icon-btn" for="upload-input" title="Upload a document">{{ icon("clip") }}<span class="sr">Upload a document</span></label>
-      <input class="sr" id="upload-input" type="file" name="file" data-upload-url="{{ url_for('web.upload') }}">
+      <input class="sr" id="upload-input" type="file" name="file" accept=".pdf,.txt,application/pdf,text/plain" data-upload-url="{{ url_for('web.upload') }}">
       <button class="btn btn-primary" type="submit">{{ icon("send") }} Send</button>
     </form>
   </main>

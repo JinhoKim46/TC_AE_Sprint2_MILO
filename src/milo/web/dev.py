@@ -1,287 +1,212 @@
-"""Development factory: an in-memory store and a fake App (no model, no database, no network).
+"""Local wiring without a database, a network or a model: the in-memory store, in-memory accounts and a scripted
+chat model behind the real discovery `App`, `TurnRunner` and `WebData` (SPEC D70; tests, the dev server and
+`evals/ui/record.py`).
 
-`uv run flask --app milo.web.dev:create_dev_app run`. Refuses to start in production. The seeded
-accounts are fictional and only exist in this process (SPEC D70, HARNESS rule 5).
+`uv run flask --app milo.web.dev:create_dev_app run`. Refuses to start in production. The seeded accounts are
+fictional and exist only in this process (HARNESS rule 5).
 """
 
 from __future__ import annotations
 
-import secrets
-from datetime import datetime, timedelta
+import json
+import re
+from collections.abc import Callable
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from flask import Flask
-from werkzeug.security import check_password_hash, generate_password_hash
 
 from milo.settings import Settings, is_prod
-from milo.types import Response
+from milo.types import ChatReply, ToolCall, Usage
+from milo.web.accounts import MemoryAccounts
+from milo.web.data import WebData
 from milo.web.routes import create_flask_app
 
 OWNER_EMAIL = "owner@example.test"
 OPERATOR_EMAIL = "operator@example.test"
 DEV_PASSWORD = "dev-only-password"  # dev factory only; the accounts live in memory
+KB_DIR = Path(__file__).resolve().parents[3] / "data" / "kb"
+
+# The scripted owner walk (fictional): each message names facts that appear in it verbatim (D134).
+DEMO_MESSAGES = (
+    "My name is Ada Lovelace and I run Bright Cuts, a hair salon business with 12 staff across 2 salons.",
+    "Bookings come in by phone and email, about 40 requests a day. Each one takes 6 minutes to handle "
+    "and 3 minutes of typing. We use Fresha and Gmail. Our steps: answer, check the calendar, book, confirm.",
+    "Calls get missed when we are busy and some bookings are delayed. We want to save time by automating "
+    "phone booking. We can export a CSV from Fresha. We store client names and phone numbers. "
+    "Urgent requests do not really happen.",
+)
 
 
-class FakeApp:
-    """The slice of `App` the web layer uses (SPEC section 16)."""
+def _f(field_id: str, value: Any, evidence: str, **extra: Any) -> dict[str, Any]:
+    return {"field_id": field_id, "value": value, "evidence_text": evidence, **extra}
+
+
+DEMO_FACTS: dict[str, list[dict[str, Any]]] = {
+    "Ada Lovelace": [
+        _f("owner_name", "Ada Lovelace", "My name is Ada Lovelace"),
+        _f("company_name", "Bright Cuts", "I run Bright Cuts"),
+        _f("industry", "hair salon", "a hair salon business"),
+        _f("employee_count", 12, "12 staff", unit="people"),
+        _f("locations", 2, "2 salons", unit="sites"),
+    ],
+    "about 40 requests a day": [
+        _f("request_channels", ["phone", "email"], "by phone and email"),
+        _f(
+            "daily_request_volume",
+            40,
+            "about 40 requests a day",
+            unit="requests",
+            period="day",
+        ),
+        _f("average_handling_minutes", 6, "takes 6 minutes to handle", unit="minutes"),
+        _f("manual_entry_minutes", 3, "3 minutes of typing", unit="minutes"),
+        _f("tools_in_use", ["Fresha", "Gmail"], "We use Fresha and Gmail"),
+        _f(
+            "steps_in_process",
+            ["answer", "check the calendar", "book", "confirm"],
+            "answer, check the calendar, book, confirm",
+        ),
+    ],
+    "Calls get missed": [
+        _f(
+            "pain_points",
+            ["missed calls when busy"],
+            "Calls get missed when we are busy",
+        ),
+        _f(
+            "error_types",
+            ["missed", "delayed"],
+            "Calls get missed when we are busy and some bookings are delayed",
+        ),
+        _f(
+            "automation_goals", ["automating phone booking"], "automating phone booking"
+        ),
+        _f("main_goal", "time", "We want to save time"),
+        _f("integrations_available", ["csv-export"], "We can export a CSV from Fresha"),
+        _f("personal_data_handled", True, "We store client names and phone numbers"),
+        _f(
+            "personal_data_types",
+            ["client names", "phone numbers"],
+            "client names and phone numbers",
+        ),
+        _f("urgent_requests_exist", False, "Urgent requests do not really happen"),
+    ],
+}
+
+_OWNER_TAG = re.compile(r"<owner_message>\n(.*?)\n</owner_message>", re.S)
+_WITHDRAW = re.compile(r"withdraw\D{0,40}(\d+)", re.I)
+
+
+class DemoChat:
+    """A scripted chat model: extraction from `DEMO_FACTS`, a fixed reply, and a `withdraw_submission` tool call
+    when the owner asks to withdraw a numbered submission (the blocked action of the M6 walk, SPEC 16)."""
+
+    price_usd_per_mtok = (0.0, 0.0)
+    model = "scripted-demo"
 
     def __init__(self) -> None:
-        self.traces: list[dict[str, Any]] = [
-            {"event": "validate", "thread_id": "t1", "status": "ok", "duration_ms": 1.0}
-        ]
+        self.calls = 0
 
-    def ask(
-        self, question: str, user_id: str, thread_id: str, on_event: Any = None
-    ) -> Response:
-        return Response(answer="(dev) " + question)
-
-    def resume_approval(
-        self, approval_id: str, decision: str, user_id: str
-    ) -> Response:
-        return Response(answer="(dev) " + decision)
-
-    def recent_traces(self, limit: int = 50) -> list[dict[str, Any]]:
-        return self.traces[:limit]
-
-
-class DevStore:
-    """In-memory implementation of `milo.web.ports.WebStore`."""
-
-    def __init__(self, *, seed: bool = True) -> None:
-        self.users: dict[str, dict[str, Any]] = {}
-        self.pending: dict[str, str] = {}
-        self.resets: dict[str, str] = {}
-        self.consents: dict[str, list[dict[str, Any]]] = {}
-        self.sessions: dict[str, dict[str, Any]] = {}
-        self.messages: dict[str, list[dict[str, Any]]] = {}
-        self.specs: dict[str, dict[str, Any]] = {}
-        self.reports: dict[str, dict[str, Any]] = {}
-        self.submissions: dict[str, dict[str, Any]] = {}
-        self.audit: list[dict[str, Any]] = []
-        if seed:
-            self._seed()
-
-    # ---- accounts ----
-
-    def add_user(
-        self, email: str, password: str, first: str, role: str = "owner"
-    ) -> str:
-        uid = secrets.token_hex(8)
-        self.users[uid] = {
-            "id": uid,
-            "email": email,
-            "first_name": first,
-            "role": role,
-            "hash": generate_password_hash(password),
-            "confirmed": True,
-        }
-        return uid
-
-    def authenticate(self, email: str, password: str) -> str | None:
-        for u in self.users.values():
-            if (
-                u["email"] == email
-                and u["confirmed"]
-                and check_password_hash(u["hash"], password)
-            ):
-                return str(u["id"])
-        return None
-
-    def sign_up(self, email: str, password: str, first_name: str) -> str:
-        if any(u["email"] == email for u in self.users.values()):
-            return ""
-        uid = self.add_user(email, password, first_name)
-        self.users[uid]["confirmed"] = False
-        token = secrets.token_urlsafe(16)
-        self.pending[token] = uid
-        return token
-
-    def confirm(self, token: str) -> bool:
-        uid = self.pending.pop(token, None)
-        if uid is None:
-            return False
-        self.users[uid]["confirmed"] = True
-        return True
-
-    def request_reset(self, email: str) -> None:
-        for u in self.users.values():
-            if u["email"] == email:
-                self.resets[secrets.token_urlsafe(16)] = u["id"]
-
-    def reset_password(self, token: str, password: str) -> bool:
-        uid = self.resets.pop(token, None)
-        if uid is None:
-            return False
-        self.users[uid]["hash"] = generate_password_hash(password)
-        return True
-
-    def get_user(self, user_id: str) -> dict[str, Any] | None:
-        u = self.users.get(user_id)
-        return (
-            None
-            if u is None
-            else {k: v for k, v in u.items() if k not in ("hash", "confirmed")}
+    def invoke(self, messages: list[dict[str, Any]], tools: Any = None) -> ChatReply:
+        self.calls += 1
+        if str(messages[0].get("content", "")).startswith("You extract facts"):
+            text = str(
+                messages[-1].get("content") or ""
+            )  # owner message and any document excerpt
+            facts = [
+                f for key, items in DEMO_FACTS.items() if key in text for f in items
+            ]
+            body = {"facts": facts, "asks_about": "none"}
+            return ChatReply(json.dumps(body), usage=Usage(10, 10))
+        last = messages[-1]
+        if last.get("role") == "tool":
+            return ChatReply(
+                "Done. The submission is withdrawn. Is there anything else about your process to add?",
+                usage=Usage(10, 10),
+            )
+        match = _WITHDRAW.search(_owner_text(messages))
+        if tools and match:
+            call = ToolCall(
+                "w1", "withdraw_submission", {"submission_id": int(match.group(1))}
+            )
+            return ChatReply("", tool_calls=[call], usage=Usage(10, 10))
+        return ChatReply(
+            "Thank you, I noted that. What else can you tell me about how requests reach your business?",
+            usage=Usage(10, 10),
         )
 
-    # ---- consent ----
 
-    def has_consent(self, user_id: str, purpose: str) -> bool:
-        return any(c["purpose"] == purpose for c in self.consents.get(user_id, []))
+def _owner_text(messages: list[dict[str, Any]]) -> str:
+    for m in reversed(messages):
+        content = str(m.get("content") or "")
+        found = _OWNER_TAG.search(content)
+        if found:
+            return found.group(1)
+        if m.get("role") == "user":
+            return content
+    return ""
 
-    def record_consent(self, user_id: str, purpose: str, version: str) -> None:
-        self.consents.setdefault(user_id, []).append(
-            {"purpose": purpose, "version": version, "at": datetime.now()}
-        )
 
-    def list_consents(self, user_id: str) -> list[dict[str, Any]]:
-        return list(self.consents.get(user_id, []))
+@dataclass
+class Local:
+    flask: Flask
+    data: WebData
+    accounts: MemoryAccounts
+    app: Any
 
-    # ---- sessions ----
 
-    def add_session(
-        self, user_id: str, title: str, *, status: str = "active", age_days: float = 0
-    ) -> str:
-        sid = secrets.token_hex(6)
-        self.sessions[sid] = {
-            "id": sid,
-            "user_id": user_id,
-            "title": title,
-            "status": status,
-            "updated_at": datetime.now() - timedelta(days=age_days),
-        }
-        self.messages[sid] = []
-        return sid
+def build_local(
+    chat: Any = None,
+    *,
+    settings: Settings | None = None,
+    debug: bool = True,
+    spawn: Callable[[Callable[[], None]], None] | None = None,
+    kb: bool = False,
+    report_builder: Any = None,
+) -> Local:
+    """The real discovery wiring over the in-memory store (the same shape as `create_app` builds over Postgres)."""
+    if is_prod():
+        raise RuntimeError("the local factory refuses to run with MILO_ENV=prod")
+    from milo.app import build_discovery_app
+    from milo.facts.store import SessionFacts
+    from milo.protocol.loader import get_protocol
+    from milo.rag.embed import FakeEmbedder
+    from milo.store import memory_repositories
+    from milo.tools.backend import MiloBackend
 
-    def list_sessions(
-        self, user_id: str, *, query: str = "", archived: bool = False
-    ) -> list[dict[str, Any]]:
-        want = "archived" if archived else None
-        rows = [
-            s
-            for s in self.sessions.values()
-            if s["user_id"] == user_id
-            and ((s["status"] == "archived") if want else (s["status"] != "archived"))
-            and query.lower() in s["title"].lower()
-        ]
-        return sorted(rows, key=lambda s: s["updated_at"], reverse=True)
+    repos = memory_repositories()
+    facts = SessionFacts(repos, get_protocol())
+    backend = MiloBackend(retriever=None, store=facts)  # type: ignore[arg-type]
+    app = build_discovery_app(
+        chat or DemoChat(), FakeEmbedder(), backend, session_facts=facts
+    )
+    if kb:
+        from milo.rag.ingest import load_kb
 
-    def get_session(self, user_id: str, session_id: str) -> dict[str, Any] | None:
-        s = self.sessions.get(session_id)
-        return s if s and s["user_id"] == user_id else None
+        app.ingest(load_kb(KB_DIR))
+    backend.retriever = app.retriever
+    accounts = MemoryAccounts(repos)
+    data = WebData(app, accounts, spawn=spawn, report_builder=report_builder)
+    cfg = settings or Settings(env="test")
+    return Local(create_flask_app(data, cfg, debug=debug), data, accounts, app)
 
-    def list_messages(self, user_id: str, session_id: str) -> list[dict[str, Any]]:
-        return (
-            list(self.messages.get(session_id, []))
-            if self.get_session(user_id, session_id)
-            else []
-        )
 
-    def get_spec(self, user_id: str, session_id: str) -> dict[str, Any] | None:
-        return (
-            self.specs.get(session_id)
-            if self.get_session(user_id, session_id)
-            else None
-        )
-
-    # ---- reports and operator ----
-
-    def list_reports(self, user_id: str) -> list[dict[str, Any]]:
-        return [r for r in self.reports.values() if r["user_id"] == user_id]
-
-    def get_report(self, user_id: str, report_id: str) -> dict[str, Any] | None:
-        r = self.reports.get(report_id)
-        return r if r and r["user_id"] == user_id else None
-
-    def ops_submissions(self) -> list[dict[str, Any]]:
-        return list(self.submissions.values())
-
-    def ops_submission(self, submission_id: str) -> dict[str, Any] | None:
-        return self.submissions.get(submission_id)
-
-    def ops_audit(self) -> list[dict[str, Any]]:
-        return list(self.audit)
-
-    # ---- seed ----
-
-    def _seed(self) -> None:
-        owner = self.add_user(OWNER_EMAIL, DEV_PASSWORD, "Ada")
-        self.add_user(OPERATOR_EMAIL, DEV_PASSWORD, "Ops", role="operator")
-        for uid in self.users:
-            self.record_consent(uid, "interview", "v0")
-        sid = self.add_session(owner, "Invoice follow-up automation")
-        self.add_session(owner, "Weekly stock report", age_days=3)
-        self.add_session(owner, "Old idea", age_days=30)
-        self.add_session(owner, "Shelved diagnosis", status="archived", age_days=10)
-        self.messages[sid] = [
-            {
-                "role": "user",
-                "text": "We chase late invoices by hand.\nIt takes hours.",
-            },
-            {
-                "role": "assistant",
-                "text": "How many invoices go out each month?",
-                "details": {
-                    "sources": [
-                        {
-                            "chunk_id": "kb-001",
-                            "document": "Invoicing basics",
-                            "score": 0.71,
-                        }
-                    ],
-                    "tool_calls": [],
-                    "cost_usd": 0.0012,
-                },
-            },
-        ]
-        self.specs[sid] = {
-            "progress": 2,
-            "total": 6,
-            "fields": [
-                {
-                    "id": "f1",
-                    "label": "Process",
-                    "value": "Invoice chasing",
-                    "status": "reported",
-                    "quote": "We chase late invoices by hand.",
-                },
-                {
-                    "id": "f2",
-                    "label": "Volume",
-                    "value": "",
-                    "status": "unknown",
-                    "quote": "",
-                },
-            ],
-            "missing": ["Volume", "Tools in use"],
-            "estimate": None,
-        }
-        rid = "r1"
-        self.reports[rid] = {
-            "id": rid,
-            "user_id": owner,
-            "title": "Invoice follow-up report",
-            "created_at": datetime.now(),
-            "sections": [{"heading": "Summary", "text": "Indicative summary."}],
-        }
-        self.submissions["s1"] = {
-            "id": "s1",
-            "customer": "Ada",
-            "status": "submitted",
-            "title": "Invoice follow-up automation",
-            "at": datetime.now(),
-        }
-        self.audit.append(
-            {
-                "at": datetime.now(),
-                "actor": "operator",
-                "action": "view",
-                "target": "s1",
-            }
-        )
+def seed(local: Local) -> tuple[str, str]:
+    """A consenting owner and an operator (the operator role is set by hand, D94)."""
+    owner = local.accounts.add_confirmed(OWNER_EMAIL, DEV_PASSWORD, "Ada")
+    operator = local.accounts.add_confirmed(
+        OPERATOR_EMAIL, DEV_PASSWORD, "Ops", role="operator"
+    )
+    for uid in (owner, operator):
+        local.data.record_consent(uid, "v0")
+    return owner, operator
 
 
 def create_dev_app() -> Flask:
     if is_prod():
         raise RuntimeError("the dev factory refuses to run with MILO_ENV=prod")
-    settings = Settings(env="test")
-    return create_flask_app(FakeApp(), DevStore(), settings, debug=True)
+    local = build_local(kb=True)
+    seed(local)
+    return local.flask

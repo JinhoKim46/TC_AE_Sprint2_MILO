@@ -2,34 +2,34 @@
 <aside class="panel panel-right" aria-label="Spec and evidence" id="spec-panel">
   <h2>Spec and evidence</h2>
   {% if spec %}
-  <p class="small muted" id="progress-label">{{ spec.progress }} of {{ spec.total }} fields covered</p>
-  <progress max="{{ spec.total }}" value="{{ spec.progress }}" aria-labelledby="progress-label"></progress>
-  <ul class="plain fields">
+  <p class="small muted" id="progress-label"><span id="progress-count">{{ spec.progress }}</span> of {{ spec.total }} fields covered · <span id="protocol-state">{{ spec.state|replace('_', ' ') }}</span></p>
+  <progress id="progress-bar" max="{{ spec.total }}" value="{{ spec.progress }}" aria-labelledby="progress-label"></progress>
+  <ul class="plain fields" id="field-list">
     {% for f in spec.fields %}
-    <li class="field">
+    <li class="field{% if not f.recorded %} field-missing{% endif %}" data-field="{{ f.id }}">
       <div class="field-head"><strong>{{ f.label }}</strong> {{ status(f.status) }}</div>
-      {% if f.value %}<div class="plain-text">{{ f.value }}</div>{% endif %}
-      {% if f.quote %}<blockquote class="plain-text quote">{{ f.quote }}</blockquote>{% endif %}
+      <div class="plain-text field-value">{{ f.value }}</div>
+      <blockquote class="plain-text quote"{% if not f.quote %} hidden{% endif %}>{{ f.quote }}</blockquote>
     </li>
     {% endfor %}
   </ul>
   {% if spec.missing %}
   <h3>Still missing</h3>
-  <ul>{% for m in spec.missing %}<li>{{ m }}</li>{% endfor %}</ul>
+  <ul id="missing-list">{% for m in spec.missing %}<li>{{ m }}</li>{% endfor %}</ul>
   {% endif %}
-  {% if spec.estimate %}
-  <div class="estimate card"><span class="chip chip-estimated"><span class="dot" aria-hidden="true"></span>indicative</span><div class="plain-text">{{ spec.estimate }}</div></div>
-  {% endif %}
+  {% with estimate = spec.estimate %}{% include "_estimate.html" %}{% endwith %}
   {% else %}
   <p class="muted empty-note">Nothing recorded yet. Facts you share appear here with their evidence.</p>
   {% endif %}
-  <button class="btn btn-primary btn-block" type="button" data-open="#submit-dialog"{% if not spec %} disabled{% endif %}>Submit</button>
+  <button class="btn btn-primary btn-block" type="button" id="submit-open" data-open="#submit-dialog"{% if not spec or not spec.can_submit %} disabled{% endif %}>Submit</button>
+  {% if spec and not spec.can_submit %}<p class="small muted" id="submit-hint">Submit opens when every required field is covered.</p>{% endif %}
 </aside>
 <dialog id="submit-dialog" aria-labelledby="submit-title">
   <form method="post" action="{{ url_for('web.submit') }}" class="stack">
     {{ csrf() }}
+    <input type="hidden" name="session_id" value="{{ session_id or '' }}">
     <h2 id="submit-title">Submit this diagnosis?</h2>
     <p>You will get a report. The estimate is indicative, not a quote, and is non-binding.</p>
-    <div class="row"><button class="btn btn-quiet" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Submit</button></div>
+    <div class="row"><button class="btn btn-quiet" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit" id="submit-confirm">Submit</button></div>
   </form>
 </dialog>

@@ -1,11 +1,22 @@
 {% extends "base.html" %}{% from "_macros.html" import csrf with context %}
 {% block content %}
 <h1>Profile</h1>
-<section class="card"><h2>Account</h2><dl><dt>Name</dt><dd>{{ user.first_name }}</dd><dt>Email</dt><dd>{{ user.email }}</dd></dl></section>
+{% if requested %}<p class="msg" role="status">Your deletion request was recorded. An operator will handle it.</p>{% endif %}
+<section class="card"><h2>Account</h2><dl class="facts"><dt>Name</dt><dd>{{ user.first_name }}</dd><dt>Email</dt><dd>{{ user.email }}</dd></dl></section>
+<section class="card"><h2>Company</h2>
+  {% set c = info.customer %}
+  {% if c and (c.company_name or c.industry) %}
+  <dl class="facts">{% for key in ('company_name', 'industry', 'employee_count', 'locations', 'owner_name', 'owner_role') %}{% if c[key] %}<dt>{{ label(key) }}</dt><dd class="plain-text">{{ c[key] }}</dd>{% endif %}{% endfor %}</dl>
+  {% else %}<p class="muted">Company details come from your diagnosis; see the specification.</p>{% endif %}
+</section>
 <section class="card"><h2>Consent</h2>
   {% if consents %}<p>Latest: {{ consents[-1].purpose }}, version {{ consents[-1].version }}.</p>{% else %}<p class="muted">No consent recorded.</p>{% endif %}
   <p><a href="{{ url_for('web.profile_consents') }}">Consent history</a></p></section>
+<section class="card"><h2>Change requests</h2>
+  {% if info.field_requests %}<ul>{% for r in info.field_requests %}<li><span class="plain-text">{{ label(r.field_id) }}: {{ r.note or '' }}</span> <span class="muted small">({{ r.status }})</span></li>{% endfor %}</ul>
+  {% else %}<p class="muted">None.</p>{% endif %}</section>
 <section class="card"><h2>Delete my data</h2>
   <p>Ask us to delete your account and everything stored about your diagnoses.</p>
-  <form method="post" action="{{ url_for('web.profile_delete_request') }}">{{ csrf() }}<button class="btn btn-danger" type="submit">Request deletion</button></form></section>
+  {% if info.deletion_requests %}<p class="small muted">Requests so far: {{ info.deletion_requests|length }} (latest {{ info.deletion_requests[-1].status }}).</p>{% endif %}
+  <form method="post" action="{{ url_for('web.profile_delete_request') }}" class="stack">{{ csrf() }}<label>Reason (optional)<input type="text" name="reason" maxlength="500"></label><button class="btn btn-danger" type="submit">Request deletion</button></form></section>
 {% endblock %}
