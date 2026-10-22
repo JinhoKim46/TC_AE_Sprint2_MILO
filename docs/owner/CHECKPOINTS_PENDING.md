@@ -62,3 +62,15 @@
 
 - Protocol m7-judge.md first (5e3c8a9), then runner, replays, report skeletons. `make eval` replays every stored eval. Labels, generation and judge runs are pending the live batch, in the order the M7 report gives (generation, template, labelling agent, labels commit, judge prompts, judge run).
 - Owner question: none.
+
+## M5-store — Store, Supabase Auth, JWT, RLS (merged 2026-10-22)
+
+- Four verifier passes; pass 4 PASS on the TEST Supabase project: migrate, reset, migrate, 58 of 58 identity checks, 13 of 13 own probes (FORCE RLS on 17 owner tables, no privileged role flags, cascade and trigger under FORCE), reset to empty. Findings F1 to F10 fixed on the way (PG 16+ role grants, FORCE RLS, reset as admin, probe defects).
+- Owner checklist item 10 (role passwords and app strings) remains for production.
+- Owner question: none.
+
+## M5b — Discovery core (merged 2026-10-22)
+
+- Verifier PASS twice (docs/verify/m5b.md); dry discovery eval: premature-estimate 0 over 41 turns, evidence verbatim 1.0; discovery-table matches SPEC 14 on 9 of 9.
+- Live discovery run pending (product model, reasoning low effort per D159).
+- Owner question: none.
