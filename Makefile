@@ -9,10 +9,10 @@ define need
 @test -e $(1) || { echo "not built yet: $(1) is missing (milestone $(2) has not landed)"; exit 1; }
 endef
 
-.PHONY: check test audit migrate index record eval final-test discovery-table \
+.PHONY: check test audit migrate db-reset index record eval final-test discovery-table \
 	kit-sources kit-abstains kit-tools kit-security kit-errors kit-threads kit-cost \
 	eval-retrieval eval-retrieval-replay eval-tools eval-tools-replay eval-attacks eval-attacks-replay \
-	eval-discovery eval-ab eval-rag
+	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay
 
 check:
 	uv run ruff check .
@@ -32,6 +32,9 @@ audit:
 
 migrate:
 	uv run python -m milo.store.migrate
+
+db-reset:
+	uv run python -m milo.store.reset
 
 kit-sources:
 	$(KIT) -k sources -rA
@@ -113,3 +116,11 @@ eval-ab:
 eval-rag:
 	$(call need,evals/rag/run_rag_eval.py,M7)
 	uv run python evals/rag/run_rag_eval.py --replay
+
+# E02 chat-model comparison (M5a, SPEC D148). `eval-chat` spends OpenRouter budget and refuses without MILO_LIVE=1.
+eval-chat:
+	@test "$$MILO_LIVE" = "1" || { echo "refusing to run: eval-chat spends OpenRouter budget (SPEC D126) and needs MILO_LIVE=1; use eval-chat-replay to recompute a recorded result"; exit 1; }
+	uv run python evals/chat/compare_chat.py --live
+
+eval-chat-replay:
+	uv run python evals/chat/compare_chat.py --replay

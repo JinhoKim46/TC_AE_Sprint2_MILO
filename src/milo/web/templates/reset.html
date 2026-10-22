@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% from "_macros.html" import csrf with context %}
+{% block content %}
+<section class="card narrow">
+  <h1>Reset your password</h1>
+  {% if sent %}
+  <p class="msg" role="status">If that address has an account, we sent a reset link.</p>
+  {% else %}
+  <form method="post" action="{{ url_for('web.reset_post') }}" class="stack">
+    {{ csrf() }}
+    <label>Email<input type="email" name="email" autocomplete="username" required></label>
+    <button class="btn btn-primary" type="submit">Send reset link</button>
+  </form>
+  {% endif %}
+  <p class="muted"><a href="{{ url_for('web.login') }}">Back to sign in</a></p>
+</section>
+{% endblock %}

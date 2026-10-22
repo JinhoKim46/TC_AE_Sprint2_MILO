@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Consent history</h1>
+{% if consents %}
+<table class="table"><thead><tr><th scope="col">Purpose</th><th scope="col">Version</th><th scope="col">When</th></tr></thead>
+<tbody>{% for c in consents %}<tr><td>{{ c.purpose }}</td><td>{{ c.version }}</td><td>{{ c.at.strftime('%Y-%m-%d %H:%M') }}</td></tr>{% endfor %}</tbody></table>
+{% else %}<p class="card empty muted">No consent recorded yet.</p>{% endif %}
+{% endblock %}

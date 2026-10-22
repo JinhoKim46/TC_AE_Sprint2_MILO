@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Submissions</h1>
+{% if rows %}
+<table class="table"><thead><tr><th scope="col">Title</th><th scope="col">Customer</th><th scope="col">Status</th></tr></thead>
+<tbody>{% for r in rows %}<tr><th scope="row"><a href="{{ url_for('web.ops_submission', submission_id=r.id) }}">{{ r.title }}</a></th><td>{{ r.customer }}</td><td>{{ r.status }}</td></tr>{% endfor %}</tbody></table>
+{% else %}<p class="card empty muted">No submissions yet.</p>{% endif %}
+{% endblock %}

@@ -11,9 +11,15 @@ from dataclasses import dataclass
 
 from milo.errors import ProdGuardError
 
-# Connection variable names (SPEC D127). Other modules go through the functions below.
+# Connection variable names (SPEC D127, D153). Other modules go through the functions below.
+# The session-pooler strings are the owner's administrative strings (role `postgres`): migrate,
+# reset and the verifier's RLS test only. The app and operator strings are set by the owner after
+# the role passwords exist (owner checklist item 10).
 TEST_DB_VAR = "SUPABASE_test_session_pooler"
 PROD_DB_VAR = "SUPABASE_prod_session_pooler"
+TEST_APP_DB_VAR = "SUPABASE_test_app_pooler"
+PROD_APP_DB_VAR = "SUPABASE_prod_app_pooler"
+PROD_OPERATOR_DB_VAR = "SUPABASE_prod_operator_pooler"
 
 # Per-account limits (SPEC D131). A breach returns 429 `rate_limited` with the window.
 ACCOUNT_DAILY_SPEND_USD = 0.50
@@ -47,7 +53,7 @@ def prod_guard_violations(environ: Mapping[str, str] | None = None) -> list[str]
     found = []
     if is_prod(env):
         found.append("MILO_ENV=prod")
-    if env.get(PROD_DB_VAR):
+    if any(env.get(v) for v in (PROD_DB_VAR, PROD_APP_DB_VAR, PROD_OPERATOR_DB_VAR)):
         found.append("prod database variable")
     return found
 
@@ -61,14 +67,68 @@ def assert_not_prod(environ: Mapping[str, str] | None = None) -> None:
         )
 
 
-def database_url(environ: Mapping[str, str] | None = None) -> str:
-    """The session-pooler URL for `create_app`: prod only when `MILO_ENV=prod`, otherwise the test project."""
-    env = _env(environ)
-    var = PROD_DB_VAR if is_prod(env) else TEST_DB_VAR
+def _url(env: Mapping[str, str], var: str) -> str:
     url = env.get(var, "")
     if not url:
         raise RuntimeError(f"database URL variable {var} is not set (see .env.example)")
     return url
+
+
+def admin_database_url(environ: Mapping[str, str] | None = None) -> str:
+    """The owner's session-pooler string (role `postgres`): migrate, reset and the RLS test only (D153)."""
+    env = _env(environ)
+    return _url(env, PROD_DB_VAR if is_prod(env) else TEST_DB_VAR)
+
+
+def app_database_url(environ: Mapping[str, str] | None = None) -> str:
+    """The `milo_app` string for `create_app` (D153): prod only when `MILO_ENV=prod`."""
+    env = _env(environ)
+    return _url(env, PROD_APP_DB_VAR if is_prod(env) else TEST_APP_DB_VAR)
+
+
+def operator_database_url(environ: Mapping[str, str] | None = None) -> str | None:
+    """The `milo_operator` string (D153). Prod only; in test the operator path uses `SET ROLE`."""
+    env = _env(environ)
+    return _url(env, PROD_OPERATOR_DB_VAR) if is_prod(env) else None
+
+
+def database_url(environ: Mapping[str, str] | None = None) -> str:
+    """Kept for S0 callers; the administrative string (D153). New code uses the accessors above."""
+    return admin_database_url(environ)
+
+
+# Supabase Auth (SPEC D88, D136). The project URL and publishable key are owner-provided
+# (`.env`, owner checklist item 1); the JWKS URL and issuer derive from the project URL.
+TEST_AUTH_URL_VAR = "SUPABASE_test_url"
+PROD_AUTH_URL_VAR = "SUPABASE_prod_url"
+TEST_AUTH_KEY_VAR = "SUPABASE_test_publishable_key"
+PROD_AUTH_KEY_VAR = "SUPABASE_prod_publishable_key"
+
+
+@dataclass(frozen=True)
+class AuthConfig:
+    url: str
+    publishable_key: str
+    jwks_url: str
+    issuer: str
+
+
+def auth_config(environ: Mapping[str, str] | None = None) -> AuthConfig:
+    """Supabase Auth settings for the running environment. Raises when the owner has not set them."""
+    env = _env(environ)
+    prod = is_prod(env)
+    url = env.get(PROD_AUTH_URL_VAR if prod else TEST_AUTH_URL_VAR, "").rstrip("/")
+    key = env.get(PROD_AUTH_KEY_VAR if prod else TEST_AUTH_KEY_VAR, "")
+    if not url or not key:
+        raise RuntimeError(
+            "Supabase Auth URL or publishable key is not set (see .env.example, owner item 1)"
+        )
+    return AuthConfig(
+        url=url,
+        publishable_key=key,
+        jwks_url=f"{url}/auth/v1/.well-known/jwks.json",
+        issuer=f"{url}/auth/v1",
+    )
 
 
 def production_problems(

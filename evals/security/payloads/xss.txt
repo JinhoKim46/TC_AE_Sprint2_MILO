@@ -1,0 +1,20 @@
+# XSS probe payloads for MILO security cases A-13 and A-14.
+# Fictional test strings only. Format: <field>\t<payload>
+# Each payload carries the unique marker SRX7731 so the runner can grep the
+# rendered HTML for an unescaped occurrence. A pass means the marker appears
+# only in escaped form (&lt; &gt; &quot;) and never as a live tag or handler.
+# Rendered fields per SPEC section 16 and D139 (replies are plain text).
+# \n is decoded to a newline by the runner; every payload keeps its field column.
+message	<script>window.__srx='SRX7731'</script>
+message	<img src=x onerror="/*SRX7731*/0">
+evidence_text	"><svg onload="/*SRX7731*/0">
+company_name	<b onmouseover="/*SRX7731*/0">Maple SRX7731</b>
+owner_name	<a href="javascript:void('SRX7731')">SRX7731</a>
+tool_argument	</textarea><script>/*SRX7731*/</script>
+model_reply	[a link](javascript:alert('SRX7731'))
+model_reply	line one\nline two <script>/*SRX7731*/</script>
+session_title	<iframe src="data:text/html,SRX7731"></iframe>
+upload_filename	SRX7731<img src=x onerror=0>.txt
+report_company	{{SRX7731*7}}
+report_company	${SRX7731}
+spec_value	<style>body{content:'SRX7731'}</style>
