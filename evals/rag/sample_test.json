@@ -1,0 +1,164 @@
+{
+ "split": "test",
+ "seed": 26,
+ "n": 30,
+ "test_rows": 60,
+ "strata": {
+  "identifier": 6,
+  "paraphrase": 18,
+  "unanswerable": 6
+ },
+ "gold_sha256": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+ "rows": [
+  {
+   "qid": "q002",
+   "type": "identifier",
+   "question": "Will email-triage ever send a reply on its own?"
+  },
+  {
+   "qid": "q004",
+   "type": "identifier",
+   "question": "Does staff-assignment alter wages or rotas?"
+  },
+  {
+   "qid": "q008",
+   "type": "identifier",
+   "question": "Which module can use the crm-connector?"
+  },
+  {
+   "qid": "q011",
+   "type": "paraphrase",
+   "question": "What happens when the scanner tool is unsure about a field?"
+  },
+  {
+   "qid": "q015",
+   "type": "paraphrase",
+   "question": "Are sales tax, mileage and equipment part of the quoted figures?"
+  },
+  {
+   "qid": "q019",
+   "type": "paraphrase",
+   "question": "Does the CRM link price cover mapping my fields?"
+  },
+  {
+   "qid": "q023",
+   "type": "paraphrase",
+   "question": "How long does hooking up to my software's API take?"
+  },
+  {
+   "qid": "q025",
+   "type": "paraphrase",
+   "question": "My job software can only send data out; can you make it accept data?"
+  },
+  {
+   "qid": "q030",
+   "type": "paraphrase",
+   "question": "Is removing my data written down anywhere?"
+  },
+  {
+   "qid": "q040",
+   "type": "unanswerable",
+   "question": "How long is the contract and what is the notice period?"
+  },
+  {
+   "qid": "q046",
+   "type": "identifier",
+   "question": "can staff-assignment hook into anything besides the csv export?"
+  },
+  {
+   "qid": "q054",
+   "type": "identifier",
+   "question": "bookkeeping example - did csv-export cost them anything extra?"
+  },
+  {
+   "qid": "q055",
+   "type": "identifier",
+   "question": "someone rings about a gas leak. what does phone-intake do with them?"
+  },
+  {
+   "qid": "q059",
+   "type": "paraphrase",
+   "question": "my filters and folders, will the email bot mess with those? and can it bin old emails?"
+  },
+  {
+   "qid": "q073",
+   "type": "paraphrase",
+   "question": "we add a new kind of paperwork 6 months in. covered or extra?"
+  },
+  {
+   "qid": "q076",
+   "type": "paraphrase",
+   "question": "i only know monthly numbers. is that ok and who does the maths?"
+  },
+  {
+   "qid": "q078",
+   "type": "paraphrase",
+   "question": "no clue if our tool has an api. can i still get a figure, and what sort?"
+  },
+  {
+   "qid": "q080",
+   "type": "paraphrase",
+   "question": "anything official on paper?"
+  },
+  {
+   "qid": "q083",
+   "type": "paraphrase",
+   "question": "salon case - were the groomers forced onto some new system?"
+  },
+  {
+   "qid": "q085",
+   "type": "paraphrase",
+   "question": "salon case: no shows gone?"
+  },
+  {
+   "qid": "q087",
+   "type": "paraphrase",
+   "question": "accountants case - scribbled notes from clients, did the module cope?"
+  },
+  {
+   "qid": "q091",
+   "type": "paraphrase",
+   "question": "do u ask about sign offs, like my manager ok-ing big jobs?"
+  },
+  {
+   "qid": "q093",
+   "type": "paraphrase",
+   "question": "if i tell u my budget will the quote magically land on it?"
+  },
+  {
+   "qid": "q097",
+   "type": "paraphrase",
+   "question": "after submitting, which people at milo actually look at my answers?"
+  },
+  {
+   "qid": "q103",
+   "type": "paraphrase",
+   "question": "can i send a .docx?"
+  },
+  {
+   "qid": "q108",
+   "type": "unanswerable",
+   "question": "where are your servers, is my data kept in the eu?"
+  },
+  {
+   "qid": "q110",
+   "type": "unanswerable",
+   "question": "any demo or video first?"
+  },
+  {
+   "qid": "q112",
+   "type": "unanswerable",
+   "question": "can the email thing handle attachments like photos of the boiler?"
+  },
+  {
+   "qid": "q116",
+   "type": "unanswerable",
+   "question": "do u have a referral scheme if i bring in another business?"
+  },
+  {
+   "qid": "q120",
+   "type": "unanswerable",
+   "question": "can customers leave a rating or feedback after a call?"
+  }
+ ]
+}

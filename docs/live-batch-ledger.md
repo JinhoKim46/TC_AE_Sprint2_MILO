@@ -123,3 +123,20 @@ Key usage before part 2: 8.680965 USD (unchanged since the part 1 stop).
 - SR gate cases (row 15): A-05b and A-22 PASS; A-04 FAIL on `jev_request_keys_exact` only: the check compares the
   top-level request keys (`model`, `questions`, `state`) with the three D145 state keys, while `state` itself holds exactly
   `message`, `recent_turns`, `scope_summary`. Looks like a runner check defect; not changed, finding for the integrator.
+
+## F2 (2026-10-22, branch `agent/final`): the single test-split run
+
+Plan `docs/final-run-plan.md` (45465be), F2 cap 2.50 USD, `MILO_BUDGET_USD=7.27`. One invocation of
+`MILO_LIVE=1 make final-test` (sets `MILO_FINAL=1`); one attempt per run, no retry; `test_access.log` has one `ok`.
+
+| # | Run | Command | Protocol | Cap USD | Actual USD | Result file cost | Cumulative USD |
+|---|---|---|---|---|---|---|---|
+| F2-1 | M1 dense test, 60 rows (rebuilds the KB index) | `run_final.py` step m1 | e01-rerun.md, D5 | 0.01 | 0.002247 | 0.002247 | 1.1993 |
+| F2-2 | M5G gate test | `run_gate.py --final --max-cost 0.05` | m5g-gate.md run 4 | 0.05 | 0.004650 | 0.004650 (105 Jev calls) | 1.2040 |
+| F2-3 | E02 step 7, haiku and gpt-4.1-mini, task A 48 turns, task B 60 rows | `run_final.py` step e02 | e02-chat-compare.md step 7 | 0.30 | 0.094678 | chat plus embedding | 1.2987 |
+| F2-4 | M7 generation, 30 test questions, sonnet-5.5 low effort | `run_final.py` step m7-generate | m7-judge.md, SPEC 10.5 | 0.40 | 0.235936 | 0.235936 | 1.5346 |
+| F2-5 | M5b discovery A-2, B-2, E-2, sonnet-5.5 low effort | `run_discovery.py --final --max-cost 1.0` | m5b-discovery.md | 1.00 | 0.511972 | 0.511972 | 2.0466 |
+| F2-6 | M7 judge, haiku and gpt-4.1-mini, test labels a98bc9d | `run_final.py` step m7-judge | m7-judge.md | 0.10 | 0.037960 | 0.037960 | 2.0845 |
+
+F2 total 0.887443 USD (estimate 0.95). M2 has no separate run (no arm adopted; dense is F2-1). M3, M4 and SR have no
+test split. Results in `docs/final_report.md`.

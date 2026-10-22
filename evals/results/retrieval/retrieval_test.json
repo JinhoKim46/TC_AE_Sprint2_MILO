@@ -1,0 +1,2966 @@
+{
+  "reasoning": {
+    "google/gemini-embedding-2": "off"
+  },
+  "git_commit": "12f8faa75f0fb2fa4685c3f82a5aa7ca7244380d",
+  "model": "google/gemini-embedding-2",
+  "seed": 0,
+  "temperature": null,
+  "command": "MILO_FINAL=1 MILO_LIVE=1 python evals/final/run_final.py (step m1: run_retrieval.py, split test)",
+  "timestamp": "2026-10-22T20:21:42Z",
+  "inputs": {
+    "gold": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+    "kb/cases/accounts-paperwork.md": "9cfb4e7853ac795624c3441de138365b2d91f8c4113688b967b302fe8518df24",
+    "kb/cases/grooming-bookings.md": "e4b57ecbfe9841d52e34f160678f106d59ad07baf8ba423822549a0fbdef9eca",
+    "kb/cases/trades-dispatch.md": "c73e9e8dc211b6b93d1a51a010017b034c758b7d0a53780bedaa2cc90031655e",
+    "kb/consultation/first-questions.md": "ffaedb91b392429819353e1be7c719821b40d8551d346da3aa55d37357b18180",
+    "kb/consultation/urgent-requests.md": "a7343974f707554bcb162b52466e5c47c2c7d012cea6470c01a774cd2a554d1c",
+    "kb/consultation/volume-and-timing.md": "8dcf4f50fcac41a6e535557df9f6365ac737306876c7fe8b3b46b48147347404",
+    "kb/implementation/api-connector.md": "5c91228c51474f4d17879e19490ca10680edace6e015b509b83b1f26967abe9b",
+    "kb/implementation/crm-connector.md": "08064b9bb43c67cd1d24c7051b1a368ee8ebe3e0e45bf93fecd60dbc735e2f41",
+    "kb/implementation/csv-export.md": "18a096ea7f174cf5ce9e7e9dd1d204fa696ff4c966c095b160982f44abd2a93f",
+    "kb/implementation/export-only-tools.md": "b327d5c2ab994a61a4179c2a1c804650f73fe47711258ed5aef26b0e886a5b58",
+    "kb/policies/approvals.md": "8c6368434555323e7c7a24b7a4faddc385cb65c9a87ce9c7038953493dd1c019",
+    "kb/policies/personal-data.md": "6a722204de649ad937c7f8cdd27141bc7696de4ec195a016ce0dff555812db02",
+    "kb/policies/security.md": "eaa7535f41bf48d52d7cb5de9d879ea459ca8ca4276f4947b49bfdada0e7b41e",
+    "kb/pricing/how-we-price.md": "2d9b3821ba0e64b14772c2aa9f620bad3ed6cd9ee567a7ce1c1a83a84ac6424a",
+    "kb/pricing/range-and-estimates.md": "33feb2e5988248e72eb4384778d8614f6d6a3c9261c4b8c2ca53fac2e4b2ed04",
+    "kb/pricing/setup-fees.md": "58ccce095dabb1ccb68d8875c6935fa24e5d601f74fb6a6fe49358ee415bfa04",
+    "kb/pricing/volume-tiers.md": "3c531f788c97df735c20dfa60c868fe63cecb1975a46a5ba0ca89a1fee3856fa",
+    "kb/pricing/what-is-included.md": "ee4f3d4bd154a8e8659209bb680c18adc710213acd327bafbe43389a44d3df0e",
+    "kb/solutions/customer-status-updates.md": "9a55700f2cfb8eaab2ba373785b9dfd44617841bd1cfe2348decdee3f931207c",
+    "kb/solutions/document-data-entry.md": "4a7995b6dc1cdb8e7e5382d72b9bbc939f561388a08a5716079c4a478ebeca9c",
+    "kb/solutions/email-triage.md": "780df4d00db12955f5db8438986219740f33463492f29bd4367e2af2afeafb1e",
+    "kb/solutions/phone-intake.md": "8ff38aa615b782d8b51a4c21c054250d1affbf165a6a0cd7088212e816d09491",
+    "kb/solutions/staff-assignment.md": "f021a53ccce5c28a21497a2d8a967c94b40b5269bf3123dec3828980fb5e3511",
+    "kb/solutions/ticket-creation.md": "0a1de3995af8ffbdb42e1820cf070f25b1dd44601151bdb15339992f43e14cc8",
+    "script": "c6c0720f075a6a96c3b1dad1dd1c64a311e9a48f5c1f27171f14f94287749492"
+  },
+  "temperature_note": "embeddings have no temperature",
+  "dry": false,
+  "split": "test",
+  "k": 5,
+  "bootstrap": 2000,
+  "query_prefix": "none",
+  "chunk_size": 800,
+  "overlap": 100,
+  "chunk_count": 167,
+  "chunk_sha256": "2e039419865c305c62eb5347103f38773f550ca68261ef1a1cd4568d4e4a6660",
+  "embedding_dim": 3072,
+  "embedding_requests": 4,
+  "total_cost_usd": 0.002247,
+  "total_tokens": 11236,
+  "cost_note": "from the usage field of each embedding response (provider cost when returned, else tokens times the listed price of 0.2 USD per million)",
+  "spend_reason": "F2: the chosen embedding model's test numbers, reported once (D5, e01-rerun.md)",
+  "queries_without_chunk": [],
+  "summary": {
+    "n": 48,
+    "recall5": {
+      "mean": 0.8333,
+      "ci": [
+        0.7292,
+        0.9375
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.6286,
+      "ci": [
+        0.5206,
+        0.7314
+      ]
+    },
+    "mrr": {
+      "mean": 0.5744,
+      "ci": [
+        0.4663,
+        0.6764
+      ]
+    },
+    "p5": {
+      "mean": 0.1667,
+      "ci": [
+        0.1458,
+        0.1875
+      ]
+    },
+    "ap": {
+      "mean": 0.5744,
+      "ci": [
+        0.4663,
+        0.6764
+      ]
+    }
+  },
+  "summary_excluding_no_chunk": {
+    "n": 48,
+    "recall5": {
+      "mean": 0.8333,
+      "ci": [
+        0.7292,
+        0.9375
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.6286,
+      "ci": [
+        0.5206,
+        0.7314
+      ]
+    },
+    "mrr": {
+      "mean": 0.5744,
+      "ci": [
+        0.4663,
+        0.6764
+      ]
+    },
+    "p5": {
+      "mean": 0.1667,
+      "ci": [
+        0.1458,
+        0.1875
+      ]
+    },
+    "ap": {
+      "mean": 0.5744,
+      "ci": [
+        0.4663,
+        0.6764
+      ]
+    }
+  },
+  "by_type": {
+    "identifier": {
+      "n": 12,
+      "recall5": {
+        "mean": 0.8333,
+        "ci": [
+          0.5833,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.6399,
+        "ci": [
+          0.4185,
+          0.854
+        ]
+      },
+      "mrr": {
+        "mean": 0.5988,
+        "ci": [
+          0.3831,
+          0.8125
+        ]
+      },
+      "p5": {
+        "mean": 0.1667,
+        "ci": [
+          0.1167,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.5988,
+        "ci": [
+          0.3831,
+          0.8125
+        ]
+      }
+    },
+    "paraphrase": {
+      "n": 36,
+      "recall5": {
+        "mean": 0.8333,
+        "ci": [
+          0.6944,
+          0.9444
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.6249,
+        "ci": [
+          0.5072,
+          0.7372
+        ]
+      },
+      "mrr": {
+        "mean": 0.5662,
+        "ci": [
+          0.4504,
+          0.681
+        ]
+      },
+      "p5": {
+        "mean": 0.1667,
+        "ci": [
+          0.1389,
+          0.1889
+        ]
+      },
+      "ap": {
+        "mean": 0.5662,
+        "ci": [
+          0.4504,
+          0.681
+        ]
+      }
+    }
+  },
+  "weakest_type": {
+    "type": "paraphrase",
+    "ndcg5": 0.6249
+  },
+  "filtered": {
+    "n": 22,
+    "unfiltered_summary": {
+      "n": 22,
+      "recall5": {
+        "mean": 0.8182,
+        "ci": [
+          0.6364,
+          0.9545
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.5825,
+        "ci": [
+          0.4336,
+          0.7203
+        ]
+      },
+      "mrr": {
+        "mean": 0.5175,
+        "ci": [
+          0.3756,
+          0.6658
+        ]
+      },
+      "p5": {
+        "mean": 0.1636,
+        "ci": [
+          0.1273,
+          0.1909
+        ]
+      },
+      "ap": {
+        "mean": 0.5175,
+        "ci": [
+          0.3756,
+          0.6658
+        ]
+      }
+    },
+    "filtered_summary": {
+      "n": 22,
+      "recall5": {
+        "mean": 0.8636,
+        "ci": [
+          0.7273,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.6888,
+        "ci": [
+          0.5465,
+          0.8252
+        ]
+      },
+      "mrr": {
+        "mean": 0.6449,
+        "ci": [
+          0.501,
+          0.7914
+        ]
+      },
+      "p5": {
+        "mean": 0.1727,
+        "ci": [
+          0.1455,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.6449,
+        "ci": [
+          0.501,
+          0.7914
+        ]
+      }
+    }
+  },
+  "calibration": {
+    "answerable_top1_min": 0.634244,
+    "unanswerable_top1_max": 0.701816,
+    "unanswerable_n": 12,
+    "fixed_030": {
+      "min_score": 0.3,
+      "answered_rate": 1.0,
+      "abstain_rate": 0.0
+    },
+    "chosen": 0.71,
+    "at_chosen": {
+      "min_score": 0.71,
+      "answered_rate": 0.7917,
+      "abstain_rate": 1.0
+    },
+    "separable": false
+  },
+  "rows": [
+    {
+      "qid": "q002",
+      "type": "identifier",
+      "question": "Will email-triage ever send a reply on its own?",
+      "answerable": true,
+      "filters": {
+        "section": "solutions"
+      },
+      "relevant": [
+        "solutions/email-triage#3"
+      ],
+      "top5": [
+        "solutions/email-triage#3",
+        "solutions/email-triage#0",
+        "solutions/email-triage#1",
+        "solutions/email-triage#5",
+        "solutions/email-triage#6"
+      ],
+      "top5_scores": [
+        0.807238,
+        0.78543,
+        0.748769,
+        0.694076,
+        0.693771
+      ],
+      "top1_score": 0.807238,
+      "relevant_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/email-triage#3",
+          "solutions/email-triage#0",
+          "solutions/email-triage#1",
+          "solutions/email-triage#5",
+          "solutions/email-triage#6"
+        ],
+        "top5_scores": [
+          0.807238,
+          0.78543,
+          0.748769,
+          0.694076,
+          0.693771
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q004",
+      "type": "identifier",
+      "question": "Does staff-assignment alter wages or rotas?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/staff-assignment#3"
+      ],
+      "top5": [
+        "solutions/staff-assignment#3",
+        "solutions/staff-assignment#0",
+        "solutions/staff-assignment#1",
+        "solutions/staff-assignment#5",
+        "solutions/staff-assignment#2"
+      ],
+      "top5_scores": [
+        0.788107,
+        0.714959,
+        0.710689,
+        0.695134,
+        0.694256
+      ],
+      "top1_score": 0.788107,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q006",
+      "type": "identifier",
+      "question": "Is promotional messaging part of customer-status-updates?",
+      "answerable": true,
+      "filters": {
+        "product": "customer-status-updates"
+      },
+      "relevant": [
+        "solutions/customer-status-updates#3"
+      ],
+      "top5": [
+        "solutions/customer-status-updates#3",
+        "solutions/customer-status-updates#1",
+        "solutions/customer-status-updates#0",
+        "solutions/customer-status-updates#2",
+        "solutions/customer-status-updates#5"
+      ],
+      "top5_scores": [
+        0.777482,
+        0.751432,
+        0.747427,
+        0.738886,
+        0.679888
+      ],
+      "top1_score": 0.777482,
+      "relevant_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/customer-status-updates#3",
+          "solutions/customer-status-updates#1",
+          "solutions/customer-status-updates#0",
+          "solutions/customer-status-updates#2",
+          "solutions/customer-status-updates#5"
+        ],
+        "top5_scores": [
+          0.777482,
+          0.751432,
+          0.747427,
+          0.738886,
+          0.679888
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q008",
+      "type": "identifier",
+      "question": "Which module can use the crm-connector?",
+      "answerable": true,
+      "filters": {
+        "section": "implementation"
+      },
+      "relevant": [
+        "implementation/crm-connector#3"
+      ],
+      "top5": [
+        "implementation/crm-connector#3",
+        "implementation/crm-connector#0",
+        "implementation/api-connector#3",
+        "solutions/ticket-creation#4",
+        "implementation/crm-connector#6"
+      ],
+      "top5_scores": [
+        0.864838,
+        0.806835,
+        0.790481,
+        0.781371,
+        0.763474
+      ],
+      "top1_score": 0.864838,
+      "relevant_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "implementation/crm-connector#3",
+          "implementation/crm-connector#0",
+          "implementation/api-connector#3",
+          "implementation/crm-connector#6",
+          "implementation/crm-connector#4"
+        ],
+        "top5_scores": [
+          0.864838,
+          0.806835,
+          0.790481,
+          0.763474,
+          0.7512
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q011",
+      "type": "paraphrase",
+      "question": "What happens when the scanner tool is unsure about a field?",
+      "answerable": true,
+      "filters": {
+        "product": "document-data-entry"
+      },
+      "relevant": [
+        "solutions/document-data-entry#1"
+      ],
+      "top5": [
+        "consultation/urgent-requests#6",
+        "solutions/document-data-entry#1",
+        "cases/accounts-paperwork#4",
+        "pricing/setup-fees#4",
+        "cases/accounts-paperwork#3"
+      ],
+      "top5_scores": [
+        0.762654,
+        0.711621,
+        0.699813,
+        0.691385,
+        0.687717
+      ],
+      "top1_score": 0.762654,
+      "relevant_ranks": [
+        2
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/document-data-entry#1",
+          "cases/accounts-paperwork#4",
+          "cases/accounts-paperwork#3",
+          "solutions/document-data-entry#0",
+          "solutions/document-data-entry#3"
+        ],
+        "top5_scores": [
+          0.711621,
+          0.699813,
+          0.687717,
+          0.68576,
+          0.682451
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q013",
+      "type": "paraphrase",
+      "question": "Which version of the rate list applies, and what currency are the figures in?",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/how-we-price#1"
+      ],
+      "top5": [
+        "pricing/how-we-price#1",
+        "pricing/setup-fees#5",
+        "pricing/how-we-price#0",
+        "pricing/range-and-estimates#5",
+        "pricing/volume-tiers#1"
+      ],
+      "top5_scores": [
+        0.776745,
+        0.71704,
+        0.712611,
+        0.709275,
+        0.702773
+      ],
+      "top1_score": 0.776745,
+      "relevant_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/how-we-price#1",
+          "pricing/setup-fees#5",
+          "pricing/how-we-price#0",
+          "pricing/range-and-estimates#5",
+          "pricing/volume-tiers#1"
+        ],
+        "top5_scores": [
+          0.776745,
+          0.71704,
+          0.712611,
+          0.709275,
+          0.702773
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q015",
+      "type": "paraphrase",
+      "question": "Are sales tax, mileage and equipment part of the quoted figures?",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/what-is-included#3"
+      ],
+      "top5": [
+        "pricing/setup-fees#5",
+        "pricing/what-is-included#3",
+        "pricing/how-we-price#6",
+        "pricing/how-we-price#0",
+        "pricing/how-we-price#4"
+      ],
+      "top5_scores": [
+        0.751517,
+        0.739078,
+        0.712915,
+        0.704267,
+        0.695067
+      ],
+      "top1_score": 0.751517,
+      "relevant_ranks": [
+        2
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/setup-fees#5",
+          "pricing/what-is-included#3",
+          "pricing/how-we-price#6",
+          "pricing/how-we-price#0",
+          "pricing/how-we-price#4"
+        ],
+        "top5_scores": [
+          0.751517,
+          0.739078,
+          0.712915,
+          0.704267,
+          0.695067
+        ],
+        "relevant_ranks": [
+          2
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q017",
+      "type": "paraphrase",
+      "question": "What multiplier applies when we handle roughly fifty requests daily?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/volume-tiers#2"
+      ],
+      "top5": [
+        "pricing/volume-tiers#1",
+        "pricing/volume-tiers#2",
+        "pricing/volume-tiers#0",
+        "consultation/volume-and-timing#1",
+        "pricing/volume-tiers#4"
+      ],
+      "top5_scores": [
+        0.806804,
+        0.758378,
+        0.745991,
+        0.736139,
+        0.73245
+      ],
+      "top1_score": 0.806804,
+      "relevant_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q019",
+      "type": "paraphrase",
+      "question": "Does the CRM link price cover mapping my fields?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/setup-fees#2"
+      ],
+      "top5": [
+        "implementation/crm-connector#2",
+        "pricing/setup-fees#2",
+        "implementation/crm-connector#4",
+        "implementation/crm-connector#5",
+        "implementation/crm-connector#0"
+      ],
+      "top5_scores": [
+        0.765135,
+        0.754183,
+        0.752037,
+        0.751662,
+        0.7494
+      ],
+      "top1_score": 0.765135,
+      "relevant_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q021",
+      "type": "paraphrase",
+      "question": "What is the largest number of products one calculation can cover?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/range-and-estimates#4"
+      ],
+      "top5": [
+        "pricing/range-and-estimates#4",
+        "pricing/how-we-price#4",
+        "pricing/how-we-price#5",
+        "pricing/how-we-price#2",
+        "pricing/volume-tiers#3"
+      ],
+      "top5_scores": [
+        0.74629,
+        0.685489,
+        0.678784,
+        0.675184,
+        0.674337
+      ],
+      "top1_score": 0.74629,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q023",
+      "type": "paraphrase",
+      "question": "How long does hooking up to my software's API take?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "implementation/api-connector#2"
+      ],
+      "top5": [
+        "implementation/api-connector#2",
+        "implementation/crm-connector#2",
+        "implementation/api-connector#6",
+        "implementation/api-connector#0",
+        "implementation/api-connector#4"
+      ],
+      "top5_scores": [
+        0.80029,
+        0.745745,
+        0.74202,
+        0.733107,
+        0.72921
+      ],
+      "top1_score": 0.80029,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q025",
+      "type": "paraphrase",
+      "question": "My job software can only send data out; can you make it accept data?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "implementation/export-only-tools#5"
+      ],
+      "top5": [
+        "implementation/export-only-tools#1",
+        "implementation/csv-export#2",
+        "implementation/csv-export#1",
+        "implementation/export-only-tools#0",
+        "implementation/export-only-tools#3"
+      ],
+      "top5_scores": [
+        0.755406,
+        0.712377,
+        0.704378,
+        0.696912,
+        0.683855
+      ],
+      "top1_score": 0.755406,
+      "relevant_ranks": [
+        16
+      ],
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.0625,
+        "p5": 0.0,
+        "ap": 0.0625,
+        "first_relevant_rank": 16
+      }
+    },
+    {
+      "qid": "q026",
+      "type": "paraphrase",
+      "question": "In the heating company story, why was no price shown for a while?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "cases/trades-dispatch#2"
+      ],
+      "top5": [
+        "cases/trades-dispatch#0",
+        "cases/trades-dispatch#1",
+        "pricing/range-and-estimates#3",
+        "pricing/range-and-estimates#2",
+        "consultation/first-questions#7"
+      ],
+      "top5_scores": [
+        0.725565,
+        0.70106,
+        0.697866,
+        0.6943,
+        0.686425
+      ],
+      "top1_score": 0.725565,
+      "relevant_ranks": [
+        12
+      ],
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.08333333333333333,
+        "p5": 0.0,
+        "ap": 0.08333333333333333,
+        "first_relevant_rank": 12
+      }
+    },
+    {
+      "qid": "q028",
+      "type": "paraphrase",
+      "question": "Will the interviewer silently pick my most recent figure when two disagree?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/volume-and-timing#4"
+      ],
+      "top5": [
+        "consultation/volume-and-timing#4",
+        "pricing/volume-tiers#4",
+        "consultation/urgent-requests#6",
+        "consultation/volume-and-timing#0",
+        "cases/trades-dispatch#2"
+      ],
+      "top5_scores": [
+        0.729119,
+        0.69598,
+        0.66551,
+        0.658943,
+        0.655423
+      ],
+      "top1_score": 0.729119,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q030",
+      "type": "paraphrase",
+      "question": "Is removing my data written down anywhere?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "policies/personal-data#5"
+      ],
+      "top5": [
+        "policies/personal-data#5",
+        "policies/personal-data#0",
+        "policies/personal-data#1",
+        "policies/personal-data#4",
+        "policies/personal-data#6"
+      ],
+      "top5_scores": [
+        0.739868,
+        0.698381,
+        0.694019,
+        0.686204,
+        0.681884
+      ],
+      "top1_score": 0.739868,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q032",
+      "type": "paraphrase",
+      "question": "Are my typed words stored verbatim in the logs?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "policies/security#6"
+      ],
+      "top5": [
+        "policies/security#6",
+        "policies/personal-data#1",
+        "policies/personal-data#2",
+        "policies/security#0",
+        "policies/personal-data#3"
+      ],
+      "top5_scores": [
+        0.8135,
+        0.719456,
+        0.718142,
+        0.706536,
+        0.69272
+      ],
+      "top1_score": 0.8135,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q034",
+      "type": "unanswerable",
+      "question": "Is there a free trial period before I commit?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "pricing/setup-fees#1",
+        "implementation/api-connector#2",
+        "pricing/what-is-included#2",
+        "consultation/first-questions#5",
+        "implementation/csv-export#2"
+      ],
+      "top5_scores": [
+        0.652079,
+        0.635374,
+        0.628463,
+        0.62532,
+        0.62171
+      ],
+      "top1_score": 0.652079,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q036",
+      "type": "unanswerable",
+      "question": "Which countries do you operate in?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "consultation/first-questions#2",
+        "policies/personal-data#6",
+        "implementation/csv-export#3",
+        "policies/personal-data#2",
+        "policies/security#4"
+      ],
+      "top5_scores": [
+        0.644288,
+        0.635858,
+        0.606177,
+        0.605254,
+        0.601389
+      ],
+      "top1_score": 0.644288,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q038",
+      "type": "unanswerable",
+      "question": "Can I pay annually instead of monthly?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "pricing/how-we-price#4",
+        "pricing/volume-tiers#0",
+        "pricing/setup-fees#1",
+        "pricing/volume-tiers#5",
+        "solutions/ticket-creation#5"
+      ],
+      "top5_scores": [
+        0.630049,
+        0.624201,
+        0.622928,
+        0.622266,
+        0.613255
+      ],
+      "top1_score": 0.630049,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q040",
+      "type": "unanswerable",
+      "question": "How long is the contract and what is the notice period?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "pricing/what-is-included#0",
+        "pricing/setup-fees#5",
+        "consultation/first-questions#5",
+        "pricing/what-is-included#1",
+        "consultation/volume-and-timing#5"
+      ],
+      "top5_scores": [
+        0.672889,
+        0.652143,
+        0.647457,
+        0.647209,
+        0.645292
+      ],
+      "top1_score": 0.672889,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q041",
+      "type": "identifier",
+      "question": "we only have a spreadsheet type booking system. is csv-export how the calls get into it?",
+      "answerable": true,
+      "filters": {
+        "section": "solutions"
+      },
+      "relevant": [
+        "solutions/phone-intake#4"
+      ],
+      "top5": [
+        "implementation/csv-export#2",
+        "implementation/csv-export#1",
+        "implementation/csv-export#3",
+        "solutions/phone-intake#4",
+        "solutions/staff-assignment#4"
+      ],
+      "top5_scores": [
+        0.805463,
+        0.7928,
+        0.787115,
+        0.781338,
+        0.776462
+      ],
+      "top1_score": 0.805463,
+      "relevant_ranks": [
+        4
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/phone-intake#4",
+          "solutions/staff-assignment#4",
+          "solutions/phone-intake#1",
+          "solutions/email-triage#4",
+          "solutions/ticket-creation#4"
+        ],
+        "top5_scores": [
+          0.781338,
+          0.776462,
+          0.724005,
+          0.718205,
+          0.717528
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      }
+    },
+    {
+      "qid": "q043",
+      "type": "identifier",
+      "question": "if i hook crm-connector up, do my jobs show up in the CRM automatically?",
+      "answerable": true,
+      "filters": {
+        "product": "ticket-creation"
+      },
+      "relevant": [
+        "solutions/ticket-creation#4"
+      ],
+      "top5": [
+        "implementation/crm-connector#6",
+        "implementation/crm-connector#0",
+        "implementation/crm-connector#3",
+        "solutions/ticket-creation#4",
+        "solutions/email-triage#4"
+      ],
+      "top5_scores": [
+        0.792473,
+        0.783983,
+        0.776037,
+        0.76179,
+        0.753652
+      ],
+      "top1_score": 0.792473,
+      "relevant_ranks": [
+        4
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/ticket-creation#4",
+          "solutions/ticket-creation#1",
+          "solutions/ticket-creation#5",
+          "solutions/ticket-creation#6",
+          "solutions/ticket-creation#0"
+        ],
+        "top5_scores": [
+          0.76179,
+          0.69333,
+          0.673017,
+          0.658276,
+          0.654452
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      }
+    },
+    {
+      "qid": "q046",
+      "type": "identifier",
+      "question": "can staff-assignment hook into anything besides the csv export?",
+      "answerable": true,
+      "filters": {
+        "section": "implementation"
+      },
+      "relevant": [
+        "implementation/csv-export#3"
+      ],
+      "top5": [
+        "implementation/csv-export#3",
+        "solutions/staff-assignment#4",
+        "solutions/staff-assignment#0",
+        "solutions/staff-assignment#3",
+        "solutions/staff-assignment#5"
+      ],
+      "top5_scores": [
+        0.736137,
+        0.73085,
+        0.70821,
+        0.697912,
+        0.689801
+      ],
+      "top1_score": 0.736137,
+      "relevant_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "implementation/csv-export#3",
+          "implementation/csv-export#1",
+          "implementation/api-connector#3",
+          "implementation/csv-export#5",
+          "implementation/csv-export#6"
+        ],
+        "top5_scores": [
+          0.736137,
+          0.68266,
+          0.676491,
+          0.675229,
+          0.667764
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q047",
+      "type": "identifier",
+      "question": "450 a month is steep. could we begin on csv-export and switch up later?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "implementation/crm-connector#6"
+      ],
+      "top5": [
+        "implementation/csv-export#4",
+        "solutions/staff-assignment#5",
+        "solutions/document-data-entry#5",
+        "implementation/export-only-tools#4",
+        "pricing/setup-fees#2"
+      ],
+      "top5_scores": [
+        0.752689,
+        0.741152,
+        0.736184,
+        0.734771,
+        0.734056
+      ],
+      "top1_score": 0.752689,
+      "relevant_ranks": [
+        9
+      ],
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.1111111111111111,
+        "p5": 0.0,
+        "ap": 0.1111111111111111,
+        "first_relevant_rank": 9
+      }
+    },
+    {
+      "qid": "q049",
+      "type": "identifier",
+      "question": "can document data entry run over api-connector?",
+      "answerable": true,
+      "filters": {
+        "section": "implementation"
+      },
+      "relevant": [
+        "implementation/api-connector#3"
+      ],
+      "top5": [
+        "implementation/api-connector#3",
+        "solutions/document-data-entry#0",
+        "implementation/api-connector#0",
+        "implementation/api-connector#4",
+        "implementation/export-only-tools#3"
+      ],
+      "top5_scores": [
+        0.782033,
+        0.770193,
+        0.769227,
+        0.745721,
+        0.720488
+      ],
+      "top1_score": 0.782033,
+      "relevant_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "implementation/api-connector#3",
+          "implementation/api-connector#0",
+          "implementation/api-connector#4",
+          "implementation/export-only-tools#3",
+          "implementation/api-connector#6"
+        ],
+        "top5_scores": [
+          0.782033,
+          0.769227,
+          0.745721,
+          0.720488,
+          0.709836
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q051",
+      "type": "identifier",
+      "question": "we might upgrade our software next yr - do we move over to api-connector then?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "implementation/export-only-tools#6"
+      ],
+      "top5": [
+        "implementation/api-connector#4",
+        "implementation/api-connector#0",
+        "implementation/api-connector#6",
+        "implementation/api-connector#3",
+        "implementation/export-only-tools#6"
+      ],
+      "top5_scores": [
+        0.743163,
+        0.741752,
+        0.739377,
+        0.737721,
+        0.725028
+      ],
+      "top1_score": 0.743163,
+      "relevant_ranks": [
+        5
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.38685280723454163,
+        "mrr": 0.2,
+        "p5": 0.2,
+        "ap": 0.2,
+        "first_relevant_rank": 5
+      }
+    },
+    {
+      "qid": "q054",
+      "type": "identifier",
+      "question": "bookkeeping example - did csv-export cost them anything extra?",
+      "answerable": true,
+      "filters": {
+        "section": "cases"
+      },
+      "relevant": [
+        "cases/accounts-paperwork#2"
+      ],
+      "top5": [
+        "implementation/csv-export#4",
+        "implementation/export-only-tools#4",
+        "implementation/csv-export#6",
+        "pricing/setup-fees#2",
+        "cases/grooming-bookings#2"
+      ],
+      "top5_scores": [
+        0.779231,
+        0.729948,
+        0.725194,
+        0.721349,
+        0.717067
+      ],
+      "top1_score": 0.779231,
+      "relevant_ranks": [
+        8
+      ],
+      "filtered": {
+        "top5": [
+          "cases/grooming-bookings#2",
+          "cases/accounts-paperwork#2",
+          "cases/accounts-paperwork#0",
+          "cases/accounts-paperwork#1",
+          "cases/trades-dispatch#3"
+        ],
+        "top5_scores": [
+          0.717067,
+          0.709933,
+          0.680616,
+          0.678955,
+          0.678917
+        ],
+        "relevant_ranks": [
+          2
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.125,
+        "p5": 0.0,
+        "ap": 0.125,
+        "first_relevant_rank": 8
+      }
+    },
+    {
+      "qid": "q055",
+      "type": "identifier",
+      "question": "someone rings about a gas leak. what does phone-intake do with them?",
+      "answerable": true,
+      "filters": {
+        "section": "consultation"
+      },
+      "relevant": [
+        "consultation/urgent-requests#3"
+      ],
+      "top5": [
+        "consultation/urgent-requests#1",
+        "solutions/phone-intake#0",
+        "consultation/urgent-requests#2",
+        "consultation/urgent-requests#3",
+        "solutions/phone-intake#1"
+      ],
+      "top5_scores": [
+        0.714953,
+        0.713491,
+        0.681858,
+        0.674052,
+        0.673922
+      ],
+      "top1_score": 0.714953,
+      "relevant_ranks": [
+        4
+      ],
+      "filtered": {
+        "top5": [
+          "consultation/urgent-requests#1",
+          "consultation/urgent-requests#2",
+          "consultation/urgent-requests#3",
+          "consultation/urgent-requests#4",
+          "consultation/volume-and-timing#1"
+        ],
+        "top5_scores": [
+          0.714953,
+          0.681858,
+          0.674052,
+          0.658897,
+          0.639061
+        ],
+        "relevant_ranks": [
+          3
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.5,
+          "mrr": 0.3333333333333333,
+          "p5": 0.2,
+          "ap": 0.3333333333333333,
+          "first_relevant_rank": 3
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      }
+    },
+    {
+      "qid": "q057",
+      "type": "paraphrase",
+      "question": "what if the caller has something the bot cant deal with, do they just get hung up on?",
+      "answerable": true,
+      "filters": {
+        "product": "phone-intake"
+      },
+      "relevant": [
+        "solutions/phone-intake#2"
+      ],
+      "top5": [
+        "solutions/phone-intake#1",
+        "solutions/phone-intake#0",
+        "solutions/phone-intake#2",
+        "solutions/phone-intake#6",
+        "consultation/urgent-requests#2"
+      ],
+      "top5_scores": [
+        0.739751,
+        0.713627,
+        0.71175,
+        0.690196,
+        0.690181
+      ],
+      "top1_score": 0.739751,
+      "relevant_ranks": [
+        3
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/phone-intake#1",
+          "solutions/phone-intake#0",
+          "solutions/phone-intake#2",
+          "solutions/phone-intake#6",
+          "solutions/phone-intake#3"
+        ],
+        "top5_scores": [
+          0.739751,
+          0.713627,
+          0.71175,
+          0.690196,
+          0.689438
+        ],
+        "relevant_ranks": [
+          3
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.5,
+          "mrr": 0.3333333333333333,
+          "p5": 0.2,
+          "ap": 0.3333333333333333,
+          "first_relevant_rank": 3
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q059",
+      "type": "paraphrase",
+      "question": "my filters and folders, will the email bot mess with those? and can it bin old emails?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/email-triage#3"
+      ],
+      "top5": [
+        "solutions/email-triage#3",
+        "solutions/email-triage#1",
+        "solutions/email-triage#0",
+        "solutions/email-triage#6",
+        "solutions/ticket-creation#1"
+      ],
+      "top5_scores": [
+        0.75056,
+        0.713992,
+        0.695306,
+        0.692561,
+        0.652741
+      ],
+      "top1_score": 0.75056,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q060",
+      "type": "paraphrase",
+      "question": "who gets the nag when a job stalls - my guy or the client?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/ticket-creation#2"
+      ],
+      "top5": [
+        "solutions/customer-status-updates#1",
+        "solutions/ticket-creation#1",
+        "solutions/ticket-creation#2",
+        "solutions/email-triage#6",
+        "consultation/first-questions#7"
+      ],
+      "top5_scores": [
+        0.659212,
+        0.654291,
+        0.654211,
+        0.649978,
+        0.646466
+      ],
+      "top1_score": 0.659212,
+      "relevant_ranks": [
+        3
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q062",
+      "type": "paraphrase",
+      "question": "if my dispatcher keeps ignoring the bots pick, can i tell?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/staff-assignment#2"
+      ],
+      "top5": [
+        "solutions/staff-assignment#6",
+        "policies/security#3",
+        "solutions/document-data-entry#6",
+        "solutions/staff-assignment#1",
+        "solutions/staff-assignment#2"
+      ],
+      "top5_scores": [
+        0.657737,
+        0.633238,
+        0.623605,
+        0.618891,
+        0.618009
+      ],
+      "top1_score": 0.657737,
+      "relevant_ranks": [
+        5
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.38685280723454163,
+        "mrr": 0.2,
+        "p5": 0.2,
+        "ap": 0.2,
+        "first_relevant_rank": 5
+      }
+    },
+    {
+      "qid": "q064",
+      "type": "paraphrase",
+      "question": "paper job sheets, system cant import. extra charge for the scanning module?",
+      "answerable": true,
+      "filters": {
+        "section": "solutions"
+      },
+      "relevant": [
+        "solutions/document-data-entry#5"
+      ],
+      "top5": [
+        "implementation/export-only-tools#1",
+        "solutions/document-data-entry#6",
+        "solutions/ticket-creation#6",
+        "solutions/document-data-entry#1",
+        "solutions/document-data-entry#0"
+      ],
+      "top5_scores": [
+        0.744448,
+        0.736132,
+        0.729399,
+        0.722485,
+        0.717796
+      ],
+      "top1_score": 0.744448,
+      "relevant_ranks": [
+        26
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/document-data-entry#6",
+          "solutions/ticket-creation#6",
+          "solutions/document-data-entry#1",
+          "solutions/document-data-entry#0",
+          "solutions/ticket-creation#3"
+        ],
+        "top5_scores": [
+          0.736132,
+          0.729399,
+          0.722485,
+          0.717796,
+          0.715517
+        ],
+        "relevant_ranks": [
+          9
+        ],
+        "metrics": {
+          "recall5": 0.0,
+          "ndcg5": 0.0,
+          "mrr": 0.1111111111111111,
+          "p5": 0.0,
+          "ap": 0.1111111111111111,
+          "first_relevant_rank": 9
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.038461538461538464,
+        "p5": 0.0,
+        "ap": 0.038461538461538464,
+        "first_relevant_rank": 26
+      }
+    },
+    {
+      "qid": "q065",
+      "type": "paraphrase",
+      "question": "reminders by hand atm, 'see you tomorrow' texts. can this do those?",
+      "answerable": true,
+      "filters": {
+        "product": "customer-status-updates"
+      },
+      "relevant": [
+        "solutions/customer-status-updates#1"
+      ],
+      "top5": [
+        "solutions/customer-status-updates#6",
+        "solutions/customer-status-updates#1",
+        "solutions/phone-intake#1",
+        "solutions/customer-status-updates#0",
+        "solutions/ticket-creation#2"
+      ],
+      "top5_scores": [
+        0.790211,
+        0.740115,
+        0.698162,
+        0.695393,
+        0.691761
+      ],
+      "top1_score": 0.790211,
+      "relevant_ranks": [
+        2
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/customer-status-updates#6",
+          "solutions/customer-status-updates#1",
+          "solutions/customer-status-updates#0",
+          "solutions/customer-status-updates#2",
+          "solutions/customer-status-updates#3"
+        ],
+        "top5_scores": [
+          0.790211,
+          0.740115,
+          0.695393,
+          0.690616,
+          0.649416
+        ],
+        "relevant_ranks": [
+          2
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q066",
+      "type": "paraphrase",
+      "question": "the csv files - whos able to open them, and where do u put them?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "implementation/csv-export#5"
+      ],
+      "top5": [
+        "implementation/csv-export#2",
+        "solutions/staff-assignment#4",
+        "implementation/csv-export#3",
+        "implementation/csv-export#0",
+        "implementation/csv-export#1"
+      ],
+      "top5_scores": [
+        0.740075,
+        0.722901,
+        0.721052,
+        0.716058,
+        0.706491
+      ],
+      "top1_score": 0.740075,
+      "relevant_ranks": [
+        9
+      ],
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.1111111111111111,
+        "p5": 0.0,
+        "ap": 0.1111111111111111,
+        "first_relevant_rank": 9
+      }
+    },
+    {
+      "qid": "q071",
+      "type": "paraphrase",
+      "question": "chat says one price, panel says another. which?",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/how-we-price#5"
+      ],
+      "top5": [
+        "pricing/range-and-estimates#2",
+        "consultation/volume-and-timing#4",
+        "pricing/how-we-price#5",
+        "pricing/range-and-estimates#3",
+        "pricing/how-we-price#6"
+      ],
+      "top5_scores": [
+        0.659057,
+        0.658157,
+        0.653085,
+        0.643825,
+        0.640571
+      ],
+      "top1_score": 0.659057,
+      "relevant_ranks": [
+        3
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/range-and-estimates#2",
+          "pricing/how-we-price#5",
+          "pricing/range-and-estimates#3",
+          "pricing/how-we-price#6",
+          "pricing/volume-tiers#3"
+        ],
+        "top5_scores": [
+          0.659057,
+          0.653085,
+          0.643825,
+          0.640571,
+          0.630274
+        ],
+        "relevant_ranks": [
+          2
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q073",
+      "type": "paraphrase",
+      "question": "we add a new kind of paperwork 6 months in. covered or extra?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/what-is-included#3"
+      ],
+      "top5": [
+        "solutions/document-data-entry#3",
+        "pricing/what-is-included#3",
+        "cases/accounts-paperwork#5",
+        "consultation/first-questions#3",
+        "pricing/how-we-price#3"
+      ],
+      "top5_scores": [
+        0.672476,
+        0.670053,
+        0.665125,
+        0.66254,
+        0.656487
+      ],
+      "top1_score": 0.672476,
+      "relevant_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q076",
+      "type": "paraphrase",
+      "question": "i only know monthly numbers. is that ok and who does the maths?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/volume-tiers#4"
+      ],
+      "top5": [
+        "consultation/volume-and-timing#3",
+        "pricing/volume-tiers#4",
+        "consultation/volume-and-timing#1",
+        "consultation/volume-and-timing#2",
+        "consultation/volume-and-timing#4"
+      ],
+      "top5_scores": [
+        0.728058,
+        0.713945,
+        0.701105,
+        0.685804,
+        0.685406
+      ],
+      "top1_score": 0.728058,
+      "relevant_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q078",
+      "type": "paraphrase",
+      "question": "no clue if our tool has an api. can i still get a figure, and what sort?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/setup-fees#4"
+      ],
+      "top5": [
+        "pricing/setup-fees#4",
+        "implementation/export-only-tools#1",
+        "implementation/api-connector#1",
+        "implementation/api-connector#2",
+        "consultation/first-questions#5"
+      ],
+      "top5_scores": [
+        0.706351,
+        0.682177,
+        0.67877,
+        0.67807,
+        0.671133
+      ],
+      "top1_score": 0.706351,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q080",
+      "type": "paraphrase",
+      "question": "anything official on paper?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/range-and-estimates#5"
+      ],
+      "top5": [
+        "pricing/what-is-included#6",
+        "policies/personal-data#3",
+        "cases/accounts-paperwork#5",
+        "pricing/range-and-estimates#5",
+        "consultation/urgent-requests#6"
+      ],
+      "top5_scores": [
+        0.634244,
+        0.630581,
+        0.629197,
+        0.627209,
+        0.624182
+      ],
+      "top1_score": 0.634244,
+      "relevant_ranks": [
+        4
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      }
+    },
+    {
+      "qid": "q082",
+      "type": "paraphrase",
+      "question": "heating firm case. why wasnt the figure marked indicative?",
+      "answerable": true,
+      "filters": {
+        "section": "cases"
+      },
+      "relevant": [
+        "cases/trades-dispatch#5"
+      ],
+      "top5": [
+        "cases/trades-dispatch#0",
+        "pricing/range-and-estimates#2",
+        "consultation/volume-and-timing#5",
+        "cases/grooming-bookings#3",
+        "pricing/range-and-estimates#3"
+      ],
+      "top5_scores": [
+        0.702285,
+        0.693442,
+        0.660768,
+        0.657288,
+        0.643574
+      ],
+      "top1_score": 0.702285,
+      "relevant_ranks": [
+        38
+      ],
+      "filtered": {
+        "top5": [
+          "cases/trades-dispatch#0",
+          "cases/grooming-bookings#3",
+          "cases/trades-dispatch#6",
+          "cases/trades-dispatch#2",
+          "cases/trades-dispatch#1"
+        ],
+        "top5_scores": [
+          0.702285,
+          0.657288,
+          0.637517,
+          0.637282,
+          0.636197
+        ],
+        "relevant_ranks": [
+          13
+        ],
+        "metrics": {
+          "recall5": 0.0,
+          "ndcg5": 0.0,
+          "mrr": 0.07692307692307693,
+          "p5": 0.0,
+          "ap": 0.07692307692307693,
+          "first_relevant_rank": 13
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.02631578947368421,
+        "p5": 0.0,
+        "ap": 0.02631578947368421,
+        "first_relevant_rank": 38
+      }
+    },
+    {
+      "qid": "q083",
+      "type": "paraphrase",
+      "question": "salon case - were the groomers forced onto some new system?",
+      "answerable": true,
+      "filters": {
+        "section": "cases"
+      },
+      "relevant": [
+        "cases/grooming-bookings#4"
+      ],
+      "top5": [
+        "cases/grooming-bookings#1",
+        "cases/grooming-bookings#0",
+        "cases/grooming-bookings#4",
+        "cases/trades-dispatch#3",
+        "cases/trades-dispatch#1"
+      ],
+      "top5_scores": [
+        0.711418,
+        0.708142,
+        0.629787,
+        0.629417,
+        0.628874
+      ],
+      "top1_score": 0.711418,
+      "relevant_ranks": [
+        3
+      ],
+      "filtered": {
+        "top5": [
+          "cases/grooming-bookings#1",
+          "cases/grooming-bookings#0",
+          "cases/grooming-bookings#4",
+          "cases/trades-dispatch#3",
+          "cases/trades-dispatch#1"
+        ],
+        "top5_scores": [
+          0.711418,
+          0.708142,
+          0.629787,
+          0.629417,
+          0.628874
+        ],
+        "relevant_ranks": [
+          3
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.5,
+          "mrr": 0.3333333333333333,
+          "p5": 0.2,
+          "ap": 0.3333333333333333,
+          "first_relevant_rank": 3
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q085",
+      "type": "paraphrase",
+      "question": "salon case: no shows gone?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "cases/grooming-bookings#5"
+      ],
+      "top5": [
+        "cases/grooming-bookings#0",
+        "cases/grooming-bookings#1",
+        "cases/grooming-bookings#5",
+        "solutions/customer-status-updates#6",
+        "cases/grooming-bookings#2"
+      ],
+      "top5_scores": [
+        0.709093,
+        0.70214,
+        0.695112,
+        0.671884,
+        0.646439
+      ],
+      "top1_score": 0.709093,
+      "relevant_ranks": [
+        3
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q087",
+      "type": "paraphrase",
+      "question": "accountants case - scribbled notes from clients, did the module cope?",
+      "answerable": true,
+      "filters": {
+        "product": "document-data-entry"
+      },
+      "relevant": [
+        "cases/accounts-paperwork#5"
+      ],
+      "top5": [
+        "cases/accounts-paperwork#1",
+        "cases/accounts-paperwork#0",
+        "cases/accounts-paperwork#5",
+        "solutions/document-data-entry#1",
+        "cases/accounts-paperwork#3"
+      ],
+      "top5_scores": [
+        0.772107,
+        0.759272,
+        0.737525,
+        0.73539,
+        0.733614
+      ],
+      "top1_score": 0.772107,
+      "relevant_ranks": [
+        3
+      ],
+      "filtered": {
+        "top5": [
+          "cases/accounts-paperwork#1",
+          "cases/accounts-paperwork#0",
+          "cases/accounts-paperwork#5",
+          "solutions/document-data-entry#1",
+          "cases/accounts-paperwork#3"
+        ],
+        "top5_scores": [
+          0.772107,
+          0.759272,
+          0.737525,
+          0.73539,
+          0.733614
+        ],
+        "relevant_ranks": [
+          3
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.5,
+          "mrr": 0.3333333333333333,
+          "p5": 0.2,
+          "ap": 0.3333333333333333,
+          "first_relevant_rank": 3
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q089",
+      "type": "paraphrase",
+      "question": "will the bot skip questions if it thinks it knows enough?",
+      "answerable": true,
+      "filters": {
+        "section": "consultation"
+      },
+      "relevant": [
+        "consultation/first-questions#1"
+      ],
+      "top5": [
+        "consultation/urgent-requests#6",
+        "consultation/first-questions#7",
+        "policies/personal-data#1",
+        "consultation/first-questions#0",
+        "pricing/range-and-estimates#3"
+      ],
+      "top5_scores": [
+        0.724669,
+        0.715676,
+        0.69894,
+        0.69477,
+        0.693442
+      ],
+      "top1_score": 0.724669,
+      "relevant_ranks": [
+        9
+      ],
+      "filtered": {
+        "top5": [
+          "consultation/urgent-requests#6",
+          "consultation/first-questions#7",
+          "consultation/first-questions#0",
+          "consultation/first-questions#6",
+          "consultation/urgent-requests#1"
+        ],
+        "top5_scores": [
+          0.724669,
+          0.715676,
+          0.69477,
+          0.687345,
+          0.675298
+        ],
+        "relevant_ranks": [
+          6
+        ],
+        "metrics": {
+          "recall5": 0.0,
+          "ndcg5": 0.0,
+          "mrr": 0.16666666666666666,
+          "p5": 0.0,
+          "ap": 0.16666666666666666,
+          "first_relevant_rank": 6
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.1111111111111111,
+        "p5": 0.0,
+        "ap": 0.1111111111111111,
+        "first_relevant_rank": 9
+      }
+    },
+    {
+      "qid": "q091",
+      "type": "paraphrase",
+      "question": "do u ask about sign offs, like my manager ok-ing big jobs?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/first-questions#3"
+      ],
+      "top5": [
+        "policies/approvals#6",
+        "consultation/first-questions#3",
+        "consultation/first-questions#4",
+        "solutions/document-data-entry#6",
+        "consultation/urgent-requests#1"
+      ],
+      "top5_scores": [
+        0.684113,
+        0.673592,
+        0.65631,
+        0.652844,
+        0.65165
+      ],
+      "top1_score": 0.684113,
+      "relevant_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q093",
+      "type": "paraphrase",
+      "question": "if i tell u my budget will the quote magically land on it?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/volume-and-timing#6"
+      ],
+      "top5": [
+        "consultation/volume-and-timing#6",
+        "consultation/first-questions#7",
+        "consultation/volume-and-timing#5",
+        "pricing/range-and-estimates#3",
+        "pricing/range-and-estimates#5"
+      ],
+      "top5_scores": [
+        0.748715,
+        0.691791,
+        0.679982,
+        0.677391,
+        0.675139
+      ],
+      "top1_score": 0.748715,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q095",
+      "type": "paraphrase",
+      "question": "nobody answers after 6pm at the moment. will the system just cover that?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/urgent-requests#4"
+      ],
+      "top5": [
+        "consultation/urgent-requests#4",
+        "solutions/phone-intake#0",
+        "solutions/phone-intake#1",
+        "solutions/phone-intake#6",
+        "solutions/phone-intake#2"
+      ],
+      "top5_scores": [
+        0.763374,
+        0.750019,
+        0.7428,
+        0.738547,
+        0.714502
+      ],
+      "top1_score": 0.763374,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q097",
+      "type": "paraphrase",
+      "question": "after submitting, which people at milo actually look at my answers?",
+      "answerable": true,
+      "filters": {
+        "section": "policies"
+      },
+      "relevant": [
+        "policies/personal-data#4"
+      ],
+      "top5": [
+        "policies/personal-data#0",
+        "policies/personal-data#4",
+        "policies/security#0",
+        "policies/personal-data#1",
+        "implementation/api-connector#1"
+      ],
+      "top5_scores": [
+        0.723571,
+        0.709845,
+        0.685283,
+        0.679023,
+        0.675949
+      ],
+      "top1_score": 0.723571,
+      "relevant_ranks": [
+        2
+      ],
+      "filtered": {
+        "top5": [
+          "policies/personal-data#0",
+          "policies/personal-data#4",
+          "policies/security#0",
+          "policies/personal-data#1",
+          "policies/personal-data#2"
+        ],
+        "top5_scores": [
+          0.723571,
+          0.709845,
+          0.685283,
+          0.679023,
+          0.650649
+        ],
+        "relevant_ranks": [
+          2
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q099",
+      "type": "paraphrase",
+      "question": "if i ok a withdrawal, how long does it stay valid and can i reuse it?",
+      "answerable": true,
+      "filters": {
+        "section": "policies"
+      },
+      "relevant": [
+        "policies/approvals#1"
+      ],
+      "top5": [
+        "policies/approvals#1",
+        "policies/security#4",
+        "policies/approvals#4",
+        "policies/security#1",
+        "policies/approvals#5"
+      ],
+      "top5_scores": [
+        0.725225,
+        0.690376,
+        0.635745,
+        0.616346,
+        0.616253
+      ],
+      "top1_score": 0.725225,
+      "relevant_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "policies/approvals#1",
+          "policies/security#4",
+          "policies/approvals#4",
+          "policies/security#1",
+          "policies/approvals#5"
+        ],
+        "top5_scores": [
+          0.725225,
+          0.690376,
+          0.635745,
+          0.616346,
+          0.616253
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q101",
+      "type": "paraphrase",
+      "question": "approval popup came up and i shut the browser by accident. did i lose it?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "policies/approvals#5"
+      ],
+      "top5": [
+        "policies/approvals#5",
+        "policies/approvals#1",
+        "policies/approvals#0",
+        "policies/approvals#6",
+        "policies/security#4"
+      ],
+      "top5_scores": [
+        0.723741,
+        0.707541,
+        0.662446,
+        0.625817,
+        0.622313
+      ],
+      "top1_score": 0.723741,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q103",
+      "type": "paraphrase",
+      "question": "can i send a .docx?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "policies/security#5"
+      ],
+      "top5": [
+        "policies/security#5",
+        "policies/personal-data#3",
+        "implementation/csv-export#2",
+        "solutions/document-data-entry#3",
+        "implementation/export-only-tools#3"
+      ],
+      "top5_scores": [
+        0.686502,
+        0.655376,
+        0.645228,
+        0.630046,
+        0.627924
+      ],
+      "top1_score": 0.686502,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q106",
+      "type": "unanswerable",
+      "question": "landline or voip?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/phone-intake#6",
+        "solutions/phone-intake#0",
+        "consultation/urgent-requests#2",
+        "solutions/phone-intake#1",
+        "consultation/volume-and-timing#1"
+      ],
+      "top5_scores": [
+        0.649664,
+        0.63688,
+        0.632304,
+        0.620255,
+        0.619023
+      ],
+      "top1_score": 0.649664,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q108",
+      "type": "unanswerable",
+      "question": "where are your servers, is my data kept in the eu?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "policies/personal-data#1",
+        "policies/personal-data#2",
+        "policies/personal-data#0",
+        "consultation/first-questions#5",
+        "policies/personal-data#6"
+      ],
+      "top5_scores": [
+        0.693944,
+        0.680788,
+        0.670244,
+        0.648713,
+        0.646202
+      ],
+      "top1_score": 0.693944,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q110",
+      "type": "unanswerable",
+      "question": "any demo or video first?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "implementation/api-connector#2",
+        "implementation/csv-export#1",
+        "implementation/csv-export#2",
+        "implementation/api-connector#1",
+        "policies/approvals#5"
+      ],
+      "top5_scores": [
+        0.628033,
+        0.612046,
+        0.609238,
+        0.607953,
+        0.603678
+      ],
+      "top1_score": 0.628033,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q112",
+      "type": "unanswerable",
+      "question": "can the email thing handle attachments like photos of the boiler?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "cases/trades-dispatch#1",
+        "solutions/email-triage#6",
+        "solutions/email-triage#1",
+        "cases/trades-dispatch#3",
+        "solutions/ticket-creation#1"
+      ],
+      "top5_scores": [
+        0.687765,
+        0.6719,
+        0.662423,
+        0.656142,
+        0.651812
+      ],
+      "top1_score": 0.687765,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q114",
+      "type": "unanswerable",
+      "question": "own logo on customer msgs?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/customer-status-updates#1",
+        "solutions/customer-status-updates#2",
+        "solutions/customer-status-updates#0",
+        "solutions/email-triage#1",
+        "solutions/customer-status-updates#3"
+      ],
+      "top5_scores": [
+        0.701816,
+        0.684627,
+        0.684607,
+        0.682788,
+        0.67224
+      ],
+      "top1_score": 0.701816,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q116",
+      "type": "unanswerable",
+      "question": "do u have a referral scheme if i bring in another business?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/email-triage#6",
+        "policies/personal-data#6",
+        "consultation/first-questions#4",
+        "solutions/phone-intake#0",
+        "solutions/customer-status-updates#6"
+      ],
+      "top5_scores": [
+        0.652862,
+        0.651659,
+        0.650675,
+        0.643456,
+        0.640945
+      ],
+      "top1_score": 0.652862,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q118",
+      "type": "unanswerable",
+      "question": "weekend support from your team?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "consultation/urgent-requests#4",
+        "consultation/urgent-requests#0",
+        "consultation/first-questions#3",
+        "solutions/ticket-creation#2",
+        "solutions/email-triage#2"
+      ],
+      "top5_scores": [
+        0.681095,
+        0.656884,
+        0.654008,
+        0.653559,
+        0.651397
+      ],
+      "top1_score": 0.681095,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q120",
+      "type": "unanswerable",
+      "question": "can customers leave a rating or feedback after a call?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/phone-intake#0",
+        "policies/personal-data#2",
+        "solutions/phone-intake#1",
+        "solutions/phone-intake#2",
+        "solutions/phone-intake#6"
+      ],
+      "top5_scores": [
+        0.68211,
+        0.663657,
+        0.660595,
+        0.655871,
+        0.653347
+      ],
+      "top1_score": 0.68211,
+      "relevant_ranks": []
+    }
+  ]
+}

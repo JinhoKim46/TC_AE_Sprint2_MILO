@@ -1,0 +1,1324 @@
+{
+ "reasoning": {
+  "anthropic/claude-sonnet-5.5": "low_effort",
+  "google/gemini-embedding-2": "off"
+ },
+ "git_commit": "12f8faa75f0fb2fa4685c3f82a5aa7ca7244380d",
+ "model": "chat=anthropic/claude-sonnet-5.5; embedding=google/gemini-embedding-2",
+ "seed": 26,
+ "temperature": 0.0,
+ "command": "MILO_FINAL=1 MILO_LIVE=1 python evals/final/run_final.py (step m7-generate: run_rag_eval.py generation, sample_test.json, --max-cost 0.4 --product-model anthropic/claude-sonnet-5.5)",
+ "timestamp": "2026-10-22T20:31:35Z",
+ "inputs": {
+  "gold": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+  "sample": "11432e2d976c49cb5fa4830f32f3e085aadfeaf1d0a4403e753d8cd8ff7e2db5",
+  "evals/rag/generate.py": "570081031571d5a7206ec8e54808026acbb0481885194f5f0d0563176657593c"
+ },
+ "dry": false,
+ "partial": false,
+ "spend_reason": "F2: product answers for the labelled test sample (D126)",
+ "sample_file": "evals/rag/sample_test.json",
+ "pipeline": "milo.app.build_app, contract mode, dense top 5",
+ "index": {
+  "model": "google/gemini-embedding-2",
+  "chunk_size": 800,
+  "overlap": 100,
+  "chunk_count": 167,
+  "chunk_sha256": "2e039419865c305c62eb5347103f38773f550ca68261ef1a1cd4568d4e4a6660",
+  "kb_sha256": "247d0cd36e1383f13d830cb4b9d94c2047d380abbca37ac4b7b16eabbce057e2"
+ },
+ "advanced_rag": "0",
+ "total_cost_usd": 0.235936,
+ "rows": [
+  {
+   "qid": "q002",
+   "type": "identifier",
+   "question": "Will email-triage ever send a reply on its own?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/email-triage#3",
+     "doc_id": "solutions/email-triage",
+     "score": 0.807238,
+     "text": "## What is not included\n\nThe email-triage module never sends a message without approval. It does not change the mailbox rules, and it does not delete mail. Your inbox stays exactly as it is; the module only adds labels and drafts."
+    },
+    {
+     "chunk_id": "solutions/email-triage#0",
+     "doc_id": "solutions/email-triage",
+     "score": 0.78543,
+     "text": "# Email triage\n\nThe email-triage module reads a shared inbox, labels each message by request type, and drafts a first reply for staff to approve. It is for teams where requests arrive in one mailbox and get lost between other mail."
+    },
+    {
+     "chunk_id": "solutions/email-triage#1",
+     "doc_id": "solutions/email-triage",
+     "score": 0.748769,
+     "text": "## What it does\n\nEach new message is read and given a label, such as new job, question, complaint or invoice. The module also sets a priority so that the most pressing messages rise to the top. For each message it drafts a reply in your own wording. A member of staff reads the draft, changes it if needed, and sends it. Nothing goes out on its own."
+    },
+    {
+     "chunk_id": "solutions/email-triage#5",
+     "doc_id": "solutions/email-triage",
+     "score": 0.694076,
+     "text": "## Price\n\nThe base monthly price for email-triage is 390 USD. The setup fee is 900 USD per module. A volume factor applies based on daily request volume, and a monthly surcharge applies for the api-connector integration. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "solutions/email-triage#6",
+     "doc_id": "solutions/email-triage",
+     "score": 0.693771,
+     "text": "## Who it suits\n\nOwners who say that jobs get lost in the inbox, or that one person spends the morning sorting mail, usually start with this module. It does not replace the person who answers; it gives them a sorted inbox and a first draft."
+    }
+   ],
+   "answer": "No. Email-triage never sends a message without approval. It reads each message in the shared inbox, labels it by request type (new job, question, complaint, invoice and so on), sets a priority, and drafts a first reply in your own wording. A member of staff then reads the draft, edits it if needed, and sends it. Nothing goes out on its own.\n\nIt also doesn't change your mailbox rules or delete mail. It only adds labels and drafts, so your inbox stays as it is.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.005534
+  },
+  {
+   "qid": "q004",
+   "type": "identifier",
+   "question": "Does staff-assignment alter wages or rotas?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/staff-assignment#3",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.788107,
+     "text": "## What is not included\n\nThe staff-assignment module does not make automatic payroll or shift changes. It does not make decisions about discipline. It only proposes who is best placed to take a job; everything about pay, shifts and conduct stays with you."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#0",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.714959,
+     "text": "# Staff assignment\n\nThe staff-assignment module suggests which staff member should take a ticket, using the skills and availability the owner has entered. It is a suggestion, not an order: a person can always override it."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#1",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.710689,
+     "text": "## What it does\n\nYou enter a short list of skill tags for each member of staff, such as boiler, drains, grooming or front desk, and their working hours. When a ticket is created, the module compares the ticket's request type with the skill tags and the availability, and suggests one person. The suggestion comes with reasons, for example that the person has the matching skill and is free that afternoon."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#5",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.695134,
+     "text": "## Price\n\nThe base monthly price for staff-assignment is 340 USD. The setup fee is 900 USD per module. The csv-export integration has no monthly surcharge. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#2",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.694256,
+     "text": "## What is included\n\nThe module includes skill tags, availability, a suggestion with reasons, and override by staff. The override is logged so that you can see how often the suggestion was changed."
+    }
+   ],
+   "answer": "No. Staff-assignment doesn't change wages or rotas. It doesn't make automatic payroll or shift changes, and it doesn't make decisions about discipline. Pay, shifts and conduct stay with you.\n\nThe module only suggests which staff member should take a ticket. It works from the skill tags and working hours you enter for each person. Each suggestion comes with reasons, for example that the person has the matching skill and is free that afternoon. Staff can always override a suggestion, and each override is logged so you can see how often suggestions get changed.\n\nThe working hours are only an input to the suggestion. The module doesn't edit them or build a schedule from them.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006062
+  },
+  {
+   "qid": "q008",
+   "type": "identifier",
+   "question": "Which module can use the crm-connector?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/crm-connector#3",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.864838,
+     "text": "## Which modules support it\n\nThe crm-connector is offered for ticket-creation only. Other modules reach your CRM indirectly, through the ticket that ticket-creation writes."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#0",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.806835,
+     "text": "# CRM connector\n\nThe crm-connector integration is a standard connector with field mapping for businesses that keep their customers in a CRM. It is offered for the ticket-creation module, so that a ticket created by MILO appears as a record in your CRM."
+    },
+    {
+     "chunk_id": "implementation/api-connector#3",
+     "doc_id": "implementation/api-connector",
+     "score": 0.790481,
+     "text": "## Which modules support it\n\nThe api-connector is available for phone-intake, email-triage, ticket-creation and customer-status-updates. It is not offered for staff-assignment, which uses csv-export, or for document-data-entry, which uses csv-export or export-only-tool."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#4",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.781371,
+     "text": "## Connecting it to your tools\n\nThe module works with csv-export, api-connector and crm-connector. The crm-connector maps ticket fields to the fields in your CRM, so a ticket created here appears as a record there."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#6",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.763474,
+     "text": "## When to choose it\n\nChoose crm-connector when your sales or office staff already work in the CRM and should see jobs there. If your CRM can export and import CSV files and the delay is acceptable, csv-export is a cheaper way to start, and you can move to the connector later."
+    }
+   ],
+   "answer": "Only the **ticket-creation** module can use the crm-connector. The connector maps ticket fields to fields in your CRM. A ticket MILO creates then shows up as a record in the CRM.\n\nOther modules don't connect to the CRM directly. They reach it indirectly, through the ticket that ticket-creation writes.\n\nIf your CRM can export and import CSV files and a delay is acceptable, csv-export is a cheaper way to start. You can switch to the connector later. The connector makes more sense when your sales or office staff already work in the CRM and should see jobs there.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.005802
+  },
+  {
+   "qid": "q011",
+   "type": "paraphrase",
+   "question": "What happens when the scanner tool is unsure about a field?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/urgent-requests#6",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.762654,
+     "text": "## If you are not sure\n\nSay so. The assistant records the field as unknown, moves on, and the report lists it under unknowns and next steps, with the question that would close it."
+    },
+    {
+     "chunk_id": "solutions/document-data-entry#1",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.711621,
+     "text": "## What it does\n\nYou scan or photograph a form. The module finds the fields on it, such as customer name, address, job type and date, and enters them into your system of record. Each field passes through validation rules that you agree with us, for example that a date must be a real date. Anything the module cannot read with confidence is flagged for a person to check, rather than guessed."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#4",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.699813,
+     "text": "## What changed\n\nThe first pass was done by the module, and the staff member's time moved from typing to reviewing the flagged items. The entry log showed which scan produced which record, so a doubtful entry could be traced back to its page. The sample check continued, but on records the module had already validated."
+    },
+    {
+     "chunk_id": "pricing/setup-fees#4",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.691385,
+     "text": "## Which integration do you have\n\nThe discovery assistant asks whether your tools can export, import, or offer an API, and picks the integration from your answer. If you are not sure, say so; the estimate will then be marked as a scenario with the assumption shown, rather than as an indicative figure."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#3",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.687717,
+     "text": "## What was recommended\n\nOne module: document-data-entry, set up for the three agreed form types. Each form is scanned, the fields are extracted, and validation rules check them, for example that a date is a real date and that an amount has the right number of decimal places. Anything the module cannot read with confidence is flagged for a person. The estimate was indicative."
+    }
+   ],
+   "answer": "When the document data entry module can't read a field with confidence, it doesn't guess. It flags that field for a person to check.\n\n- **Validation first.** Each field goes through validation rules that you agree with us. One example is that a date must be a real date. Another is that an amount must have the right number of decimal places.\n- **Flagged items go to a person.** In the accounts paperwork case, the staff member's time moved from typing to reviewing the flagged items.\n- **Traceability.** The entry log shows which scan produced which record. If an entry looks doubtful, you can trace it back to its page.\n- **Sample checks continue.** In that case they carried on, but on records the module had already validated.\n\nI can also give you a cost estimate for this module. For that, I'd need some details about your business, such as your daily volume and which tools you use.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006696
+  },
+  {
+   "qid": "q015",
+   "type": "paraphrase",
+   "question": "Are sales tax, mileage and equipment part of the quoted figures?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/setup-fees#5",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.751517,
+     "text": "## Nothing hidden\n\nThere are no other fees on the rate card. Taxes, travel and hardware are excluded, as the article on what is included explains. All figures are indicative and non-binding."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#3",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.739078,
+     "text": "## Not included\n\nPrices exclude taxes, travel and any hardware. If a module needs a phone number, a scanner or a device at your premises, that is bought separately. Changes that go beyond the module's scope, for example a new form type after setup, are quoted as additional work."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#6",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.712915,
+     "text": "## Why we show it this way\n\nOwners told us that the thing they distrust most about automation quotes is not knowing how the number was reached. A published rate card and a visible calculation mean that an estimate can be checked line by line before anyone commits."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#0",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.704267,
+     "text": "# How we price\n\nMILO prices are arithmetic, not negotiation. Every estimate is built from a published rate card, and the same inputs always give the same number. This article explains the parts of the calculation so that you can check any estimate yourself."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#4",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.695067,
+     "text": "## The calculation\n\nThe monthly price for each chosen module is its base price multiplied by the volume factor for your daily request volume. The integration surcharges for the integrations you use are added once a month. The setup fee is 900 USD for each module and is paid once. The result is the base estimate, from which the low and high figures are derived."
+    }
+   ],
+   "answer": "No. According to the knowledge base, MILO's quoted figures leave out all three:\n\n- **Taxes:** Prices exclude taxes, so sales tax isn't part of the figures.\n- **Travel:** Prices exclude travel. I assume that covers mileage, but the excerpts only say \"travel\" and don't mention mileage by name.\n- **Hardware:** Prices exclude any hardware. If a module needs a phone number, a scanner or a device at your premises, you buy that separately.\n\nThe rate card has no other hidden fees. The monthly price is each module's base price multiplied by the volume factor for your daily request volume. Integration surcharges are added once a month. The setup fee is 900 USD per module, paid once. All figures are indicative and non-binding.\n\nChanges beyond a module's scope, such as adding a new form type after setup, are quoted as additional work.\n\nI can run an estimate for the modules you're considering if you'd like.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.007052
+  },
+  {
+   "qid": "q019",
+   "type": "paraphrase",
+   "question": "Does the CRM link price cover mapping my fields?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/crm-connector#2",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.765135,
+     "text": "## What you need\n\nSetup takes two working days. The first day is the field mapping and the connection; the second day is checking real tickets with you and adjusting the mapping where your CRM uses different values."
+    },
+    {
+     "chunk_id": "pricing/setup-fees#2",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.754183,
+     "text": "## Integration surcharges\n\nThe monthly surcharge depends on how the module talks to your existing tool.\n\n| Integration | Monthly surcharge |\n|---|---|\n| csv-export | 0 USD |\n| api-connector | 300 USD |\n| crm-connector | 450 USD |\n| export-only-tool | 250 USD |\n\nThe csv-export integration has no monthly surcharge, because your tool does the import and export itself. The api-connector surcharge is 300 USD a month and covers keeping the live connection working as your tool changes. The crm-connector surcharge is 450 USD a month and includes the field mapping. The export-only-tool surcharge is 250 USD a month and covers the file drop or prepared re-keying that an export-only tool needs."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#4",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.752037,
+     "text": "## Cost\n\nThe crm-connector surcharge is 450 USD a month. The ticket-creation base price of 290 USD a month and the setup fee of 900 USD per module still apply."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#5",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.751662,
+     "text": "## Limits\n\nA connector can only map fields that exist on both sides. If your CRM has no field for a requested date, that value stays on the ticket and does not appear in the CRM. We list any unmapped fields at the end of setup so that you can decide whether to add them in your CRM."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#0",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.7494,
+     "text": "# CRM connector\n\nThe crm-connector integration is a standard connector with field mapping for businesses that keep their customers in a CRM. It is offered for the ticket-creation module, so that a ticket created by MILO appears as a record in your CRM."
+    }
+   ],
+   "answer": "Yes. The crm-connector surcharge is 450 USD a month, and it includes the field mapping.\n\n- **Monthly surcharge:** 450 USD for the CRM connector, which is offered for the ticket-creation module.\n- **Other costs that still apply:** the ticket-creation base price of 290 USD a month and the setup fee of 900 USD per module.\n- **Setup time:** two working days. The first day covers the field mapping and the connection. On the second day we check real tickets with you and adjust the mapping where your CRM uses different values.\n- **Limit:** a connector can only map fields that exist on both sides. If your CRM has no field for a value, such as a requested date, that value stays on the ticket and doesn't appear in the CRM. We list any unmapped fields at the end of setup, so you can decide whether to add them in your CRM.\n\nI can run a cost estimate for your setup if you'd like.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.007228
+  },
+  {
+   "qid": "q023",
+   "type": "paraphrase",
+   "question": "How long does hooking up to my software's API take?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/api-connector#2",
+     "doc_id": "implementation/api-connector",
+     "score": 0.80029,
+     "text": "## What you need\n\nYour tool must offer an API with an access key. Setup takes one working day. In that day we connect the module, map the fields, and run the first requests through with you watching."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#2",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.745745,
+     "text": "## What you need\n\nSetup takes two working days. The first day is the field mapping and the connection; the second day is checking real tickets with you and adjusting the mapping where your CRM uses different values."
+    },
+    {
+     "chunk_id": "implementation/api-connector#6",
+     "doc_id": "implementation/api-connector",
+     "score": 0.74202,
+     "text": "## When to choose it\n\nChoose api-connector when timing matters, for example a confirmation that should reach the customer within minutes, or when your staff work inside the tool all day and should see new tickets as they arrive. If your tool has no API, the csv-export integration does the same job with a delay."
+    },
+    {
+     "chunk_id": "implementation/api-connector#0",
+     "doc_id": "implementation/api-connector",
+     "score": 0.733107,
+     "text": "# API connector\n\nThe api-connector integration gives a module a live connection to your tool. Bookings, labels, tickets and status changes are written and read as they happen, with no files in between."
+    },
+    {
+     "chunk_id": "implementation/api-connector#4",
+     "doc_id": "implementation/api-connector",
+     "score": 0.72921,
+     "text": "## Cost\n\nThe api-connector surcharge is 300 USD a month, paid once however many modules share the connection. The module's own base price and the setup fee of 900 USD per module still apply."
+    }
+   ],
+   "answer": "Setting up the API connector takes **one working day**. In that day we connect the module, map the fields, and run the first requests through while you watch.\n\nWhat you need:\n- Your software must offer an API with an access key.\n\nSome related points:\n- If your tool uses a CRM, the CRM connector is a separate option. It takes **two working days**: one for field mapping and the connection, and one for checking real tickets with you and adjusting the mapping where your CRM uses different values.\n- If your tool has no API, the csv-export integration does a similar job, but with a delay.\n- Cost: the API connector surcharge is 300 USD a month, paid once however many modules share the connection. Each module's base price and its 900 USD setup fee still apply.\n\nIf you tell me which software you use, I can help work out which connection fits best.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006372
+  },
+  {
+   "qid": "q025",
+   "type": "paraphrase",
+   "question": "My job software can only send data out; can you make it accept data?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/export-only-tools#1",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.755406,
+     "text": "## The problem\n\nWith an export-only tool, a module can read what is in your system, but it cannot write a new record back. Results must be re-keyed or pushed through a file drop. Many trades businesses are in this position: the tool was chosen years ago, the data is in it, and there is no API and no import."
+    },
+    {
+     "chunk_id": "implementation/csv-export#2",
+     "doc_id": "implementation/csv-export",
+     "score": 0.712377,
+     "text": "## What you need\n\nYour tool must be able to export and import CSV files. Most spreadsheets, booking widgets and small job tools can. During setup we agree the column names on both sides so that the files always line up."
+    },
+    {
+     "chunk_id": "implementation/csv-export#1",
+     "doc_id": "implementation/csv-export",
+     "score": 0.704378,
+     "text": "## How it works\n\nYour tool exports a CSV file, for example the list of bookings or jobs for the day. The module reads that file, does its work, and writes a CSV file back. Your tool imports that file. The exchange runs on a schedule you choose, such as every hour or at the end of the day. There is no live connection between the two systems."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#0",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.696912,
+     "text": "# Export-only tools\n\nSome field-service and job tools can export data but cannot import it. This article explains what the export-only-tool integration does in that case, and what it cannot do."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#3",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.683855,
+     "text": "## Which modules support it\n\nThe export-only-tool integration is offered for document-data-entry. It pairs naturally with that module, because the paper job sheets the module reads are usually the ones that would have been re-keyed by hand."
+    }
+   ],
+   "answer": "Probably not, at least not directly. I can only go on what the knowledge base says.\n\n**What an export-only tool means:** a module can read what's in your system, but it can't write a new record back into it. There's no API and no import, so results have to be re-keyed by hand or passed along through a file drop.\n\n**What's offered:**\n- **Export-only-tool integration:** it's offered for the **document data entry** module only. It suits paper job sheets that would otherwise be typed in by hand. It can't make your software accept data.\n- **CSV exchange:** this is a different route. It needs your tool to both export and import CSV files, so it won't work if your tool can't import.\n\nThe excerpts I have don't say exactly how the export-only integration hands results back to you. They also don't say whether other modules, such as email triage or ticket creation, can work with a tool like yours.\n\nIf you tell me which job software you use, I can search for more specific details. It would also help to know what you want to automate, such as job sheets, emails or phone requests. Then I can tell you which module might fit.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.007298
+  },
+  {
+   "qid": "q030",
+   "type": "paraphrase",
+   "question": "Is removing my data written down anywhere?",
+   "contexts": [
+    {
+     "chunk_id": "policies/personal-data#5",
+     "doc_id": "policies/personal-data",
+     "score": 0.739868,
+     "text": "## Deletion and retention\n\nYou can ask the operator to delete your contact details or your whole session. A deletion is recorded in an audit log with the time and the person who did it. The report footer carries a retention note; the retention period is a policy and is not enforced automatically by the software."
+    },
+    {
+     "chunk_id": "policies/personal-data#0",
+     "doc_id": "policies/personal-data",
+     "score": 0.698381,
+     "text": "# Personal data policy\n\nThis policy explains what personal data MILO stores during a discovery interview, when it stores it, and who can see it. It applies to the discovery assistant and to the report it produces."
+    },
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.694019,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "policies/personal-data#4",
+     "doc_id": "policies/personal-data",
+     "score": 0.686204,
+     "text": "## Who can see your data\n\nYou can see everything the interview has recorded, with the sentence each fact came from. The operator, the person who reviews your submission, can see your submission and the evidence behind it. No other owner can see your session, your facts or your submission, and the assistant will refuse a request to show another owner's data."
+    },
+    {
+     "chunk_id": "policies/personal-data#6",
+     "doc_id": "policies/personal-data",
+     "score": 0.681884,
+     "text": "## Where this policy applies\n\nThis policy covers the discovery interview and the report. A module you later run in your business handles your customers' data under the agreement for that module, which is written during setup and is separate from this policy."
+    }
+   ],
+   "answer": "Yes. Deletion is covered in the personal data policy, in the section \"Deletion and retention\". It says the following:\n\n- **You can ask for deletion.** You can ask the operator to delete your contact details or your whole session.\n- **Deletions are logged.** Each deletion goes into an audit log with the time and the person who did it.\n- **Retention is a policy.** The report footer carries a retention note. The retention period is a policy, and the software doesn't enforce it automatically.\n\nSome related points from the same policy:\n\n- Your contact details (name, role, email) are stored only after you've given consent. The consent is recorded with its version and the time.\n- You can see everything the interview has recorded, along with the sentence each fact came from.\n- The operator, who reviews your submission, can see it and the evidence behind it. No other owner can see your data.\n- The policy covers the discovery interview and the report. If you later run a module in your business, your customers' data is handled under the agreement for that module. That agreement is written during setup and is separate from this policy.\n\nThe excerpts I have don't say how long retention lasts or how quickly a deletion request is processed. The operator would need to confirm those.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.007672
+  },
+  {
+   "qid": "q040",
+   "type": "unanswerable",
+   "question": "How long is the contract and what is the notice period?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/what-is-included#0",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.672889,
+     "text": "# What is included and what is not\n\nA monthly price covers a fixed list of things. This article says what that list is, and what sits outside it, so that there are no surprises after the first invoice."
+    },
+    {
+     "chunk_id": "pricing/setup-fees#5",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.652143,
+     "text": "## Nothing hidden\n\nThere are no other fees on the rate card. Taxes, travel and hardware are excluded, as the article on what is included explains. All figures are indicative and non-binding."
+    },
+    {
+     "chunk_id": "consultation/first-questions#5",
+     "doc_id": "consultation/first-questions",
+     "score": 0.647457,
+     "text": "## The constraint questions\n\nFinally the constraints: whether your tools can export, import or offer an API, whether you handle personal data, whether urgent requests exist, your budget range if you have one, and when you would want to start."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#1",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.647209,
+     "text": "## Included in the monthly price\n\nThe monthly price for a module covers the running of that module for your business: the software, the hosting, the templates and rules we agree with you during setup, and the audit or delivery logs that each module keeps. It also covers the integration you chose, once the integration surcharge is added. Minor changes to wording, labels or skill tags are included; you can ask for them at any time."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#5",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.645292,
+     "text": "## Timing\n\nWe ask when you would want to start. If you have not decided, say so. The estimate is then marked as a scenario, with the undecided start shown as an assumption, rather than as an indicative figure. A start date does not change the price; it changes how firm the estimate can be."
+    }
+   ],
+   "answer": "I couldn't find the contract length or the notice period in the knowledge base, so I can't give you either one. I don't want to guess at terms that matter this much.\n\nThe knowledge base does say a few related things:\n- Monthly prices cover running the module, including the software, hosting, agreed templates and rules, and logs. Taxes, travel and hardware are excluded.\n- Figures are indicative and non-binding.\n- A start date doesn't change the price. It only changes how firm the estimate can be.\n\nPlease ask the MILO operator to confirm the contract term, the notice period and any cancellation conditions in writing before you commit. I can also run a cost estimate for the modules you're considering.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.012508
+  },
+  {
+   "qid": "q046",
+   "type": "identifier",
+   "question": "can staff-assignment hook into anything besides the csv export?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/csv-export#3",
+     "doc_id": "implementation/csv-export",
+     "score": 0.736137,
+     "text": "## Which modules support it\n\nEvery module in the catalogue works with csv-export: phone-intake, email-triage, ticket-creation, staff-assignment, document-data-entry and customer-status-updates. For staff-assignment it is the only integration offered."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#4",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.73085,
+     "text": "## Connecting it to your tools\n\nThe module works with csv-export. Skill tags and availability can be imported from a spreadsheet, and the assignments can be exported to one."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#0",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.70821,
+     "text": "# Staff assignment\n\nThe staff-assignment module suggests which staff member should take a ticket, using the skills and availability the owner has entered. It is a suggestion, not an order: a person can always override it."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#3",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.697912,
+     "text": "## What is not included\n\nThe staff-assignment module does not make automatic payroll or shift changes. It does not make decisions about discipline. It only proposes who is best placed to take a job; everything about pay, shifts and conduct stays with you."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#5",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.689801,
+     "text": "## Price\n\nThe base monthly price for staff-assignment is 340 USD. The setup fee is 900 USD per module. The csv-export integration has no monthly surcharge. All prices are indicative and non-binding."
+    }
+   ],
+   "answer": "No. According to the knowledge base, csv-export is the only integration offered for staff-assignment.\n\nYou can still do two things with it:\n- **Import:** skill tags and availability can come in from a spreadsheet.\n- **Export:** the module's assignments can go out to a spreadsheet.\n\nThe csv-export integration has no monthly surcharge. The base price for staff-assignment is 340 USD a month, plus a 900 USD setup fee per module. All prices are indicative and non-binding.\n\nI can look up other modules if you want to know which integrations they support.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.00569
+  },
+  {
+   "qid": "q054",
+   "type": "identifier",
+   "question": "bookkeeping example - did csv-export cost them anything extra?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/csv-export#4",
+     "doc_id": "implementation/csv-export",
+     "score": 0.779231,
+     "text": "## Cost\n\nThe csv-export integration carries no monthly surcharge. Its line on the rate card is 0 USD. The module's own base price and the setup fee still apply."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#4",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.729948,
+     "text": "## Cost\n\nThe export-only-tool surcharge is 250 USD a month. It covers the extra handling, the file-drop setup or the prepared re-keying list, and the checking that goes with it."
+    },
+    {
+     "chunk_id": "implementation/csv-export#6",
+     "doc_id": "implementation/csv-export",
+     "score": 0.725194,
+     "text": "## When to choose it\n\nChoose csv-export when your tool has no API, when you want to try a module without touching your tool, or when a delay of up to the export interval does not matter. Many owners start here and move to api-connector later."
+    },
+    {
+     "chunk_id": "pricing/setup-fees#2",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.721349,
+     "text": "## Integration surcharges\n\nThe monthly surcharge depends on how the module talks to your existing tool.\n\n| Integration | Monthly surcharge |\n|---|---|\n| csv-export | 0 USD |\n| api-connector | 300 USD |\n| crm-connector | 450 USD |\n| export-only-tool | 250 USD |\n\nThe csv-export integration has no monthly surcharge, because your tool does the import and export itself. The api-connector surcharge is 300 USD a month and covers keeping the live connection working as your tool changes. The crm-connector surcharge is 450 USD a month and includes the field mapping. The export-only-tool surcharge is 250 USD a month and covers the file drop or prepared re-keying that an export-only tool needs."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#2",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.717067,
+     "text": "## What the discovery found\n\nThe interview recorded the channels, the daily volume, the minutes per call and the minutes of spreadsheet entry, each with the owner's own sentence as evidence. The pain points were missed calls, reminders sent by hand, and no-shows. The errors were missed and duplicated bookings. The booking widget could export CSV, so the csv-export integration was available with no surcharge."
+    }
+   ],
+   "answer": "The excerpts don't include a bookkeeping example. The closest case is the grooming-bookings one, and I'm assuming that's what you mean.\n\nIn that case, csv-export carried no monthly surcharge. The booking widget could export CSV, so the integration was available at 0 USD a month. The module's own base price and the setup fee still applied, though. \"No surcharge\" only means the integration line on the rate card is zero.\n\nFor comparison, the other integrations cost more per month: api-connector is 300 USD, crm-connector is 450 USD, and export-only-tool is 250 USD.\n\nIf you meant a different case, tell me which one. I can also search for a bookkeeping example specifically.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006546
+  },
+  {
+   "qid": "q055",
+   "type": "identifier",
+   "question": "someone rings about a gas leak. what does phone-intake do with them?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/urgent-requests#1",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.714953,
+     "text": "## Why we ask\n\nAn automated system that treats a gas smell like a routine quote is dangerous. Before any module is recommended, the interview asks whether urgent requests exist, what counts as urgent for you, and who takes those calls today. The answers decide whether a module may handle a request on its own or must pass it to a person at once."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.713491,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#2",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.681858,
+     "text": "## What counts as urgent\n\nYou decide. For a heating firm it might be no heat in winter or a smell of gas. For a clinic it might be a patient in pain. For a shop it might be nothing at all; many businesses have no urgent requests and say so. The assistant records your definition in your own words."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#3",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.674052,
+     "text": "## How the modules treat urgent requests\n\nThe phone-intake module passes an urgent call to a person immediately, using the handover you agree during setup, and does not try to book it. The email-triage module gives an urgent message the highest priority label so it sits at the top of the inbox. The ticket-creation module creates the ticket with the urgent flag so that staff-assignment can suggest the on-call person. None of the modules decides on its own that something is not urgent; if the request matches your definition, it is treated as urgent."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#1",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.673922,
+     "text": "## What it does\n\nWhen a call comes in, the module answers, asks what the caller needs and captures the request as text. If the caller wants an appointment, it books one in the slots you have opened. If the request needs a person, it writes a handover note and passes the call to a member of staff. Every call produces a transcript that stays with the request."
+    }
+   ],
+   "answer": "According to the knowledge base, phone-intake treats a gas leak call as urgent only if it matches the definition of \"urgent\" you give during setup. For a heating firm, a smell of gas is a typical example. You decide the definition, and it's recorded in your own words.\n\nIf the call matches that definition:\n- The module passes the call to a person immediately. It uses the handover you agree during setup.\n- It does not try to book an appointment.\n\nThe module never decides on its own that something is not urgent. If the request matches your definition, it is treated as urgent.\n\nFor this to work, you need to list gas leaks as urgent when we set things up. You also need to name who takes those calls, and that person must be reachable out of hours if the module covers that time. The excerpts don't say what happens if nobody answers the handover. I'd confirm that with the MILO team before relying on it for safety-critical calls.\n\nI can note your urgent-request definition now if you'd like. I'd need to know what counts as urgent for your business and who takes those calls today.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.007488
+  },
+  {
+   "qid": "q059",
+   "type": "paraphrase",
+   "question": "my filters and folders, will the email bot mess with those? and can it bin old emails?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/email-triage#3",
+     "doc_id": "solutions/email-triage",
+     "score": 0.75056,
+     "text": "## What is not included\n\nThe email-triage module never sends a message without approval. It does not change the mailbox rules, and it does not delete mail. Your inbox stays exactly as it is; the module only adds labels and drafts."
+    },
+    {
+     "chunk_id": "solutions/email-triage#1",
+     "doc_id": "solutions/email-triage",
+     "score": 0.713992,
+     "text": "## What it does\n\nEach new message is read and given a label, such as new job, question, complaint or invoice. The module also sets a priority so that the most pressing messages rise to the top. For each message it drafts a reply in your own wording. A member of staff reads the draft, changes it if needed, and sends it. Nothing goes out on its own."
+    },
+    {
+     "chunk_id": "solutions/email-triage#0",
+     "doc_id": "solutions/email-triage",
+     "score": 0.695306,
+     "text": "# Email triage\n\nThe email-triage module reads a shared inbox, labels each message by request type, and drafts a first reply for staff to approve. It is for teams where requests arrive in one mailbox and get lost between other mail."
+    },
+    {
+     "chunk_id": "solutions/email-triage#6",
+     "doc_id": "solutions/email-triage",
+     "score": 0.692561,
+     "text": "## Who it suits\n\nOwners who say that jobs get lost in the inbox, or that one person spends the morning sorting mail, usually start with this module. It does not replace the person who answers; it gives them a sorted inbox and a first draft."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#1",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.652741,
+     "text": "## What it does\n\nFor each accepted request, the module creates a ticket and fills in the fields your team has agreed on, such as customer, address, request type and requested date. Before it creates a ticket it checks for duplicates, so the same request sent twice does not become two jobs. It then tracks the ticket's status from open to done and reminds staff when a ticket has not moved."
+    }
+   ],
+   "answer": "No to both, based on what the knowledge base says about the email-triage module:\n\n- **Filters and folders:** The module doesn't change your mailbox rules. Your inbox stays exactly as it is. All it adds is labels and drafts.\n- **Deleting old emails:** It doesn't delete mail, so it can't bin old messages.\n\nIt also never sends anything by itself. For each message it drafts a reply in your own wording. A member of staff reads the draft, edits it if needed, and sends it.\n\nThe knowledge base doesn't say whether the module can clear out or archive old mail some other way. If you need that, I'd treat it as not offered.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006148
+  },
+  {
+   "qid": "q073",
+   "type": "paraphrase",
+   "question": "we add a new kind of paperwork 6 months in. covered or extra?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/document-data-entry#3",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.672476,
+     "text": "## What is not included\n\nThe document-data-entry module does not read handwriting outside the agreed form types. It does not do signature verification. If your team uses a form we have not set up, those sheets are flagged rather than entered."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#3",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.670053,
+     "text": "## Not included\n\nPrices exclude taxes, travel and any hardware. If a module needs a phone number, a scanner or a device at your premises, that is bought separately. Changes that go beyond the module's scope, for example a new form type after setup, are quoted as additional work."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#5",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.665125,
+     "text": "## What it did not do\n\nHandwriting outside the three agreed form types was flagged rather than read, so a client who sent a note on a napkin still created manual work. Signature verification was out of scope. The practice kept its own review step."
+    },
+    {
+     "chunk_id": "consultation/first-questions#3",
+     "doc_id": "consultation/first-questions",
+     "score": 0.66254,
+     "text": "## The workflow questions\n\nNext comes the workflow: how requests reach you, roughly how many come in on a normal day, how many minutes one request takes to handle, how many minutes of typing or re-keying follow, which tools you use, and the steps from arrival to done. We also ask whether anything in the process needs an approval."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#3",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.656487,
+     "text": "## Base prices per module\n\n| Module | Base price per month |\n|---|---|\n| phone-intake | 690 USD |\n| email-triage | 390 USD |\n| ticket-creation | 290 USD |\n| staff-assignment | 340 USD |\n| document-data-entry | 490 USD |\n| customer-status-updates | 240 USD |"
+    }
+   ],
+   "answer": "It would be extra. The pricing material says changes beyond a module's scope, such as a new form type added after setup, are quoted as additional work.\n\nDocument-data-entry is set up for the form types agreed at the start. If your team later uses a form that hasn't been set up, those sheets are flagged for manual handling and aren't entered automatically. This applies to handwriting outside the agreed form types too.\n\nMy excerpts don't give a price for adding a form type. They also don't say how long it takes or whether there's a cutoff after setup. To avoid a surprise later, list every paperwork type you expect to use, now and in the near future, so they can be included in the initial setup.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006198
+  },
+  {
+   "qid": "q076",
+   "type": "paraphrase",
+   "question": "i only know monthly numbers. is that ok and who does the maths?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/volume-and-timing#3",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.728058,
+     "text": "## Why a rough answer is enough\n\nThe volume only has to land in the right tier of the rate card, and the tiers are wide. The minutes figures are used to estimate hours per month, and a small error in minutes makes a small error in hours. A rough honest figure is more useful than a precise guess."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#4",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.713945,
+     "text": "## Which number counts\n\nThe volume that counts is the number of requests on a normal business day. If you know your volume per month, say so, and the assistant converts it to a daily figure in code and shows you the conversion. If you give two figures that do not agree, for example a daily number and a monthly number that imply different volumes, the assistant will ask you which one to use. It does not pick one for you, and no estimate is shown until the conflict is resolved."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#1",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.701105,
+     "text": "## The volume question\n\nWe ask roughly how many requests come in on a normal day. A request is anything that needs handling: a call, a message, a form, a walk-in. A normal day means a typical business day, not the busiest one and not the quietest. If you think in weeks or months, say so; the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#2",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.685804,
+     "text": "## The minutes questions\n\nWe ask two minutes figures. The first is how long one request takes to handle, from picking up the call or opening the message to having what you need. The second is how many minutes of typing or re-keying follow, for example writing the booking into a spreadsheet or entering a job sheet into a tool. Both are used in the simple return estimate in the report, and both are labelled as reported so you can see where the number came from."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#4",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.685406,
+     "text": "## When two answers disagree\n\nIf you give a daily figure at one point and a monthly figure later, and the two imply different volumes, the assistant keeps both and marks the fact as conflicting. It then asks which figure reflects a normal month. No estimate is shown until you answer, because a price built on the wrong volume would be in the wrong tier. The assistant does not quietly choose the later answer."
+    }
+   ],
+   "answer": "Yes, monthly numbers are fine.\n\n**Who does the maths:** The assistant converts your monthly figure to a daily one in code, so you don't have to. It shows you the conversion and labels the result as an estimated fact, so you can see where the number came from.\n\n**Why daily:** The price tier is based on requests on a normal business day. A normal day is a typical one, not your busiest or your quietest. A request is anything that needs handling: a call, a message, a form or a walk-in.\n\n**Accuracy:** A rough figure is enough. The tiers are wide, so a small error rarely changes your tier. A rough honest figure is more useful than a precise guess.\n\n**One thing to watch:** If you give a monthly figure and also a daily one that imply different volumes, the assistant keeps both and marks the fact as conflicting. It will ask which one reflects a normal month. No estimate is shown until you answer, and it won't quietly pick one for you.\n\nIf you tell me roughly how many requests come in per month, and how many business days you work in a month, I can record it. I can also take the minutes figures: how long one request takes to handle, and how many minutes of typing or re-keying follow.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.008206
+  },
+  {
+   "qid": "q078",
+   "type": "paraphrase",
+   "question": "no clue if our tool has an api. can i still get a figure, and what sort?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/setup-fees#4",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.706351,
+     "text": "## Which integration do you have\n\nThe discovery assistant asks whether your tools can export, import, or offer an API, and picks the integration from your answer. If you are not sure, say so; the estimate will then be marked as a scenario with the assumption shown, rather than as an indicative figure."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#1",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.682177,
+     "text": "## The problem\n\nWith an export-only tool, a module can read what is in your system, but it cannot write a new record back. Results must be re-keyed or pushed through a file drop. Many trades businesses are in this position: the tool was chosen years ago, the data is in it, and there is no API and no import."
+    },
+    {
+     "chunk_id": "implementation/api-connector#1",
+     "doc_id": "implementation/api-connector",
+     "score": 0.67877,
+     "text": "## How it works\n\nYour tool offers an API with an access key. You create a key for MILO in your tool, with only the rights the module needs, and give it to us during setup. The module then reads and writes through the API. If the key is removed, the connection stops and nothing else changes in your tool."
+    },
+    {
+     "chunk_id": "implementation/api-connector#2",
+     "doc_id": "implementation/api-connector",
+     "score": 0.67807,
+     "text": "## What you need\n\nYour tool must offer an API with an access key. Setup takes one working day. In that day we connect the module, map the fields, and run the first requests through with you watching."
+    },
+    {
+     "chunk_id": "consultation/first-questions#5",
+     "doc_id": "consultation/first-questions",
+     "score": 0.671133,
+     "text": "## The constraint questions\n\nFinally the constraints: whether your tools can export, import or offer an API, whether you handle personal data, whether urgent requests exist, your budget range if you have one, and when you would want to start."
+    }
+   ],
+   "answer": "Yes, you can still get a figure. If you're not sure whether your tool has an API, say so. The estimate will then be marked as a **scenario** and not as an **indicative figure**. It will show the assumption it's built on, for example which kind of integration it assumed. That way you can see what the number depends on.\n\nTo firm it up, you can check with your tool's vendor or look in its settings. You need to know three things:\n- Can it **export** data?\n- Can it **import** data?\n- Does it offer an **API with an access key**?\n\nThe answer matters for how the modules work:\n- **API:** The module reads and writes through the API. Setup takes one working day.\n- **Export-only (no API, no import):** A module can read what's in your system but can't write new records back. Results have to be re-keyed or pushed through a file drop.\n\nI can give you an estimate as soon as I know which modules you're interested in. The knowledge base I have doesn't say how the figures differ between integration types. You'll see the actual numbers in the estimate panel.\n\nWhich modules do you want priced? A few details about your business would also help, such as your daily request volume.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.007528
+  },
+  {
+   "qid": "q080",
+   "type": "paraphrase",
+   "question": "anything official on paper?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/what-is-included#6",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.634244,
+     "text": "## Checking the list\n\nIf you are unsure whether something is included, ask the discovery assistant. It will show you the article it relies on, and if the article does not answer, it will say so instead of guessing."
+    },
+    {
+     "chunk_id": "policies/personal-data#3",
+     "doc_id": "policies/personal-data",
+     "score": 0.630581,
+     "text": "## Documents you upload\n\nA document you upload, such as a procedure or a form, is read for evidence about your process. Its text is stored with your session and marked as an uploaded document. It is treated as information about your process, never as an instruction to the assistant. If a document contains customer data, tell us and we will remove it."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#5",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.629197,
+     "text": "## What it did not do\n\nHandwriting outside the three agreed form types was flagged rather than read, so a client who sent a note on a napkin still created manual work. Signature verification was out of scope. The practice kept its own review step."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#5",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.627209,
+     "text": "## The estimate is not a quote\n\nEvery page that shows an estimate says so: indicative, not a quote, non-binding. The rate card version, rate-card-v1-2026-10, is printed with the estimate so that you can check it later. A written quote, if you want one, is prepared by a person after the discovery report."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#6",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.624182,
+     "text": "## If you are not sure\n\nSay so. The assistant records the field as unknown, moves on, and the report lists it under unknowns and next steps, with the question that would close it."
+    }
+   ],
+   "answer": "Yes, but only in a limited sense, based on what the knowledge base says.\n\n- **Estimates:** Every page that shows an estimate states that it is indicative, not a quote, and non-binding. The rate card version (rate-card-v1-2026-10) is printed with the estimate so you can check it later.\n- **Written quote:** If you want one, a person prepares it after the discovery report. The estimate itself isn't that document.\n- **Discovery report:** It lists anything still unknown under unknowns and next steps, along with the question that would close each item.\n\nI don't have information on contracts, certificates or other formal paperwork. If you mean something specific, such as a quote, a contract or a data-protection document, tell me which and I'll search for it.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.00632
+  },
+  {
+   "qid": "q083",
+   "type": "paraphrase",
+   "question": "salon case - were the groomers forced onto some new system?",
+   "contexts": [
+    {
+     "chunk_id": "cases/grooming-bookings#1",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.711418,
+     "text": "## The situation\n\nA small pet grooming salon with two sites took bookings by phone and through a web form. Every booking was written into a shared spreadsheet by whoever answered, and reminders were sent by hand the day before. At peak times the phone rang while every groomer had a dog on the table, so calls went to voicemail and some were never returned. The owner's words in the interview were that the business lost money twice: once when a call was missed, and again when a customer forgot and did not show."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#0",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.708142,
+     "text": "# Case: a grooming salon stops missing bookings\n\nThis is an anonymised, fictional case. The owner, the salon and the figures are invented to show how a discovery interview turns into a working module."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#4",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.629787,
+     "text": "## What changed\n\nCalls at peak times were answered and recorded, with a transcript for each. Reminders went out from the template without anyone typing them. The spreadsheet stayed in use, fed by the CSV file, so the staff did not have to learn a new tool. The owner kept approving refunds by hand, which was the only approval step in the process."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#3",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.629417,
+     "text": "## What was recommended\n\nEmail triage to label and prioritise the inbox, ticket-creation so that each accepted job became a tracked ticket with a duplicate check, and staff-assignment to suggest which engineer should take a ticket from the skill tags the owner entered. Because the field-service tool was export-only, the report said plainly that re-keying could be shortened and checked but not removed, and the export-only-tool surcharge was shown."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#1",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.628874,
+     "text": "## The situation\n\nA heating and plumbing firm with several vans received most of its jobs in a shared inbox. The office read the mail each morning, wrote a paper job sheet for each job, and handed the sheets to the engineers. At the end of the day the sheets were re-keyed into a field-service tool that could export data but could not import it. Jobs were lost in the inbox when mail arrived late in the day, re-keying produced wrong addresses, and night calls about no heat or a gas smell reached no one until morning."
+    }
+   ],
+   "answer": "No. The groomers weren't forced onto a new system. The case says the spreadsheet stayed in use, fed by a CSV file, so staff didn't have to learn a new tool.\n\nHere is what changed:\n- Calls at peak times were answered and recorded, with a transcript for each.\n- Reminders went out from a template without anyone typing them.\n- The owner still approved refunds by hand. That was the only approval step in the process.\n\nBefore the change, whoever answered the phone wrote each booking into the shared spreadsheet, and reminders were sent by hand the day before. Those were the problems. The tools the staff worked in stayed the same.\n\nThis is an anonymised, fictional case, written to show how a discovery interview turns into a working module.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006814
+  },
+  {
+   "qid": "q085",
+   "type": "paraphrase",
+   "question": "salon case: no shows gone?",
+   "contexts": [
+    {
+     "chunk_id": "cases/grooming-bookings#0",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.709093,
+     "text": "# Case: a grooming salon stops missing bookings\n\nThis is an anonymised, fictional case. The owner, the salon and the figures are invented to show how a discovery interview turns into a working module."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#1",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.70214,
+     "text": "## The situation\n\nA small pet grooming salon with two sites took bookings by phone and through a web form. Every booking was written into a shared spreadsheet by whoever answered, and reminders were sent by hand the day before. At peak times the phone rang while every groomer had a dog on the table, so calls went to voicemail and some were never returned. The owner's words in the interview were that the business lost money twice: once when a call was missed, and again when a customer forgot and did not show."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#5",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.695112,
+     "text": "## What it did not do\n\nThe modules did not stop every no-show, and the report did not promise that they would. The salon still decided its own cancellation policy. Card payments by phone were out of scope for phone-intake, so deposits stayed a manual step."
+    },
+    {
+     "chunk_id": "solutions/customer-status-updates#6",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.671884,
+     "text": "## Who it suits\n\nOwners who send reminders by hand, and who lose money to no-shows, usually add this module next to phone-intake. The approved templates keep the tone yours."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#2",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.646439,
+     "text": "## What the discovery found\n\nThe interview recorded the channels, the daily volume, the minutes per call and the minutes of spreadsheet entry, each with the owner's own sentence as evidence. The pain points were missed calls, reminders sent by hand, and no-shows. The errors were missed and duplicated bookings. The booking widget could export CSV, so the csv-export integration was available with no surcharge."
+    }
+   ],
+   "answer": "No. In the grooming salon case, the no-shows weren't eliminated. The report didn't promise they would be.\n\n- **What the modules did:** The salon had lost money through missed calls and through customers who forgot and didn't show. The case paired phone-intake with customer-status-updates. That module sends reminders from approved templates, so the tone stays yours. Owners who send reminders by hand and lose money to no-shows usually add it next to phone-intake.\n- **What stayed with the salon:** It still set its own cancellation policy. Card payments by phone were out of scope for phone-intake, so deposits stayed a manual step.\n\nThe excerpts don't give any figures for how much no-shows fell. The case is also anonymised and fictional, so it shows how a discovery interview turns into a working module. It isn't evidence of real results.\n\nIf you'd like, I can look into how reminders would work for your business.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.007018
+  },
+  {
+   "qid": "q087",
+   "type": "paraphrase",
+   "question": "accountants case - scribbled notes from clients, did the module cope?",
+   "contexts": [
+    {
+     "chunk_id": "cases/accounts-paperwork#1",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.772107,
+     "text": "## The situation\n\nA small accounts practice received paper forms from its clients: expense sheets, mileage logs and signed engagement forms. A member of staff typed each form into the practice's system of record, line by line, and a second person checked a sample of the entries. The checking found wrong dates and transposed amounts often enough that the office did not trust the first pass, which meant every form was effectively handled twice."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#0",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.759272,
+     "text": "# Case: an accounts office stops re-typing forms\n\nThis is an anonymised, fictional case. The practice, its clients and its figures are invented."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#5",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.737525,
+     "text": "## What it did not do\n\nHandwriting outside the three agreed form types was flagged rather than read, so a client who sent a note on a napkin still created manual work. Signature verification was out of scope. The practice kept its own review step."
+    },
+    {
+     "chunk_id": "solutions/document-data-entry#1",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.73539,
+     "text": "## What it does\n\nYou scan or photograph a form. The module finds the fields on it, such as customer name, address, job type and date, and enters them into your system of record. Each field passes through validation rules that you agree with us, for example that a date must be a real date. Anything the module cannot read with confidence is flagged for a person to check, rather than guessed."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#3",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.733614,
+     "text": "## What was recommended\n\nOne module: document-data-entry, set up for the three agreed form types. Each form is scanned, the fields are extracted, and validation rules check them, for example that a date is a real date and that an amount has the right number of decimal places. Anything the module cannot read with confidence is flagged for a person. The estimate was indicative."
+    }
+   ],
+   "answer": "Not really. The case says the module did not handle scribbled notes.\n\n- **What it covered:** The module was set up for three agreed form types: expense sheets, mileage logs and signed engagement forms. It extracted the fields and ran validation rules, such as checking that a date is real and an amount has the right number of decimal places.\n- **What it didn't cover:** Handwriting outside those three form types was flagged rather than read. The case gives the example of a client who sent a note on a napkin. That still created manual work for the practice.\n- **Uncertain reads:** Anything the module couldn't read with confidence was flagged for a person to check. It did not guess.\n- **Other limits:** Signature verification was out of scope, and the practice kept its own review step.\n\nSo free-form scribbled notes would still need a person. The module works best on structured forms of known types. If some of your clients send informal notes, you could ask them to use a standard form. You could also plan for staff to handle the flagged items.\n\nIf you'd like, I can look up whether the module can be configured for additional form types. I can also record details about your own paperwork and get an estimate.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.007682
+  },
+  {
+   "qid": "q091",
+   "type": "paraphrase",
+   "question": "do u ask about sign offs, like my manager ok-ing big jobs?",
+   "contexts": [
+    {
+     "chunk_id": "policies/approvals#6",
+     "doc_id": "policies/approvals",
+     "score": 0.684113,
+     "text": "## Inside your own business\n\nThe interview also asks whether anything in your own process needs an approval, such as refunds or large quotes. Those approvals belong to you and are recorded as facts about your workflow; the modules respect them and do not replace them."
+    },
+    {
+     "chunk_id": "consultation/first-questions#3",
+     "doc_id": "consultation/first-questions",
+     "score": 0.673592,
+     "text": "## The workflow questions\n\nNext comes the workflow: how requests reach you, roughly how many come in on a normal day, how many minutes one request takes to handle, how many minutes of typing or re-keying follow, which tools you use, and the steps from arrival to done. We also ask whether anything in the process needs an approval."
+    },
+    {
+     "chunk_id": "consultation/first-questions#4",
+     "doc_id": "consultation/first-questions",
+     "score": 0.65631,
+     "text": "## The problem questions\n\nThen the problems: what goes wrong most often, what kind of mistakes happen, which parts you would like to hand over, and what matters most to you, whether it is saving time, fewer errors, lower cost or room to grow."
+    },
+    {
+     "chunk_id": "solutions/document-data-entry#6",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.652844,
+     "text": "## Who it suits\n\nOwners whose office re-keys paper job sheets at the end of the day, and who see wrong addresses or missed jobs as a result, usually start here. The flagged-items queue keeps a person in charge of anything doubtful."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#1",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.65165,
+     "text": "## Why we ask\n\nAn automated system that treats a gas smell like a routine quote is dangerous. Before any module is recommended, the interview asks whether urgent requests exist, what counts as urgent for you, and who takes those calls today. The answers decide whether a module may handle a request on its own or must pass it to a person at once."
+    }
+   ],
+   "answer": "Yes, the interview asks about sign-offs. It asks whether anything in your process needs an approval, and refunds and large quotes are the examples it gives. A manager approving big jobs would fit that.\n\nYour approvals are recorded as facts about your workflow. The modules respect them and don't replace them, so a big job would still go to your manager for the OK.\n\nIf you'd like, tell me how it works at your company and I'll record it. For example, I'd need to know what counts as a big job and who signs off on it.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.005696
+  },
+  {
+   "qid": "q093",
+   "type": "paraphrase",
+   "question": "if i tell u my budget will the quote magically land on it?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/volume-and-timing#6",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.748715,
+     "text": "## Budget\n\nWe ask whether you have a budget range in mind, and it is fine to say you do not know. The budget is recorded for the report and is never used to set the price; the price comes from the rate card alone."
+    },
+    {
+     "chunk_id": "consultation/first-questions#7",
+     "doc_id": "consultation/first-questions",
+     "score": 0.691791,
+     "text": "## If you ask for the price early\n\nThe assistant will not give a number until the assessment questions are answered. It will tell you what it still needs and continue. This is not evasion; it is how the estimate stays honest."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#5",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.679982,
+     "text": "## Timing\n\nWe ask when you would want to start. If you have not decided, say so. The estimate is then marked as a scenario, with the undecided start shown as an assumption, rather than as an indicative figure. A start date does not change the price; it changes how firm the estimate can be."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#3",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.677391,
+     "text": "## When you see a number\n\nThe assistant does not show a price until it has enough of the assessment to make one meaningful. If you ask for the cost in the first few messages, it will explain what it still needs and carry on with the questions. This is deliberate: a number given too early is almost always wrong, and it is hard to forget."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#5",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.675139,
+     "text": "## The estimate is not a quote\n\nEvery page that shows an estimate says so: indicative, not a quote, non-binding. The rate card version, rate-card-v1-2026-10, is printed with the estimate so that you can check it later. A written quote, if you want one, is prepared by a person after the discovery report."
+    }
+   ],
+   "answer": "No. Your budget won't change the price. We record it for the report, and it's fine to say you don't know it. The price comes only from the rate card, based on the modules you choose and the facts about your business, such as volume and integrations.\n\nTwo related points:\n\n- **Start date:** It doesn't change the price either. It only changes how firm the estimate is. If you haven't decided on a start date, the estimate is marked as a scenario with that stated as an assumption.\n- **It's an estimate, not a quote:** Any figure you see is indicative and non-binding. The rate card version (rate-card-v1-2026-10) is printed on it so you can check it later. If you want a written quote, a person prepares it after the discovery report.\n\nI also won't give a number until I've covered enough of the assessment questions for it to be meaningful. If you'd like, we can start on those now. What does your business do, and how do requests reach you (phone, email, etc.)?",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006992
+  },
+  {
+   "qid": "q097",
+   "type": "paraphrase",
+   "question": "after submitting, which people at milo actually look at my answers?",
+   "contexts": [
+    {
+     "chunk_id": "policies/personal-data#0",
+     "doc_id": "policies/personal-data",
+     "score": 0.723571,
+     "text": "# Personal data policy\n\nThis policy explains what personal data MILO stores during a discovery interview, when it stores it, and who can see it. It applies to the discovery assistant and to the report it produces."
+    },
+    {
+     "chunk_id": "policies/personal-data#4",
+     "doc_id": "policies/personal-data",
+     "score": 0.709845,
+     "text": "## Who can see your data\n\nYou can see everything the interview has recorded, with the sentence each fact came from. The operator, the person who reviews your submission, can see your submission and the evidence behind it. No other owner can see your session, your facts or your submission, and the assistant will refuse a request to show another owner's data."
+    },
+    {
+     "chunk_id": "policies/security#0",
+     "doc_id": "policies/security",
+     "score": 0.685283,
+     "text": "# Security policy\n\nThis policy explains how MILO keeps one owner's interview separate from another's, how it treats text that tries to give the assistant orders, and what it records."
+    },
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.679023,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "implementation/api-connector#1",
+     "doc_id": "implementation/api-connector",
+     "score": 0.675949,
+     "text": "## How it works\n\nYour tool offers an API with an access key. You create a key for MILO in your tool, with only the rights the module needs, and give it to us during setup. The module then reads and writes through the API. If the key is removed, the connection stops and nothing else changes in your tool."
+    }
+   ],
+   "answer": "According to MILO's personal data policy, one group of people at MILO can see your submission: the operator. The operator is the person who reviews it. They can see the submission and the evidence behind it, meaning the sentences from your interview that each fact came from.\n\nYou can see everything the interview recorded, along with the sentence each fact came from. No other owner can see your session, facts or submission. The assistant will refuse a request to show another owner's data.\n\nThe excerpts I have don't say how many operators there are, who they are, or what roles they hold. I can't tell you more than that without guessing.\n\nYour contact details (name, role and email) are stored only after you've given consent. That consent is recorded with its version and the time you gave it. Until then I can talk with you, but I don't keep those fields.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006378
+  },
+  {
+   "qid": "q103",
+   "type": "paraphrase",
+   "question": "can i send a .docx?",
+   "contexts": [
+    {
+     "chunk_id": "policies/security#5",
+     "doc_id": "policies/security",
+     "score": 0.686502,
+     "text": "## Input limits\n\nA message may not be empty and may not be very long, and it may not contain control characters. An upload must be a PDF or a text file within the size limit. Messages that break these rules are rejected with a plain explanation, not processed in part."
+    },
+    {
+     "chunk_id": "policies/personal-data#3",
+     "doc_id": "policies/personal-data",
+     "score": 0.655376,
+     "text": "## Documents you upload\n\nA document you upload, such as a procedure or a form, is read for evidence about your process. Its text is stored with your session and marked as an uploaded document. It is treated as information about your process, never as an instruction to the assistant. If a document contains customer data, tell us and we will remove it."
+    },
+    {
+     "chunk_id": "implementation/csv-export#2",
+     "doc_id": "implementation/csv-export",
+     "score": 0.645228,
+     "text": "## What you need\n\nYour tool must be able to export and import CSV files. Most spreadsheets, booking widgets and small job tools can. During setup we agree the column names on both sides so that the files always line up."
+    },
+    {
+     "chunk_id": "solutions/document-data-entry#3",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.630046,
+     "text": "## What is not included\n\nThe document-data-entry module does not read handwriting outside the agreed form types. It does not do signature verification. If your team uses a form we have not set up, those sheets are flagged rather than entered."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#3",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.627924,
+     "text": "## Which modules support it\n\nThe export-only-tool integration is offered for document-data-entry. It pairs naturally with that module, because the paper job sheets the module reads are usually the ones that would have been re-keyed by hand."
+    }
+   ],
+   "answer": "Going by the knowledge base, probably not. The upload rules say a file must be a **PDF or a text file**, and it has to be within the size limit. A .docx isn't listed as allowed.\n\nTo get a Word document in, you could:\n- Save or export it as a PDF (File > Save As > PDF in Word), or\n- Copy the text into a plain text file, or paste it into the chat.\n\nA few other points from the knowledge base:\n- Uploaded documents, such as procedures or forms, are read as evidence about your process. They're never treated as instructions.\n- If a document contains customer data, tell us and we'll remove it.\n- Messages and uploads that break the rules are rejected with a plain explanation, and nothing is processed in part.\n\nI can't see a specific size limit in the excerpts I have, so I can't tell you the exact number.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.006594
+  },
+  {
+   "qid": "q108",
+   "type": "unanswerable",
+   "question": "where are your servers, is my data kept in the eu?",
+   "contexts": [
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.693944,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "policies/personal-data#2",
+     "doc_id": "policies/personal-data",
+     "score": 0.680788,
+     "text": "## What we store about your customers\n\nNothing. The interview asks whether you handle customer personal data, such as phone numbers, addresses or payment details, and which kinds, so that the report can say what the modules would touch. It does not ask for and does not store any actual customer record. If you paste a customer's details into the conversation, we ask you not to, and the operator can delete the message on request."
+    },
+    {
+     "chunk_id": "policies/personal-data#0",
+     "doc_id": "policies/personal-data",
+     "score": 0.670244,
+     "text": "# Personal data policy\n\nThis policy explains what personal data MILO stores during a discovery interview, when it stores it, and who can see it. It applies to the discovery assistant and to the report it produces."
+    },
+    {
+     "chunk_id": "consultation/first-questions#5",
+     "doc_id": "consultation/first-questions",
+     "score": 0.648713,
+     "text": "## The constraint questions\n\nFinally the constraints: whether your tools can export, import or offer an API, whether you handle personal data, whether urgent requests exist, your budget range if you have one, and when you would want to start."
+    },
+    {
+     "chunk_id": "policies/personal-data#6",
+     "doc_id": "policies/personal-data",
+     "score": 0.646202,
+     "text": "## Where this policy applies\n\nThis policy covers the discovery interview and the report. A module you later run in your business handles your customers' data under the agreement for that module, which is written during setup and is separate from this policy."
+    }
+   ],
+   "answer": "I can't tell you where the servers are, and I can't confirm that your data stays in the EU. The knowledge base I have doesn't say anything about server locations, hosting regions or data residency.\n\nHere is what it does say:\n- **Interview data:** The interview stores your company details and your answers. Your name, role and email are stored only after you've given consent. The consent is recorded with its version and the time.\n- **Customer data:** The interview stores no customer records. It only asks whether you handle personal data and which kinds. Please don't paste real customer details into the chat.\n- **Modules you run later:** Your customers' data is handled under a separate agreement for each module, which is written during setup. Hosting and data location would most likely be covered there, but the knowledge base doesn't confirm it.\n\nBefore you commit, ask the operator for written confirmation of where data is hosted and processed. Ask for the same for each module you're considering.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.01318
+  },
+  {
+   "qid": "q110",
+   "type": "unanswerable",
+   "question": "any demo or video first?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/api-connector#2",
+     "doc_id": "implementation/api-connector",
+     "score": 0.628033,
+     "text": "## What you need\n\nYour tool must offer an API with an access key. Setup takes one working day. In that day we connect the module, map the fields, and run the first requests through with you watching."
+    },
+    {
+     "chunk_id": "implementation/csv-export#1",
+     "doc_id": "implementation/csv-export",
+     "score": 0.612046,
+     "text": "## How it works\n\nYour tool exports a CSV file, for example the list of bookings or jobs for the day. The module reads that file, does its work, and writes a CSV file back. Your tool imports that file. The exchange runs on a schedule you choose, such as every hour or at the end of the day. There is no live connection between the two systems."
+    },
+    {
+     "chunk_id": "implementation/csv-export#2",
+     "doc_id": "implementation/csv-export",
+     "score": 0.609238,
+     "text": "## What you need\n\nYour tool must be able to export and import CSV files. Most spreadsheets, booking widgets and small job tools can. During setup we agree the column names on both sides so that the files always line up."
+    },
+    {
+     "chunk_id": "implementation/api-connector#1",
+     "doc_id": "implementation/api-connector",
+     "score": 0.607953,
+     "text": "## How it works\n\nYour tool offers an API with an access key. You create a key for MILO in your tool, with only the rights the module needs, and give it to us during setup. The module then reads and writes through the API. If the key is removed, the connection stops and nothing else changes in your tool."
+    },
+    {
+     "chunk_id": "policies/approvals#5",
+     "doc_id": "policies/approvals",
+     "score": 0.603678,
+     "text": "## What you see\n\nThe approval appears in the conversation as a card with the action, the arguments and two choices. Nothing happens until you choose, and if you close the page the card is still there when you return, until it expires."
+    }
+   ],
+   "answer": "I couldn't find anything in the knowledge base about a demo or a video, so I can't say whether one is available.\n\nWhat the knowledge base does cover is the setup. On the day you connect a module, we map the fields and run the first requests through while you watch. That is a live check of your own setup, not a demo beforehand.\n\nIf you tell me about your business, I can suggest which modules fit and produce a cost estimate. For a demo or video, you'd need to ask the MILO team directly.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.011678
+  },
+  {
+   "qid": "q112",
+   "type": "unanswerable",
+   "question": "can the email thing handle attachments like photos of the boiler?",
+   "contexts": [
+    {
+     "chunk_id": "cases/trades-dispatch#1",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.687765,
+     "text": "## The situation\n\nA heating and plumbing firm with several vans received most of its jobs in a shared inbox. The office read the mail each morning, wrote a paper job sheet for each job, and handed the sheets to the engineers. At the end of the day the sheets were re-keyed into a field-service tool that could export data but could not import it. Jobs were lost in the inbox when mail arrived late in the day, re-keying produced wrong addresses, and night calls about no heat or a gas smell reached no one until morning."
+    },
+    {
+     "chunk_id": "solutions/email-triage#6",
+     "doc_id": "solutions/email-triage",
+     "score": 0.6719,
+     "text": "## Who it suits\n\nOwners who say that jobs get lost in the inbox, or that one person spends the morning sorting mail, usually start with this module. It does not replace the person who answers; it gives them a sorted inbox and a first draft."
+    },
+    {
+     "chunk_id": "solutions/email-triage#1",
+     "doc_id": "solutions/email-triage",
+     "score": 0.662423,
+     "text": "## What it does\n\nEach new message is read and given a label, such as new job, question, complaint or invoice. The module also sets a priority so that the most pressing messages rise to the top. For each message it drafts a reply in your own wording. A member of staff reads the draft, changes it if needed, and sends it. Nothing goes out on its own."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#3",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.656142,
+     "text": "## What was recommended\n\nEmail triage to label and prioritise the inbox, ticket-creation so that each accepted job became a tracked ticket with a duplicate check, and staff-assignment to suggest which engineer should take a ticket from the skill tags the owner entered. Because the field-service tool was export-only, the report said plainly that re-keying could be shortened and checked but not removed, and the export-only-tool surcharge was shown."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#1",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.651812,
+     "text": "## What it does\n\nFor each accepted request, the module creates a ticket and fills in the fields your team has agreed on, such as customer, address, request type and requested date. Before it creates a ticket it checks for duplicates, so the same request sent twice does not become two jobs. It then tracks the ticket's status from open to done and reminds staff when a ticket has not moved."
+    }
+   ],
+   "answer": "The knowledge base doesn't say whether email triage can handle attachments such as photos of a boiler. It only says that the module reads each message, labels it (new job, question, complaint, invoice), sets a priority, and drafts a reply for staff to approve. It doesn't mention reading or analysing images or other attachments. I wouldn't assume it can interpret a photo, for example by identifying a boiler fault.\n\nHere is what the excerpts do confirm:\n- The module doesn't delete mail or change your mailbox, so attachments stay in the original message where staff can open them.\n- Nothing is sent without a person approving it.\n\nI'd check with the MILO team on photo handling before you rely on it. Is it worth knowing whether your engineers need the photos passed on to the job ticket? If so, I can look at what the ticket-creation module covers.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.013878
+  },
+  {
+   "qid": "q116",
+   "type": "unanswerable",
+   "question": "do u have a referral scheme if i bring in another business?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/email-triage#6",
+     "doc_id": "solutions/email-triage",
+     "score": 0.652862,
+     "text": "## Who it suits\n\nOwners who say that jobs get lost in the inbox, or that one person spends the morning sorting mail, usually start with this module. It does not replace the person who answers; it gives them a sorted inbox and a first draft."
+    },
+    {
+     "chunk_id": "policies/personal-data#6",
+     "doc_id": "policies/personal-data",
+     "score": 0.651659,
+     "text": "## Where this policy applies\n\nThis policy covers the discovery interview and the report. A module you later run in your business handles your customers' data under the agreement for that module, which is written during setup and is separate from this policy."
+    },
+    {
+     "chunk_id": "consultation/first-questions#4",
+     "doc_id": "consultation/first-questions",
+     "score": 0.650675,
+     "text": "## The problem questions\n\nThen the problems: what goes wrong most often, what kind of mistakes happen, which parts you would like to hand over, and what matters most to you, whether it is saving time, fewer errors, lower cost or room to grow."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.643456,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "solutions/customer-status-updates#6",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.640945,
+     "text": "## Who it suits\n\nOwners who send reminders by hand, and who lose money to no-shows, usually add this module next to phone-intake. The approved templates keep the tone yours."
+    }
+   ],
+   "answer": "I couldn't find anything about a referral scheme in the knowledge base, so I can't say whether one exists or what it would offer. I don't want to guess at rewards or terms. Please ask the MILO team directly about it.\n\nI can help with anything else, such as which modules would suit your business or a cost estimate.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.011126
+  },
+  {
+   "qid": "q120",
+   "type": "unanswerable",
+   "question": "can customers leave a rating or feedback after a call?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.68211,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "policies/personal-data#2",
+     "doc_id": "policies/personal-data",
+     "score": 0.663657,
+     "text": "## What we store about your customers\n\nNothing. The interview asks whether you handle customer personal data, such as phone numbers, addresses or payment details, and which kinds, so that the report can say what the modules would touch. It does not ask for and does not store any actual customer record. If you paste a customer's details into the conversation, we ask you not to, and the operator can delete the message on request."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#1",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.660595,
+     "text": "## What it does\n\nWhen a call comes in, the module answers, asks what the caller needs and captures the request as text. If the caller wants an appointment, it books one in the slots you have opened. If the request needs a person, it writes a handover note and passes the call to a member of staff. Every call produces a transcript that stays with the request."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#2",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.655871,
+     "text": "## What is included\n\nThe module includes call answering, request capture, appointment booking, a call transcript for each call, and handover to staff. The transcript is the evidence for every fact the module records, so a member of staff can check what the caller actually said."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#6",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.653347,
+     "text": "## Who it suits\n\nOwners whose main problem is missed calls at peak times, or who want bookings taken when the shop is closed, usually start here. The module records what the caller asked for, so nothing is lost between the call and the booking."
+    }
+   ],
+   "answer": "I couldn't find anything in the knowledge base about customers leaving a rating or feedback after a call. The phone-intake module is documented as doing these things:\n\n- answering calls\n- capturing the request\n- booking appointments\n- handing over to staff\n- producing a transcript for each call\n\nA post-call survey or rating isn't listed, so I can't say it's supported. Please check with the MILO team before you plan around it.\n\nThe call transcripts are stored with each request. Your staff could read them to see what callers asked for, but that isn't the same as collecting customer ratings.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.012552
+  }
+ ]
+}

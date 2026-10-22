@@ -28,12 +28,14 @@ def allocate(counts: dict[str, int], n: int) -> dict[str, int]:
 
 
 def draw(
-    rows: list[dict[str, Any]], n: int = N, seed: int = SEED
+    rows: list[dict[str, Any]], n: int = N, seed: int = SEED, split: str = "dev"
 ) -> list[dict[str, Any]]:
-    """`n` rows (qid, type, question), sorted by qid. Same rows and seed give the same sample."""
-    bad = [r["qid"] for r in rows if r.get("split") != "dev"]
+    """`n` rows (qid, type, question), sorted by qid. Same rows and seed give the same sample.
+
+    `split="test"` is used only by evals/final/run_final.py (F2), with rows it loaded under MILO_FINAL=1."""
+    bad = [r["qid"] for r in rows if r.get("split") != split]
     if bad:
-        raise PermissionError(f"the sample is dev only; non-dev rows: {bad[:5]}")
+        raise PermissionError(f"the sample is {split} only; other rows: {bad[:5]}")
     by_type: dict[str, list[dict[str, Any]]] = {}
     for r in sorted(rows, key=lambda r: r["qid"]):
         by_type.setdefault(r["type"], []).append(r)
