@@ -47,9 +47,33 @@ class PgAudit:
             )
 
 
+OPS_SUBMISSION_SQL = (
+    "select s.id, s.session_id, s.revision, s.submitted_at, s.status, s.estimate_status, s.report_json, "
+    "se.title, se.user_id as owner_id, p.email as owner_email "
+    "from submissions s join sessions se on se.id = s.session_id left join profiles p on p.id = se.user_id"
+)
+
+
 class PgOperator:
     def __init__(self, db: Database) -> None:
         self.db = db
+
+    def submissions(self, limit: int = 200) -> list[dict[str, Any]]:
+        """Every owner's submissions, newest first (operator read, D130 SELECT; M6 operator pages)."""
+        with self.db.transaction(None) as conn:
+            return fetch_all(
+                conn,
+                f"{OPS_SUBMISSION_SQL} order by s.id desc limit %s",
+                (max(1, min(limit, 1000)),),
+            )
+
+    def submission(self, submission_id: int) -> dict[str, Any]:
+        row = self.db.one(
+            None, f"{OPS_SUBMISSION_SQL} where s.id = %s", (int(submission_id),)
+        )
+        if row is None:
+            raise NotFound()
+        return row
 
     def delete_customer(self, actor_user_id: str, customer_id: str) -> None:
         """Delete a customer (cascades to the owner's rows) and write the audit row in the same transaction."""
