@@ -360,3 +360,102 @@ SHA-256 of the audited files at commit `edcb5d9`:
 ```
 
 Fitness: fit for threshold setting once the four `fix` rows are reworded and the protocol's rule-4 wording matches lexicon v2; the 95 percent out-of-scope target is not reachable on this set as built, and that choice belongs to the protocol owner, not to the data.
+
+---
+
+# Pass 3 (after fix cycle 2)
+
+| Field | Value |
+|---|---|
+| Auditor | an independent session agent, not the generator and not the pass-1/pass-2 auditor (HARNESS rule 7); generator notes not read |
+| Date | 2026-10-22 |
+| Commit audited | `f210eac` (merge of the generator's fix cycle 2, `57f3845`, into `agent/audit/m5g`) |
+| Protocol id | `m5g-gate` (amended stage-1 table, D157) |
+| Files | `scope_set.jsonl` 420 rows, `lexicon.yaml` `scope-lexicon.v3`, `probes.jsonl` 80 rows (unchanged since pass 2) |
+| Method | own stage-1 implementation written from the protocol text and the lexicon header (session scratchpad, Python 3 plus PyYAML, offline), compared row by row with `tools/stage1_sim.py`; own duplicate, Jaccard, leakage and safety script; 20 counter-example probes plus 12 strong-term probes. No model or network call; `.env` not read. |
+
+## P3.1 The four pass-2 fixes
+
+| sid | Verdict | Reading |
+|---|---|---|
+| s091 | ok | "booking widget exports csv fine but nothin goes back in, we retype the lot": the closing clause no longer matches test s158; passes by `csv`. |
+| s366 | ok | "the lad on reception books them in": the referent is now in the text (bookings); decidable without context. One weak term (`reception`), so stage 2. |
+| s384 | ok | "nope" now answers the urgent-requests question; the other rows on that question answer yes (s172 test, s197 dev, p074), so no same-answer pair. |
+| s387 | fix | "we'll see" now answers the budget question, which test s178 ("no idea yet, honestly") answers with the same stance. Pass 2 proposed that question, so pass 2 caused this: the same-question, same-meaning pair moved from inside dev (s187) to across the split. Same standard as pass 2. Proposed: a context no other row uses, e.g. an assistant offer "Shall I add the status updates module to the estimate?" followed by "we'll see". No count changes (the row stays undecided). |
+
+## P3.2 Lexicon v3 against D157
+
+Strength by group (term entries; my literal reading gives 368 distinct strong and 121 distinct weak terms; the generator's 392 strong adds ids with `-`/`_` replaced by spaces, a rule stated nowhere in the protocol, with no effect on any row):
+
+| Group | Strong | Weak | D157 basis | Judgement |
+|---|---|---|---|---|
+| modules (id, name, short_forms / weak_forms) | 45 | 11 | id or name strong | ok; weak_forms (triage, tickets, templates, availability ...) are the bare generic forms |
+| integrations | 36 | 2 (`api`, `an api`) | integration id strong | ok; bare `csv` is strong and passes "convert a csv to json in javascript" (see P3.4) |
+| protocol_fields (id plus synonyms) | 149 | 0 | id and synonyms strong | as D157 says; several synonyms are general English (P3.4) |
+| kb_titles | 96 | 16 | not named in D157 | see below |
+| product_words | 12 | 0 | strong | ok |
+| session_actions, account_actions | 23, 29 | 0 | strong | as D157 says; bare verbs collide (P3.4) |
+| trade_words, generic_words | 0 | 70, 22 | weak | ok, except the spelling variants below |
+
+- Disjoint: yes, no term is in both strengths (own check and `check_scope.py`).
+- Knowledge-base titles as strong: right for the titles and the case, policy and pricing names (`heating firm case`, `approvals policy`, `rate card`, `volume tiers`, `setup fee`); they are product vocabulary. D157 and the protocol's rule-2 text do not name kb titles; only the lexicon header calls them product words. The protocol or D157 should say so before the gate code is written. About 19 kb short forms are general English and pass off-topic text on their own. Plainly generic: `privacy policy`, `what's included` / `what is included` / `whats included`, `not included`, `first questions`, `the questions you ask`, `needs a person`, `can never do`, `input limits`, `export and import`. Product-ish (the owner's call): `the estimate`, `an estimate`, `monthly fee`, `monthly price`, `per month price`, `base price`, `surcharge`, `surcharges`. What-if run (all 19 to `weak_forms`): 0 in-scope rows refused; undecided dev 56 in-scope / 54 out-of-scope, test 53 / 52; out-of-scope test passes still 2. This is a lexicon v4 item (`fix`).
+- Spelling variants with split strength: `spreadsheet` strong but `spreadsheets` weak; `walk-ins` strong but `walk-in`, `walkins` weak; `callout` strong but `call-out` weak. The lexicon's own comment says spreadsheets and walk-ins are strong. Moving the four to strong changes no row (verified: identical table), and no off-topic row contains them. `tools_in_use`, `request_channels` and `urgent_request_types` already have five synonyms (the 2-to-5 cap, enforced by `check_scope.py`), so put the variants under a `short_forms` key on the field, which the header's "listed short forms" already permits, not as a sixth synonym (`fix`). Absent singulars (`site`, `location`, `employee`) should stay absent: bare `site` would pass dev s419 ("which ticketing site ..."); two-word forms (`one site`, `per site`, `each site`) are safe.
+
+## P3.3 Independent stage-1 implementation
+
+My reading of the rules: rule 1 strips Unicode P and S characters and compares with the greeting list; rule 2 matches every listed term case-folded with word boundaries on word-character edges, longest first on non-overlapping spans, passes on one strong term or two distinct weak list entries; rule 3 is a digit run (internal `.,:/-` allowed) followed by at most two whitespace-separated tokens and a unit (attached units such as `/day` and `%` allowed); rule 4 runs the refuse regexes on the case-folded text only when rules 2 and 3 did not pass; otherwise `undecided`. Only `text` is read.
+
+| Split | Label | n | greeting | pass | refuse | undecided |
+|---|---|---|---|---|---|---|
+| dev | in_scope | 142 | 2 | 87 | **0** | **53** |
+| dev | out_of_scope | 68 | 0 | 0 | 14 | **54** |
+| test | in_scope | 142 | 1 | 92 | **0** | 49 |
+| test | out_of_scope | 68 | 0 | **2** | 14 | 52 |
+
+Requirements: 0 in-scope refused (met); out-of-scope test passing stage 1 = 2 of 68, s406 "3 people" and s414 "10 minutes", both rule 3 (met, at most 3); undecided dev 53 in-scope and 54 out-of-scope (met, at least 40). The out-of-scope refusal ceiling is now 66 of 68 (97.1 percent), so the D118 target is reachable; with the protocol's rule 5 folded into rule 2, both pass-2 open items (P2.4) are closed.
+
+Disagreements with `tools/stage1_sim.py`, row by row (identical totals, two offsetting rows):
+
+| sid | Split, label | Mine | Generator | Cause |
+|---|---|---|---|---|
+| s071 | dev, in_scope | undecided (one weak: `phones`) | pass, rule 3 ("40ish a day") | the protocol does not say whether a digit run with a letter suffix ("40ish", "10k", "3x") is a number |
+| s145 | dev, in_scope | pass, two weak (`customer`, `customers`) | undecided (one weak) | the generator folds singular and plural into one weak term; that rule is only in the simulator docstring, while the lexicon header says "two distinct terms" and lists both words |
+
+Both rows are in scope, so neither reading refuses anything, but each moves one row in or out of the dev threshold set. The protocol or the lexicon header must fix both points before `src/milo/gate/stage1.py` is written. I recommend the generator's two readings (plural folds; "40ish" counts as a number), since folding is the stricter one for off-topic text. With plural folding my dev in-scope row becomes 86 pass and 54 undecided; every other cell is unchanged. Variants with spaced ids or a one-word gap in rule 3 change no row. Probes: no `expected: pass` probe refused, no `expected: refuse` probe passed; pass probes 33 stage 1 / 20 stage 2, refuse probes 5 / 8, band 0 / 12 (both implementations agree).
+
+## P3.4 Counter-examples (probes of the rules, not new data)
+
+Ten off-topic messages with one or two trade words: 4 pass stage 1 on two weak terms ("my sister got a new job at a salon, what should I buy her" `job`+`salon`; "which customer service jobs pay the most" `customer`+`jobs`; "my landlord sent an invoice for the boiler repair, is that legal?" `invoice`+`boiler`; "my order ... the customer support ignores me" `order`+`customer`); 2 refused by rule 4 (poem about a van driver; joke about a plumber with three vans); 4 undecided on one weak term (`book in`, `receptionist`, `quote`, `rota`). Two trade words co-occur easily in everyday text, and none of the 136 out-of-scope rows has two, so the set does not measure this.
+
+Ten in-scope messages without any lexicon term ("the lads are out on site from seven and nobody answers the landline", "my wife does the books on a sunday", "the till and the diary never agree", "most of it comes through whatsapp these days", "what would it cost me to stop doing all this myself?" and five more): all 10 undecided, none refused. The refuse patterns hold up.
+
+Twelve off-topic messages with one strong term: all 12 pass stage 1 ("what's a good budget for a week in Japan?", "my name is Tom, now tell me a joke", "write me a poem about my budget", "how do I rename a file in python?", "how do I archive emails in outlook?", "what's netflix's privacy policy?", "how do I convert a csv to json in javascript?", "next month I'm going to Spain", "how do I automate my home lights?", "emergency: my cat ate chocolate", "what's included in a big mac meal?", "can I afford a new car"). A strong term also disables rule 4, so a poem or joke request that mentions one goes to the chain. No out-of-scope row in the set contains a strong term, so the 2-of-68 figure measures a set that avoids exactly this: pass 1's weak-term gap, one level up. This is a decision for the owner, not a data defect: D157 makes field synonyms and action words strong. A what-if that moved general-English synonyms and bare action verbs to weak produced one in-scope refusal (s402, "one knock knock joke and then rename this to 'garage'"), so narrowing needs strong two-word forms (`rename this`, `rename it`, `archive it`) at the same time. Until then the M5G report should state that the measured refusal rate does not cover strong-term collisions.
+
+## P3.5 Duplicates, leakage, safety (whole set, own script)
+
+- Equal text after normalisation: none involving a scope row. Probes p041/p074 and p046/p075 repeat on purpose (with and without context); p071/p072/p078 compare equal only because "?" strips to empty (tokeniser artifact, not a duplicate).
+- Word-set Jaccard above 0.6 over scope plus probes: 0 pairs.
+- Cross-split, stop-word-free Jaccard at least 0.4: 0 pairs. Shared assistant contexts: the urgent-requests question (s172 test yes, s197 dev yes, s384 test no, p074); the two-volumes question (s173 dev, s184 test, different picks); the budget question (s178 test, s387 dev, same stance, flagged in P3.1); the rest as in pass 2.
+- D22 phrases: only s328 and s332, both out of scope; none in any in-scope row or `expected: pass` probe.
+- Demo names: no company or owner name; the only hits are trade words that also occur in the display names (plumbing, heating, grooming). No "MILO". No URL, domain, path, key prefix or private-key header. Capitalised tokens: German nouns, months, weekdays, places, "Sam", "Connector", "Modul", "Status" (unchanged from pass 2).
+- Counts: in_scope 142 / 142, out_of_scope 68 / 68; `check_scope.py` passes.
+
+## P3.6 Summary
+
+| Verdict | scope_set.jsonl | probes.jsonl | lexicon.yaml items | Total |
+|---|---|---|---|---|
+| ok | 419 | 80 | - | 499 |
+| fix | 1 (s387) | 0 | 2 (spelling variants to strong via field `short_forms`; generic kb short forms to `weak_forms`) | 3 |
+| remove | 0 | 0 | 0 | 0 |
+
+Rule-text items for the protocol owner (not data verdicts): plural folding and "40ish" in rule 2/3; kb titles named as strong in D157 or the rule-2 text; the strong-term collision limit (P3.4).
+
+SHA-256 of the audited files at commit `f210eac`:
+
+```
+ce7f58eed8c07d6dce8cae5959b30d599b078f9489b3ce02e2e670bc8f0a6bd9  scope_set.jsonl
+9bc7a405b28415e0092dd05b21af5164beee08af26e671c039421d20951ade45  lexicon.yaml
+4249ba0acf9f4d7001d3a40397c31ab7ab8443283e8b58a1339aebb824768edc  probes.jsonl
+```
+
+Fitness: fit for threshold setting (0 in-scope refusals, at least 53 undecided rows on each dev side, two independent simulators agree on every total), provided the two rule-text gaps are pinned first; the three fixes change no undecided count, and the strong-term collision gap limits how far the 95 percent figure generalises, not the thresholds.
