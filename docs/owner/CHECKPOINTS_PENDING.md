@@ -19,3 +19,11 @@
 - Open for phase 3 (M6 wiring): JSON 404 code should be `not_found` (D65); MAX_CONTENT_LENGTH to the 5 MB cap (D46); owner check on PATCH/archive/restore; light-theme danger text contrast 4.38:1 (verifier-manual).
 - Open for the integrator: `create_app` must call `settings.production_problems` (D137).
 - Owner question: the muted text colour from D45 (#909090) fails AA contrast and was darkened; confirm or supply another colour (docs/m6_checklist.md).
+
+## M4 — Security: policy, identity, taint, attack evaluation (merged 2026-10-22)
+
+- Builder commits 02d425c (protocol first), e136a66, 34b7b96; integrator fix cycle 2 bd908c9 (App.resume_approval through ApprovalService); verifier FAIL then PASS (docs/verify/m4.md), SR review 13 of 15 offline cases pass, the other two belong to M5b (D134) and M5G.
+- Dry attack table (scripted attacker, 43 rows): headline destructive ASR 0; auto-approve arm 0 taint-high and 0 cross-owner executions; forced arm 0 matrix mismatches; benign false refusal 0 of 9.
+- Found and fixed on the way: a double-approve race and a missing args-hash check on the product path (both high).
+- Open: live arms under evals/protocols/m4-attacks.md (integrator, live batch); the approve-time policy runs at taint low in contract mode (no session taint stored; M5b stores it); SR case defects A-07c and A-02a (pre-live pass, decision 44).
+- Owner question: none.
