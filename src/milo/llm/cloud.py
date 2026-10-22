@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from milo.llm.think import strip_think
 from milo.settings import CALL_TIMEOUT_S
 from milo.spend import SpendLedger
 from milo.types import ChatReply, ToolCall, ToolSpec, Usage
@@ -57,6 +58,39 @@ def to_openai_messages(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return out
 
 
+def _tool_args(raw: str | None) -> dict[str, Any]:
+    """Tool arguments from the model; malformed or non-object JSON becomes `{}` (the tool validator rejects it)."""
+    try:
+        value = json.loads(raw or "{}")
+    except ValueError:
+        return {}
+    return value if isinstance(value, dict) else {}
+
+
+def fetch_catalogue(api_key: str, *, client: Any = None) -> dict[str, dict[str, Any]]:
+    """The OpenRouter models catalogue as `{slug: {"prompt": usd_per_token, "completion": ..., "context": n}}`.
+
+    Used by the E02 runner to check each candidate slug before any paid call. `client` is injectable so tests
+    pass a recorded response; with no client this makes one network call.
+    """
+    cli = client or _make_client(api_key, CALL_TIMEOUT_S)
+    out: dict[str, dict[str, Any]] = {}
+    for item in cli.models.list():
+        row = item if isinstance(item, dict) else item.model_dump()
+        pricing = row.get("pricing") or {}
+        try:
+            prompt = float(pricing["prompt"])
+            completion = float(pricing["completion"])
+        except (KeyError, TypeError, ValueError):
+            prompt = completion = float("nan")
+        out[str(row["id"])] = {
+            "prompt": prompt,
+            "completion": completion,
+            "context": row.get("context_length"),
+        }
+    return out
+
+
 class OpenRouterChat:
     def __init__(
         self,
@@ -68,8 +102,12 @@ class OpenRouterChat:
         client: Any = None,
         ledger: SpendLedger | None = None,
         purpose: str = "chat",
+        temperature: float | None = 0.0,
+        disable_thinking: bool = True,
     ) -> None:
         self.model = model
+        self.temperature = temperature
+        self.disable_thinking = disable_thinking
         self.price_usd_per_mtok = price_usd_per_mtok
         self.last_cost_usd: float | None = None
         self._client = client or _make_client(api_key, timeout)
@@ -86,28 +124,43 @@ class OpenRouterChat:
             "messages": to_openai_messages(messages),
             "extra_body": {"usage": {"include": True}},
         }
+        if (
+            self.disable_thinking
+        ):  # D23b; a model that cannot disable it is stripped in `strip_think`
+            kwargs["extra_body"]["reasoning"] = {"enabled": False}
+        if self.temperature is not None:
+            kwargs["temperature"] = self.temperature
         if tools:
             kwargs["tools"] = [tool_json(t) for t in tools]
         resp = self._client.chat.completions.create(**kwargs)
         msg = resp.choices[0].message
         calls = [
-            ToolCall(c.id, c.function.name, json.loads(c.function.arguments or "{}"))
+            ToolCall(c.id, c.function.name, _tool_args(c.function.arguments))
             for c in (getattr(msg, "tool_calls", None) or [])
         ]
         usage = getattr(resp, "usage", None)
+        tokens_in = getattr(usage, "prompt_tokens", 0) or 0
+        tokens_out = getattr(usage, "completion_tokens", 0) or 0
         cost = getattr(usage, "cost", None)
-        self.last_cost_usd = float(cost) if cost is not None else None
+        if cost is not None:  # the provider's own figure wins (SPEC 2A)
+            self.last_cost_usd = float(cost)
+        elif (
+            usage is not None
+        ):  # fall back to the section 9 formula with the pinned price
+            self.last_cost_usd = (
+                tokens_in * self.price_usd_per_mtok[0]
+                + tokens_out * self.price_usd_per_mtok[1]
+            ) / 1_000_000
+        else:
+            self.last_cost_usd = None
         if self._ledger is not None and self.last_cost_usd is not None:
             self._ledger.record(
                 self.last_cost_usd, model=self.model, purpose=self._purpose
             )
         return ChatReply(
-            content=msg.content or "",
+            content=strip_think(msg.content or ""),
             tool_calls=calls,
-            usage=Usage(
-                getattr(usage, "prompt_tokens", 0) or 0,
-                getattr(usage, "completion_tokens", 0) or 0,
-            ),
+            usage=Usage(tokens_in, tokens_out),
         )
 
 
