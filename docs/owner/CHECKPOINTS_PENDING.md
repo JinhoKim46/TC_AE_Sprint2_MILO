@@ -45,3 +45,9 @@
 
 - Builder 86a2ecd; verifier PASS (docs/verify/m0.md). Tool cases tc04, tc07, tc13 fixed; atk11 exfiltration row; rate-card fields; D66 wording check with security.md reworded; checker and leakage tests (28). Gold hash unchanged.
 - Owner question: none.
+
+## M2 — Advanced RAG (merged 2026-10-22, offline)
+
+- Builder 2e1abdc (protocol first), 7692330; verifier PASS offline (docs/verify/m2.md). Six arms; self-query fallback tested; paired bootstrap against dense.
+- Live A/B in the batch after E02 pins the dev model and the index is built. The dry adopt verdicts come from a scripted fixture and must not be quoted.
+- Owner question: none.
