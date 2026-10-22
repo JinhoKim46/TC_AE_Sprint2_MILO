@@ -1,0 +1,426 @@
+{
+ "note": "Synthetic fixture for the offline M7 dry run. Invented questions, contexts, answers, labels and scripted judge replies; not MILO knowledge-base text, not gold data, not labels.jsonl. Results from it say nothing about MILO.",
+ "questions": [
+  {
+   "qid": "d01",
+   "type": "paraphrase",
+   "question": "Does the alpha desk module take card payments over the phone?"
+  },
+  {
+   "qid": "d02",
+   "type": "paraphrase",
+   "question": "Will beta mail ever delete a message?"
+  },
+  {
+   "qid": "d03",
+   "type": "paraphrase",
+   "question": "How long does it take to get the alpha desk running?"
+  },
+  {
+   "qid": "d04",
+   "type": "identifier",
+   "question": "What extra charge applies to urgent requests?"
+  },
+  {
+   "qid": "d05",
+   "type": "identifier",
+   "question": "What access does beta mail need before it can start?"
+  },
+  {
+   "qid": "d06",
+   "type": "paraphrase",
+   "question": "Is there a surcharge for CSV export?"
+  },
+  {
+   "qid": "d07",
+   "type": "unanswerable",
+   "question": "Which tractor model has the best fuel economy in winter?"
+  },
+  {
+   "qid": "d08",
+   "type": "unanswerable",
+   "question": "Does the alpha desk support Klingon?"
+  },
+  {
+   "qid": "d09",
+   "type": "paraphrase",
+   "question": "Can a caller reach a person?"
+  },
+  {
+   "qid": "d10",
+   "type": "identifier",
+   "question": "Will beta mail send replies on its own?"
+  }
+ ],
+ "generation": {
+  "Does the alpha desk module take card payments over the phone?": {
+   "answer": "No. Alpha desk never takes card payments over the phone.",
+   "contexts": [
+    {
+     "chunk_id": "solutions/alpha-desk#0",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "The alpha desk module never takes card payments over the phone."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#1",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk opens a ticket for every call."
+    },
+    {
+     "chunk_id": "solutions/beta-mail#0",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail sorts a shared inbox."
+    }
+   ]
+  },
+  "Will beta mail ever delete a message?": {
+   "answer": "Only after the owner approves it.",
+   "contexts": [
+    {
+     "chunk_id": "solutions/beta-mail#1",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail never deletes a message without the owner's approval."
+    },
+    {
+     "chunk_id": "solutions/beta-mail#2",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail needs read access to the shared inbox."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#2",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk answers within two rings."
+    }
+   ]
+  },
+  "How long does it take to get the alpha desk running?": {
+   "answer": "About two working days, and it also needs a free parking permit.",
+   "contexts": [
+    {
+     "chunk_id": "solutions/alpha-desk#3",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Set-up of alpha desk takes two working days."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#4",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk set-up needs a list of opening hours."
+    }
+   ]
+  },
+  "What extra charge applies to urgent requests?": {
+   "answer": "A surcharge of 15 percent of the monthly fee.",
+   "contexts": [
+    {
+     "chunk_id": "pricing/urgent#0",
+     "doc_id": "pricing/urgent",
+     "score": 0.7,
+     "text": "Urgent requests carry a surcharge of 15 percent of the monthly fee."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#5",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk is billed monthly."
+    }
+   ]
+  },
+  "What access does beta mail need before it can start?": {
+   "answer": "Read access to the shared inbox.",
+   "contexts": [
+    {
+     "chunk_id": "solutions/beta-mail#3",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail set-up needs read access to the shared inbox."
+    },
+    {
+     "chunk_id": "solutions/beta-mail#4",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail keeps a log of every action."
+    }
+   ]
+  },
+  "Is there a surcharge for CSV export?": {
+   "answer": "Exports are free of charge, so there is no surcharge.",
+   "contexts": [
+    {
+     "chunk_id": "pricing/urgent#1",
+     "doc_id": "pricing/urgent",
+     "score": 0.45,
+     "text": "Exports are free of charge."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#6",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.4,
+     "text": "Alpha desk is billed monthly."
+    }
+   ]
+  },
+  "Which tractor model has the best fuel economy in winter?": {
+   "answer": "I do not know. I found nothing in the knowledge base that answers that.",
+   "contexts": []
+  },
+  "Does the alpha desk support Klingon?": {
+   "answer": "Alpha desk supports English, Spanish and Klingon.",
+   "contexts": [
+    {
+     "chunk_id": "solutions/alpha-desk#7",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk supports English and Spanish."
+    },
+    {
+     "chunk_id": "solutions/beta-mail#5",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail supports English only."
+    }
+   ]
+  },
+  "Can a caller reach a person?": {
+   "answer": "Yes. Alpha desk hands the call to a person when the caller asks.",
+   "contexts": [
+    {
+     "chunk_id": "solutions/alpha-desk#8",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk hands a call to a person when the caller asks for one."
+    }
+   ]
+  },
+  "Will beta mail send replies on its own?": {
+   "answer": "No, never without approval.",
+   "contexts": [
+    {
+     "chunk_id": "solutions/beta-mail#6",
+     "doc_id": "solutions/beta-mail",
+     "score": 0.55,
+     "text": "Beta mail never sends a message without approval."
+    },
+    {
+     "chunk_id": "solutions/alpha-desk#9",
+     "doc_id": "solutions/alpha-desk",
+     "score": 0.6,
+     "text": "Alpha desk records call summaries."
+    }
+   ]
+  }
+ },
+ "labels": [
+  {
+   "qid": "d01",
+   "faithfulness": 1,
+   "relevance": 2,
+   "context_relevance": [
+    1,
+    0,
+    0
+   ],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d02",
+   "faithfulness": 1,
+   "relevance": 2,
+   "context_relevance": [
+    1,
+    0,
+    0
+   ],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d03",
+   "faithfulness": 0,
+   "relevance": 2,
+   "context_relevance": [
+    1,
+    0
+   ],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d04",
+   "faithfulness": 1,
+   "relevance": 2,
+   "context_relevance": [
+    1,
+    0
+   ],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d05",
+   "faithfulness": 1,
+   "relevance": 2,
+   "context_relevance": [
+    1,
+    0
+   ],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d06",
+   "faithfulness": 1,
+   "relevance": 2,
+   "context_relevance": [
+    1,
+    0
+   ],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d07",
+   "faithfulness": 1,
+   "relevance": 1,
+   "context_relevance": [],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d08",
+   "faithfulness": 0,
+   "relevance": 0,
+   "context_relevance": [
+    0,
+    0
+   ],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d09",
+   "faithfulness": 1,
+   "relevance": 2,
+   "context_relevance": [
+    1
+   ],
+   "labeller": "fixture"
+  },
+  {
+   "qid": "d10",
+   "faithfulness": 1,
+   "relevance": 2,
+   "context_relevance": [
+    1,
+    0
+   ],
+   "labeller": "fixture"
+  }
+ ],
+ "judges": {
+  "judge-alpha": {
+   "d01": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0, 0], \"reason\": \"scripted\"}"
+   },
+   "d02": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0, 0], \"reason\": \"scripted\"}"
+   },
+   "d03": {
+    "faithfulness": "{\"score\": 0, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0], \"reason\": \"scripted\"}"
+   },
+   "d04": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0], \"reason\": \"scripted\"}"
+   },
+   "d05": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0], \"reason\": \"scripted\"}"
+   },
+   "d06": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0], \"reason\": \"scripted\"}"
+   },
+   "d07": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [], \"reason\": \"scripted\"}"
+   },
+   "d08": {
+    "faithfulness": "{\"score\": 0, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [0, 0], \"reason\": \"scripted\"}"
+   },
+   "d09": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1], \"reason\": \"scripted\"}"
+   },
+   "d10": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0], \"reason\": \"scripted\"}"
+   }
+  },
+  "judge-beta": {
+   "d01": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 1, 0], \"reason\": \"scripted\"}"
+   },
+   "d02": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0, 0], \"reason\": \"scripted\"}"
+   },
+   "d03": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0], \"reason\": \"scripted\"}"
+   },
+   "d04": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 1], \"reason\": \"scripted\"}"
+   },
+   "d05": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0], \"reason\": \"scripted\"}"
+   },
+   "d06": {
+    "faithfulness": "{\"score\": 0, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [0, 0], \"reason\": \"scripted\"}"
+   },
+   "d07": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 0, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [], \"reason\": \"scripted\"}"
+   },
+   "d08": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [0, 1], \"reason\": \"scripted\"}"
+   },
+   "d09": {
+    "faithfulness": "not json",
+    "relevance": "not json",
+    "context_precision": "not json"
+   },
+   "d10": {
+    "faithfulness": "{\"score\": 1, \"reason\": \"scripted\"}",
+    "relevance": "{\"score\": 2, \"reason\": \"scripted\"}",
+    "context_precision": "{\"scores\": [1, 0], \"reason\": \"scripted\"}"
+   }
+  }
+ }
+}
