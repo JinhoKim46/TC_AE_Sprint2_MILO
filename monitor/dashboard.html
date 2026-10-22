@@ -50,6 +50,7 @@
 <body>
 <header>
   <h1>MILO build monitor</h1>
+  <div class="meta" id="clock">Loading clock...</div>
   <div class="meta" id="updated">Loading status...</div>
 </header>
 <main>
@@ -89,6 +90,11 @@
   </section>
 
   <section class="wide">
+    <h2>Owner messages during the run</h2>
+    <ul class="log" id="owner"></ul>
+  </section>
+
+  <section class="wide">
     <h2>Activity log</h2>
     <ul class="log" id="log"></ul>
   </section>
@@ -100,8 +106,30 @@
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var pill = function (state) { return '<span class="pill ' + esc(state) + '">' + esc(state) + "</span>"; };
 
+  var fmt = function (ms) {
+    var s = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+    return h + " h " + (m < 10 ? "0" : "") + m + " min " + (s % 60 < 10 ? "0" : "") + (s % 60) + " s";
+  };
+  var started = S.autonomous_started ? new Date(S.autonomous_started) : null;
+  var ended = S.autonomous_ended ? new Date(S.autonomous_ended) : null;
+  var written = S.status_written ? new Date(S.status_written) : null;
+  var tick = function () {
+    var now = new Date(), parts = [];
+    if (started && !isNaN(started)) {
+      var end = (ended && !isNaN(ended)) ? ended : now;
+      parts.push("Autonomous run: " + fmt(end - started) + (ended ? " (finished " + ended.toLocaleString() + ")" : " and counting") +
+        " since the owner said start at " + started.toLocaleString() +
+        " · owner messages since then: " + ((S.owner_messages || []).length) + " (none blocked the queue)");
+    }
+    if (written && !isNaN(written)) {
+      var age = now - written, min = Math.floor(age / 60000);
+      parts.push("status written " + min + " min ago" + (min > 45 ? " (stale: the integrator has not updated it for a while)" : ""));
+    }
+    document.getElementById("clock").textContent = parts.join(" · ");
+  };
+  tick(); setInterval(tick, 1000);
   document.getElementById("updated").textContent =
-    "Updated " + esc(S.updated || "unknown") + " · refreshes every 5 s · " + (S.note || "");
+    "Refreshes every 5 s · " + (S.note || "");
 
   var running = S.agents.filter(function (a) { return a.state === "running"; }).length;
   var done = S.milestones.filter(function (m) { return m.state === "done"; }).length;
@@ -138,6 +166,10 @@
     ". Not live-metered: this page does not query OpenRouter.</p>" +
     '<p>Spent in this project so far (measured runs only): <b>' + esc(sp.measured || "0") + " USD</b></p>" +
     '<p class="note">Session agents use the Claude subscription, so they add nothing here (HARNESS rule 14).</p>';
+
+  document.getElementById("owner").innerHTML = (S.owner_messages || []).slice().reverse().map(function (e) {
+    return "<li><time>" + esc(e.t) + "</time>" + esc(e.text) + "</li>";
+  }).join("") || '<li class="note">None.</li>';
 
   document.getElementById("log").innerHTML = S.log.slice().reverse().map(function (e) {
     return "<li><time>" + esc(e.t) + "</time>" + esc(e.text) + "</li>";
