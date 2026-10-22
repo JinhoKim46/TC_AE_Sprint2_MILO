@@ -868,6 +868,7 @@ class MemoryApprovalRows(_Base):
         args: dict[str, Any],
         *,
         turn_id: str | None = None,
+        ttl_s: float | None = None,
     ) -> dict[str, Any]:
         who = user_hex(owner_id)
         session = self.session(who, session_id)
@@ -888,7 +889,7 @@ class MemoryApprovalRows(_Base):
                 "status": "pending",
                 "created_at": now,
                 "expires_at": datetime.fromtimestamp(
-                    now.timestamp() + self.ttl_s, tz=UTC
+                    now.timestamp() + (self.ttl_s if ttl_s is None else ttl_s), tz=UTC
                 ),
             },
         )

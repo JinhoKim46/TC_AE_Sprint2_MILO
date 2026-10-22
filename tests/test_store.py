@@ -744,13 +744,14 @@ def test_reset_covers_every_migration_object_and_refuses_prod() -> None:
         order = [
             stmt.index(x)
             for x in (
-                f"set role {role};",
+                f"revoke all on schema public from {role};",
+                f"revoke all on all tables in schema public from {role};",
                 f"drop owned by {role};",
-                "reset role;",
                 f"drop role {role};",
             )
         ]
-        assert order == sorted(order), "set role, drop owned, reset role, drop role"
+        assert order == sorted(order), "revoke as admin, drop owned, drop role"
+        assert "set role" not in stmt and "if exists" in stmt
         assert stmts.index(stmt) > max(
             i for i, s in enumerate(stmts) if "drop table" in s or "drop function" in s
         )
