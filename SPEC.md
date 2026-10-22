@@ -601,7 +601,7 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9.4 (2026-10-22): two-stage input gate; stage 2 is the pinned decision model typesafe/jev-1.14-20261014 (D110 to D118).
 - v0.9.5 (2026-10-22): no invites anywhere (D119); scope and Jev gate added as milestone M5G (D120); owner-only items as placeholders with a production guard and a checklist (D121). Section 26 overrides earlier text.
 - v0.9.6 (2026-10-22): security red-team lane SR added (section 27, D122 to D125). Spend rule D126: session agents do all writing, data generation, audits and reviews; OpenRouter is used only where a model is being measured or the final run needs it (HARNESS rule 14).
-- v0.9.7 (2026-10-22): the 21 gaps in `docs/threat_model.md` v0.1 closed or assigned (section 28, D127 to D146).
+- v0.9.7 (2026-10-22): the 21 gaps in `docs/threat_model.md` v0.1 closed or assigned (section 28, D127 to D146); protocol-review decisions D147 to D152.
 
 ## 26. Version 0.9.5 decisions (these override earlier text where they conflict)
 
@@ -642,3 +642,12 @@ Each decision names the gap in `docs/threat_model.md` v0.1 that it closes. Where
 - **D146 Accepted by design (G-21).** D117 fail-open stands. The SR pen test measures how often it triggers and what it costs; the number goes in `docs/security_report.md`.
 
 Owner checklist additions (section 18): **8.** operator MFA (D144); **9.** acceptance of the access-token residual risk (D136).
+
+Protocol-review decisions (added after the four protocols were written):
+
+- **D147 Gate threshold equality.** `T_refuse` is the largest out-of-scope dev probability strictly below the smallest in-scope dev probability; routing refuses `P <= T_refuse`. The equality case therefore never refuses an in-scope row. `m5g-gate.md` states the rule.
+- **D148 E02 ownership and timing.** The chat-model comparison E02 is owned by M5a as its eval; paths `evals/chat/**`, `evals/results/e02/**`, `evals/protocols/e02-*.md`. It runs after M5a's `llm/cloud.py` lands and after the M0b audit commit, so D3's "before M5a" wording is withdrawn. Until E02 reports, builders use recorded fakes (tests are offline anyway), and no development model is pinned.
+- **D149 Demo-conversation split.** A-1, B-1 and E-1 are dev; A-2, B-2 and E-2 are test. The test three are read only by `MILO_FINAL=1` runs.
+- **D150 Scope data owner.** `data/scope/**` is owned by M5G alone (the Appendix A M0 row is withdrawn); the scope set is generated and audited by session agents under `m5g-gate.md` before the gate code exists.
+- **D151 Gold filter keys.** Gold filters use `section` and `product` only. `updated_after` has no gold quota because every article carries the same `updated` date; the self-query code still supports it.
+- **D152 Kit checker.** `scripts/check_project_data.py` is copied from the kit at S0, read-only. Its `GOLD_TYPES` and accepted filter keys are verified then; M0b's protocol marks them "to verify" until that copy exists.

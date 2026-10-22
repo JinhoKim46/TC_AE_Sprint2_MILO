@@ -129,7 +129,7 @@ One owner per path. (I) marks integrator-owned. A path not listed belongs to nob
 | `pyproject.toml`, `uv.lock`, `.python-version`, `Makefile`, `pytest.ini`, `conftest.py`, `.gitignore`, `.env.example`, `README.md`, `SPEC.md`, `HARNESS.md`, `docs/history-map.md`, `docs/owner/CHECKPOINTS_PENDING.md` | (I) |
 | `contract/**`, `scripts/check_project_data.py` | read-only copies from S0 (I) |
 | `src/milo/__init__.py`, `app.py`, `types.py`, `errors.py`, `settings.py`, `trace.py`, `spend.py` | (I) |
-| `data/scope/**`, `data/scope/lexicon.yaml` | M0 (Fable-designed protocol, SPEC D69) |
+| `evals/chat/**`, `evals/results/e02/**`, `evals/protocols/e02-*.md` | M5a (E02 eval owner, SPEC D148) |
 | `src/milo/security/validate.py`, `src/milo/security/identity.py`, `src/milo/protocol/schema.py`, `src/milo/pricing/schema.py`, `src/milo/store/migrate.py`, `db/migrations/0001_init.sql` | (I) at S0; then the owner named below may change them by request (`db/migrations/**` goes to M5-store after S0) |
 | `src/milo/rag/retrieve.py`, `src/milo/security/policy.py`, `src/milo/security/taint.py`, `src/milo/loop.py`, `src/milo/llm/retry.py`, `src/milo/chain.py` | (I) S0 seams, each raising or returning a minimal behaviour; the owner named below replaces the body |
 | `src/milo/llm/**` | M5a |
