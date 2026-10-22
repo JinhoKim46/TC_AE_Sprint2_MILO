@@ -1,0 +1,144 @@
+{
+  "git_commit": "bcf6f2ebf979bf962f63fbd3f6583e1be22de2a7",
+  "model": "scripted-demo (milo.web.dev.DemoChat)",
+  "seed": 0,
+  "temperature": 0.0,
+  "command": "uv run python evals/ui/record.py",
+  "timestamp": "2026-10-22T19:38:42Z",
+  "inputs": {
+    "routes": "9d19f0c39733ee87a48133785af677bcf26f4cbf2a0c9ea55db1261ca5d14808",
+    "app_js": "2781a23c3dd3eaf9ab5318e0d0485495d13ae6f2d9bdb5fa390ca6a1963fccd4",
+    "dev": "5f660f990b862006edc14624c9ff57232c552e60ce78fab8aee81b099664b457"
+  },
+  "browser": "chromium (playwright, headless)",
+  "recording": "docs/m6_recording.webm",
+  "withdraw_attempts": 1,
+  "rows": [
+    {
+      "check": "signup_check_email",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "email_confirmed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "consent_gate_after_sign_in",
+      "pass": true,
+      "detail": "http://127.0.0.1:32927/consent"
+    },
+    {
+      "check": "conversation_layout",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "footer_tagline",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "message_1_answered",
+      "pass": true,
+      "detail": "Thank you, I noted that. What else can you tell me about how requests reach your"
+    },
+    {
+      "check": "message_2_answered",
+      "pass": true,
+      "detail": "Thank you, I noted that. What else can you tell me about how requests reach your"
+    },
+    {
+      "check": "message_3_answered",
+      "pass": true,
+      "detail": "Thank you, I noted that. What else can you tell me about how requests reach your"
+    },
+    {
+      "check": "fact_recorded_in_panel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "evidence_quote_shown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "reply_details_drawer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "estimate_card_shown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "submit_enabled_when_ready",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "submit_confirmation_dialog",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "report_has_ten_sections",
+      "pass": true,
+      "detail": "10"
+    },
+    {
+      "check": "report_shows_owner_quote",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "blocked_action_pending_approval",
+      "pass": true,
+      "detail": "attempts=1"
+    },
+    {
+      "check": "nothing_changed_before_approval",
+      "pass": true,
+      "detail": "report_ready"
+    },
+    {
+      "check": "keep_runs_nothing",
+      "pass": true,
+      "detail": "report_ready"
+    },
+    {
+      "check": "signed_out",
+      "pass": true,
+      "detail": "http://127.0.0.1:32927/login"
+    },
+    {
+      "check": "conversation_restored",
+      "pass": true,
+      "detail": "8 of 9"
+    },
+    {
+      "check": "spec_restored",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "operator_sees_submission",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "walk_completed",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "summary": {
+    "checks": 24,
+    "passed": 24,
+    "all_pass": true
+  },
+  "generated_at": "2026-10-22T19:38:42Z"
+}
