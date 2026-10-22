@@ -1,0 +1,35 @@
+{
+  "note": "Synthetic fixture for the offline dry harness (M1). Invented content; not MILO knowledge-base text and not gold data. Results from it are never MILO results.",
+  "docs": [
+    {
+      "doc_id": "solutions/alpha-desk",
+      "text": "# Alpha desk\n\nThe alpha desk module answers incoming calls for a small workshop.\n\n## What it does not do\n\nThe alpha desk module never takes card payments over the phone. A member of staff handles every payment.\n\n## Set-up\n\nSet-up takes two working days and needs the opening hours of the workshop.",
+      "metadata": {"title": "Alpha desk", "section": "solutions", "product": "alpha-desk", "updated": "2026-10-01"}
+    },
+    {
+      "doc_id": "solutions/beta-mail",
+      "text": "# Beta mail\n\nThe beta mail module sorts the shared inbox into folders.\n\n## Limits\n\nThe beta mail module never deletes a message. Sorting is the only change it makes to the inbox.\n\n## Set-up\n\nSet-up needs read access to the shared inbox and a list of folder names.",
+      "metadata": {"title": "Beta mail", "section": "solutions", "product": "beta-mail", "updated": "2026-10-01"}
+    },
+    {
+      "doc_id": "pricing/rate-card",
+      "text": "# Rate card\n\nEvery estimate is indicative until a person confirms the volumes.\n\n## Surcharges\n\nUrgent requests carry a surcharge of twenty percent on the monthly fee. Exporting records as CSV carries no surcharge.",
+      "metadata": {"title": "Rate card", "section": "pricing", "updated": "2026-10-01"}
+    },
+    {
+      "doc_id": "cases/bakery-orders",
+      "text": "# Case: a bakery stops losing orders\n\nThis is an invented case about a bakery that took orders by telephone.\n\n## What changed\n\nThe bakery used the alpha desk module for calls, and the number of missed orders fell in the first month. Staff kept control of the payment step.",
+      "metadata": {"title": "Case: bakery", "section": "cases", "product": "alpha-desk", "updated": "2026-10-01"}
+    }
+  ],
+  "queries": [
+    {"qid": "d01", "type": "identifier", "question": "Does the alpha desk module take card payments over the phone?", "quotes": [{"doc_id": "solutions/alpha-desk", "quote": "The alpha desk module never takes card payments over the phone."}], "filters": {"product": "alpha-desk"}},
+    {"qid": "d02", "type": "identifier", "question": "Will beta mail ever delete a message?", "quotes": [{"doc_id": "solutions/beta-mail", "quote": "The beta mail module never deletes a message."}], "filters": null},
+    {"qid": "d03", "type": "paraphrase", "question": "How long does it take to get the alpha desk running?", "quotes": [{"doc_id": "solutions/alpha-desk", "quote": "Set-up takes two working days"}], "filters": {"section": "solutions"}},
+    {"qid": "d04", "type": "paraphrase", "question": "What extra charge applies to urgent requests?", "quotes": [{"doc_id": "pricing/rate-card", "quote": "Urgent requests carry a surcharge of twenty percent on the monthly fee."}], "filters": {"section": "pricing"}},
+    {"qid": "d05", "type": "paraphrase", "question": "Is there a surcharge for CSV export?", "quotes": [{"doc_id": "pricing/rate-card", "quote": "Exporting records as CSV carries no surcharge."}], "filters": null},
+    {"qid": "d06", "type": "paraphrase", "question": "What access does beta mail need before it can start?", "quotes": [{"doc_id": "solutions/beta-mail", "quote": "Set-up needs read access to the shared inbox"}], "filters": null},
+    {"qid": "d07", "type": "unanswerable", "question": "Which tractor model has the best fuel economy in winter?", "quotes": [], "filters": null},
+    {"qid": "d08", "type": "unanswerable", "question": "What is the capital of Australia?", "quotes": [], "filters": null}
+  ]
+}
