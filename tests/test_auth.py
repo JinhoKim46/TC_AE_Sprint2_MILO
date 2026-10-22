@@ -654,12 +654,14 @@ def test_a_success_clears_the_failure_count(world: World) -> None:
     for _ in range(4):
         with pytest.raises(InvalidCredentials):
             world.service.login(
-                "owner@example.test", "wrong password!!", "198.51.100.7"
+                "owner@example.test", "wrong password!!", "198.51.100.8"
             )
 
 
 def test_failures_from_one_address_lock_that_address(world: World) -> None:
-    for i in range(20):
+    for i in range(
+        5
+    ):  # a different email each time: only the address counter can stop this
         with pytest.raises(InvalidCredentials):
             world.service.login(
                 f"user{i}@example.test", "wrong password!!", "203.0.113.5"

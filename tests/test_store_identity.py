@@ -10,7 +10,8 @@ call keyed only by the caller's own id must show nothing of another owner's data
 
   It opens the administrative connection, creates two confirmed test accounts, and runs every check under
   `SET LOCAL ROLE milo_app`. No role password is used. It refuses production settings (D76), prints PASS or FAIL
-  per call, and deletes its two accounts at the end.
+  per call, then the table probes (RLS and FORCE flags and a policy on every table read from `db/migrations`;
+  no identity, another owner, `profiles.role`, `audit_log`), and deletes its two accounts at the end.
 """
 
 from __future__ import annotations
@@ -331,6 +332,203 @@ def test_the_suite_detects_a_broken_owner_filter(
 
 
 # ---- Postgres, run by the verifier outside pytest ----
+
+
+def _state(exc: BaseException) -> str | None:
+    return getattr(exc, "sqlstate", None)
+
+
+def sql_probes(url: str, a: str, b: str) -> list[str]:
+    """Table-level probes of the SR cases (A-09a, A-09c, A-10b, A-27, D140), as `milo_app` and `milo_operator`.
+
+    Each probe runs in its own transaction that is rolled back. Returns failure texts; empty means all passed."""
+    from milo.store.db import Database
+    from milo.store.reset import tables
+
+    fails: list[str] = []
+    app = Database(url, set_role="milo_app")
+    op = Database(url, set_role="milo_operator")
+    app.open()
+    op.open()
+
+    def scalar(
+        db: Database,
+        role: str,
+        owner: str | None,
+        sql: str,
+        params: tuple[Any, ...] = (),
+    ) -> Any:
+        with db.probe(role, owner) as conn:
+            row = conn.execute(sql, params).fetchone()
+            return next(iter(row.values())) if row else None
+
+    def expect_state(
+        label: str,
+        db: Database,
+        role: str,
+        owner: str | None,
+        sql: str,
+        params: tuple[Any, ...] = (),
+    ) -> None:
+        try:
+            with db.probe(role, owner) as conn:
+                conn.execute(sql, params)
+        except Exception as exc:
+            if _state(exc) != "42501":
+                fails.append(
+                    f"{label}: expected SQLSTATE 42501, got {_state(exc) or type(exc).__name__}"
+                )
+            return
+        fails.append(f"{label}: succeeded, expected 42501")
+
+    try:
+        # D140 / A-09c: enumerate tables from the migrations; RLS on, forced (except schema_migrations), a policy.
+        owner_tables = [t for t in tables() if t != "schema_migrations"]
+        for t in tables():
+            flags = scalar(
+                op,
+                "milo_operator",
+                None,
+                "select relrowsecurity::text || relforcerowsecurity::text from pg_class where oid = %s::regclass",
+                (f"public.{t}",),
+            )
+            want = "truefalse" if t == "schema_migrations" else "truetrue"
+            if flags != want:
+                fails.append(
+                    f"A-09c {t}: relrowsecurity/relforcerowsecurity = {flags}, expected {want}"
+                )
+            if not scalar(
+                op,
+                "milo_operator",
+                None,
+                "select count(*) from pg_policies where schemaname = 'public' and tablename = %s",
+                (t,),
+            ):
+                fails.append(f"A-09c {t}: no policy")
+        for role in ("milo_app", "milo_operator"):
+            bad = scalar(
+                op,
+                "milo_operator",
+                None,
+                "select rolsuper or rolbypassrls or rolcreaterole from pg_roles where rolname = %s",
+                (role,),
+            )
+            if bad:
+                fails.append(f"A-09c {role}: superuser, bypassrls or createrole")
+
+        # Counts of owner A's rows, read by the operator (SELECT everywhere), to prove nothing changes.
+        def counts() -> dict[str, int]:
+            return {
+                t: int(scalar(op, "milo_operator", None, f"select count(*) from {t}"))
+                for t in [*owner_tables, "profiles"]
+            }
+
+        before = counts()
+        # A-09a: no milo.user_id set -> 0 rows, and an insert is refused.
+        for t in owner_tables:
+            if t == "audit_log":
+                continue
+            try:
+                n = scalar(app, "milo_app", None, f"select count(*) from {t}")
+            except Exception as exc:
+                if _state(exc) != "42501":
+                    fails.append(f"A-09a {t}: select raised {_state(exc)}")
+                continue
+            if n != 0:
+                fails.append(f"A-09a {t}: {n} rows visible without milo.user_id")
+        expect_state(
+            "A-09a insert sessions without identity",
+            app,
+            "milo_app",
+            None,
+            "insert into sessions (user_id, title) values (%s, 'x')",
+            (str(uuid.UUID(a)),),
+        )
+        # A-09b: owner B sees none of A's rows and changes none.
+        for t in owner_tables:
+            if t == "audit_log":
+                continue
+            try:
+                n = scalar(app, "milo_app", b, f"select count(*) from {t}")
+            except Exception as exc:
+                if _state(exc) != "42501":
+                    fails.append(f"A-09b {t}: select raised {_state(exc)}")
+                continue
+            if n:
+                fails.append(f"A-09b {t}: owner B sees {n} rows")
+        with app.probe("milo_app", b) as conn:
+            if conn.execute("update sessions set title = 'hijack'").rowcount != 0:
+                fails.append("A-09b sessions: owner B updated A's rows")
+        expect_state(
+            "A-09b delete customers", app, "milo_app", b, "delete from customers"
+        )
+        # A-10b: an owner cannot change roles, and no one but the grants allows it.
+        expect_state(
+            "A-10b owner update profiles.role",
+            app,
+            "milo_app",
+            a,
+            "update profiles set role = 'operator' where id = %s",
+            (str(uuid.UUID(a)),),
+        )
+        expect_state(
+            "A-10b owner insert profiles",
+            app,
+            "milo_app",
+            a,
+            "insert into profiles (id, role) values (%s, 'operator')",
+            (str(uuid.uuid4()),),
+        )
+        expect_state(
+            "A-10b operator update profiles.role",
+            op,
+            "milo_operator",
+            None,
+            "update profiles set role = 'operator'",
+        )
+        if (
+            scalar(
+                op,
+                "milo_operator",
+                None,
+                "select role from profiles where id = %s",
+                (str(uuid.UUID(a)),),
+            )
+            != "owner"
+        ):
+            fails.append("A-10b: profiles.role changed")
+        # A-27: the audit log is append-only for both roles; the operator may insert.
+        for role, db in (("milo_app", app), ("milo_operator", op)):
+            expect_state(
+                f"A-27 {role} update audit_log",
+                db,
+                role,
+                None,
+                "update audit_log set action = 'x'",
+            )
+            expect_state(
+                f"A-27 {role} delete audit_log", db, role, None, "delete from audit_log"
+            )
+        expect_state(
+            "A-27 milo_app insert audit_log",
+            app,
+            "milo_app",
+            None,
+            "insert into audit_log (action) values ('x')",
+        )
+        try:
+            with op.probe("milo_operator", None) as conn:
+                conn.execute("insert into audit_log (action) values ('probe')")
+        except Exception as exc:
+            fails.append(
+                f"A-27 operator insert audit_log failed: {_state(exc) or type(exc).__name__}"
+            )
+        if counts() != before:
+            fails.append("probes changed row counts")
+    finally:
+        app.close()
+        op.close()
+    return fails
 
 
 def main(argv: list[str] | None = None) -> int:

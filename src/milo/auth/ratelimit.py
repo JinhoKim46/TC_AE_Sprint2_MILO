@@ -23,9 +23,9 @@ class Rule:
     window_s: int
 
 
-# D92: five failures per fifteen minutes per account (the lockout), plus a wider net per address.
+# D92: five failures per fifteen minutes per account (the lockout), and the same five per address, so rotating emails from one address is stopped (SR A-17).
 LOGIN_FAIL_ACCOUNT = Rule("login_fail_account", 5, 900)
-LOGIN_FAIL_IP = Rule("login_fail_ip", 20, 900)
+LOGIN_FAIL_IP = Rule("login_fail_ip", 5, 900)
 SIGNUP_IP = Rule("signup_ip", 10, 3600)
 SIGNUP_EMAIL = Rule("signup_email", 3, 3600)
 RESET_IP = Rule("reset_ip", 10, 3600)

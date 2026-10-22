@@ -10,7 +10,6 @@ The driver is imported inside `Database.__init__` only when no pool is injected,
 
 from __future__ import annotations
 
-import re
 import uuid
 from collections.abc import Iterator, Sequence
 from contextlib import contextmanager
@@ -22,7 +21,6 @@ from milo.errors import MiloError, NotFound
 from milo.store.common import Conflict, user_hex, uuid_text
 
 ALLOWED_ROLES = ("milo_app", "milo_operator")
-SCHEMA_RE = re.compile(r"^[a-z_][a-z0-9_]{0,62}$")
 # SQLSTATEs that mean "this id is not yours or does not exist" or "already there".
 _NOT_FOUND_STATES = frozenset({"23503", "42501"})
 _CONFLICT_STATES = frozenset({"23505"})
@@ -76,11 +74,9 @@ class Database:
         min_size: int = 1,
         max_size: int = 5,
         pool: Any = None,
-        schema: str | None = None,
         set_role: str | None = None,
         admin: bool = False,
     ) -> None:
-        """`schema` pins `search_path` for a throwaway schema (SPEC D77); the verifier's RLS run uses it."""
         if set_role is not None and set_role not in ALLOWED_ROLES:
             raise ValueError("set_role must be milo_app or milo_operator")
         # The app and operator URLs must name their own role (D74). The administrative URL (D153) is accepted only
@@ -92,8 +88,6 @@ class Database:
         else:
             self.role = check_role(url)
         self.set_role = set_role
-        if schema is not None and not SCHEMA_RE.match(schema):
-            raise ValueError("invalid schema name")
         if pool is None:
             from psycopg.rows import dict_row
             from psycopg_pool import ConnectionPool
@@ -102,12 +96,7 @@ class Database:
                 url,
                 min_size=min_size,
                 max_size=max_size,
-                kwargs={
-                    "row_factory": dict_row,
-                    **(
-                        {"options": f"-c search_path={schema},public"} if schema else {}
-                    ),
-                },
+                kwargs={"row_factory": dict_row},
                 open=False,
             )
         self._pool = pool
@@ -136,6 +125,24 @@ class Database:
             if err is exc:
                 raise
             raise err from exc
+
+    @contextmanager
+    def probe(self, role: str, owner_id: str | None = None) -> Iterator[Any]:
+        """A raw connection for the verifier's RLS probes: `set local role`, optional identity, no error
+        translation, and a rollback at the end so a probe never changes anything."""
+        if role not in ALLOWED_ROLES:
+            raise ValueError("probe role must be milo_app or milo_operator")
+        with self._pool.connection() as conn:
+            conn.execute(f"set local role {role}")
+            if owner_id is not None:
+                conn.execute(
+                    "select set_config('milo.user_id', %s, true)",
+                    (uuid_text(user_hex(owner_id)),),
+                )
+            try:
+                yield conn
+            finally:
+                conn.rollback()
 
     # One-statement helpers. Rows come back as dicts with uuids as hex and numerics as floats.
     def one(
