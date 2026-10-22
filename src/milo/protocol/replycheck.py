@@ -37,6 +37,23 @@ NOT_YET_SENTENCE = "I can show an estimate once the assessment questions are ans
 BLOCKED_SENTENCE = "I cannot show an estimate until the conflicting answer is resolved."
 
 
+# Words of the product itself (the diagnosis, its specification, report and estimate), for the scope rule.
+PRODUCT_TERMS = (
+    "diagnosis",
+    "specification",
+    "report",
+    "estimate",
+    "submit",
+    "automation",
+    "automate",
+    "process",
+)
+
+
+def norm(text: str) -> str:
+    return " ".join(text.split()).casefold()
+
+
 @dataclass(frozen=True)
 class ReplyCheck:
     text: str
@@ -101,15 +118,23 @@ def check_reply(
             note = NOT_YET_SENTENCE
         body = " ".join([*kept, note]).strip()
         verdicts.append("money_removed")
+    asks_next = bool(view.next_question) and norm(view.next_question or "") in norm(
+        body
+    )
     in_scope = (
-        "?" in body or _mentions(body, scope_terms) or _mentions(body, doc_ids) or money
+        "?" in body
+        or asks_next
+        or _mentions(body, scope_terms)
+        or _mentions(body, PRODUCT_TERMS)
+        or _mentions(body, doc_ids)
+        or money
     )
     out_of_scope = not in_scope
     if out_of_scope:
         body = SCOPE_REPLY
         verdicts.append("out_of_scope")
     appended = False
-    if view.next_question and "?" not in body:
+    if view.next_question and "?" not in body and not asks_next:
         body = f"{body} {view.next_question}".strip()
         appended = True
         verdicts.append("question_appended")

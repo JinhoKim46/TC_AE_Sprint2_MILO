@@ -532,3 +532,23 @@ def test_provider_error_in_extract_is_typed():
     app, _ = _app(chat)
     r = app.ask("Two salons.", "owner-a", "t1")
     assert r.error == "provider_error:unavailable" and "Traceback" not in r.answer
+
+
+# ---- the discovery evaluation (D149 sealing; replay of the committed dry result) ----
+
+
+def test_eval_refuses_test_conversations_and_replays_the_dry_result(monkeypatch):
+    import sys
+
+    sys.path.insert(0, str(ROOT))
+    from evals.discovery import run_discovery as rd
+
+    monkeypatch.delenv("MILO_FINAL", raising=False)
+    with pytest.raises(PermissionError):
+        rd.load_conversation("A-2")
+    doc = json.loads(rd.DRY_PATH.read_text(encoding="utf-8"))
+    assert rd.compute_metrics(doc["rows"]) == doc["metrics"]
+    assert doc["metrics"]["pooled"]["premature_estimate_rate"] == 0.0
+    tampered = json.loads(json.dumps(doc["rows"]))
+    tampered[0]["actual"]["answer"] = "That is $500 a month."
+    assert rd.compute_metrics(tampered)["pooled"]["premature_estimate_rate"] > 0
