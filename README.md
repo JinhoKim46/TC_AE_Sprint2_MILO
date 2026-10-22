@@ -33,6 +33,7 @@ Read `SPEC.md` for the specification and `HARNESS.md` for how the build runs. `d
 | M5-store | Database, migrations and row-level security |
 | M5b | Discovery: protocol, facts, chain, turns, approvals |
 | M5c | Report |
+| M5G | Scope gate (rules) and input gate (decision model Jev) |
 | M6 | Web UI: pages, components and the recorded walkthrough |
 | M7 | Evaluation and reflection |
 

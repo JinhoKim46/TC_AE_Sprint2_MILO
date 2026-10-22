@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.9.4 draft. Supersedes v0.9.3. Sections 20 and 21 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
+Status: v0.9.5 draft. Supersedes v0.9.4. Sections 20, 21, 23, 24, 25 and 26 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
@@ -9,12 +9,12 @@ Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, 
 
 ## 0. Product
 
-MILO is a **discovery interview** for company owners. An owner signs in with an invited account, talks to an AI assistant about
+MILO is a **discovery interview** for company owners. An owner registers an account by themselves, signs in, talks to an AI assistant about
 their business, and sees the evidence behind every fact it records. When they submit, MILO stores an immutable specification
 revision for the operator to review, and gives the owner a research-style report: current pipeline, automation candidates,
 recommended modules, an indicative cost range and next steps.
 
-- Actors: **owner** (one invited account per customer company) and **operator** (us; reviews every submission).
+- Actors: **owner** (self-registered; one account per company, D87) and **operator** (us; reviews every submission). No invites exist (D119).
 - **Discovery mode:** one session per owner account. Every message is saved as it is sent. Signing out is "save and leave". No thread list.
 - All clients, cases, modules, prices and documents in the build are **fictional**.
 
@@ -55,7 +55,7 @@ recommended modules, an indicative cost range and next steps.
 | D29 | Git | Worktrees at `~/milo-worktrees/<role>-<milestone>` (outside the AE repo). Branch `agent/<role>/<milestone>`. Role slugs: `data`, `tools`, `llm`, `store`, `web`, `retrieval`, `advanced-rag`, `security`, `discovery`, `report`, `labelling`, `eval`. Integration only by the integrator, in section 13 order. `verify/<milestone>` branches are merged by the integrator too. Pushes only to `origin` after the owner's approval; approval given 2026-10-22 | Parallel isolation |
 | D30 | Commit trailers | Subject `<scope>: <summary>`, scope `milo/<area>`, `docs`, `chore` or `milo/data`. The body ends with the trailers the session harness supplies, verbatim. At the time of writing: `Co-Authored-By: Claude Haiku 5.5 <noreply@anthropic.com>` and `Claude-Session: https://claude.ai/code/session_01R9xpatJC8o2pDvMX57MQAb` | Trailers come from the harness, not this file |
 | D31 | Checkpoint file | The integrator appends a block to `docs/owner/CHECKPOINTS_PENDING.md` at merge time, from a template. Owners never write it. Reports say **verified, owner review pending** | One writer |
-| D34 | Accounts | Invite only. `flask invite <email>` (operator) creates a one-time token stored hashed, valid 72 h. The invite page sets a password (Werkzeug scrypt). Login is email and password. Cookies HTTP-only, `SameSite=Lax`, 12 h idle timeout. Five failed logins lock the account for 15 min | Only invited owners reach the interview |
+| D34 | Accounts | Superseded by D87 to D96 and D119: self-registration, no invites. Login is email and password through Supabase Auth. Cookies HTTP-only, `SameSite=Lax`, 12 h idle timeout. Repeated failed logins are rate-limited (Supabase Auth) | Anyone can register and use the service |
 | D35 | One session per owner | `sessions.user_id` UNIQUE, created at **sign-in** (not at page load). Every message is saved as sent. Sign-out is "save and leave". Discovery mode only | Owner's request |
 | D36 | Discovery protocol | `protocols/discovery.v1.yaml`, validated by `src/milo/protocol/schema.py` (section 5.1) | One format for all agents |
 | D37 | Fact status | `reported`, `confirmed`, `estimated`, `unknown`, `conflicting`. `confirmed` is set only by code, when the reply answers the field's `conflict_question`. A field is **to be confirmed** when it is `conflicting`, or when it has `pricing: true` and the session is not yet `quote_ready` | Evidence-aware |
@@ -106,7 +106,7 @@ milo/                             repo root; submodule at AE/sprint2/project; or
     chain.py  loop.py  turns.py
     report/       build.py templates/report.html
     store/        schema.sql db.py users.py sessions.py messages.py facts.py submissions.py approvals.py audit.py traces.py
-    auth/         invites.py passwords.py login.py ratelimit.py
+    auth/         accounts.py passwords.py login.py ratelimit.py
     web/          __init__.py routes.py templates/ static/css/app.css static/js/app.js
   evals/
     common.py                     the only file that names gold.jsonl (section 10)
@@ -308,7 +308,7 @@ Six scripted conversations (section 3A), measuring fact precision and recall, st
 - **Phase 1a (parallel):** M0 remaining scope (its data is merged; see section 3 and the M0 row); M3 tools and pricing (uses the S0 seams and `MiloBackend`); M5a LLM client, retries and errors; M5-store; M6 shell.
 - **Phase 1b (after M0 is merged):** M1 retrieval (dense only, dev split).
 - **Phase 2 (parallel):** M4 security (after M3); M5b protocol, facts, chain, turns, approvals, prompts (after M1, M3, M5a, M5-store); M2 advanced RAG (after M1).
-- **Phase 3 (parallel):** M5c report (after M5b and pricing); M6 UI wiring to the real App and the operator view (after M5b); M7 evaluation (after M2, dev only).
+- **Phase 3 (parallel):** M5c report (after M5b and pricing); M5G scope and input gate (after M5b; its protocols are committed first, D120); M6 UI wiring to the real App and the operator view (after M5b); M7 evaluation (after M2, dev only).
 - **Phase 4 (integrator):** F1 to F4.
 
 Kit targets: S0 runs every `kit-*` target as a wiring smoke check. An owner's milestone rests on its own tests (section 17). Each merge still runs `make check` and the kit targets for the merged milestone, to catch regressions in the shared pipeline.
@@ -328,7 +328,6 @@ Kit targets: S0 runs every `kit-*` target as a wiring smoke check. An owner's mi
 ## 15. Database
 
 - `users(id, email UNIQUE, password_hash, role CHECK IN ('owner','operator'), created_at, last_login_at, failed_logins, locked_until)`
-- `invites(token_hash UNIQUE, email, created_by, expires_at, used_at)`
 - `customers(user_id PK→users, company_name, industry, employee_count, locations, owner_name, owner_role, owner_email, consent_at, consent_version)`
 - `sessions(id PK, user_id UNIQUE→users, status CHECK IN ('active','submitted'), created_at, updated_at, last_seen_at)`
 - `messages(id PK, session_id→sessions, role CHECK IN ('owner','assistant','system'), content, created_at, trace_hash)`
@@ -381,7 +380,6 @@ Layout: top bar (mark, save indicator, first name, menu); centre conversation (e
 | `POST /approvals/<approval_id>` (`decision=approve` or `keep`) | Section 8 | JSON |
 | `POST /withdraw/<submission_id>` | Section 8 | JSON |
 | `GET /login`, `POST /login`, `POST /logout` | Sign-in creates the session; sign-out is "save and leave" | page or redirect |
-| `GET /invite/<token>`, `POST /invite/<token>` | Password from invite | page |
 | `GET /traces` | Operator only | page |
 | `GET /ops/submissions`, `GET /ops/submissions/<id>`, `GET /ops/export/<id>.json` | Operator only | page or file |
 
@@ -391,7 +389,7 @@ Layout: top bar (mark, save indicator, first name, menu); centre conversation (e
 
 **Web security:** autoescape on, no `|safe` on model, owner or document text (a script-tag test); CSRF hidden field for forms and `X-CSRF-Token` for fetch; cookies HTTP-only, `SameSite=Lax`, `Secure` over HTTPS; secret key from `MILO_SECRET_KEY`; the web layer calls `App`, the repositories and services only. Footer on every page: "Indicative estimate. Not a quote. Non-binding."
 
-**M6 checks.** `evals/ui/record.py` starts its own local server with a seeded operator, a seeded owner invited by the same command the operator uses, and a known password. It then drives the owner flow through the browser. The blocked action is triggered by the owner asking, in the conversation, to withdraw a submission: the model calls `withdraw_submission`, which needs approval. The `/withdraw` button is a separate path and is not used for this check. `record.py` tries the request up to three times and records the attempt count in `m6_dom_checks.json`. Results go to `evals/results/m6/m6_dom_checks.json`; the done-line is that every entry passes. Keyboard use and WCAG contrast are **verifier-manual**: the verifier checks contrast from the CSS tokens and runs a keyboard walk-through. The recording covers sign-in, messages, evidence, a fact recorded, a blocked action pending approval, submit, the report, sign-out, sign-in again with the conversation restored.
+**M6 checks.** `evals/ui/record.py` starts its own local server with a seeded operator, a seeded owner account created through sign-up (D93), and a known password. It then drives the owner flow through the browser. The blocked action is triggered by the owner asking, in the conversation, to withdraw a submission: the model calls `withdraw_submission`, which needs approval. The `/withdraw` button is a separate path and is not used for this check. `record.py` tries the request up to three times and records the attempt count in `m6_dom_checks.json`. Results go to `evals/results/m6/m6_dom_checks.json`; the done-line is that every entry passes. Keyboard use and WCAG contrast are **verifier-manual**: the verifier checks contrast from the CSS tokens and runs a keyboard walk-through. The recording covers sign-in, messages, evidence, a fact recorded, a blocked action pending approval, submit, the report, sign-out, sign-in again with the conversation restored.
 
 ## 17. Milestones and done-lines
 
@@ -406,8 +404,9 @@ Each done-line runs through a kit target or a test path. A milestone's done-line
 | M3 Tools and pricing | `src/milo/tools/**`, `src/milo/pricing/{rate_card,estimator}.py`, `evals/agent/run_tools.py`, `tests/test_tools.py`, `tests/test_pricing.py`, `docs/m3_report.md`; replaces the S0 `loop.py` seam | `tests/test_tools.py` runs every `MiloBackend` tool through `call()`, one schema rejection, identity-key stripping; `tests/test_pricing.py` passes; `make eval-tools` and `make eval-tools-replay` match; `make kit-tools` passes |
 | M4 Security | `src/milo/security/{policy,identity,taint}.py`, `evals/agent/run_attacks.py`, `tests/test_policy.py`, `tests/test_identity.py`, `docs/m4_report.md`; replaces the S0 policy and taint seams | `make kit-security`; `tests/test_identity.py` asserts `backend.executed` is non-empty and that identity keys are stripped; `tests/test_policy.py` covers the four kit questions; attack evaluation with three arms; **destructive ASR = 0 in the headline arm, and in the auto-approve arm 0 taint-high executions and 0 cross-owner executions**; `make eval-attacks` and its replay match |
 | M5a LLM and errors | `src/milo/llm/**` (replaces the S0 `llm/retry.py` seam), `tests/test_llm.py`, `tests/test_errors.py`, `docs/m5a_report.md` | `tests/test_llm.py` (think stripping, cost formula, retry classification, one retry site) and `tests/test_errors.py` pass; `make kit-errors` and `make kit-cost` pass |
-| M5-store | `src/milo/store/**`, `src/milo/auth/**`, `store/schema.sql`, `tests/test_store.py`, `tests/test_auth.py`, `tests/test_store_identity.py` | tests pass; invite, lockout and owner filter covered |
+| M5-store | `src/milo/store/**`, `src/milo/auth/**`, `store/schema.sql`, `tests/test_store.py`, `tests/test_auth.py`, `tests/test_store_identity.py` | tests pass; sign-up, confirmation, lockout and owner filter covered |
 | M5b Protocol, facts, chain, turns, approvals, prompts | `src/milo/{protocol,facts,chain,turns,prompts}/**`, the discovery branch of `src/milo/app.py` (integrator merges it), `tests/test_protocol.py`, `tests/test_turns.py`, `evals/discovery/**`, `docs/m5_report.md`, `docs/traces/` | tests pass; discovery evaluation reports premature-estimate rate = 0 (code-gated); `make discovery-table` run, with its outcome checked row by row against section 14; `make kit-threads` passes in contract mode |
+| M5G Scope and input gate | `src/milo/gate/**` (stage 1 rules, stage 2 Jev client, routing), `data/scope/**` (scope set and lexicon), `evals/gate/**`, `evals/protocols/m5g-*.md`, `tests/test_gate.py`, `docs/m5g_report.md`; the discovery branch of `src/milo/app.py` (integrator merges it) | `tests/test_gate.py` passes offline, with stage 2 replayed from recorded replies; the scope set holds at least 200 in-scope and 100 out-of-scope messages; on the test split, zero in-scope messages refused and at least 95% of out-of-scope refused; every threshold traces to a dev-split number in the report; contract mode skips the gate and `make kit-threads` still passes |
 | M5c Report | `src/milo/report/**`, `tests/test_report.py` | report from a stored spec; every number traces to a source field or rate-card constant |
 | M6 UI | `src/milo/web/**` (shell in 1a, wiring in 3), `evals/ui/record.py`, `tests/test_web.py`, `docs/m6_checklist.md`, `docs/m6_recording.webm`, `evals/results/m6/m6_dom_checks.json` | `tests/test_web.py` (XSS, CSRF, owner isolation) passes; every DOM check in `m6_dom_checks.json` passes; recording produced; verifier-manual items recorded |
 | M7 Evaluation | `evals/rag/**`, `evals/rag/labels.jsonl` (written by the labelling agent and committed before the judge prompt), `docs/m7_report.md`, `docs/reflection.md` | `make eval` replays; kappa with CI for both judges; limits section filled |
@@ -418,11 +417,17 @@ Each done-line runs through a kit target or a test path. A milestone's done-line
 - **F3** Every `kit-*` target with `PROJECT_APP=milo.app:build_app`; `make eval`; `make check`; the privacy check (section 19).
 - **F4** Checkpoint block (integrator); README status.
 
-## 18. Open items
+## 18. Open items and owner checklist
 
-- Owner creates `.privacy-terms` if there are private terms to add (section 19).
-- Operator email delivery of reports is not built.
-- Rate card and clients are fictional.
+The build queue completes every milestone. Where a step needs the owner, the build uses a placeholder and the item moves to this checklist (section 26, D121). No placeholder may reach production. Items 1 to 3 gate production use; none blocks the build or the offline tests.
+
+1. **Supabase Auth settings (D95).** On the test and prod projects: "Confirm email" on, site URL and redirect URLs set, email rate limits checked. The live sign-up check on test needs this; the offline tests do not.
+2. **Consent text (D59, D81).** The build uses placeholder v0. The owner reviews and approves the real text. Production refuses to start while the consent version is v0.
+3. **First operator.** Created by the manual step in `docs/operations.md`, by the owner, in the database. No sign-up path can create an operator (HARNESS rule 12). Production refuses to start with no confirmed operator profile.
+4. **`.privacy-terms`.** Optional, from `.privacy-terms.example`, if the owner has private terms (D85).
+5. **Real price list.** The rate card and clients are fictional. Any real price list needs owner approval before use.
+6. **Operator email delivery of reports.** Not built.
+7. **AE privacy check.** Fails on the notebooks in `sprint2/part2` and `sprint2/part4`. The owner decides before any AE commit (section 19).
 
 ## 19. Blocker for AE commits
 
@@ -445,7 +450,7 @@ Where a section below conflicts with this one, this section wins. The reviewer c
 - **D60 120-question gold set** (overrides D25 and section 3 counts): 120 questions, 60 dev and 60 test, stratified by type. At least 24 unanswerable (12 dev, 12 test) and at least 40 with a metadata filter (20 dev). Questions are realistic: typos, short forms, multi-part questions, and owners who answer in fragments. A Fable agent generates them. A second Fable agent audits the entire dataset, old and new, before any split is read. The audit report is committed with the data. The embedding and chat comparisons are rerun on the expanded dev split under a Fable-written protocol.
 
 **Pages**
-- **D61 Pages:** sign-in; set password from invite; conversation (the main layout, section 16); specification review (every field, status, evidence, edit requests); reports (list and view); profile (company details, owner account, consent history, data-deletion request); operator (submissions list, submission detail, audit log, invite form); error and empty pages.
+- **D61 Pages:** sign-in; sign-up and email confirmation; password reset; conversation (the main layout, section 16); specification review (every field, status, evidence, edit requests); reports (list and view); profile (company details, owner account, consent history, data-deletion request); operator (submissions list, submission detail, audit log); error and empty pages.
 
 **Components**
 - **D62 Component set:** top bar with navigation menu; conversation thread with inline evidence cards; composer with upload; evidence panel with status chips, progress and missing fields; estimate card, labelled indicative; approval banner; confirmation dialog (submit and withdraw); toast messages; tables with filters and empty states; report renderer with ten sections.
@@ -493,8 +498,8 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - **D65 (restated).** `tool_executed` means `call()` ran and the backend changed state for a tool the policy should have denied, or changed another owner's row. A `not_found` refusal counts as a block. Each `run_attacks.py` row carries `backend_state_changed: bool`, and the M4 done-line names that column.
 
 **Pages, consent, and names**
-- **D79 Routes added to section 16:** `GET /spec`; `POST /spec/<field_id>/request` (table `field_requests`); `GET /profile`; `GET /profile/consents`; `POST /profile/delete-request` (table `deletion_requests`); `GET /ops/audit`; `GET`/`POST /ops/invites`; `POST /ops/customers/<id>/delete`. Shell pages (sign-in, invite, error and empty pages, conversation layout) are M6 phase 1a; data-bound pages are phase 3. `tests/test_web.py` checks owner isolation on `/spec`, `/profile` and `/reports`. M6 owns the report renderer component; M5c owns the canonical JSON it renders.
-- **D80 Invites.** Created by `auth/invites.create`, which is called both by `flask invite <email>` and by the operator form.
+- **D79 Routes added to section 16:** `GET /spec`; `POST /spec/<field_id>/request` (table `field_requests`); `GET /profile`; `GET /profile/consents`; `POST /profile/delete-request` (table `deletion_requests`); `GET /ops/audit`; `POST /ops/customers/<id>/delete`. Shell pages (sign-in, sign-up, error and empty pages, conversation layout) are M6 phase 1a; data-bound pages are phase 3. `tests/test_web.py` checks owner isolation on `/spec`, `/profile` and `/reports`. M6 owns the report renderer component; M5c owns the canonical JSON it renders.
+- **D80 Invites.** Removed. There is no invite step (D87, D119).
 - **D81 Consent gate (D59 restated).** Consent is captured at first sign-in. Until `consents` has a row for purpose `interview`, `GET /` redirects to `/consent`, and `POST /messages` and `POST /upload` return 403 `consent_required`. `consents(user_id, purpose CHECK IN ('interview','aggregate'), version, at)` replaces the consent columns on `customers`. The build uses placeholder consent text v0. The owner reviews the real text before any prod use; that is a prod-only gate, listed in section 18.
 - **D82 Name check.** The check blocks a commit when `.privacy-terms` exists and a listed term matches. When the file is absent, it prints a warning only. HARNESS 3.5 and section 19 say the same thing.
 - **D84 History rewrite (D68 restated).** Executed by the integrator once, before any Phase 0 branch exists. It needs an explicit owner go-ahead for the force-push. After it, the integrator commits `docs/history-map.md` (old to new commit IDs). `.privacy-terms` must exist first, so the rewrite removes exactly the listed terms.
@@ -591,3 +596,10 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9.2 (2026-10-22): open self-registration with Supabase Auth and profiles in our database (D87 to D96); invite-only text overridden.
 - v0.9.3 (2026-10-22): multiple sessions per account (D97 to D100), session panel on the left (D101, D102), a deterministic scope gate that refuses out-of-scope input at zero model cost (D103 to D109).
 - v0.9.4 (2026-10-22): two-stage input gate; stage 2 is the pinned decision model typesafe/jev-1.14-20261014 (D110 to D118).
+- v0.9.5 (2026-10-22): no invites anywhere (D119); scope and Jev gate added as milestone M5G (D120); owner-only items as placeholders with a production guard and a checklist (D121). Section 26 overrides earlier text.
+
+## 26. Version 0.9.5 decisions (these override earlier text where they conflict)
+
+- **D119 No invites.** Anyone registers by themselves (D87). The invite text in D34, D61, D79, D80, section 15 and M6 checks is removed. The M5-store and M6 done-lines name sign-up and confirmation instead.
+- **D120 Milestone M5G.** The scope gate and the Jev input gate (D103 to D118) form milestone M5G, after M5b, because the gate sits in front of the chain. Its owned paths and done-line are in the table in section 17. Its protocols are committed before any result, under `evals/protocols/m5g-*.md` (D83). It runs in discovery mode only.
+- **D121 Owner-only items.** The build completes with placeholders for steps only the owner can do (section 18). Each placeholder is named in section 18. Production refuses to start while a placeholder is in effect (consent v0, no operator, Supabase not confirmed). The owner closes each item by hand before production use. The build never marks an owner item as done.

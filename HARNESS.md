@@ -21,6 +21,7 @@ Every role is a SPEC section 13 phase entry. The integrator is one role; it may 
 | Discovery (M5b) | 2 | `src/milo/{protocol,facts,turns,prompts}/**`, the body of `src/milo/chain.py`, `evals/discovery/**`, `tests/test_protocol.py`, `tests/test_turns.py`, `docs/m5_report.md`, `docs/traces/` | `app.py` (I) |
 | Advanced RAG (M2) | 2 | `src/milo/rag/{translate,selfquery,bm25,fusion,rerank}.py`, `evals/retrieval/ab.py`, `tests/test_selfquery.py`, `tests/test_fusion.py`, `docs/m2_report.md` | M1 files |
 | Report (M5c) | 3 | `src/milo/report/**` (canonical JSON), `tests/test_report.py` | the renderer component (M6) |
+| Scope and input gate (M5G) | 3 | `src/milo/gate/**`, `data/scope/**`, `evals/gate/**`, `evals/protocols/m5g-*.md`, `tests/test_gate.py`, `docs/m5g_report.md` | `app.py` (I); `chain.py` seam (M5b) |
 | Web wiring (M6, phase 3) | 3 | `src/milo/web/**` (wiring and data-bound pages and the report renderer), `evals/ui/record.py`, `tests/test_web.py`, `docs/m6_checklist.md`, `docs/m6_recording.webm`, `evals/results/m6/**` | `App` internals |
 | Labelling (M7) | 3 | `evals/rag/labels.jsonl` only; committed before the judge prompt | everything else |
 | Evaluation (M7) | 3 | `evals/rag/**` (except labels), `docs/m7_report.md`, `docs/reflection.md` | `src/**`, `Makefile` |
@@ -138,6 +139,7 @@ One owner per path. (I) marks integrator-owned. A path not listed belongs to nob
 | `src/milo/protocol/**`, `src/milo/facts/**`, `src/milo/turns.py`, `src/milo/prompts/**`, `src/milo/chain.py` (body) | M5b |
 | `src/milo/store/**` (including `memory.py`), `src/milo/auth/**`, `db/migrations/**` after S0 | M5-store |
 | `src/milo/report/**` | M5c |
+| `src/milo/gate/**`, `data/scope/**`, `evals/gate/**`, `tests/test_gate.py`, `docs/m5g_report.md` | M5G |
 | `src/milo/web/**` (shell and static files) | M6 (phase 1a) |
 | `src/milo/web/**` (wiring, data-bound pages, report renderer) | M6 (phase 3) |
 | `protocols/**`, `data/**` (except the gold expansion), `evals/agent/attacks_kb/**`, `scripts/build_data.py` | M0 |
