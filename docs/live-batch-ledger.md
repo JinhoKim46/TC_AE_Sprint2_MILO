@@ -18,6 +18,7 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 | 3 | M1 dense dev eval | `MILO_LIVE=1 make eval-retrieval` | e01-rerun.md (ac31ea3) | 0.005 | 0.00225 | 0.00225 | 0.0201 |
 | 4a | E02 chat compare, attempt 1 | `MILO_LIVE=1 make eval-chat` | e02-chat-compare.md (ac31ea3) | 1.20 (plan check) | 0 (failed at the first embedding request, before any chat call) | none | 0.0201 |
 | 4b | E02 chat compare, dev (retry) | `MILO_LIVE=1 make eval-chat` | e02-chat-compare.md (ac31ea3) | 1.20 (plan 0.195) | 0.175178 | 0.172928 chat + 0.00225 embedding | 0.1953 |
+| 5 | M2 A/B, dev | `MILO_LIVE=1 make eval-ab AB_ARGS="--max-cost 0.25 --chat-model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --reason ..."` | m2-ab.md (2e1abdc) | 0.25 | 0.01328 (key usage delta; includes query embeddings) | 0.01214 chat | 0.2086 |
 
 ## Notes
 
@@ -48,3 +49,4 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
   reference: **`anthropic/claude-haiku-5.5`** and **`openai/gpt-4.1-mini`** (0.40 / 1.60). Neither is the product model.
 - E02 skipped steps: step 7 (single test-split run, needs `MILO_FINAL=1`) is not run because this batch is dev only;
   step 8 (blind answer grading) is session work outside this batch.
+- M2: no arm adopted (rerank +0.072 with CI [-0.019, 0.167]; every other arm significantly worse).
