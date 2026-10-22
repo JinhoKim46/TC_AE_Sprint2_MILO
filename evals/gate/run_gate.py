@@ -52,6 +52,7 @@ from milo.gate.route import (  # noqa: E402
     NO_THRESHOLDS,
     Gate,
     GateDecision,
+    StaleThresholds,
     Thresholds,
     compute_thresholds,
     load_thresholds,
@@ -498,17 +499,17 @@ def replay(path: Path) -> list[str]:
     return diffs
 
 
-_TEXTS: dict[tuple[str, str], dict[str, Any]] = {}
+_TEXTS: dict[str, dict[str, dict[str, Any]]] = {}
 
 
 def _source_text(row: dict[str, Any]) -> dict[str, Any]:
-    """The text and turns of a stored row, read again from the data (the result files keep no owner text twice)."""
-    if not _TEXTS:
-        for r in read_jsonl(SCOPE_SET):
-            _TEXTS[("scope", r["sid"])] = r
-        for p in read_jsonl(PROBES):
-            _TEXTS[("probe", p["sid"])] = p
-    return _TEXTS[(row["kind"], row["sid"])]
+    """The text and turns of a stored row, read again from the data (the result files keep no owner text twice).
+    Only the split of the row is loaded: a dev replay never reads test rows, and a test row needs MILO_FINAL=1."""
+    split = row["split"]
+    if split not in _TEXTS:
+        src = read_jsonl(PROBES) if split == "probe" else scope_rows(split)
+        _TEXTS[split] = {r["sid"]: r for r in src}
+    return _TEXTS[split][row["sid"]]
 
 
 # ---- modes ----
@@ -605,6 +606,10 @@ def run_live(args: argparse.Namespace) -> int:
 
 
 def run_final(args: argparse.Namespace) -> int:
+    if args.out is not None:
+        raise SystemExit(
+            "refusing to run: --final writes only gate_test.json (--out would get around the single-run guard)"
+        )
     if TEST_PATH.exists():
         raise SystemExit(
             "refusing to run: gate_test.json exists; the test split is read once (protocol run 4)"
@@ -613,12 +618,19 @@ def run_final(args: argparse.Namespace) -> int:
         raise SystemExit(
             "refusing to run: no committed gate_dev.json (run the dev probe run first)"
         )
-    th = load_thresholds(DEV_PATH)
+    try:
+        th = load_thresholds(DEV_PATH, strict=True)
+    except StaleThresholds as exc:
+        raise SystemExit(f"refusing to run: {exc}; re-probe dev first") from exc
     dev = json.loads(DEV_PATH.read_text(encoding="utf-8"))
+    per_call = dev["metrics"].get("mean_cost_per_call_usd")
+    if not isinstance(per_call, (int, float)) or per_call <= 0:
+        raise SystemExit(
+            "refusing to run: the dev cost per call is unknown or 0, so the D116 budget check cannot be made"
+        )
     cap = CAP_USD if args.max_cost is None else args.max_cost
     gate, ledger = _live_gate(th)
     inputs = gate_inputs("test", with_probes=False)
-    per_call = dev["metrics"].get("mean_cost_per_call_usd") or 0.0
     projected = per_call * len(
         inputs
     )  # upper bound: every test row reaching stage 2 (D116)
@@ -667,7 +679,7 @@ def main(argv: list[str] | None = None) -> int:
             f"replay {path.relative_to(ROOT) if path.is_relative_to(ROOT) else path}: "
             + ("ok" if not diffs else f"{len(diffs)} differences")
         )
-        if path == DEV_PATH and TEST_PATH.exists():
+        if path == DEV_PATH and TEST_PATH.exists() and final_mode():
             more = replay(TEST_PATH)
             print(
                 f"replay {TEST_PATH.name}: "

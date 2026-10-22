@@ -133,12 +133,26 @@ def compute_thresholds(
     )
 
 
-def load_thresholds(path: Path = GATE_DEV_PATH) -> Thresholds:
-    """Thresholds from the committed dev result; `NO_THRESHOLDS` when the file is absent (before the live run)."""
+class StaleThresholds(ValueError):
+    """`gate_dev.json` was probed with another rubric version than the code's `RUBRIC_VERSION`."""
+
+
+def load_thresholds(path: Path = GATE_DEV_PATH, *, strict: bool = False) -> Thresholds:
+    """Thresholds from the committed dev result; `NO_THRESHOLDS` when the file is absent (before the live run).
+
+    A file whose `rubric_version` differs from `RUBRIC_VERSION` is refused: the product falls back to
+    `NO_THRESHOLDS` (stage 2 never refuses), and `strict=True` (the final run) raises `StaleThresholds`.
+    """
     if not path.exists():
         return NO_THRESHOLDS
     doc = json.loads(path.read_text(encoding="utf-8"))
     th = doc["thresholds"]
+    if th.get("rubric_version") != RUBRIC_VERSION:
+        if strict:
+            raise StaleThresholds(
+                f"{path.name} was probed with rubric {th.get('rubric_version')!r}, the code has {RUBRIC_VERSION!r}"
+            )
+        return NO_THRESHOLDS
     return Thresholds(
         t_refuse=float(th["t_refuse"]),
         t_pass=float(th["t_pass"]),
@@ -296,6 +310,29 @@ class Gate:
 def offline_gate() -> Gate:
     """Stage 1 only; stage 2 fails open (no client). The default of `build_discovery_app` (tests, kit, evals)."""
     return Gate(jev=None)
+
+
+def build_gate(settings: Any, *, ledger: Any = None) -> Gate:
+    """The product gate for `create_app` (wired by the integrator after M6).
+
+    With an OpenRouter key in `settings` (`milo.settings.Settings`): the live two-stage gate, Jev through
+    `llm/cloud.py`, each call checked against and recorded in the spend ledger (`SpendLedger(budget_usd=...)` by
+    default, the D18 log). Without a key: stage 1 only, stage 2 fails open (D117).
+    """
+    key = getattr(settings, "openrouter_api_key", "") or ""
+    if not key:
+        return offline_gate()
+    from milo.gate.jev import JEV_PRICE_IN_USD_PER_MTOK
+    from milo.llm.cloud import OpenRouterDecisions
+
+    if ledger is None:
+        from milo.spend import SpendLedger
+
+        ledger = SpendLedger(budget_usd=float(getattr(settings, "budget_usd", 0.0)))
+    client = OpenRouterDecisions(
+        key, ledger=ledger, price_in_usd_per_mtok=JEV_PRICE_IN_USD_PER_MTOK
+    )
+    return Gate(jev=JevGate(client))
 
 
 def decision_dict(d: GateDecision) -> dict[str, Any]:

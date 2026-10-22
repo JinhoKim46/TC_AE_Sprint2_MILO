@@ -8,13 +8,13 @@ No number below is a measurement of Jev; the dry run uses synthetic probabilitie
 
 | Path | What |
 |---|---|
-| `src/milo/gate/stage1.py` | Stage 1 rules 1 to 4 and 6 over `data/scope/lexicon.yaml` (v4): greeting list, strong term or two weak lemmas, approximate number plus unit, verb-object refuse patterns only when rules 2 and 3 did not pass. The reference `data/scope/tools/stage1_sim.py` made into product code. |
+| `src/milo/gate/stage1.py` | Stage 1 rules 1 to 4 and 6 over `data/scope/lexicon.yaml` (v4): greeting list, strong term or two weak lemmas, approximate number plus unit, verb-object refuse patterns only when the text holds no lexicon term of either strength (fix cycle 1: a refuse pattern plus one weak term goes to stage 2; the simulation was fixed identically). The reference `data/scope/tools/stage1_sim.py` made into product code. |
 | `src/milo/gate/jev.py` | Stage 2: one `noul` question (`in_diagnosis`) to `typesafe/jev-1.14-20261014`, rubric frozen from the protocol as `m5g-rubric.v1`. State is exactly `message`, `recent_turns` (last two, text only) and `scope_summary` (no `session_title`, D145). Tolerant response parser; any failure raises `JevFailure`. |
 | `src/milo/gate/route.py` | Routing, the threshold rule (`compute_thresholds`), `T_REFUSE` / `T_PASS` loaded from `evals/results/m5g/gate_dev.json`, the fixed scope and greeting replies, `sr_gate` for the SR live runner. |
 | `src/milo/llm/cloud.py` | Additive: `OPENROUTER_DECISIONS_URL` and `OpenRouterDecisions` (one POST of `{model, state, questions}`; HARNESS rule 1 keeps the URL here). |
 | `src/milo/chain.py`, `src/milo/app.py` | Call site: a `gate` node between `policy` and `extract` in the discovery pipeline; `build_discovery_app(..., gate=None)`. Contract mode never builds the discovery runtime, so it never reaches the gate. |
 | `evals/gate/run_gate.py` | `--dry`, `--replay`, `--live`, `--final`. |
-| `tests/test_gate.py` | 31 offline tests. |
+| `tests/test_gate.py` | 39 offline tests. |
 
 ## Routing
 
@@ -30,7 +30,10 @@ No number below is a measurement of Jev; the dry run uses synthetic probabilitie
 
 Before `gate_dev.json` exists, stage 2 never refuses: every undecided message is `band`. The owner message of a
 refused turn is still stored, so the D22 taint stays sticky; traces carry route, stage, P, cost and state hash, never
-the text (D141). Without `OPENROUTER_API_KEY` (tests, kit, evals) the gate is stage 1 only and stage 2 fails open.
+the text (D141). `build_discovery_app` defaults to stage 1 only (stage 2 fails open). The live product gate is
+`milo.gate.build_gate(settings)`: with an OpenRouter key it adds Jev, each call checked and recorded in the spend ledger;
+without one it is stage 1 only. The integrator wires it into `create_app` after M6. A `gate_dev.json` whose
+`rubric_version` differs from the code's is ignored (stage 2 then never refuses), and `--final` refuses it.
 
 ## Thresholds (protocol rule, dev only)
 
@@ -57,7 +60,8 @@ Zero in-scope dev rows refused by stage 1; 110 dev rows and 41 probes reach stag
   (output billing to verify). Writes `gate_dev.json` and `jev_replay.jsonl`; commit both, then the product refuses on
   the dev thresholds.
 - Test run (pending, once): `MILO_FINAL=1 MILO_LIVE=1 uv run python evals/gate/run_gate.py --final --reason "..."`;
-  refuses without a committed `gate_dev.json` or when `gate_test.json` exists; budget check from the dev cost per call.
+  refuses without a committed `gate_dev.json`, with a rubric mismatch, with `--out`, when `gate_test.json` exists, or
+  when the dev cost per call is unknown or 0 (the D116 budget check needs it). Replay of a dev result reads no test rows.
 - SR cases A-04, A-05b, A-22: `--gate milo.gate:sr_gate`. The callable does not run the chain, so
   `d108_reply_check_passed` is `None` and A-22 counts only the gate's own refusals.
 

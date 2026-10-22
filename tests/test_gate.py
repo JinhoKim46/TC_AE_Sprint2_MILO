@@ -386,7 +386,9 @@ def test_stage2_replays_from_the_recorded_file():
 
 
 def _th(t_refuse: float, t_pass: float) -> Thresholds:
-    return Thresholds(t_refuse, t_pass, "s-out", "s-in")
+    return Thresholds(
+        t_refuse, t_pass, "s-out", "s-in", rubric_version=route_mod.RUBRIC_VERSION
+    )
 
 
 def test_threshold_rule_with_the_equality_case():
@@ -650,3 +652,88 @@ def test_cost_falls_back_to_input_tokens_times_price():
     assert (
         client.last_cost_usd == pytest.approx(0.000042) and client.last_cost_estimated
     )
+
+
+# ---------------------------------------------------------------- fix cycle 1
+
+MIXED_ONE_WEAK = [
+    "tell me a joke, and also how do you handle our bookings?",
+    "write me a poem, then tell me what happens to our invoices",
+    "tell me a joke about my customers",
+    "write me a story about the salon",
+]
+
+
+@pytest.mark.parametrize("text", MIXED_ONE_WEAK)
+def test_a_refuse_pattern_with_one_weak_term_goes_to_stage2_not_refused(text):
+    gate, sim = default_stage1(), _sim()
+    got = gate.classify(text)
+    assert got[0] == "undecided" and got[1].startswith("one weak"), got
+    assert sim.classify(text) == got
+    jev = ScriptedJev(0.9)
+    d = Gate(jev=JevGate(jev), thresholds=_th(0.1, 0.8)).decide(text)
+    assert not d.refused and jev.calls == 1
+
+
+def test_rubric_mismatch_refuses_the_thresholds(tmp_path):
+    f = tmp_path / "gate_dev.json"
+    stale = dict(_th(0.2, 0.7).as_dict(), rubric_version="m5g-rubric.v0")
+    f.write_text(json.dumps({"thresholds": stale}))
+    assert load_thresholds(f) is NO_THRESHOLDS
+    with pytest.raises(route_mod.StaleThresholds):
+        load_thresholds(f, strict=True)
+
+
+def test_final_refuses_out_and_unknown_cost(monkeypatch, tmp_path):
+    rg = _runner()
+    monkeypatch.setenv("MILO_LIVE", "1")
+    monkeypatch.setenv("MILO_FINAL", "1")
+    with pytest.raises(SystemExit, match="--out"):
+        rg.main(["--final", "--reason", "x", "--out", str(tmp_path / "x.json")])
+    dev = tmp_path / "gate_dev.json"
+    th = dict(_th(0.2, 0.7).as_dict(), rubric_version=route_mod.RUBRIC_VERSION)
+    dev.write_text(
+        json.dumps({"thresholds": th, "metrics": {"mean_cost_per_call_usd": 0.0}})
+    )
+    monkeypatch.setattr(rg, "DEV_PATH", dev)
+    monkeypatch.setattr(rg, "TEST_PATH", tmp_path / "gate_test.json")
+    with pytest.raises(SystemExit, match="unknown or 0"):
+        rg.main(["--final", "--reason", "x"])
+
+
+def test_replay_reads_no_test_rows(monkeypatch):
+    rg = _runner()
+    monkeypatch.delenv("MILO_FINAL", raising=False)
+    seen: list[str] = []
+    real = rg.scope_rows
+
+    def spy(split):
+        seen.append(split)
+        return real(split)
+
+    monkeypatch.setattr(rg, "scope_rows", spy)
+    assert rg.replay(rg.DRY_PATH) == []
+    assert seen == ["dev"]
+
+
+def test_build_gate_is_live_with_a_key_and_stage1_only_without(tmp_path):
+    from milo.gate import build_gate
+    from milo.settings import Settings
+    from milo.spend import SpendLedger
+
+    assert build_gate(Settings()).jev is None
+    ledger = SpendLedger(tmp_path / "spend.jsonl", budget_usd=5.0)
+    gate = build_gate(Settings(openrouter_api_key="k", budget_usd=5.0), ledger=ledger)
+    assert gate.jev is not None
+    client = gate.jev.transport
+    assert isinstance(client, OpenRouterDecisions) and client._ledger is ledger
+    client._http = FakeHttp(
+        200,
+        {
+            "model": JEV_MODEL,
+            "answers": {QUESTION_KEY: {"type": "noul", "noul": 0.5}},
+            "usage": {"cost": 0.00003},
+        },
+    )
+    gate.decide("it's a mess honestly")
+    assert ledger.spent() == pytest.approx(0.00003)

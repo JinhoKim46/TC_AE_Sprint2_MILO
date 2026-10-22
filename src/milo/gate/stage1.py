@@ -7,8 +7,8 @@ Rules, in order; the first that fires decides (protocol `evals/protocols/m5g-gat
    word boundaries, longest first, on non-overlapping spans; a singular and its plural count as one weak term (D158).
 3. `pass`: a number followed, within two words, by a lexicon unit; the number may be approximate ("40ish", "~40",
    "about 40", "40-50", "10k") (D158).
-4. `refuse`: a verb-plus-object refuse pattern matches. Reached only when rules 2 and 3 did not pass, so a mixed
-   message passes.
+4. `refuse`: a verb-plus-object refuse pattern matches and the text holds no lexicon term of either strength (the
+   protocol's "and no lexicon term"); a mixed message with one weak term goes to stage 2, never to a refusal.
 6. `undecided`: anything else, including a single weak term; stage 2 decides.
 
 This is the reference simulation `data/scope/tools/stage1_sim.py` made into product code; `tests/test_gate.py`
@@ -151,9 +151,12 @@ class Stage1:
         m = self.number_re.search(norm(text))
         if m:
             return "pass", "rule 3: " + m.group(0)
-        for pid, rx in self.refuse:
-            if rx.search(norm(text)):
-                return "refuse", "rule 4: " + pid
+        if (
+            not found
+        ):  # rule 4 only when the text holds no lexicon term of either strength
+            for pid, rx in self.refuse:
+                if rx.search(norm(text)):
+                    return "refuse", "rule 4: " + pid
         if weak:
             return "undecided", "one weak: " + weak[0]
         return "undecided", "no term"
