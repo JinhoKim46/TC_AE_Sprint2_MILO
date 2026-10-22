@@ -316,11 +316,12 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         fx = json.loads(FIXTURE.read_text(encoding="utf-8"))
         docs = [Document(d["doc_id"], d["text"], d["metadata"]) for d in fx["docs"]]
         return {"docs": docs, "queries": fx["queries"], "inputs": {"fixture": FIXTURE}}
-    dev = common.load_gold("dev")  # dev rows only (HARNESS rule 6)
+    # dev rows only (HARNESS rule 6); only evals/final/run_final.py passes `rows` (the test split, MILO_FINAL=1)
+    rows = getattr(args, "rows", None) or common.load_gold("dev")
     inputs: dict[str, Path | str] = {"gold": common.GOLD_PATH}
     for md in sorted(KB.rglob("*.md")):
         inputs[f"kb/{md.relative_to(KB).as_posix()}"] = md
-    return {"docs": load_kb(KB), "queries": gold_queries(dev), "inputs": inputs}
+    return {"docs": load_kb(KB), "queries": gold_queries(rows), "inputs": inputs}
 
 
 # ---------------------------------------------------------------- run
@@ -362,7 +363,9 @@ def run(args: argparse.Namespace) -> int:
             print(f"refusing to run: {exc}", file=sys.stderr)
             return 2
         model = str(embedder.model)
-        out, emb_out = LIVE_RESULT, RESULTS / "retrieval_dev_query_embeddings.json"
+        split = getattr(args, "split", "dev")
+        out = RESULTS / f"retrieval_{split}.json"
+        emb_out = RESULTS / f"retrieval_{split}_query_embeddings.json"
         index_path = INDEX_ROOT / f"{model.replace('/', '_')}-{size}-{overlap}"
     store, chunks, dim = build_store(prep["docs"], embedder, size, overlap, index_path)
     if index_path is not None:
@@ -384,13 +387,13 @@ def run(args: argparse.Namespace) -> int:
         **common.provenance(
             model=model, seed=SEED, temperature=0.0,
             command=("python evals/retrieval/run_retrieval.py --dry" if args.dry
-                     else "MILO_LIVE=1 python evals/retrieval/run_retrieval.py"),
+                     else getattr(args, "command", None) or "MILO_LIVE=1 python evals/retrieval/run_retrieval.py"),
             inputs=inputs,
         ),
         "temperature": None,
         "temperature_note": "embeddings have no temperature",
         "dry": bool(args.dry),
-        "split": "dev",
+        "split": "dev" if args.dry else getattr(args, "split", "dev"),
         "k": K,
         "bootstrap": BOOT,
         "query_prefix": "none",
@@ -403,7 +406,7 @@ def run(args: argparse.Namespace) -> int:
         "total_cost_usd": 0.0 if args.dry else round(embedder.total_cost_usd, 6),
         "total_tokens": 0 if args.dry else embedder.total_tokens,
         "cost_note": "dry run: no call" if args.dry else cost_note(embedder),
-        "spend_reason": "none (fake embedder)" if args.dry else "dense retrieval baseline needs the product embedding model's vectors for the KB and the dev questions (D126)",
+        "spend_reason": "none (fake embedder)" if args.dry else getattr(args, "reason", None) or "dense retrieval baseline needs the product embedding model's vectors for the KB and the dev questions (D126)",
         "queries_without_chunk": [r["qid"] for r in rows if r["answerable"] and not r["relevant"]],
         **derived,
         "rows": rows,

@@ -694,6 +694,7 @@ def write_result(
     verified: dict[str, Any],
     plan: float,
     embedding_cost_usd: float = 0.0,
+    command: str = "MILO_LIVE=1 python evals/chat/compare_chat.py --live",
 ) -> int:
     metrics = compute_metrics(rows)
     decision = decide(rows, metrics, verified["reference"])
@@ -709,7 +710,7 @@ def write_result(
     result = {
         **common.provenance(
             model=",".join(verified["pinned"]), seed=0, temperature=0.0,
-            command="MILO_LIVE=1 python evals/chat/compare_chat.py --live", inputs=inputs,
+            command=command, inputs=inputs,
         ),
         "seed_note": "no sampling; the bootstrap seed is 0",
         "reason": REASON,

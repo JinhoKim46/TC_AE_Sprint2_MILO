@@ -11,6 +11,8 @@ Modes
             with the stored metrics; exit 1 on a difference. Offline. `make eval-discovery` runs this.
   (none)    live: MILO_LIVE=1, --model, --price-in, --price-out, --max-cost and --reason (HARNESS rule 14). The run
             stops and writes nothing when the running cost passes --max-cost. Run by the integrator only.
+  --final   the live run on the test conversations A-2, B-2 and E-2, once (F2): also needs MILO_FINAL=1, refuses when
+            evals/results/discovery/discovery_test.json exists, and writes only that file.
 """
 
 from __future__ import annotations
@@ -52,6 +54,7 @@ DRY_SCRIPT = Path(__file__).with_name("dry_script.json")
 RESULTS_DIR = ROOT / "evals" / "results" / "discovery"
 DRY_PATH = RESULTS_DIR / "discovery_dry.json"
 LIVE_PATH = RESULTS_DIR / "discovery_live.json"
+TEST_PATH = RESULTS_DIR / "discovery_test.json"
 DEV = ("A-1", "B-1", "E-1")
 TEST = ("A-2", "B-2", "E-2")
 RETRIEVAL_MIN_SCORE = (
@@ -606,13 +609,13 @@ def compute_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
 # ---- result files ----
 
 
-def _inputs() -> dict[str, Path]:
+def _inputs(convs: tuple[str, ...] = DEV) -> dict[str, Path]:
     inputs: dict[str, Path] = {
         "protocol": DEFAULT_PROTOCOL_PATH,
         "upload": UPLOAD,
         "dry_script": DRY_SCRIPT,
     }
-    for conv in DEV:
+    for conv in convs:
         inputs[f"{conv}.jsonl"] = CONV_DIR / f"{conv}.jsonl"
         inputs[f"{conv}.expected.json"] = CONV_DIR / f"{conv}.expected.json"
     for company in ("a", "b"):
@@ -623,15 +626,21 @@ def _inputs() -> dict[str, Path]:
 
 
 def build_result(
-    rows: list[dict[str, Any]], *, mode: str, model: str, command: str, reason: str
+    rows: list[dict[str, Any]],
+    *,
+    mode: str,
+    model: str,
+    command: str,
+    reason: str,
+    convs: tuple[str, ...] = DEV,
 ) -> dict[str, Any]:
     doc = provenance(
-        model=model, seed=SEED, temperature=0.0, command=command, inputs=_inputs()
+        model=model, seed=SEED, temperature=0.0, command=command, inputs=_inputs(convs)
     )
     doc.update(
         mode=mode,
         why_this_run=reason,
-        conversations=list(DEV),
+        conversations=list(convs),
         metrics=compute_metrics(rows),
         rows=rows,
     )
@@ -677,6 +686,23 @@ def run_live(args: argparse.Namespace) -> dict[str, Any]:
             "live mode also needs: "
             + ", ".join("--" + m.replace("_", "-") for m in missing)
         )
+    final = bool(getattr(args, "final", False))
+    convs = TEST if final else DEV
+    out = args.out or (TEST_PATH if final else LIVE_PATH)
+    if final:
+        # The single test-split run (protocol: "the test conversations are run once in F2"; D149).
+        if not final_mode():
+            raise SystemExit(
+                "--final reads the sealed test conversations and needs MILO_FINAL=1"
+            )
+        if args.out is not None:
+            raise SystemExit(
+                "--final writes only discovery_test.json (--out would get around the single-run guard)"
+            )
+        if TEST_PATH.exists():
+            raise SystemExit(
+                "refusing to run: discovery_test.json exists; the test conversations are read once"
+            )
     from milo.llm.client import build_chat
     from milo.settings import Settings
     from milo.spend import SpendLedger
@@ -694,19 +720,26 @@ def run_live(args: argparse.Namespace) -> dict[str, Any]:
     chat = RecordingChat(inner, args.max_cost)
     rows: list[dict[str, Any]] = []
     try:
-        for conv in DEV:
+        for conv in convs:
             rows += run_conversation(conv, chat)
     except Abort as exc:
         raise SystemExit(f"stopped, nothing written: {exc}") from None
     command = (
-        f"MILO_LIVE=1 uv run python evals/discovery/run_discovery.py --model {args.model} "
+        ("MILO_FINAL=1 " if final else "")
+        + f"MILO_LIVE=1 uv run python evals/discovery/run_discovery.py {'--final ' if final else ''}"
+        f"--model {args.model} "
         f"--price-in {args.price_in} --price-out {args.price_out} --max-cost {args.max_cost} --reason ..."
     )
     doc = build_result(
-        rows, mode="live", model=args.model, command=command, reason=args.reason
+        rows,
+        mode="final" if final else "live",
+        model=args.model,
+        command=command,
+        reason=args.reason,
+        convs=convs,
     )
     doc["live_cost_usd"] = round(chat.total, 6)
-    write(doc, args.out or LIVE_PATH)
+    write(doc, out)
     return doc
 
 
@@ -737,6 +770,11 @@ def main(argv: list[str] | None = None) -> int:
     mode = ap.add_mutually_exclusive_group()
     mode.add_argument("--dry", action="store_true")
     mode.add_argument("--replay", action="store_true")
+    mode.add_argument(
+        "--final",
+        action="store_true",
+        help="the single test-split run (A-2, B-2, E-2); needs MILO_FINAL=1 and MILO_LIVE=1",
+    )
     ap.add_argument(
         "--file", type=Path, help="result file to replay (default: the dry result)"
     )

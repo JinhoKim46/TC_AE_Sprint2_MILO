@@ -178,12 +178,18 @@ def _chat(slug: str, price: tuple[float, float], purpose: str) -> Any:
     return OpenRouterChat(slug, key, price, purpose=purpose, temperature=0.0)
 
 
-def live_generate(args: argparse.Namespace) -> int:
+def live_generate(
+    args: argparse.Namespace,
+    sample_path: Path = SAMPLE,
+    out_path: Path = GEN_RESULT,
+    command: str | None = None,
+) -> int:
+    """Product answers for a sample. F2 passes the test sample and `generation_test.json`; the code is the same."""
     if not _live_args_ok(args, ["product_model", "price_in", "price_out"]):
         return 2
-    if not SAMPLE.exists():
+    if not sample_path.exists():
         print(
-            f"refusing to run: {_rel(SAMPLE)} is missing; run --sample and commit it first",
+            f"refusing to run: {_rel(sample_path)} is missing; run --sample and commit it first",
             file=sys.stderr,
         )
         return 2
@@ -216,21 +222,23 @@ def live_generate(args: argparse.Namespace) -> int:
     app = build_app(
         chat, embedder, MiloBackend(retriever=retriever), vector_store=retriever
     )
-    sample = _load(SAMPLE)
+    sample = _load(sample_path)
     rows, partial = gen.generate(sample["rows"], gen.app_ask(app), float(args.max_cost))
-    inputs: dict[str, Path | str] = {"gold": common.GOLD_PATH, "sample": SAMPLE}
+    inputs: dict[str, Path | str] = {"gold": common.GOLD_PATH, "sample": sample_path}
     doc = {
         **common.provenance(
             model=f"chat={args.product_model}; embedding={embedder.model}",
             seed=SEED,
             temperature=0.0,
-            command=f"MILO_LIVE=1 python evals/rag/run_rag_eval.py --generate --max-cost {args.max_cost} "
+            command=command
+            or f"MILO_LIVE=1 python evals/rag/run_rag_eval.py --generate --max-cost {args.max_cost} "
             f"--product-model {args.product_model}",
             inputs={**inputs, "evals/rag/generate.py": RAG_DIR / "generate.py"},
         ),
         "dry": False,
         "partial": partial,
         "spend_reason": args.reason,
+        "sample_file": _rel(sample_path),
         "pipeline": "milo.app.build_app, contract mode, dense top 5",
         "index": {
             k: manifest.get(k)
@@ -247,9 +255,9 @@ def live_generate(args: argparse.Namespace) -> int:
         "total_cost_usd": round(sum(r["cost_usd"] for r in rows), 8),
         "rows": rows,
     }
-    _write(GEN_RESULT, doc)
+    _write(out_path, doc)
     print(
-        f"wrote {_rel(GEN_RESULT)}: {len(rows)} rows, cost {doc['total_cost_usd']} USD, partial={partial}"
+        f"wrote {_rel(out_path)}: {len(rows)} rows, cost {doc['total_cost_usd']} USD, partial={partial}"
     )
     return 1 if partial else 0
 
@@ -456,9 +464,15 @@ def replay_judge_file(path: Path) -> bool:
             bad,
         )
         note += "; rows regenerated from the fixture"
-    elif not stored.get("dry") and schema.LABELS.exists():
-        if common.file_sha256(schema.LABELS) != stored["inputs"].get("labels"):
-            bad.append("labels.jsonl differs from the labels hashed into the result")
+    elif not stored.get("dry"):
+        # F2's test result names its own labels file; a dev result uses labels.jsonl
+        labels = (
+            ROOT / stored["labels_file"] if stored.get("labels_file") else schema.LABELS
+        )
+        if labels.exists() and common.file_sha256(labels) != stored["inputs"].get(
+            "labels"
+        ):
+            bad.append(f"{labels.name} differs from the labels hashed into the result")
     print(f"{'MATCH' if not bad else 'MISMATCH'} {_rel(path)}: {note}")
     for line in bad[:20]:
         print("  ", line)
@@ -469,7 +483,12 @@ def replay_generation_file(path: Path) -> bool:
     stored = _load(path)
     bad = []
     qids = [r["qid"] for r in stored["rows"]]
-    if SAMPLE.exists() and not stored.get("partial") and qids != sample_qids():
+    sample = ROOT / stored["sample_file"] if stored.get("sample_file") else SAMPLE
+    if (
+        sample.exists()
+        and not stored.get("partial")
+        and qids != [r["qid"] for r in _load(sample)["rows"]]
+    ):
         bad.append("qids differ from the sample")
     for r in stored["rows"]:
         if r["abstained"] != (not r["contexts"]):

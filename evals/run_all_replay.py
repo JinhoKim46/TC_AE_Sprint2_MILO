@@ -23,6 +23,7 @@ RUNNERS: list[tuple[str, str, bool]] = [
     ("rag", "evals/rag/run_rag_eval.py", False),
     ("discovery", "evals/discovery/run_discovery.py", True),
     ("gate", "evals/gate/run_gate.py", True),
+    ("final", "evals/final/run_final.py", True),
 ]
 
 
