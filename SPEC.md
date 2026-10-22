@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.9.6 draft. Supersedes v0.9.5. Sections 20, 21, 23, 24, 25, 26 and 27 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
+Status: v0.9.7 draft. Supersedes v0.9.6. Sections 20, 21 and 23 to 28 override earlier text; the highest-numbered section wins. Review round 6 findings are applied in section 21; no further full review round is planned.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
@@ -429,6 +429,8 @@ The build queue completes every milestone. Where a step needs the owner, the bui
 5. **Real price list.** The rate card and clients are fictional. Any real price list needs owner approval before use.
 6. **Operator email delivery of reports.** Not built.
 7. **AE privacy check.** Fails on the notebooks in `sprint2/part2` and `sprint2/part4`. The owner decides before any AE commit (section 19).
+8. **Operator MFA (D144).** Not built. The owner decides whether to enforce it in the Supabase dashboard before production.
+9. **Access-token residual risk (D136).** A stolen access token stays valid until it expires (at most 1 hour). The owner accepts or asks for server-side revocation before production.
 
 ## 19. Blocker for AE commits
 
@@ -599,6 +601,7 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9.4 (2026-10-22): two-stage input gate; stage 2 is the pinned decision model typesafe/jev-1.14-20261014 (D110 to D118).
 - v0.9.5 (2026-10-22): no invites anywhere (D119); scope and Jev gate added as milestone M5G (D120); owner-only items as placeholders with a production guard and a checklist (D121). Section 26 overrides earlier text.
 - v0.9.6 (2026-10-22): security red-team lane SR added (section 27, D122 to D125). Spend rule D126: session agents do all writing, data generation, audits and reviews; OpenRouter is used only where a model is being measured or the final run needs it (HARNESS rule 14).
+- v0.9.7 (2026-10-22): the 21 gaps in `docs/threat_model.md` v0.1 closed or assigned (section 28, D127 to D146).
 
 ## 26. Version 0.9.5 decisions (these override earlier text where they conflict)
 
@@ -612,3 +615,30 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - **D123 Order.** (1) Threat model, `docs/threat_model.md`, committed before the M4 and M5G builds. It names the assets, actors, trust boundaries and the milestone that owns each risk. (2) Attack cases, `evals/security/**`, committed before the defenses they test, under the same commit-order rule as protocols (D83). (3) Reviewer reports on every PR in the security surface, which is any change to auth, store, web, tools, the gate, prompts or uploads. (4) One pen-test pass at F3, `docs/security_report.md`.
 - **D124 Models.** Fable writes the threat model and the attack cases. Opus checks them before commit. Reviewers are a fresh agent per PR, Opus for auth, store and gate changes.
 - **D125 Limits and gates.** Test environment only (HARNESS rule 3). No real owner data and no production keys. A critical finding blocks the merge. A high finding is fixed, or the owner accepts it in writing; an agent never accepts a risk. SR has one fifth of the OpenRouter budget left at its start, with its own cap in the spend ledger.
+
+## 28. Closing the threat-model gaps (overrides earlier text where they conflict)
+
+Each decision names the gap in `docs/threat_model.md` v0.1 that it closes. Where a gap is accepted rather than closed, it says so and the owner checklist (section 18) carries it.
+
+- **D127 Connection variables (G-01).** The variable names are `SUPABASE_test_session_pooler` and `SUPABASE_prod_session_pooler`, as the `.env` holds them. D58, D75 and D76 read with these names. `settings.py` is the only reader. The prod guard (D76) refuses when `MILO_ENV=prod` or `SUPABASE_prod_session_pooler` is set in a test or eval process.
+- **D128 Gate ownership (G-03).** M5G owns both stages: `src/milo/gate/stage1.py` (rules and lexicon), `src/milo/gate/jev.py` (the stage-2 client, which calls OpenRouter only through `llm/cloud.py`), `src/milo/gate/route.py`. `src/milo/security/scope.py` does not exist; the section 24 and Appendix A text naming it is withdrawn. M4 keeps policy, identity and taint.
+- **D129 RLS predicate (G-04).** Policies read `current_setting('milo.user_id', true)::uuid` and nothing else. `auth.uid()` is not used, because the app connects over psycopg as `milo_app`, where no Supabase JWT is present. D91's `auth.uid()` wording is withdrawn.
+- **D130 Operator writes (G-05).** `milo_operator` gets `SELECT` on every table, `DELETE` on `customers` (cascading to the owner's rows) and `INSERT` on `audit_log`. Nothing else. Every operator delete writes its audit row in the same transaction.
+- **D131 Per-account limits (G-06).** Named constants in `settings.py`: `ACCOUNT_DAILY_SPEND_USD = 0.50`, `ACCOUNT_RUNNING_TURNS = 1` (one running turn per account, not per session), `ACCOUNT_MESSAGES_PER_MINUTE = 10`, `ACCOUNT_UPLOADS_PER_HOUR = 5`. A breach returns 429 `rate_limited` with the window. The global reserve (D18) stays.
+- **D132 Upload text cap (G-07, G-13).** Files are parsed in memory with `pypdf` (pinned) or UTF-8 decoding; the original file is never written to disk. Caps: 5 MB, 50 pages, and 20,000 characters of extracted text kept as evidence; text past the cap is dropped and the `document_truncated` event says how much. The extract call receives at most the first 8,000 characters per upload.
+- **D133 Uploads are not indexed (G-14).** Upload text is session evidence for the extract call only. It is never embedded, never added to any retrieval index, and never visible to another session or account.
+- **D134 Evidence must be verbatim (G-08, T-27).** `merge` accepts an `evidence_text` only if, after whitespace normalisation, it is a substring of the owner message or the uploaded text of the same turn. Otherwise the fact is discarded, a `fact_rejected` event carries the field id and reason, and nothing is stored. `tests/test_protocol.py` covers it.
+- **D135 Consent gate covers every write (G-09).** Until an `interview` consent row exists, every `POST`, `PATCH` and `DELETE` route returns 403 `consent_required`, except `/consent`, `/logout`, and the auth routes of D93. `tests/test_web.py` walks every state-changing route.
+- **D136 JWT rules (G-10).** Accept only the algorithm the JWKS advertises (RS256 or ES256), with `aud = "authenticated"`, `iss` equal to the project's auth URL, and 60 seconds of clock skew. Lifetime is what Supabase issues (1 hour by default); the app refreshes through its auth client. Sign-out clears the Flask session and the stored refresh token. A stolen access token therefore stays valid for at most its remaining lifetime; this residual risk is accepted by the owner's approval of this version (section 18 item 9).
+- **D137 Production guard additions (G-11).** Production refuses to start when `MILO_SECRET_KEY` is shorter than 32 bytes or equals any value in `.env.example`, when `FLASK_DEBUG` is set, or when the Werkzeug debugger is enabled. The Flask session is regenerated at sign-in and at sign-out.
+- **D138 Security headers (G-12).** Every response carries `Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-ancestors 'none'; form-action 'self'`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: same-origin`, and in production `Strict-Transport-Security: max-age=31536000`. Templates carry no inline script or style; `app.js` and `app.css` are the only sources. `tests/test_web.py` asserts the headers.
+- **D139 Replies are plain text (G-15).** Model replies, owner messages, evidence and titles are rendered as escaped text with line breaks preserved. No markdown renderer. Links are not made clickable.
+- **D140 RLS test per migration (G-16).** The verifier of any milestone that adds a migration runs the Postgres RLS test (HARNESS 7.8) over every table in `db/migrations/`, not only M5-store and M6. The test enumerates tables from the migrations, so a new table without a policy fails it.
+- **D141 Trace content (G-17).** `detail_json` holds tool names, argument hashes and lengths, model ids, token counts and cost. It never holds owner text, `evidence_text`, tool argument values or the Jev state; those are stored as hash and length (D15). `turn_events.payload_json` is the one place answer text is stored, and it is readable only by its owner. `docs/traces/` may hold demo-company text only.
+- **D142 Rate-limiter storage (G-18).** Limits (D92, D131) are counted in a `rate_limits(scope, key, window_start, count)` table in Postgres, so they hold across workers and restarts. The in-memory store keeps an equivalent dict for tests.
+- **D143 Dependency checks (G-19).** `make check` runs `uv lock --check` offline. `make audit` runs `uv run pip-audit` and is part of F3, not of tests.
+- **D144 Operator role and MFA (G-20).** `/ops/*` and `/traces` re-read `profiles.role` from the database on every request; the role is never cached in the cookie. MFA for the operator account is not built; it is owner checklist item 8, and the owner decides whether to enforce it in the Supabase dashboard before production.
+- **D145 Session title stays out of the gate (T-04).** D113 is amended: the Jev state is `message`, `recent_turns` and `scope_summary`. `session_title` is not sent, because it is owner-editable text that would reach the judge as if it were context.
+- **D146 Accepted by design (G-21).** D117 fail-open stands. The SR pen test measures how often it triggers and what it costs; the number goes in `docs/security_report.md`.
+
+Owner checklist additions (section 18): **8.** operator MFA (D144); **9.** acceptance of the access-token residual risk (D136).

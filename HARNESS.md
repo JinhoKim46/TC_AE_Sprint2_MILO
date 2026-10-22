@@ -1,6 +1,6 @@
 # MILO — Agent Harness
 
-Status: v0.9, matches `SPEC.md` v0.9.3. Read `SPEC.md` first, including sections 20 to 22, which override earlier text. If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
+Status: v0.10, matches `SPEC.md` v0.9.7. Read `SPEC.md` first, including sections 20 to 28, which override earlier text (the highest-numbered section wins). If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
 
 ## 1. Roles
 
@@ -45,7 +45,7 @@ Role slugs for branch names (SPEC D29): `data`, `audit`, `tools`, `llm`, `store`
 
 1. **Models only through OpenRouter.** No agent instantiates a model client outside `src/milo/llm/cloud.py`. The OpenRouter URL appears only in `llm/cloud.py`. A verifier greps `openrouter.ai` under `src/`, `evals/`, `tests/` and fails any hit outside it. No local models anywhere.
 2. **Offline tests.** `addopts = --disable-socket`. Tests never call a model, the network, or a database server. They use the in-memory store (SPEC D70) and scripted fakes. Only `create_app`, `evals/ui/record.py` and the verifier's RLS test open Postgres (D71).
-3. **Database rules.** The Supabase connection strings come from `SUPABASE_test_session_pooler` and `SUPABASE_prod_session_pooler` (kept in the git-ignored `.env`). `supabase.co` and these variable names appear only in `src/milo/settings.py` and `.env.example`. Tests and evals refuse the prod URL (D76). The app connects as the non-superuser role `milo_app` and never uses the service-role key (D74).
+3. **Database rules.** The Supabase connection strings come from `SUPABASE_test_session_pooler` and `SUPABASE_prod_session_pooler` (kept in the git-ignored `.env`). `supabase.co` and these variable names appear only in `src/milo/settings.py` and `.env.example`. Tests and evals refuse the prod URL (D76, D127: these are the only names; `MILO_DATABASE_URL_*` is withdrawn). The app connects as the non-superuser role `milo_app` and never uses the service-role key (D74).
 4. **No secrets, no machine paths.** No keys, passwords, `.env` content or absolute home paths in code, data, logs, commits or verifier pastes. Verifiers replace `$HOME` with `~`. The generic privacy check covers this; there is no name check (D85).
 5. **Fictional identities only.** Companies, clients, people, addresses, prices and orders are invented. No real company or person is named, and no real domain is used.
 6. **Test split sealed.** Among the code under `src/`, `evals/` and `tests/`, only `evals/common.py` names `gold.jsonl`. The two leakage tests and the builder are excluded (SPEC 10.1). Only `make final-test` sets `MILO_FINAL=1`. Protocols are committed before their results (D83).
@@ -130,7 +130,6 @@ One owner per path. (I) marks integrator-owned. A path not listed belongs to nob
 | `contract/**`, `scripts/check_project_data.py` | read-only copies from S0 (I) |
 | `src/milo/__init__.py`, `app.py`, `types.py`, `errors.py`, `settings.py`, `trace.py`, `spend.py` | (I) |
 | `data/scope/**`, `data/scope/lexicon.yaml` | M0 (Fable-designed protocol, SPEC D69) |
-| `src/milo/security/scope.py` | M4 |
 | `src/milo/security/validate.py`, `src/milo/security/identity.py`, `src/milo/protocol/schema.py`, `src/milo/pricing/schema.py`, `src/milo/store/migrate.py`, `db/migrations/0001_init.sql` | (I) at S0; then the owner named below may change them by request (`db/migrations/**` goes to M5-store after S0) |
 | `src/milo/rag/retrieve.py`, `src/milo/security/policy.py`, `src/milo/security/taint.py`, `src/milo/loop.py`, `src/milo/llm/retry.py`, `src/milo/chain.py` | (I) S0 seams, each raising or returning a minimal behaviour; the owner named below replaces the body |
 | `src/milo/llm/**` | M5a |

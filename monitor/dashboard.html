@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MILO build monitor</title>
+<script src="status.js"></script>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #1d2330; --muted: #5d6675; --line: #dde1e8;
+    --run: #1f6feb; --done: #1a7f37; --wait: #8a6d00; --block: #b42318; --plan: #6b7280;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1218; --panel: #171c25; --ink: #e6e9ef; --muted: #9aa3b2; --line: #2a3140;
+      --run: #5b9bff; --done: #3fb950; --wait: #d4a72c; --block: #ff7b72; --plan: #8b93a1;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1218; --panel: #171c25; --ink: #e6e9ef; --muted: #9aa3b2; --line: #2a3140;
+    --run: #5b9bff; --done: #3fb950; --wait: #d4a72c; --block: #ff7b72; --plan: #8b93a1;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 system-ui, sans-serif; }
+  header { padding: 16px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  h2 { font-size: 15px; margin: 0 0 10px; }
+  .meta { color: var(--muted); font-size: 12px; }
+  main { padding: 16px; display: grid; gap: 16px; grid-template-columns: 1fr; max-width: 1200px; margin: 0 auto; }
+  @media (min-width: 900px) { main { grid-template-columns: 1.4fr 1fr; } .wide { grid-column: 1 / -1; } }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid currentColor; white-space: nowrap; }
+  .running { color: var(--run); } .done { color: var(--done); } .waiting { color: var(--wait); }
+  .blocked { color: var(--block); } .planned { color: var(--plan); }
+  .bar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; background: var(--done); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+  .kpi { border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+  .kpi b { display: block; font-size: 20px; }
+  .lane { display: grid; grid-template-columns: 110px 1fr; gap: 8px; align-items: center; margin: 6px 0; }
+  .note { color: var(--muted); font-size: 12px; }
+  ul.log { list-style: none; padding: 0; margin: 0; }
+  ul.log li { padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+  ul.log time { color: var(--muted); font-size: 12px; margin-right: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>MILO build monitor</h1>
+  <div class="meta" id="updated">Loading status...</div>
+</header>
+<main>
+  <section class="wide">
+    <h2>Overview</h2>
+    <div class="kpis" id="kpis"></div>
+    <div style="margin-top:12px" id="lanes"></div>
+  </section>
+
+  <section>
+    <h2>Agents: what each is doing now</h2>
+    <table>
+      <thead><tr><th>Agent</th><th>Model</th><th>Lane</th><th>State</th><th>Doing</th></tr></thead>
+      <tbody id="agents"></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Milestones</h2>
+    <table>
+      <thead><tr><th>Milestone</th><th>Phase</th><th>State</th><th>Depends on</th></tr></thead>
+      <tbody id="milestones"></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Commits and pushes</h2>
+    <table>
+      <thead><tr><th>Commit</th><th>What</th></tr></thead>
+      <tbody id="commits"></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>OpenRouter spend</h2>
+    <div id="spend"></div>
+  </section>
+
+  <section class="wide">
+    <h2>Activity log</h2>
+    <ul class="log" id="log"></ul>
+  </section>
+</main>
+<script>
+(function () {
+  var S = window.MILO_STATUS || { agents: [], milestones: [], commits: [], log: [], spend: {}, lanes: [] };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+  var pill = function (state) { return '<span class="pill ' + esc(state) + '">' + esc(state) + "</span>"; };
+
+  document.getElementById("updated").textContent =
+    "Updated " + esc(S.updated || "unknown") + " · refreshes every 5 s · " + (S.note || "");
+
+  var running = S.agents.filter(function (a) { return a.state === "running"; }).length;
+  var done = S.milestones.filter(function (m) { return m.state === "done"; }).length;
+  document.getElementById("kpis").innerHTML =
+    '<div class="kpi"><span class="note">Agents running</span><b>' + running + "</b></div>" +
+    '<div class="kpi"><span class="note">Milestones done</span><b>' + done + " / " + S.milestones.length + "</b></div>" +
+    '<div class="kpi"><span class="note">Commits pushed</span><b>' + S.commits.length + "</b></div>" +
+    '<div class="kpi"><span class="note">Waiting on owner</span><b>' + (S.owner_items || 0) + "</b></div>";
+
+  document.getElementById("lanes").innerHTML = S.lanes.map(function (l) {
+    var pct = Math.round((l.done / Math.max(l.total, 1)) * 100);
+    return '<div class="lane"><span>' + esc(l.name) + '</span><div><div class="bar"><span style="width:' + pct +
+      '%"></span></div><span class="note">' + esc(l.done) + " of " + esc(l.total) + " items · " + esc(l.note || "") +
+      "</span></div></div>";
+  }).join("");
+
+  document.getElementById("agents").innerHTML = S.agents.map(function (a) {
+    return "<tr><td>" + esc(a.name) + "</td><td>" + esc(a.model) + "</td><td>" + esc(a.lane) + "</td><td>" +
+      pill(a.state) + "</td><td>" + esc(a.doing) + "</td></tr>";
+  }).join("") || '<tr><td colspan="5" class="note">No agents recorded.</td></tr>';
+
+  document.getElementById("milestones").innerHTML = S.milestones.map(function (m) {
+    return "<tr><td>" + esc(m.id) + " " + esc(m.name) + "</td><td>" + esc(m.phase) + "</td><td>" + pill(m.state) +
+      "</td><td>" + esc(m.depends || "") + "</td></tr>";
+  }).join("");
+
+  document.getElementById("commits").innerHTML = S.commits.map(function (c) {
+    return "<tr><td><code>" + esc(c.sha) + "</code></td><td>" + esc(c.what) + "</td></tr>";
+  }).join("") || '<tr><td colspan="2" class="note">None yet.</td></tr>';
+
+  var sp = S.spend || {};
+  document.getElementById("spend").innerHTML =
+    '<p class="note">Last reading from the OpenRouter dashboard: ' + esc(sp.reading || "not recorded") +
+    ". Not live-metered: this page does not query OpenRouter.</p>" +
+    '<p>Spent in this project so far (measured runs only): <b>' + esc(sp.measured || "0") + " USD</b></p>" +
+    '<p class="note">Session agents use the Claude subscription, so they add nothing here (HARNESS rule 14).</p>';
+
+  document.getElementById("log").innerHTML = S.log.slice().reverse().map(function (e) {
+    return "<li><time>" + esc(e.t) + "</time>" + esc(e.text) + "</li>";
+  }).join("") || '<li class="note">No events yet.</li>';
+
+  setTimeout(function () { location.reload(); }, 5000);
+})();
+</script>
+</body>
+</html>
