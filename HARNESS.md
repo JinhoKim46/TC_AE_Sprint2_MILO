@@ -39,14 +39,14 @@ The number of agents is not fixed. A role may be split into several agents with 
 ## 3. Hard rules (any violation fails the milestone)
 
 1. **No cloud call.** No agent sets `MILO_LIVE`, instantiates `ChatOpenAI` or an OpenRouter client outside `src/milo/llm/cloud.py`, or reads an API key. A verifier greps `openrouter.ai` and `ChatOpenAI(` under `src/`, `evals/`, `tests/` and fails any hit outside `llm/cloud.py`.
-2. **Offline tests.** `addopts = --disable-socket`. Tests never download, start Ollama or load a model. Embedding models are loaded only under `evals/` and in `create_app`, never under `tests/`. `HF_HUB_OFFLINE=1` is set in code before any model loads.
+2. **Offline tests.** `addopts = --disable-socket`. Tests never call a model or the network, and never start a local process. Models are called only through OpenRouter, from `evals/` and the running app, behind the budget check.
 3. **No secrets, no machine paths.** No keys, tokens, `.env` content or absolute home paths in code, data, logs, commits or verifier pastes. Verifiers replace `$HOME` with `~`.
 4. **Fictional identities only.** Companies, clients, people, addresses, prices and orders are invented. No real company or person is named, and no real domain is used.
 5. **Hidden names.** The owner's business project name, and the names of any other projects the owner keeps out of MILO, are never written into MILO files, commit messages or reports. The list of such names lives only in the untracked `.privacy-terms` file, and the privacy check enforces it.
 6. **Test split sealed.** Among the code under `src/`, `evals/` and `tests/`, only `evals/common.py` names `gold.jsonl`. The two leakage tests and the builder are excluded, as SPEC 10.1 says. Only `make final-test` sets `MILO_FINAL=1`.
 7. **No self-approval.** An owner never writes into `docs/verify/` and never marks its own milestone done.
 8. **Contract files are read-only.** `contract/` is copied from the kit. A test that looks wrong gets a request, not an edit.
-9. **No silent skip.** `skip` and `xfail` are not allowed in a done-line. A test that needs a local model is marked `local` and is excluded from the default run. Running it is an explicit make target, and the report says which tests ran in that mode.
+9. **No silent skip.** `skip` and `xfail` are not allowed in a done-line.
 10. **Retries in one place.** Only `src/milo/llm/retry.py` retries a model call (SPEC D23a).
 
 ## 4. Milestone cycle (no human in the loop)

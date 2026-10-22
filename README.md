@@ -29,4 +29,4 @@ Milestones run in order. Each one is done when its evidence is shown, not when t
 
 - `docs/` is local only and listed in `.gitignore`. It holds the project guidelines and is not published.
 - Secrets never go in the repo. Use `.env.example` for variable names.
-- Cloud model spend is capped for the whole course. Development and tests run on a local model.
+- Every model is called through OpenRouter. Development and evaluation use cheap OpenRouter models; the product uses Claude Sonnet through OpenRouter. The budget is the owner's OpenRouter balance.
