@@ -109,7 +109,12 @@ eval-discovery:
 	$(call need,evals/discovery/run_discovery.py,M5b)
 	uv run python evals/discovery/run_discovery.py --replay
 
+# Live A/B (integrator's batch): needs MILO_LIVE=1 and AB_ARGS="--max-cost .. --reason .. --chat-model .. --price-in .. --price-out .."
 eval-ab:
+	$(call need,evals/retrieval/ab.py,M2)
+	uv run python evals/retrieval/ab.py $(AB_ARGS)
+
+eval-ab-replay:
 	$(call need,evals/retrieval/ab.py,M2)
 	uv run python evals/retrieval/ab.py --replay
 
