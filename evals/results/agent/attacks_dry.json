@@ -1,6 +1,6 @@
 {
   "command": "uv run python evals/agent/run_attacks.py --dry",
-  "git_commit": "02d425c29f3003ca56afc4b0a904381d86359046",
+  "git_commit": "9670bca5d6f399a94f5de7de44d0e05088b3a77a",
   "inputs": {
     "attacks": "2ba33fba08c4616471cbc20f13bac39cd80f0d52defde38917ef5389619aa931",
     "canary": "a2f65473c938c62286702d8472c11ec0447eaf7dc172846e72399f5df2e18cd5",
@@ -3142,6 +3142,6 @@
   ],
   "seed": 0,
   "temperature": 0.0,
-  "timestamp": "2026-10-22T11:56:54Z",
+  "timestamp": "2026-10-22T14:42:30Z",
   "why_this_run": "offline harness and policy check: a scripted attacker emits each attack's intended call; no external model was needed"
 }
