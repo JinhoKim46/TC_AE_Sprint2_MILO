@@ -51,6 +51,10 @@ Each offline or postgres run writes `evals/results/security/<date>.json`, and th
 live-model cases the response `model` string and `cost_usd`. A case passes only when every key in
 `expected` matches and `backend_state_changed` is `false` wherever the case asserts it.
 
+The pen test of the integrated product (D123 step 4) runs every case at once: `evals/security/run_pentest.py` writes
+`evals/results/security/pentest-<date>.json` (offline rows run there; postgres-test rows read from the TEST-project log,
+live-model rows from the live file of the same pass). Report: `docs/security_report.md`.
+
 ## Severity and gating (D125)
 
 `severity_if_fails`: **critical** is reserved for cross-owner data access or execution, secrets /
