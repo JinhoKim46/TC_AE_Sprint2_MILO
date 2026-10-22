@@ -101,7 +101,7 @@ No stop at a milestone. Checkpoint answers stay with the owner (D31).
 5. For each number in the milestone's report, confirm an `evals/results/<milestone>/*.json` file with the D56 fields: `git_commit`, `model`, `seed`, `temperature`, `command`, `timestamp`, `inputs`, `rows`.
 6. Replay every dev eval of the milestone with its `make ...-replay` target. The replay must match the stored rows exactly.
 7. Dense-only M1 retrieval is also rerun live and compared within 0.005. Model-driven arms are reported with their live rerun, and a difference is noted in the verdict, not failed.
-8. For M5-store and M6: provision the test project schema, run `make migrate`, run the RLS test (`tests/test_store_identity.py` against Postgres, outside pytest), and drop the schema. The schema name is `milo_<uuid4 hex>` (D77).
+8. For M5-store, M6 and any milestone that adds a migration (D140): against the test project only, run `make migrate`, run the RLS test (`tests/test_store_identity.py --postgres`, outside pytest, using `SET ROLE` from the administrative connection, D153), then `make db-reset` (D154). The connection string is read through `settings.py` and never printed.
 9. For M0b: run the gold count check of SPEC section 21 (D78) and confirm `gold-audit.md` has no `reject` and the hash matches `MANIFEST.json`.
 10. Write the verdict (PASS or FAIL) with evidence to `docs/verify/<milestone>.md` on `verify/<milestone>`.
 
@@ -138,7 +138,7 @@ One owner per path. (I) marks integrator-owned. A path not listed belongs to nob
 | `src/milo/tools/**`, `src/milo/pricing/rate_card.py`, `src/milo/pricing/estimator.py` | M3 |
 | `src/milo/security/policy.py`, `src/milo/security/taint.py` (bodies) | M4 |
 | `src/milo/protocol/**`, `src/milo/facts/**`, `src/milo/turns.py`, `src/milo/prompts/**`, `src/milo/chain.py` (body) | M5b |
-| `src/milo/store/**` (including `memory.py`), `src/milo/auth/**`, `db/migrations/**` after S0 | M5-store |
+| `src/milo/store/**` (including `memory.py`), `src/milo/auth/**`, `db/migrations/**` after S0, `docs/operations.md`, `docs/m5-store_report.md`, `docs/requests/m5-store.md` | M5-store |
 | `src/milo/report/**` | M5c |
 | `src/milo/gate/**`, `data/scope/**`, `evals/gate/**`, `tests/test_gate.py`, `docs/m5g_report.md` | M5G |
 | `docs/threat_model.md`, `evals/security/**`, `docs/security_report.md` | SR |
