@@ -311,11 +311,13 @@ def build_discovery_app(
     *,
     repos: Any = None,
     session_facts: Any = None,
+    gate: Any = None,
 ) -> App:
     """Discovery mode over the in-memory store (SPEC D2, D70): `build_app(..., discovery=True)` plus the chain.
 
     One session per `user_id`; any `thread_id` that is not one of the owner's session ids maps to it. `repos`
     (default: a fresh `MemoryStore`) and `session_facts` let an evaluation share the fact store with a backend.
+    `gate` is the M5G input gate (`milo.gate.Gate`); the default is stage 1 with stage 2 failing open (offline).
     """
     from milo.store import memory_repositories
 
@@ -326,6 +328,7 @@ def build_discovery_app(
         app,
         repos if repos is not None else memory_repositories(),
         session_facts=session_facts,
+        gate=gate,
     )
     return app
 

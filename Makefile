@@ -12,7 +12,8 @@ endef
 .PHONY: check test audit migrate db-reset index record eval final-test discovery-table \
 	kit-sources kit-abstains kit-tools kit-security kit-errors kit-threads kit-cost \
 	eval-retrieval eval-retrieval-replay eval-tools eval-tools-replay eval-attacks eval-attacks-replay \
-	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay eval-sr-live eval-sr-live-replay live-check
+	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay eval-sr-live eval-sr-live-replay live-check \
+	eval-gate eval-gate-replay
 
 check:
 	uv run ruff check .
@@ -136,6 +137,16 @@ eval-sr-live:
 
 eval-sr-live-replay:
 	uv run python evals/security/run_live.py --replay
+
+# M5G gate (protocol m5g-gate.md). `eval-gate` is the dev Jev probe run and refuses without MILO_LIVE=1; pass
+# GATE_ARGS="--reason .. [--max-cost 0.20]". The single test-split run is `--final` under MILO_FINAL=1 (not a target).
+# `eval-gate-replay` recomputes gate_dev.json when it exists, else the dry result.
+eval-gate:
+	@test "$$MILO_LIVE" = "1" || { echo "refusing to run: eval-gate spends OpenRouter budget (SPEC D126) and needs MILO_LIVE=1; use eval-gate-replay to recompute a recorded result"; exit 1; }
+	uv run python evals/gate/run_gate.py --live $(GATE_ARGS)
+
+eval-gate-replay:
+	uv run python evals/gate/run_gate.py --replay
 
 # The whole live batch in one table: command, protocol and its commit, estimated cost, and whether each runner
 # refuses without MILO_LIVE=1. No network, no key, no spend (integrator decision 44).

@@ -1,10 +1,13 @@
 """The discovery chain (SPEC section 5, D2, D37, D39, D108, D131 to D134, D141; M5b body).
 
-Per owner message, an LCEL sequence of seven nodes over one `TurnState`:
+Per owner message, an LCEL sequence of eight nodes over one `TurnState`:
 
-    policy -> extract -> merge -> protocol -> retrieve -> reply -> estimate
+    policy -> gate -> extract -> merge -> protocol -> retrieve -> reply -> estimate
 
 - policy: taint of the owner text and any upload (D22), sticky per session; the owner message is saved as sent.
+- gate: the M5G input gate (D103 to D117, `milo.gate`). Stage 1 is free; an undecided message costs one Jev call.
+  A greeting gets a fixed reply, a refused message the fixed scope reply; both end the turn with no chat-model
+  call. A band or failed gate call goes on with the D108 reply check (which runs on every reply here).
 - extract: model call 1, a JSON object validated by Pydantic; one JSON re-ask (D23b). If both fail to parse, the
   turn answers with the "repeat the last point" reply and makes no further call.
 - merge: code (`facts.merge`): verbatim evidence (D134), type, range, unit and cross-field checks, statuses.
@@ -43,6 +46,8 @@ from milo.errors import (
 from milo.facts.merge import MergeResult
 from milo.facts.model import Extraction, Proposal, parse_extraction
 from milo.facts.store import SessionFacts, TurnBinding, owner_hex
+from milo.gate import GREETING_REPLY, SCOPE_REPLY, Gate, offline_gate
+from milo.gate.jev import RECENT_TURNS
 from milo.llm.client import JSON_REASK, parse_json_object
 from milo.llm.retry import invoke_with_retry
 from milo.loop import OnEvent, call_cost, run_turn, tool_message
@@ -207,6 +212,7 @@ class TurnState:
     cost: float = 0.0
     check: ReplyCheck | None = None
     estimate: dict[str, Any] | None = None
+    gate: Any = None
     done: bool = False
 
 
@@ -237,8 +243,10 @@ class DiscoveryRuntime:
         session_facts: SessionFacts | None = None,
         protocol: Any = None,
         clock: Callable[[], float] = time.time,
+        gate: Gate | None = None,
     ) -> None:
         self.app = app
+        self.gate = gate if gate is not None else offline_gate()
         self.repos = repos
         self.protocol = protocol or get_protocol()
         self.engine = ProtocolEngine(self.protocol)
@@ -375,6 +383,7 @@ class DiscoveryRuntime:
     def _nodes(self) -> list[tuple[str, Callable[[TurnState], None]]]:
         return [
             ("policy", self._policy),
+            ("gate", self._gate),
             ("extract", self._extract),
             ("merge", self._merge),
             ("protocol", self._protocol),
@@ -549,6 +558,28 @@ class DiscoveryRuntime:
         before = self.engine.evaluate(st.facts)
         st.confirming = self.engine.open_conflict(st.facts)
         st.last_question = before.next_question
+
+    def _gate(self, st: TurnState) -> None:
+        """M5G gate on the owner text (not the upload). Refusals and greetings make no chat-model call (rule 11)."""
+        turns = [m for m in st.history if m.get("role") in ("owner", "assistant")]
+        decision = self.gate.decide(st.text, turns[-RECENT_TURNS:])
+        st.gate = decision
+        st.cost += decision.cost_usd
+        self.emit(st, "policy", stage="gate", route=decision.route, band=decision.band)
+        self.trace(
+            st,
+            "gate",
+            duration_ms=decision.latency_s * 1000,
+            **decision.trace_detail(),
+        )
+        if decision.route in ("refuse", "greeting"):
+            st.view = self.engine.evaluate(st.facts)
+            if decision.route == "refuse":
+                st.answer = SCOPE_REPLY
+            else:
+                nxt = st.view.next_question
+                st.answer = f"{GREETING_REPLY} {nxt}" if nxt else GREETING_REPLY
+            st.done = True
 
     def _call(self, st: TurnState, messages: list[dict[str, Any]], node: str) -> Any:
         started = time.monotonic()
@@ -925,14 +956,19 @@ class DiscoveryRuntime:
 
 
 def attach(
-    app: Any, repos: Any = None, *, session_facts: SessionFacts | None = None
+    app: Any,
+    repos: Any = None,
+    *,
+    session_facts: SessionFacts | None = None,
+    gate: Gate | None = None,
 ) -> DiscoveryRuntime:
-    """Give a discovery `App` its runtime. Without repositories, an in-memory store is used (SPEC D70)."""
+    """Give a discovery `App` its runtime. Without repositories, an in-memory store is used (SPEC D70). Without a
+    gate, the offline gate (stage 1, stage 2 fails open) is used."""
     if repos is None:
         from milo.store import memory_repositories
 
         repos = memory_repositories()
-    runtime = DiscoveryRuntime(app, repos, session_facts=session_facts)
+    runtime = DiscoveryRuntime(app, repos, session_facts=session_facts, gate=gate)
     app.discovery_runtime = runtime
     return runtime
 
