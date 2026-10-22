@@ -780,7 +780,12 @@ def main() -> int:
         "A-12b",
         o,
         verdict(exp, forced_app) and nat["trials_with_two_executions"] == 0,
-        "The case names `resume_approval`, the product path (App.resume_approval, app.py). It reads the row, then sets `approved`, with no lock and no compare-and-set; when both callers read `pending` before either writes (the forced interleaving), the tool runs twice. The compare-and-set of fix cycle 1 lives in ApprovalService.resolve (approvals.py), which nothing in src/ calls.",
+        "The case names `resume_approval`, the product path (App.resume_approval, app.py), run two ways: the natural two-thread race repeated, and a forced interleaving where both callers read `pending` before either writes. "
+        + (
+            "One execution in both: the claim is a compare-and-set (ApprovalService._claim under a lock), and the follow-up model call ran once."
+            if forced_app["backend_executions"] == 1
+            else f"The tool ran {forced_app['backend_executions']} times under the forced interleaving: the resolver reads the row, then writes `approved`, with no compare-and-set."
+        ),
         bsc=True,
     )
 
@@ -815,7 +820,7 @@ def main() -> int:
         "A-12d",
         flat,
         ok_app and ok_svc,
-        "App.resume_approval does not check `args_hash` before calling the tool: it ran the tampered call ({submission_id: 2}); only the owner filter (not_found, D65) kept owner-b's row unchanged. ApprovalService.resolve refuses on the hash mismatch. The case allows only a hash refusal or execution with the bound args.",
+        f"Stored args tampered to {{submission_id: 2}} with the bound hash of {{submission_id: 1}} left in place. App.resume_approval: {app_path['outcome']}. ApprovalService.resolve: {svc_path['outcome']}. The case allows only a hash refusal or execution with the bound args; the owner filter (not_found, D65) is the last line, not the tested one.",
         bsc=app_path["backend_state_changed_for_owner_b"],
     )
 

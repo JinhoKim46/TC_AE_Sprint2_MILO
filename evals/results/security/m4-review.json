@@ -1,6 +1,6 @@
 {
   "command": "uv run python evals/results/security/m4-review.py",
-  "git_commit": "ff540d2f03b33b6fd901e987b78ca74982494c7d",
+  "git_commit": "bd908c9da78867f03baab16603cc8b1687b4f8ae",
   "inputs": {
     "attacks": "2ba33fba08c4616471cbc20f13bac39cd80f0d52defde38917ef5389619aa931",
     "cases": "8fc0a0a95f5d1d9fdb0e4cb5fa366d9ff4486516b10990eb29fec496c24039de",
@@ -388,21 +388,20 @@
       },
       "id": "A-12b",
       "not_applicable_keys": [],
-      "note": "The case names `resume_approval`, the product path (App.resume_approval, app.py). It reads the row, then sets `approved`, with no lock and no compare-and-set; when both callers read `pending` before either writes (the forced interleaving), the tool runs twice. The compare-and-set of fix cycle 1 lives in ApprovalService.resolve (approvals.py), which nothing in src/ calls.",
+      "note": "The case names `resume_approval`, the product path (App.resume_approval, app.py), run two ways: the natural two-thread race repeated, and a forced interleaving where both callers read `pending` before either writes. One execution in both: the claim is a compare-and-set (ApprovalService._claim under a lock), and the follow-up model call ran once.",
       "observed": {
         "AP-A1_status": "used",
-        "backend_executions": 2,
-        "follow_up_model_calls": 2,
+        "backend_executions": 1,
+        "follow_up_model_calls": 1,
         "forced_interleaving_App.resume_approval": {
           "AP-A1_status": "used",
-          "backend_executions": 2,
+          "backend_executions": 1,
           "backend_outputs": [
-            "withdrawn",
-            "already_withdrawn"
+            "withdrawn"
           ],
-          "follow_up_model_calls": 2,
+          "follow_up_model_calls": 1,
           "resolver": "App.resume_approval",
-          "responses_with_tool_result": 2,
+          "responses_with_tool_result": 1,
           "submission_1_status": "withdrawn"
         },
         "forced_interleaving_ApprovalService.resolve": {
@@ -422,10 +421,10 @@
           "trials": 300,
           "trials_with_two_executions": 0
         },
-        "responses_with_tool_result": 2,
+        "responses_with_tool_result": 1,
         "submission_1_status": "withdrawn"
       },
-      "pass": false,
+      "pass": true,
       "severity_if_fails": "high",
       "threat": "T-11"
     },
@@ -463,19 +462,19 @@
       },
       "id": "A-12d",
       "not_applicable_keys": [],
-      "note": "App.resume_approval does not check `args_hash` before calling the tool: it ran the tampered call ({submission_id: 2}); only the owner filter (not_found, D65) kept owner-b's row unchanged. ApprovalService.resolve refuses on the hash mismatch. The case allows only a hash refusal or execution with the bound args.",
+      "note": "Stored args tampered to {submission_id: 2} with the bound hash of {submission_id: 1} left in place. App.resume_approval: hash_mismatch_refusal. ApprovalService.resolve: hash_mismatch_refusal. The case allows only a hash refusal or execution with the bound args; the owner filter (not_found, D65) is the last line, not the tested one.",
       "observed": {
-        "AP-A1_status": "used",
+        "AP-A1_status": "pending",
         "backend_state_changed_for_owner_b": false,
-        "outcome": "executed_with_tampered_args {'submission_id': 2} (owner filter returned not_found)",
-        "outcome_App.resume_approval": "executed_with_tampered_args {'submission_id': 2} (owner filter returned not_found)",
+        "outcome": "hash_mismatch_refusal",
+        "outcome_App.resume_approval": "hash_mismatch_refusal",
         "outcome_ApprovalService.resolve": "hash_mismatch_refusal",
         "owner_b_rows_changed": 0,
         "paths": {
           "App.resume_approval": {
-            "AP-A1_status": "used",
+            "AP-A1_status": "pending",
             "backend_state_changed_for_owner_b": false,
-            "outcome": "executed_with_tampered_args {'submission_id': 2} (owner filter returned not_found)",
+            "outcome": "hash_mismatch_refusal",
             "owner_b_rows_changed": 0,
             "submission_1_status": "received",
             "submission_2_status": "received"
@@ -492,7 +491,7 @@
         "submission_1_status": "received",
         "submission_2_status": "received"
       },
-      "pass": false,
+      "pass": true,
       "severity_if_fails": "high",
       "threat": "T-11"
     },
@@ -533,17 +532,12 @@
     "cases": 15,
     "failed": [
       "A-01a",
-      "A-05a",
-      "A-12b",
-      "A-12d"
+      "A-05a"
     ],
-    "failed_critical_or_high": [
-      "A-12b",
-      "A-12d"
-    ],
-    "passed": 11
+    "failed_critical_or_high": [],
+    "passed": 13
   },
   "temperature": 0.0,
-  "timestamp": "2026-10-22T14:37:04Z",
+  "timestamp": "2026-10-22T14:44:28Z",
   "why_this_run": "verifier SR review of M4: offline attack cases against the dry harness; scripted model, no external model needed (HARNESS rule 14)"
 }
