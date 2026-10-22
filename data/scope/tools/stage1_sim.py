@@ -118,9 +118,7 @@ class Stage1:
         # a number, then at most two intervening words, then a unit; "/day" and "%" may attach
         self.number_re = re.compile(
             r"(?<![\w])~?\d+(?:[.,]\d+)*(?:\s*[-\u2013]\s*\d+(?:[.,]\d+)*)?"
-            r"(?:ish|k|x)?\s*(?:[^\W\d][\w'-]*\s+){0,2}?(?:"
-            + unit_alt
-            + r")(?!\w)"
+            r"(?:ish|k|x)?\s*(?:[^\W\d][\w'-]*\s+){0,2}?(?:" + unit_alt + r")(?!\w)"
         )
         self.refuse = [
             (p["id"], re.compile(p["pattern"])) for p in lex["refuse_patterns"]
