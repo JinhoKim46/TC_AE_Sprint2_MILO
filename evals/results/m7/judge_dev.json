@@ -1,0 +1,3824 @@
+{
+ "reasoning": {
+  "anthropic/claude-haiku-5.5": "off",
+  "openai/gpt-4.1-mini": "off"
+ },
+ "git_commit": "afb8cb290060b6972a0c1ee313d2b31c0f20e7e6",
+ "model": "judges=anthropic/claude-haiku-5.5,openai/gpt-4.1-mini",
+ "seed": 26,
+ "temperature": 0.0,
+ "command": "MILO_LIVE=1 python evals/rag/run_rag_eval.py --judge --max-cost 0.5 --judge anthropic/claude-haiku-5.5,0.10,0.50 --judge openai/gpt-4.1-mini,0.40,1.60",
+ "timestamp": "2026-10-22T19:38:55Z",
+ "inputs": {
+  "gold": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+  "sample": "6f3e6518e202098df7e53bf7ff05849ccc3a7f0649b16f20a82c9b22001e1c6b",
+  "generation": "9a67c8407228b95c5b76e775e982ba8705cd2276f43923fdd9f6ae637acc1b7b",
+  "labels": "50a012bfe7d9043155458c8c37fde4b0b52c472d56d8e0c05c5a742c0d8d3d96",
+  "prompt/faithfulness.v1.md": "dcc1437d40ad493bdf9ccc266541a1c9b54cafde9eeba4a16321dbf8963d7f33",
+  "prompt/relevance.v1.md": "3e04fdd2c8e553364059d59e1c9c4740a017968b52d6bb67f6e4dacf8bdc7302",
+  "prompt/context_precision.v1.md": "937bd5d9a952a4f95c66ba3591efd6f35059f40d7ce1cbaed33131494586ef9d",
+  "evals/rag/generate.py": "570081031571d5a7206ec8e54808026acbb0481885194f5f0d0563176657593c",
+  "evals/rag/judge.py": "95af9a441f13423fb42ada7d83bf972f70b4d5445197cdf0172c4dae036b434f",
+  "evals/rag/schema.py": "41629b4e58bed98f65722fe537374f54d01aa93cc3051e57cb7e37acd92f10b5",
+  "evals/rag/stats.py": "a6074c3b95f963cfb82d39e7cb070f7ac0fb8e908d9cefb9253a7fb09e5c777d",
+  "evals/rag/sample.py": "4ba2fce198533673e103e5f304ce030d1b9ef3119e9c10efc59e60784a3d845e"
+ },
+ "dry": false,
+ "partial": false,
+ "spend_reason": "judge models are the thing measured against the labels (D126)",
+ "judge_prices_usd_per_mtok": {
+  "anthropic/claude-haiku-5.5": [
+   0.1,
+   0.5
+  ],
+  "openai/gpt-4.1-mini": [
+   0.4,
+   1.6
+  ]
+ },
+ "bootstrap": {
+  "resamples": 2000,
+  "seed": 0
+ },
+ "rows": [
+  {
+   "qid": "q001",
+   "type": "identifier",
+   "question": "What activities fall outside the scope of phone-intake?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#3",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.839771,
+     "text": "## What is not included\n\nThe phone-intake module does not make outbound sales calls. It does not give medical or legal advice, and it does not take card payments by phone. If a caller asks for any of these, the module explains that a person will follow up."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#5",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.7184,
+     "text": "## What it did not do\n\nThe modules did not stop every no-show, and the report did not promise that they would. The salon still decided its own cancellation policy. Card payments by phone were out of scope for phone-intake, so deposits stayed a manual step."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.717612,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "solutions/document-data-entry#3",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.712533,
+     "text": "## What is not included\n\nThe document-data-entry module does not read handwriting outside the agreed form types. It does not do signature verification. If your team uses a form we have not set up, those sheets are flagged rather than entered."
+    },
+    {
+     "chunk_id": "implementation/api-connector#5",
+     "doc_id": "implementation/api-connector",
+     "score": 0.704335,
+     "text": "## Limits\n\nThe module can only do what the key allows. If the key cannot create bookings, phone-intake cannot book. We ask for the smallest set of rights that works, and we tell you which rights each module needs before you create the key."
+    }
+   ],
+   "answer": "Based on the knowledge base, the phone-intake module does not cover these:\n\n- **Outbound sales calls.** It only handles incoming calls.\n- **Medical or legal advice.** If a caller asks for either, the module explains that a person will follow up.\n- **Card payments by phone.** If a caller asks to pay by card, the module explains that a person will follow up. In one grooming salon case, deposits stayed a manual step for this reason.\n\nThere is also a limit on what it can do in your systems. The module can only do what its API key allows. If the key can't create bookings, phone-intake can't book. We ask for the smallest set of rights that works, and we tell you which rights each module needs before you create the key.\n\nThe salon case also showed that the module doesn't prevent every no-show. Cancellation policy stays with the business.\n\nIf you tell me what your callers usually ask for, I can check whether it falls inside or outside these limits.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"The answer claims the 'grooming salon case' with deposits as a manual step, but the contexts only say the salon case involved deposits staying manual; 'grooming salon' is not stated, and the answer's claim that the module hands off card-payment requests with a person following up is only partly supported.\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 1062,
+      "tokens_out": 105,
+      "cost_usd": 0.0001587
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer lists activities outside phone-intake's scope (outbound sales, medical/legal advice, card payments by phone) and adds related limits, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 637,
+      "tokens_out": 69,
+      "cost_usd": 9.82e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Context [1] lists activities outside phone-intake's scope (outbound sales calls, medical/legal advice, card payments by phone) and [2] also states card payments by phone were out of scope; [3] describes what the module does, while [4] and [5] concern other modules or access rights.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 694,
+      "tokens_out": 117,
+      "cost_usd": 0.0001279
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim in the answer is supported by contexts [1], [2], [3], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 758,
+      "tokens_out": 34,
+      "cost_usd": 0.0003576
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly lists activities outside the scope of phone-intake, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 449,
+      "tokens_out": 30,
+      "cost_usd": 0.0002276
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Contexts [1] and [2] specify activities outside phone-intake scope; others do not address this.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 507,
+      "tokens_out": 46,
+      "cost_usd": 0.0002764
+     }
+    }
+   }
+  },
+  {
+   "qid": "q003",
+   "type": "identifier",
+   "question": "Can ticket-creation mark a job as finished by itself?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/ticket-creation#0",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.786649,
+     "text": "# Ticket creation\n\nThe ticket-creation module turns each accepted request into a ticket with the fields the team needs, and tracks its status. It sits after intake: once a request has been accepted, the module makes sure it becomes a job that someone owns."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#3",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.750966,
+     "text": "## What is not included\n\nThe ticket-creation module does not close a ticket without a person. A member of staff marks the job done. It does not do billing; invoices stay in your existing system."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#6",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.742134,
+     "text": "## Who it suits\n\nOwners who write jobs on paper or in a spreadsheet and then lose track of which ones are done usually pair this module with phone-intake or email-triage. The ticket is the single place where the job lives."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#1",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.735547,
+     "text": "## What it does\n\nFor each accepted request, the module creates a ticket and fills in the fields your team has agreed on, such as customer, address, request type and requested date. Before it creates a ticket it checks for duplicates, so the same request sent twice does not become two jobs. It then tracks the ticket's status from open to done and reminds staff when a ticket has not moved."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#4",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.72499,
+     "text": "## Connecting it to your tools\n\nThe module works with csv-export, api-connector and crm-connector. The crm-connector maps ticket fields to the fields in your CRM, so a ticket created here appears as a record there."
+    }
+   ],
+   "answer": "No. The ticket-creation module doesn't close a ticket on its own. A member of staff has to mark the job as done.\n\nThe module does track each ticket's status from open to done. It also reminds staff when a ticket hasn't moved. The final step of closing the job stays with a person.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim is supported: context [2] says the module does not close a ticket without a person and a staff member marks the job done; context [4] says it tracks status from open to done and reminds staff when a ticket has not moved.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 890,
+      "tokens_out": 81,
+      "cost_usd": 0.0001295
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether ticket creation can mark a job finished by itself, stating it cannot and explaining that staff must close it.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 435,
+      "tokens_out": 58,
+      "cost_usd": 7.25e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 1, 0, 0, 0], \"reason\": \"Context [2] states the module does not close tickets without a person, which answers that it cannot mark a job finished by itself; the others do not address this.\"}",
+      "score": [
+       0,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 726,
+      "tokens_out": 71,
+      "cost_usd": 0.0001081
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], and [4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 625,
+      "tokens_out": 27,
+      "cost_usd": 0.0002932
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly explains that ticket-creation cannot mark a job as finished by itself and describes the process involved.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 308,
+      "tokens_out": 34,
+      "cost_usd": 0.0001776
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 1, 0, 0, 0], \"reason\": \"Context [2] explicitly states that the ticket-creation module does not close a ticket by itself; a staff member must mark the job done.\"}",
+      "score": [
+       0,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 516,
+      "tokens_out": 53,
+      "cost_usd": 0.0002912
+     }
+    }
+   }
+  },
+  {
+   "qid": "q007",
+   "type": "identifier",
+   "question": "Is there a recurring charge when using csv-export?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/csv-export#4",
+     "doc_id": "implementation/csv-export",
+     "score": 0.811816,
+     "text": "## Cost\n\nThe csv-export integration carries no monthly surcharge. Its line on the rate card is 0 USD. The module's own base price and the setup fee still apply."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#4",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.753984,
+     "text": "## Cost\n\nThe export-only-tool surcharge is 250 USD a month. It covers the extra handling, the file-drop setup or the prepared re-keying list, and the checking that goes with it."
+    },
+    {
+     "chunk_id": "implementation/csv-export#6",
+     "doc_id": "implementation/csv-export",
+     "score": 0.751686,
+     "text": "## When to choose it\n\nChoose csv-export when your tool has no API, when you want to try a module without touching your tool, or when a delay of up to the export interval does not matter. Many owners start here and move to api-connector later."
+    },
+    {
+     "chunk_id": "implementation/csv-export#3",
+     "doc_id": "implementation/csv-export",
+     "score": 0.749757,
+     "text": "## Which modules support it\n\nEvery module in the catalogue works with csv-export: phone-intake, email-triage, ticket-creation, staff-assignment, document-data-entry and customer-status-updates. For staff-assignment it is the only integration offered."
+    },
+    {
+     "chunk_id": "implementation/csv-export#0",
+     "doc_id": "implementation/csv-export",
+     "score": 0.747695,
+     "text": "# CSV export and import\n\nThe csv-export integration is the simplest way to connect a module to the tool you already use. It needs no live connection, no access key and no change to your tool. This article explains how it works and when it is the right choice."
+    }
+   ],
+   "answer": "No. According to the knowledge base, csv-export has no monthly surcharge, and its line on the rate card is 0 USD. You would still pay the module's own base price and the setup fee.\n\nA different integration type is priced differently. Export-only tools carry a surcharge of 250 USD a month, which covers the extra handling, the file-drop setup or prepared re-keying list, and the checking that goes with it. If your tool is export-only, that surcharge may apply. I can look into how that works for your situation, or put together an estimate for specific modules, if you'd like.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (no monthly surcharge, 0 USD rate card line, base price and setup fee still apply, export-only surcharge of 250 USD a month and its purpose) is supported by contexts [1] and [2].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 927,
+      "tokens_out": 88,
+      "cost_usd": 0.0001367
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses the recurring-charge question for csv-export, stating there is no monthly surcharge, and adds relevant context about other integration types.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 523,
+      "tokens_out": 63,
+      "cost_usd": 8.38e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Context [1] states csv-export has no monthly surcharge (0 USD), and [2] gives the 250 USD monthly surcharge for export-only tools, which together answer whether there is a recurring charge; [3], [4], and [5] do not address recurring charges.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 672,
+      "tokens_out": 113,
+      "cost_usd": 0.0001237
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1] and [2].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 653,
+      "tokens_out": 24,
+      "cost_usd": 0.0002996
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly explains whether there is a recurring charge for csv-export and provides relevant details about related charges.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 368,
+      "tokens_out": 33,
+      "cost_usd": 0.0002
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] directly addresses the cost and recurring charge of csv-export; others do not mention recurring charges.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 482,
+      "tokens_out": 46,
+      "cost_usd": 0.0002664
+     }
+    }
+   }
+  },
+  {
+   "qid": "q009",
+   "type": "paraphrase",
+   "question": "How much does the call answering product cost each month before any factors?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#5",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.754825,
+     "text": "## Price\n\nThe base monthly price for phone-intake is 690 USD. The setup fee is 900 USD per module. The monthly price is multiplied by a volume factor that depends on how many requests you handle a day; see the pricing section for the tiers. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#3",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.72097,
+     "text": "## Base prices per module\n\n| Module | Base price per month |\n|---|---|\n| phone-intake | 690 USD |\n| email-triage | 390 USD |\n| ticket-creation | 290 USD |\n| staff-assignment | 340 USD |\n| document-data-entry | 490 USD |\n| customer-status-updates | 240 USD |"
+    },
+    {
+     "chunk_id": "pricing/what-is-included#1",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.711745,
+     "text": "## Included in the monthly price\n\nThe monthly price for a module covers the running of that module for your business: the software, the hosting, the templates and rules we agree with you during setup, and the audit or delivery logs that each module keeps. It also covers the integration you chose, once the integration surcharge is added. Minor changes to wording, labels or skill tags are included; you can ask for them at any time."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#0",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.708493,
+     "text": "# What is included and what is not\n\nA monthly price covers a fixed list of things. This article says what that list is, and what sits outside it, so that there are no surprises after the first invoice."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#5",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.708357,
+     "text": "## Why volume matters\n\nThe modules do more work when more requests come in: more calls answered, more messages labelled, more tickets checked for duplicates. The tiers keep the price proportionate without pricing each request one by one."
+    }
+   ],
+   "answer": "The base monthly price for the call answering module (phone-intake) is **690 USD**, before any adjustments.\n\nTwo things can change that figure:\n- **Volume factor:** The monthly price is multiplied by a factor based on how many requests you handle a day.\n- **Integration surcharge:** This applies if you choose an integration.\n\nThere is also a one-time setup fee of **900 USD** for the module. All prices are indicative and non-binding.\n\nIf you tell me your daily request volume and the tools you'd want to connect, I can get you a fuller estimate.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (690 USD base price, volume factor, integration surcharge, 900 USD setup fee, indicative prices) is stated in contexts [1], [2], and [3].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1040,
+      "tokens_out": 75,
+      "cost_usd": 0.0001415
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly states the base monthly price of 690 USD before any adjustments, which is what the question asked.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 522,
+      "tokens_out": 48,
+      "cost_usd": 7.62e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] states the base monthly price of 690 USD for phone-intake, which answers the question; [2] lists base prices too but the phone-intake row is the relevant one, and [2] also gives the same figure, so it is also needed; [3], [4], and [5] do not give the price.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 787,
+      "tokens_out": 118,
+      "cost_usd": 0.0001377
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], [3], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 722,
+      "tokens_out": 30,
+      "cost_usd": 0.0003368
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer provides the base monthly price before any factors, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 363,
+      "tokens_out": 28,
+      "cost_usd": 0.00019
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Contexts [1] and [2] provide the base monthly price for the call answering product; others do not address the cost before factors.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 560,
+      "tokens_out": 52,
+      "cost_usd": 0.0003072
+     }
+    }
+   }
+  },
+  {
+   "qid": "q012",
+   "type": "paraphrase",
+   "question": "What do reminders and confirmations to clients cost per month at the base rate?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/customer-status-updates#6",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.73828,
+     "text": "## Who it suits\n\nOwners who send reminders by hand, and who lose money to no-shows, usually add this module next to phone-intake. The approved templates keep the tone yours."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#3",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.711962,
+     "text": "## Base prices per module\n\n| Module | Base price per month |\n|---|---|\n| phone-intake | 690 USD |\n| email-triage | 390 USD |\n| ticket-creation | 290 USD |\n| staff-assignment | 340 USD |\n| document-data-entry | 490 USD |\n| customer-status-updates | 240 USD |"
+    },
+    {
+     "chunk_id": "solutions/customer-status-updates#5",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.707381,
+     "text": "## Price\n\nThe base monthly price for customer-status-updates is 240 USD. The setup fee is 900 USD per module. A monthly surcharge of 300 USD applies when the api-connector integration is used. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#5",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.704733,
+     "text": "## Price\n\nThe base monthly price for phone-intake is 690 USD. The setup fee is 900 USD per module. The monthly price is multiplied by a volume factor that depends on how many requests you handle a day; see the pricing section for the tiers. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "solutions/email-triage#5",
+     "doc_id": "solutions/email-triage",
+     "score": 0.699882,
+     "text": "## Price\n\nThe base monthly price for email-triage is 390 USD. The setup fee is 900 USD per module. A volume factor applies based on daily request volume, and a monthly surcharge applies for the api-connector integration. All prices are indicative and non-binding."
+    }
+   ],
+   "answer": "Reminders and confirmations to clients fall under the **customer-status-updates** module. Its base rate is **240 USD per month**.\n\nSome other costs to know about:\n- **Setup fee:** 900 USD, charged once per module.\n- **API connector surcharge:** 300 USD per month, but only if you use the api-connector integration.\n\nAll prices are indicative and non-binding.\n\nMany owners who lose money to no-shows pair this module with phone-intake, which has a base rate of 690 USD per month. I can estimate the cost for your setup if you tell me your daily request volume and which integrations you have.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     0,
+     1,
+     1,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (240 USD base for customer-status-updates, 900 USD setup fee, 300 USD api-connector surcharge, 690 USD phone-intake base, no-show pairing) is supported by contexts [1], [2], [3], and [4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1040,
+      "tokens_out": 100,
+      "cost_usd": 0.000154
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly identifies the module for reminders and confirmations and gives its base rate of 240 USD per month, addressing what was asked.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 545,
+      "tokens_out": 58,
+      "cost_usd": 8.35e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 1, 0, 0, 0], \"reason\": \"Only context [2] lists base prices per module, and it includes the needed figure for reminders and confirmations, but the question concerns a module whose base monthly price appears in the table; the table row for the relevant module is absent, so no context directly gives the reminders and confirmations cost, and only the base price table is partially relevant.\"}",
+      "score": [
+       0,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 770,
+      "tokens_out": 127,
+      "cost_usd": 0.0001405
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], and [3].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 711,
+      "tokens_out": 27,
+      "cost_usd": 0.0003276
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly states the base rate cost for reminders and confirmations to clients as requested.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 380,
+      "tokens_out": 29,
+      "cost_usd": 0.0001984
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 1, 0, 0], \"reason\": \"Context [3] specifies the base monthly price for customer-status-updates, which relates to reminders and confirmations; other contexts do not provide this specific cost information.\"}",
+      "score": [
+       0,
+       0,
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 533,
+      "tokens_out": 56,
+      "cost_usd": 0.0003028
+     }
+    }
+   }
+  },
+  {
+   "qid": "q016",
+   "type": "paraphrase",
+   "question": "What happens if my daily workload is larger than the top tier?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/volume-tiers#3",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.809763,
+     "text": "## Above the top tier\n\nAbove 150 requests per day there is no automatic estimate and a person prices it. The assistant will tell you that the number is outside the rate card and that someone will contact you, rather than showing a figure."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#5",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.764234,
+     "text": "## Why volume matters\n\nThe modules do more work when more requests come in: more calls answered, more messages labelled, more tickets checked for duplicates. The tiers keep the price proportionate without pricing each request one by one."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#1",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.750334,
+     "text": "## The table\n\n| Daily requests | Volume factor |\n|---|---|\n| up to 20 per day | 1.00 |\n| up to 60 per day | 1.25 |\n| up to 150 per day | 1.50 |\n| above 150 per day | no automatic estimate; a person prices it |"
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#0",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.741994,
+     "text": "# Volume tiers\n\nYour daily request volume changes the monthly price of every module you choose. The change is a multiplier, called the volume factor, taken from a short table. This article shows the table and how to read it."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#2",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.734651,
+     "text": "## How to read it\n\nFind the row that your normal daily volume falls into, and multiply each module's base price by the factor in that row. A business with volume up to 20 requests a day pays the base price with no change. A business with volume up to 60 requests a day pays the base price multiplied by 1.25. A business with volume up to 150 requests a day pays the base price multiplied by 1.50."
+    }
+   ],
+   "answer": "If your normal daily volume is above 150 requests per day, you're past the top tier of the rate card. In that case:\n\n- **No automatic estimate.** The assistant won't show you a figure.\n- **A person prices it.** The assistant will tell you the number is outside the rate card and that someone will contact you.\n\nFor comparison, the tiers below that are:\n\n| Daily requests | Volume factor |\n|---|---|\n| up to 20 | 1.00 |\n| up to 60 | 1.25 |\n| up to 150 | 1.50 |\n| above 150 | priced by a person |\n\nI don't have any information on how the custom pricing is worked out or how long it takes. If you tell me your approximate daily volume and which modules interest you, I can record it. That way your details are on file when someone follows up.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     1,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (no automatic estimate, a person prices it, contact via someone, tier table values) is supported by contexts [1] and [3]; the offer to record details and the statement of missing pricing information are not factual claims.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1084,
+      "tokens_out": 86,
+      "cost_usd": 0.0001514
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses what happens above the top tier: no automatic estimate, and a person prices it and contacts the customer, with honest note of missing details on how custom pricing works.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 598,
+      "tokens_out": 71,
+      "cost_usd": 9.53e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 1, 0, 0], \"reason\": \"Context [1] says above 150 requests a day a person prices it and the assistant will say someone will contact you, and [3] lists the above-150 row with no automatic estimate; [2], [4], and [5] do not address what happens above the top tier.\"}",
+      "score": [
+       1,
+       0,
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 756,
+      "tokens_out": 104,
+      "cost_usd": 0.0001276
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"All claims about pricing above 150 requests and tier details are supported by contexts [1], [3], and [5]. The answer correctly states no automatic estimate and that a person prices it, as well as the tier table.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 781,
+      "tokens_out": 58,
+      "cost_usd": 0.0004052
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer explains what happens if the daily workload exceeds the top tier and provides relevant details.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 430,
+      "tokens_out": 30,
+      "cost_usd": 0.00022
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 1, 0, 0], \"reason\": \"Contexts [1] and [3] explain what happens if daily workload exceeds the top tier; others discuss pricing tiers or volume effects without addressing the question directly.\"}",
+      "score": [
+       1,
+       0,
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 551,
+      "tokens_out": 56,
+      "cost_usd": 0.00031
+     }
+    }
+   }
+  },
+  {
+   "qid": "q020",
+   "type": "paraphrase",
+   "question": "How is the lower end of the price bracket calculated?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/range-and-estimates#1",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.741692,
+     "text": "## The range\n\nThe base figure is the result of the calculation described in the article on how we price. The low figure is the base multiplied by 0.90. The high figure is the base multiplied by 1.20. The base factor itself is 1.00. The range exists because the final scope is agreed during setup, and small changes in scope move the price a little either way."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#4",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.717191,
+     "text": "## The calculation\n\nThe monthly price for each chosen module is its base price multiplied by the volume factor for your daily request volume. The integration surcharges for the integrations you use are added once a month. The setup fee is 900 USD for each module and is paid once. The result is the base estimate, from which the low and high figures are derived."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#2",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.690201,
+     "text": "## Three statuses\n\n| Status | Meaning |\n|---|---|\n| indicative | every pricing input was given by you and nothing conflicts |\n| scenario | an input is missing or unknown, and the estimate uses a stated assumption |\n| blocked | two of your answers conflict, and no number is shown until you resolve it |\n\nAn indicative estimate means that every field the price depends on was reported or confirmed by you and no conflict exists. A scenario estimate means that at least one input is missing, so the assistant has filled it with an assumption that it shows next to the number. A blocked estimate shows no number at all, only the conflict and the question that would resolve it."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#0",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.683508,
+     "text": "# How we price\n\nMILO prices are arithmetic, not negotiation. Every estimate is built from a published rate card, and the same inputs always give the same number. This article explains the parts of the calculation so that you can check any estimate yourself."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#2",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.681671,
+     "text": "## How to read it\n\nFind the row that your normal daily volume falls into, and multiply each module's base price by the factor in that row. A business with volume up to 20 requests a day pays the base price with no change. A business with volume up to 60 requests a day pays the base price multiplied by 1.25. A business with volume up to 150 requests a day pays the base price multiplied by 1.50."
+    }
+   ],
+   "answer": "The low end of the range is the base estimate multiplied by 0.90, which is 10% below the base.\n\nThe base estimate is worked out like this:\n\n1. **Monthly module price:** For each module you choose, take its base price and multiply it by the volume factor for your daily request volume.\n   - Up to 20 requests a day: 1.00 (the base price, unchanged)\n   - Up to 60 requests a day: 1.25\n   - Up to 150 requests a day: 1.50\n2. **Integration surcharges:** Add the surcharges for the integrations you use. These are added once a month.\n3. **Setup fee:** This is 900 USD per module, paid once.\n\nAdding these gives the base estimate. The low figure is that result × 0.90. The high figure is the base × 1.20. The range exists because the final scope is agreed during setup, and small scope changes move the price a little either way.\n\nI can run an estimate for the modules you're considering if you'd like. I'd first need a few details, such as your daily request volume and the integrations you use.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (low = base × 0.90, volume factors, surcharges added monthly, 900 USD setup fee per module, high = base × 1.20) is stated in contexts [1], [2], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1350,
+      "tokens_out": 84,
+      "cost_usd": 0.000177
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly explains that the lower end is the base estimate multiplied by 0.90, and details how the base is computed, addressing the question fully.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 674,
+      "tokens_out": 60,
+      "cost_usd": 9.74e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Context [1] gives the low figure as base times 0.90 and [2] defines the base estimate from which it is derived; [3], [4], and [5] do not describe how the lower end of the bracket is calculated.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 944,
+      "tokens_out": 94,
+      "cost_usd": 0.0001414
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 973,
+      "tokens_out": 27,
+      "cost_usd": 0.0004324
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly explains how the lower end of the price bracket is calculated and details the components of the base estimate.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 490,
+      "tokens_out": 35,
+      "cost_usd": 0.000252
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] explicitly explains how the lower end of the price bracket is calculated; the others do not address this calculation.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 681,
+      "tokens_out": 49,
+      "cost_usd": 0.0003508
+     }
+    }
+   }
+  },
+  {
+   "qid": "q022",
+   "type": "paraphrase",
+   "question": "Does a file-based link keep my software permanently connected?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/csv-export#1",
+     "doc_id": "implementation/csv-export",
+     "score": 0.698895,
+     "text": "## How it works\n\nYour tool exports a CSV file, for example the list of bookings or jobs for the day. The module reads that file, does its work, and writes a CSV file back. Your tool imports that file. The exchange runs on a schedule you choose, such as every hour or at the end of the day. There is no live connection between the two systems."
+    },
+    {
+     "chunk_id": "implementation/csv-export#2",
+     "doc_id": "implementation/csv-export",
+     "score": 0.695797,
+     "text": "## What you need\n\nYour tool must be able to export and import CSV files. Most spreadsheets, booking widgets and small job tools can. During setup we agree the column names on both sides so that the files always line up."
+    },
+    {
+     "chunk_id": "implementation/csv-export#0",
+     "doc_id": "implementation/csv-export",
+     "score": 0.690984,
+     "text": "# CSV export and import\n\nThe csv-export integration is the simplest way to connect a module to the tool you already use. It needs no live connection, no access key and no change to your tool. This article explains how it works and when it is the right choice."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#1",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.681277,
+     "text": "## The problem\n\nWith an export-only tool, a module can read what is in your system, but it cannot write a new record back. Results must be re-keyed or pushed through a file drop. Many trades businesses are in this position: the tool was chosen years ago, the data is in it, and there is no API and no import."
+    },
+    {
+     "chunk_id": "implementation/api-connector#0",
+     "doc_id": "implementation/api-connector",
+     "score": 0.680279,
+     "text": "# API connector\n\nThe api-connector integration gives a module a live connection to your tool. Bookings, labels, tickets and status changes are written and read as they happen, with no files in between."
+    }
+   ],
+   "answer": "No. A file-based link (the CSV export/import integration) doesn't keep your software permanently connected. According to the knowledge base, there is no live connection between the two systems.\n\nThis is how it works:\n- Your tool exports a CSV file, such as the day's bookings or jobs.\n- The MILO module reads that file, does its work, and writes a CSV file back.\n- Your tool imports that file.\n- The exchange runs on a schedule you choose, such as every hour or at the end of the day.\n\nChanges only reach the other system when the next scheduled exchange runs.\n\nYou need a tool that can export and import CSV files. Most spreadsheets, booking widgets and small job tools can. You don't need an access key or any change to your tool. During setup, we agree the column names on both sides so the files line up.\n\nIf you want changes written and read as they happen, the API connector is the live option. It needs a tool that supports it. If your tool can't import files or connect through an API, it's an export-only tool. In that case results have to be re-keyed or pushed through a file drop.\n\nI can look up more detail on either option if you tell me which tool you use.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     1,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (no live connection, CSV export/import schedule, no access key or tool change, column names agreed in setup, API connector is live) is supported by contexts [1], [2], [3], [5] and [4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1149,
+      "tokens_out": 84,
+      "cost_usd": 0.0001569
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly answers that a file-based link does not keep software permanently connected and explains how the scheduled exchange works.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 698,
+      "tokens_out": 52,
+      "cost_usd": 9.58e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Contexts [1] and [3] state that a file-based CSV exchange has no live connection and is scheduled, so the file link is not a permanent connection; [2] supports the CSV requirement but not the answer; [4] and [5] are about other topics.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 720,
+      "tokens_out": 107,
+      "cost_usd": 0.0001255
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim in the answer is supported by contexts [1], [2], [3], [4], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 837,
+      "tokens_out": 37,
+      "cost_usd": 0.000394
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly explains that a file-based link does not keep software permanently connected and describes how it works, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 498,
+      "tokens_out": 38,
+      "cost_usd": 0.00026
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] explicitly states there is no live connection, indicating the file-based link is not permanent; other contexts do not address connection permanence.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 537,
+      "tokens_out": 53,
+      "cost_usd": 0.0002996
+     }
+    }
+   }
+  },
+  {
+   "qid": "q029",
+   "type": "paraphrase",
+   "question": "Does needing emergency cover make the modules more expensive?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/urgent-requests#5",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.724034,
+     "text": "## What this means for the estimate\n\nUrgent handling does not change the rate card price. It changes the setup: the handover rules and the urgent labels are agreed during the setup period covered by the setup fee. The report lists them under the recommended modules so that nothing about urgent handling is left implicit."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#1",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.719399,
+     "text": "## Why we ask\n\nAn automated system that treats a gas smell like a routine quote is dangerous. Before any module is recommended, the interview asks whether urgent requests exist, what counts as urgent for you, and who takes those calls today. The answers decide whether a module may handle a request on its own or must pass it to a person at once."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#5",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.716449,
+     "text": "## What the assistant may and may not do\n\nThe assistant may suggest which catalogue modules fit what you described. It cannot change the arithmetic, apply a discount, or set a price itself. If you see a number in the conversation that is not in the estimate panel, treat the panel as the only valid figure."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#0",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.712655,
+     "text": "# Urgent requests and out-of-hours work\n\nSome businesses receive requests that cannot wait until morning. This article explains why we ask about them, what counts as urgent, and how the modules treat an urgent request differently from a normal one."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#4",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.704031,
+     "text": "## Out-of-hours work\n\nIf you have an on-call rota, we ask who is on it and how they are reached today. The modules use that rota; they do not create one. If nobody takes night calls today, the report says so and treats it as a gap for you to decide on, not as something a module solves by itself."
+    }
+   ],
+   "answer": "No. Urgent handling doesn't change the rate card price. It changes the setup. The handover rules and the urgent labels are agreed during the setup period, and the setup fee already covers that. The report lists them under the recommended modules, so nothing about urgent handling is left unstated.\n\nSome related points:\n\n- **Why we ask:** Before we recommend any module, we ask whether urgent requests exist, what counts as urgent for you, and who takes those calls today. Your answers decide whether a module can handle a request on its own or must pass it to a person immediately.\n- **Out-of-hours cover:** If you have an on-call rota, we ask who is on it and how they are reached. The modules use your rota but don't create one. If nobody takes night calls today, the report flags that as a gap for you to decide on. A module won't solve it for you.\n- **Figures:** The estimate panel is the only valid source for prices. Any number quoted in the conversation that isn't in the panel shouldn't be relied on.\n\nIf you'd like, tell me what counts as urgent in your business and which modules you're considering. I can then record that and run an estimate.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (urgent handling does not change the rate card price; setup fee covers agreeing handover rules; report lists them; interview asks about urgent requests; rota and gap statements; estimate panel as only valid figure) is supported by contexts [1], [2], [3], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1225,
+      "tokens_out": 108,
+      "cost_usd": 0.0001765
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether needing emergency cover makes the modules more expensive, stating that urgent handling does not change the rate card price and explaining why.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 705,
+      "tokens_out": 64,
+      "cost_usd": 0.0001025
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] states that urgent handling does not change the rate card price, directly answering whether emergency cover makes modules more expensive; the other contexts discuss urgent requests, assistant limits, and on-call rotas without addressing cost.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 790,
+      "tokens_out": 103,
+      "cost_usd": 0.0001305
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], [4], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 848,
+      "tokens_out": 30,
+      "cost_usd": 0.0003872
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether needing emergency cover makes the modules more expensive and explains the pricing structure clearly.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 487,
+      "tokens_out": 32,
+      "cost_usd": 0.000246
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention that needing emergency cover makes the modules more expensive; context [1] explicitly states urgent handling does not change the rate card price.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 558,
+      "tokens_out": 55,
+      "cost_usd": 0.0003112
+     }
+    }
+   }
+  },
+  {
+   "qid": "q039",
+   "type": "unanswerable",
+   "question": "What training do my staff receive after setup?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/crm-connector#2",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.683186,
+     "text": "## What you need\n\nSetup takes two working days. The first day is the field mapping and the connection; the second day is checking real tickets with you and adjusting the mapping where your CRM uses different values."
+    },
+    {
+     "chunk_id": "implementation/api-connector#2",
+     "doc_id": "implementation/api-connector",
+     "score": 0.67696,
+     "text": "## What you need\n\nYour tool must offer an API with an access key. Setup takes one working day. In that day we connect the module, map the fields, and run the first requests through with you watching."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#2",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.672253,
+     "text": "## Included in the setup fee\n\nThe setup fee pays for the work of getting a module live: agreeing the form types, templates or skill tags, connecting the module to your tool, and a short period of checking the first results with you. The setup fee is paid once per module."
+    },
+    {
+     "chunk_id": "pricing/setup-fees#1",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.672116,
+     "text": "## The setup fee\n\nThe setup fee is 900 USD per module and is paid once. If you choose two modules, two setup fees apply. The fee covers the work of agreeing templates, rules or skill tags with you, connecting the module to your tool, and checking the first results together."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#1",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.656289,
+     "text": "## Included in the monthly price\n\nThe monthly price for a module covers the running of that module for your business: the software, the hosting, the templates and rules we agree with you during setup, and the audit or delivery logs that each module keeps. It also covers the integration you chose, once the integration surcharge is added. Minor changes to wording, labels or skill tags are included; you can ask for them at any time."
+    }
+   ],
+   "answer": "The knowledge base doesn't mention any formal staff training after setup, so I can't tell you what's offered.\n\nIt does describe what happens during setup:\n- **Checking results with you:** The setup fee (900 USD per module, paid once) covers a short period of checking the first results together.\n- **Real tickets:** For the CRM connector, the second setup day is spent checking real tickets with you and adjusting the mapping.\n- **Watched first requests:** For the API connector, the first requests run through with you watching.\n- **Later changes:** Minor changes to wording, labels or skill tags are included in the monthly price, and you can ask for them at any time.\n\nThese are setup checks, not staff training. If training matters to you, ask the MILO team directly what they offer.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 1,
+    "context_relevance": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (setup checks with the customer, real-ticket checks over the second day, watched first API requests, included minor changes, and the 900 USD fee) is supported by contexts [1]-[5], and the no-training statement makes no factual claim.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1048,
+      "tokens_out": 95,
+      "cost_usd": 0.0001523
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly states the knowledge base does not mention formal staff training after setup, then addresses only related setup checks rather than training itself, so it answers the question only in part.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 580,
+      "tokens_out": 68,
+      "cost_usd": 9.2e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] describes the second-day checking of real tickets with the user, which is post-setup staff training-adjacent support; [2] covers setup only; [3] and [4] describe the setup fee's scope; [5] covers monthly pricing, not staff training.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 732,
+      "tokens_out": 110,
+      "cost_usd": 0.0001282
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer accurately states that no staff training after setup is mentioned and correctly summarizes the setup process and what is included in the monthly price from the contexts.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 741,
+      "tokens_out": 42,
+      "cost_usd": 0.0003636
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly states that no information about post-setup staff training is available but provides related setup details instead.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 404,
+      "tokens_out": 34,
+      "cost_usd": 0.000216
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention any training provided to staff after setup.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 533,
+      "tokens_out": 37,
+      "cost_usd": 0.0002724
+     }
+    }
+   }
+  },
+  {
+   "qid": "q045",
+   "type": "identifier",
+   "question": "for the customer updates, if we go with api-connector does it still need a file from us?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/api-connector#3",
+     "doc_id": "implementation/api-connector",
+     "score": 0.757045,
+     "text": "## Which modules support it\n\nThe api-connector is available for phone-intake, email-triage, ticket-creation and customer-status-updates. It is not offered for staff-assignment, which uses csv-export, or for document-data-entry, which uses csv-export or export-only-tool."
+    },
+    {
+     "chunk_id": "implementation/api-connector#0",
+     "doc_id": "implementation/api-connector",
+     "score": 0.749442,
+     "text": "# API connector\n\nThe api-connector integration gives a module a live connection to your tool. Bookings, labels, tickets and status changes are written and read as they happen, with no files in between."
+    },
+    {
+     "chunk_id": "implementation/api-connector#6",
+     "doc_id": "implementation/api-connector",
+     "score": 0.745556,
+     "text": "## When to choose it\n\nChoose api-connector when timing matters, for example a confirmation that should reach the customer within minutes, or when your staff work inside the tool all day and should see new tickets as they arrive. If your tool has no API, the csv-export integration does the same job with a delay."
+    },
+    {
+     "chunk_id": "implementation/csv-export#5",
+     "doc_id": "implementation/csv-export",
+     "score": 0.7368,
+     "text": "## Limits\n\nBecause the exchange runs on a schedule, a change in your tool is not seen by the module until the next export. If you need a customer status update to go out within minutes of a change, the api-connector is the better choice. CSV also carries no permissions: anyone who can read the file can read every row, so the file location must be a folder only your staff can see."
+    },
+    {
+     "chunk_id": "implementation/api-connector#4",
+     "doc_id": "implementation/api-connector",
+     "score": 0.732975,
+     "text": "## Cost\n\nThe api-connector surcharge is 300 USD a month, paid once however many modules share the connection. The module's own base price and the setup fee of 900 USD per module still apply."
+    }
+   ],
+   "answer": "No. With the api-connector, the customer-status-updates module doesn't need a file from you. The connector gives the module a live link to your tool. Status changes are read and written as they happen, with no files in between.\n\nFiles are what the csv-export integration uses. It runs on a schedule, so the module only sees a change at the next export. That's why the api-connector is the better choice if you want a customer update to go out within minutes of a change.\n\nTwo caveats:\n- Your tool has to have an API. If it doesn't, csv-export does the same job with a delay.\n- The api-connector costs 300 USD a month. That is paid once however many modules share the connection. The module's base price and the 900 USD setup fee per module still apply.\n\nI can work out a cost estimate for customer-status-updates if you'd like one.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (api-connector gives live connection, no files needed; csv-export runs on schedule; API requirement; 300 USD surcharge; 900 USD setup fee) is supported by contexts [1]-[5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1070,
+      "tokens_out": 88,
+      "cost_usd": 0.000151
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether the api-connector still needs a file, answering No and explaining why, along with relevant caveats.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 602,
+      "tokens_out": 54,
+      "cost_usd": 8.72e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 1, 0], \"reason\": \"Context [1] shows api-connector covers customer-status-updates, [2] says it has no files in between, and [4] states the connection is live versus scheduled file exchange; [3] and [5] do not address whether a file is needed.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 744,
+      "tokens_out": 99,
+      "cost_usd": 0.0001239
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim in the answer is supported by contexts [1], [2], [3], [4], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 778,
+      "tokens_out": 37,
+      "cost_usd": 0.0003704
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly explains whether a file is needed with the api-connector and provides relevant details about how it works compared to the csv-export integration.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 440,
+      "tokens_out": 41,
+      "cost_usd": 0.0002416
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Contexts [1] and [2] explain the use of api-connector for customer updates and explicitly mention no files are needed; others do not address the file requirement.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 546,
+      "tokens_out": 58,
+      "cost_usd": 0.0003112
+     }
+    }
+   }
+  },
+  {
+   "qid": "q053",
+   "type": "identifier",
+   "question": "in the dog groomer story, could phone-intake take a deposit?",
+   "contexts": [
+    {
+     "chunk_id": "cases/grooming-bookings#1",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.766944,
+     "text": "## The situation\n\nA small pet grooming salon with two sites took bookings by phone and through a web form. Every booking was written into a shared spreadsheet by whoever answered, and reminders were sent by hand the day before. At peak times the phone rang while every groomer had a dog on the table, so calls went to voicemail and some were never returned. The owner's words in the interview were that the business lost money twice: once when a call was missed, and again when a customer forgot and did not show."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#0",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.745434,
+     "text": "# Case: a grooming salon stops missing bookings\n\nThis is an anonymised, fictional case. The owner, the salon and the figures are invented to show how a discovery interview turns into a working module."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.741363,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#5",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.719474,
+     "text": "## What it did not do\n\nThe modules did not stop every no-show, and the report did not promise that they would. The salon still decided its own cancellation policy. Card payments by phone were out of scope for phone-intake, so deposits stayed a manual step."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#3",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.713882,
+     "text": "## What was recommended\n\nTwo modules: phone-intake, to answer calls at peak times and out of hours and to book into open slots, and customer-status-updates, to send the reminder before each appointment from an approved template. The estimate was marked indicative because every pricing input had been reported and nothing conflicted."
+    }
+   ],
+   "answer": "No. In the grooming salon case, taking card payments by phone was out of scope for phone-intake, so deposits stayed a manual step. The module answered calls at peak times and out of hours and booked into open slots. The salon still handled deposits itself, and it also set its own cancellation policy.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim is supported: context [4] says card payments by phone were out of scope so deposits stayed manual and the salon kept its own cancellation policy, and context [5] states phone-intake answers calls at peak times and out of hours and books into open slots.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 962,
+      "tokens_out": 94,
+      "cost_usd": 0.0001432
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether phone-intake could take a deposit in the grooming story, stating it could not and that deposits stayed a manual step.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 442,
+      "tokens_out": 61,
+      "cost_usd": 7.47e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 1, 1, 0], \"reason\": \"Context [3] states phone-intake records requests and books, and [4] states card payments by phone were out of scope so deposits stayed manual, which answers that phone-intake could not take a deposit; [5] confirms phone-intake's booking role. Contexts [1] and [2] give background without answering the question.\"}",
+      "score": [
+       0,
+       0,
+       1,
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 793,
+      "tokens_out": 123,
+      "cost_usd": 0.0001408
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"All claims about phone-intake not handling deposits and deposits being manual are supported by context [4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 673,
+      "tokens_out": 32,
+      "cost_usd": 0.0003204
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether phone-intake could take a deposit and explains the situation clearly.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 311,
+      "tokens_out": 30,
+      "cost_usd": 0.0001724
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 1, 0], \"reason\": \"Only context [4] addresses deposits and phone-intake, stating deposits stayed manual and phone-intake did not handle card payments.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 564,
+      "tokens_out": 50,
+      "cost_usd": 0.0003056
+     }
+    }
+   }
+  },
+  {
+   "qid": "q056",
+   "type": "identifier",
+   "question": "emergency emails. does email-triage flag them somehow?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/urgent-requests#3",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.751269,
+     "text": "## How the modules treat urgent requests\n\nThe phone-intake module passes an urgent call to a person immediately, using the handover you agree during setup, and does not try to book it. The email-triage module gives an urgent message the highest priority label so it sits at the top of the inbox. The ticket-creation module creates the ticket with the urgent flag so that staff-assignment can suggest the on-call person. None of the modules decides on its own that something is not urgent; if the request matches your definition, it is treated as urgent."
+    },
+    {
+     "chunk_id": "solutions/email-triage#0",
+     "doc_id": "solutions/email-triage",
+     "score": 0.739732,
+     "text": "# Email triage\n\nThe email-triage module reads a shared inbox, labels each message by request type, and drafts a first reply for staff to approve. It is for teams where requests arrive in one mailbox and get lost between other mail."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#2",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.712455,
+     "text": "## What counts as urgent\n\nYou decide. For a heating firm it might be no heat in winter or a smell of gas. For a clinic it might be a patient in pain. For a shop it might be nothing at all; many businesses have no urgent requests and say so. The assistant records your definition in your own words."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#1",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.706444,
+     "text": "## Why we ask\n\nAn automated system that treats a gas smell like a routine quote is dangerous. Before any module is recommended, the interview asks whether urgent requests exist, what counts as urgent for you, and who takes those calls today. The answers decide whether a module may handle a request on its own or must pass it to a person at once."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#0",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.680584,
+     "text": "# Urgent requests and out-of-hours work\n\nSome businesses receive requests that cannot wait until morning. This article explains why we ask about them, what counts as urgent, and how the modules treat an urgent request differently from a normal one."
+    }
+   ],
+   "answer": "Yes. According to our knowledge base, email-triage gives an urgent message the highest priority label, so it sits at the top of the inbox.\n\n- **You define \"urgent\".** A message is treated as urgent if it matches your definition. For a heating firm that might be \"no heat in winter\" or \"a smell of gas\". The assistant records your definition in your own words. The modules never decide on their own that a message isn't urgent.\n- **The flag carries through to other modules.** Ticket-creation sets an urgent flag on the ticket, so staff-assignment can suggest the on-call person. Phone-intake hands urgent calls straight to a person using a handover you agree during setup. It doesn't try to book them.\n\nThe excerpts don't say how the module detects urgent emails, for example by keywords or by sender. They also don't say whether it alerts anyone outside the inbox, such as by SMS or a push notification. I can look into those points if you'd like. It would also help to know what counts as an emergency for your business.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (email-triage gives urgent messages the highest priority label; urgency is defined by the user; the urgent flag carries to ticket-creation and staff-assignment; phone-intake hands urgent calls to a person) is stated in contexts [1] and [3], and the caveats about detection method and alerts make no factual claim.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1232,
+      "tokens_out": 123,
+      "cost_usd": 0.0001847
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether email-triage flags emergency emails, explaining the urgent label and how the flag carries through, while transparently noting the excerpts don't cover detection method or external alerting.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 664,
+      "tokens_out": 78,
+      "cost_usd": 0.0001054
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] states the email-triage module gives urgent messages the highest priority label, answering whether emergency emails are flagged; the other contexts do not address email flagging.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 838,
+      "tokens_out": 81,
+      "cost_usd": 0.0001243
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"All factual claims about email-triage flagging urgent messages and the handling of urgent requests are supported by context [1] and related contexts.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 861,
+      "tokens_out": 41,
+      "cost_usd": 0.00041
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer explains how email-triage flags emergency emails and provides relevant details about urgency definitions and flag propagation.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 465,
+      "tokens_out": 34,
+      "cost_usd": 0.0002404
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Context [1] explains how email-triage flags urgent emails; context [2] describes the email-triage module's function; contexts [3], [4], and [5] do not specifically address email-triage flagging emergency emails.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 596,
+      "tokens_out": 76,
+      "cost_usd": 0.00036
+     }
+    }
+   }
+  },
+  {
+   "qid": "q061",
+   "type": "paraphrase",
+   "question": "does it just name someone or does it say why it picked them?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/staff-assignment#1",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.674733,
+     "text": "## What it does\n\nYou enter a short list of skill tags for each member of staff, such as boiler, drains, grooming or front desk, and their working hours. When a ticket is created, the module compares the ticket's request type with the skill tags and the availability, and suggests one person. The suggestion comes with reasons, for example that the person has the matching skill and is free that afternoon."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#2",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.661338,
+     "text": "## What is included\n\nThe module includes skill tags, availability, a suggestion with reasons, and override by staff. The override is logged so that you can see how often the suggestion was changed."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#6",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.649394,
+     "text": "## Checking the list\n\nIf you are unsure whether something is included, ask the discovery assistant. It will show you the article it relies on, and if the article does not answer, it will say so instead of guessing."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#0",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.639501,
+     "text": "# Staff assignment\n\nThe staff-assignment module suggests which staff member should take a ticket, using the skills and availability the owner has entered. It is a suggestion, not an order: a person can always override it."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#6",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.632372,
+     "text": "## Who it suits\n\nOwners who dispatch several vans or several chairs by hand, and who find themselves asking who is free, usually add this module after ticket-creation. It works best when the skill tags are kept simple and up to date."
+    }
+   ],
+   "answer": "It gives a reason. The staff-assignment module suggests one person and explains the choice. For example, it might say the person has the matching skill and is free that afternoon.\n\nHere's how it works:\n- You enter skill tags for each staff member (such as boiler, drains, grooming or front desk) and their working hours.\n- When a ticket is created, the module compares the ticket's request type with those tags and with availability.\n- It then suggests one person and gives the reasons.\n\nThe suggestion isn't an order. Staff can always override it, and each override is logged. That lets you see how often the suggestion gets changed.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim in the answer is supported by contexts [1], [2] and [4]: the module suggests one person with reasons, skill tags and hours are entered, the comparison happens at ticket creation, suggestions can be overridden, and overrides are logged.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 967,
+      "tokens_out": 95,
+      "cost_usd": 0.0001442
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether the module gives a reason, explaining that it suggests one person and states the reasons such as skill match and availability.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 533,
+      "tokens_out": 58,
+      "cost_usd": 8.23e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 0, 0], \"reason\": \"Context [1] explains the suggestion comes with reasons such as matching skill and availability, and [2] lists a suggestion with reasons as included; [3], [4], and [5] do not answer whether reasons are given.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 702,
+      "tokens_out": 96,
+      "cost_usd": 0.0001182
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], and [4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 683,
+      "tokens_out": 27,
+      "cost_usd": 0.0003164
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer explains that it gives a reason for the choice, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 377,
+      "tokens_out": 29,
+      "cost_usd": 0.0001972
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 0, 1, 0], \"reason\": \"Contexts [1], [2], and [4] explain that the module suggests a person with reasons; others do not address this.\"}",
+      "score": [
+       1,
+       1,
+       0,
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 507,
+      "tokens_out": 51,
+      "cost_usd": 0.0002844
+     }
+    }
+   }
+  },
+  {
+   "qid": "q074",
+   "type": "paraphrase",
+   "question": "guaranteed savings?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/what-is-included#5",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.692988,
+     "text": "## No promised savings\n\nThe estimate is indicative and non-binding. We do not promise a saving in hours or money. The report that follows the discovery interview gives a simple return estimate built from the minutes you told us, with each input labelled, and you decide whether it is worth it."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#6",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.630733,
+     "text": "## Why we show it this way\n\nOwners told us that the thing they distrust most about automation quotes is not knowing how the number was reached. A published rate card and a visible calculation mean that an estimate can be checked line by line before anyone commits."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#3",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.621089,
+     "text": "## What was recommended\n\nTwo modules: phone-intake, to answer calls at peak times and out of hours and to book into open slots, and customer-status-updates, to send the reminder before each appointment from an approved template. The estimate was marked indicative because every pricing input had been reported and nothing conflicted."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#5",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.616599,
+     "text": "## What the assistant may and may not do\n\nThe assistant may suggest which catalogue modules fit what you described. It cannot change the arithmetic, apply a discount, or set a price itself. If you see a number in the conversation that is not in the estimate panel, treat the panel as the only valid figure."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#2",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.610928,
+     "text": "## Three statuses\n\n| Status | Meaning |\n|---|---|\n| indicative | every pricing input was given by you and nothing conflicts |\n| scenario | an input is missing or unknown, and the estimate uses a stated assumption |\n| blocked | two of your answers conflict, and no number is shown until you resolve it |\n\nAn indicative estimate means that every field the price depends on was reported or confirmed by you and no conflict exists. A scenario estimate means that at least one input is missing, so the assistant has filled it with an assumption that it shows next to the number. A blocked estimate shows no number at all, only the conflict and the question that would resolve it."
+    }
+   ],
+   "answer": "No, MILO doesn't guarantee savings. The knowledge base says the estimate is indicative and non-binding, and that we don't promise a saving in hours or money.\n\nHere is what you get instead:\n- **A simple return estimate.** The report that follows the discovery interview builds it from the minutes you told us. Each input is labelled.\n- **A visible calculation.** The rate card is published, so you can check the estimate line by line before you commit.\n- **Your decision.** You decide whether the numbers are worth it.\n\nThe assistant can suggest which modules fit your business, but it can't change the arithmetic, apply a discount, or set a price. The estimate panel is the only valid source for figures.\n\nIf you'd like, tell me about your business: how many requests you get a day, how long each takes to handle, and which channels you use. I can record those facts and run an estimate.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (no promised savings, indicative and non-binding estimate, visible calculation, assistant cannot change arithmetic or set prices, estimate panel is the valid figure source) is supported by contexts [1], [2], [4], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1234,
+      "tokens_out": 97,
+      "cost_usd": 0.0001719
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses the question by stating MILO does not guarantee savings and explains what the estimate provides instead.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 609,
+      "tokens_out": 52,
+      "cost_usd": 8.69e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Only context [1] states that the estimate makes no promised savings, which answers the question about guaranteed savings; the others cover unrelated topics.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 885,
+      "tokens_out": 73,
+      "cost_usd": 0.000125
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], [3], and [4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 844,
+      "tokens_out": 30,
+      "cost_usd": 0.0003856
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly explains that savings are not guaranteed and provides detailed information about the estimate process, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 426,
+      "tokens_out": 35,
+      "cost_usd": 0.0002264
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] explicitly addresses the question of guaranteed savings, stating there are no promised savings; the others do not mention guaranteed savings.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 610,
+      "tokens_out": 51,
+      "cost_usd": 0.0003256
+     }
+    }
+   }
+  },
+  {
+   "qid": "q075",
+   "type": "paraphrase",
+   "question": "about 100 jobs daily. multiplier?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/volume-tiers#1",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.721552,
+     "text": "## The table\n\n| Daily requests | Volume factor |\n|---|---|\n| up to 20 per day | 1.00 |\n| up to 60 per day | 1.25 |\n| up to 150 per day | 1.50 |\n| above 150 per day | no automatic estimate; a person prices it |"
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#1",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.69008,
+     "text": "## The volume question\n\nWe ask roughly how many requests come in on a normal day. A request is anything that needs handling: a call, a message, a form, a walk-in. A normal day means a typical business day, not the busiest one and not the quietest. If you think in weeks or months, say so; the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#2",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.680243,
+     "text": "## How to read it\n\nFind the row that your normal daily volume falls into, and multiply each module's base price by the factor in that row. A business with volume up to 20 requests a day pays the base price with no change. A business with volume up to 60 requests a day pays the base price multiplied by 1.25. A business with volume up to 150 requests a day pays the base price multiplied by 1.50."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#0",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.670978,
+     "text": "# Volume tiers\n\nYour daily request volume changes the monthly price of every module you choose. The change is a multiplier, called the volume factor, taken from a short table. This article shows the table and how to read it."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#4",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.669392,
+     "text": "## Which number counts\n\nThe volume that counts is the number of requests on a normal business day. If you know your volume per month, say so, and the assistant converts it to a daily figure in code and shows you the conversion. If you give two figures that do not agree, for example a daily number and a monthly number that imply different volumes, the assistant will ask you which one to use. It does not pick one for you, and no estimate is shown until the conflict is resolved."
+    }
+   ],
+   "answer": "For about 100 requests on a normal business day, your volume factor is **1.50**. That puts you in the \"up to 150 per day\" tier.\n\nThe factor applies to every module you choose. Each module's monthly price is its base price multiplied by 1.50. For example, a module with a base price of 100 would cost 150.\n\nI'm treating each job as one request. Here a request means anything that needs handling, such as a call, a message, a form or a walk-in. If your 100 jobs a day include several requests each, or the number is different on a typical day, tell me and I'll adjust.\n\nIf you'd like, I can record the volume and run a cost estimate once you tell me which modules you're considering.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     1,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer's factual claims (100 requests maps to the 'up to 150 per day' tier with factor 1.50, the factor multiplies each module's base price, and a request means anything needing handling) are all stated in contexts [1], [2], [3] and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1159,
+      "tokens_out": 98,
+      "cost_usd": 0.0001649
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses the question by stating the volume multiplier for about 100 jobs daily (1.50) and explaining how it applies.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 557,
+      "tokens_out": 59,
+      "cost_usd": 8.52e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 1, 0, 0], \"reason\": \"Context [1] gives the table row for about 100 jobs daily (up to 150 per day, factor 1.50) and [3] explains multiplying by the row's factor; [2], [4] and [5] describe volume measurement and general framing without giving the needed multiplier.\"}",
+      "score": [
+       1,
+       0,
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 869,
+      "tokens_out": 113,
+      "cost_usd": 0.0001434
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"All claims about the volume factor, tiers, and request definition are supported by contexts [1], [2], and [3].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 850,
+      "tokens_out": 38,
+      "cost_usd": 0.0004008
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer explains the multiplier for about 100 jobs daily and how it applies to pricing, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 403,
+      "tokens_out": 35,
+      "cost_usd": 0.0002172
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 1, 0, 0], \"reason\": \"Contexts [1] and [3] provide the multiplier for about 100 jobs daily; others do not directly address the multiplier.\"}",
+      "score": [
+       1,
+       0,
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 642,
+      "tokens_out": 50,
+      "cost_usd": 0.0003368
+     }
+    }
+   }
+  },
+  {
+   "qid": "q077",
+   "type": "paraphrase",
+   "question": "phone and tickets together. do i pay the 900 once or twice?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#5",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.673252,
+     "text": "## Price\n\nThe base monthly price for phone-intake is 690 USD. The setup fee is 900 USD per module. The monthly price is multiplied by a volume factor that depends on how many requests you handle a day; see the pricing section for the tiers. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#4",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.669406,
+     "text": "## Cost\n\nThe crm-connector surcharge is 450 USD a month. The ticket-creation base price of 290 USD a month and the setup fee of 900 USD per module still apply."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#5",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.666072,
+     "text": "## Price\n\nThe base monthly price for ticket-creation is 290 USD. The setup fee is 900 USD per module. If you use the crm-connector, a monthly surcharge of 450 USD applies for the connector. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "pricing/setup-fees#1",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.655789,
+     "text": "## The setup fee\n\nThe setup fee is 900 USD per module and is paid once. If you choose two modules, two setup fees apply. The fee covers the work of agreeing templates, rules or skill tags with you, connecting the module to your tool, and checking the first results together."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#4",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.655433,
+     "text": "## The calculation\n\nThe monthly price for each chosen module is its base price multiplied by the volume factor for your daily request volume. The integration surcharges for the integrations you use are added once a month. The setup fee is 900 USD for each module and is paid once. The result is the base estimate, from which the low and high figures are derived."
+    }
+   ],
+   "answer": "You pay the setup fee twice. It's 900 USD per module and is paid once for each module. Phone intake and ticket creation are two modules, so that's 2 × 900 = 1,800 USD in setup fees. Each fee is a one-time payment.\n\nThe fee covers agreeing templates, rules or skill tags with you, connecting the module to your tool, and checking the first results together.\n\nMonthly costs are separate:\n- **Phone intake:** base price of 690 USD a month.\n- **Ticket creation:** base price of 290 USD a month.\n- Both base prices are multiplied by a volume factor that depends on how many requests you handle a day.\n- If you use the CRM connector, add a 450 USD monthly surcharge.\n\nAll prices are indicative and non-binding. If you tell me your daily request volume and which tools you use, I can run a full estimate.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (900 USD setup fee per module paid once, phone intake 690 USD and ticket creation 290 USD base prices, 450 USD CRM connector surcharge, volume factor, and the setup fee coverage) is stated in contexts [1]-[5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1117,
+      "tokens_out": 105,
+      "cost_usd": 0.0001642
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether the 900 setup fee is paid once or twice, explaining it is charged per module and totals 1,800 USD for two modules.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 627,
+      "tokens_out": 65,
+      "cost_usd": 9.52e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 1, 1, 1], \"reason\": \"The question asks whether the 900 USD setup fee is paid once or per module for phone and tickets; contexts [1], [3], [4] and [5] state the per-module setup fee (two modules means two fees), while [2] only mentions the ticket setup fee in passing and the crm-connector surcharge, which is not needed to answer.\"}",
+      "score": [
+       1,
+       0,
+       1,
+       1,
+       1
+      ],
+      "error": null,
+      "tokens_in": 763,
+      "tokens_out": 133,
+      "cost_usd": 0.0001428
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"All claims about setup fees, monthly prices, volume factor, CRM surcharge, and what the setup fee covers are supported by contexts [1], [2], [3], [4], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 765,
+      "tokens_out": 53,
+      "cost_usd": 0.0003908
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly explains whether the 900 fee is paid once or twice and provides detailed context.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 430,
+      "tokens_out": 31,
+      "cost_usd": 0.0002216
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 1, 1, 1], \"reason\": \"Contexts [1], [3], [4], and [5] explain the setup fee per module and pricing details relevant to phone and tickets; [2] focuses on crm-connector surcharge, not directly answering the question.\"}",
+      "score": [
+       1,
+       0,
+       1,
+       1,
+       1
+      ],
+      "error": null,
+      "tokens_in": 537,
+      "tokens_out": 69,
+      "cost_usd": 0.0003252
+     }
+    }
+   }
+  },
+  {
+   "qid": "q079",
+   "type": "paraphrase",
+   "question": "mine says 'blocked' - so i get nothing?? what now",
+   "contexts": [
+    {
+     "chunk_id": "pricing/range-and-estimates#2",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.651643,
+     "text": "## Three statuses\n\n| Status | Meaning |\n|---|---|\n| indicative | every pricing input was given by you and nothing conflicts |\n| scenario | an input is missing or unknown, and the estimate uses a stated assumption |\n| blocked | two of your answers conflict, and no number is shown until you resolve it |\n\nAn indicative estimate means that every field the price depends on was reported or confirmed by you and no conflict exists. A scenario estimate means that at least one input is missing, so the assistant has filled it with an assumption that it shows next to the number. A blocked estimate shows no number at all, only the conflict and the question that would resolve it."
+    },
+    {
+     "chunk_id": "solutions/customer-status-updates#2",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.608121,
+     "text": "## What is included\n\nThe module includes status templates, approved wording, a delivery log and opt-out handling. The delivery log records which message went to which customer and when, so you can answer a customer who says they never heard from you."
+    },
+    {
+     "chunk_id": "policies/security#4",
+     "doc_id": "policies/security",
+     "score": 0.604443,
+     "text": "## Tools the assistant can use\n\nThe assistant can search the knowledge base, show your current facts, run the cost calculation, record a fact and start a withdrawal. Each of these is classed as read, write or destructive. A destructive action needs your approval. In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
+    },
+    {
+     "chunk_id": "solutions/customer-status-updates#3",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.604152,
+     "text": "## What is not included\n\nThe customer-status-updates module does not send marketing messages. It does not send any message without an approved template. If a status has no template, nothing is sent and the gap is shown to you."
+    },
+    {
+     "chunk_id": "policies/approvals#5",
+     "doc_id": "policies/approvals",
+     "score": 0.593563,
+     "text": "## What you see\n\nThe approval appears in the conversation as a card with the action, the arguments and two choices. Nothing happens until you choose, and if you close the page the card is still there when you return, until it expires."
+    }
+   ],
+   "answer": "\"Blocked\" doesn't mean you get nothing. It means two of your answers conflict, so no price is shown until that's sorted out. The estimate panel should show which two answers conflict and the question that would resolve it.\n\n**What to do now**\n1. Open the estimate panel and look at the conflict it lists. It will name the two answers and ask one question.\n2. Answer that question and tell me which answer is correct. I'll record the corrected fact and re-run the estimate.\n3. If you can't tell which answer is right, give me your best figure. If an input is simply unknown, the estimate becomes a \"scenario\". That shows a number with the assumption stated next to it.\n\nI can't see the conflict myself. I checked, and I have no facts recorded for your business yet. So I can't tell which answers clash. Paste the conflict message here, or tell me your daily request volume, your channels and the modules you want. Then I can help find the mismatch.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"The answer claims \\\"I checked, and I have no facts recorded for your business yet,\\\" which is a factual claim about the assistant's stored data that is not supported by any of the contexts.\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 1226,
+      "tokens_out": 72,
+      "cost_usd": 0.0001586
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer explains what 'blocked' means, tells the user what to do next, and offers to help resolve the conflict, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 645,
+      "tokens_out": 59,
+      "cost_usd": 9.4e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] explains that a blocked status shows no number until the conflict is resolved, which directly answers the user's question; the other contexts cover unrelated module features, tools, and approval cards.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 853,
+      "tokens_out": 88,
+      "cost_usd": 0.0001293
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"All claims about 'blocked' status and next steps are supported by context [1].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 854,
+      "tokens_out": 29,
+      "cost_usd": 0.000388
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer explains what 'blocked' means and provides clear steps on what to do next, directly addressing the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 449,
+      "tokens_out": 35,
+      "cost_usd": 0.0002356
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] explains the meaning of 'blocked' status and what happens next, directly answering the question; others do not.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 606,
+      "tokens_out": 50,
+      "cost_usd": 0.0003224
+     }
+    }
+   }
+  },
+  {
+   "qid": "q084",
+   "type": "paraphrase",
+   "question": "why did the groomer get an indicative figure straight away?",
+   "contexts": [
+    {
+     "chunk_id": "cases/grooming-bookings#3",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.725198,
+     "text": "## What was recommended\n\nTwo modules: phone-intake, to answer calls at peak times and out of hours and to book into open slots, and customer-status-updates, to send the reminder before each appointment from an approved template. The estimate was marked indicative because every pricing input had been reported and nothing conflicted."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#0",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.717591,
+     "text": "# Case: a grooming salon stops missing bookings\n\nThis is an anonymised, fictional case. The owner, the salon and the figures are invented to show how a discovery interview turns into a working module."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#2",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.71159,
+     "text": "## What the discovery found\n\nThe interview recorded the channels, the volume, the minutes per job and the re-keying minutes. The owner gave two volumes that did not agree, a daily figure and a monthly figure, and the assistant raised the conflict instead of choosing one. The estimate stayed blocked until the owner said which figure reflected a normal month. The owner also confirmed that urgent requests existed and that customer addresses and card details were kept on file, so the report carried a personal data note."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#1",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.710618,
+     "text": "## The situation\n\nA small pet grooming salon with two sites took bookings by phone and through a web form. Every booking was written into a shared spreadsheet by whoever answered, and reminders were sent by hand the day before. At peak times the phone rang while every groomer had a dog on the table, so calls went to voicemail and some were never returned. The owner's words in the interview were that the business lost money twice: once when a call was missed, and again when a customer forgot and did not show."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#3",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.709649,
+     "text": "## When you see a number\n\nThe assistant does not show a price until it has enough of the assessment to make one meaningful. If you ask for the cost in the first few messages, it will explain what it still needs and carry on with the questions. This is deliberate: a number given too early is almost always wrong, and it is hard to forget."
+    }
+   ],
+   "answer": "Going by the case notes, the grooming salon's figure wasn't given \"straight away\" in the sense of skipping the questions. It was marked **indicative** because the interview had already collected what pricing needs:\n\n- **Every pricing input had been reported.** The owner had covered the details the estimate depends on.\n- **Nothing conflicted.** The facts didn't contradict each other. In the trades-dispatch case, by contrast, the owner gave a daily volume and a monthly volume that disagreed. The assistant raised that and kept the estimate blocked until the owner said which figure reflected a normal month.\n\nThe knowledge base also says the assistant deliberately doesn't show a price in the first few messages. A number given too early is almost always wrong and hard to forget. So the salon's estimate came after the assessment was complete enough to make it meaningful, not before.\n\nThe case notes don't give the exact number of messages or the figures involved. I can't say more about the timing than that.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"The answer claims the case concerned a 'trades-dispatch' case with a daily vs monthly volume conflict, but the contexts describe that conflict in the grooming salon case itself (context [3]), not a separate trades-dispatch case, so this claim is unsupported.\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 1276,
+      "tokens_out": 102,
+      "cost_usd": 0.0001786
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer partly addresses why the figure was indicative (all inputs reported, no conflicts, timing rationale) but explicitly states the case notes do not give the specific details, so it is only a partial answer.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 652,
+      "tokens_out": 79,
+      "cost_usd": 0.0001047
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 1, 0, 1], \"reason\": \"Context [1] explains the estimate was indicative because all pricing inputs were reported and nothing conflicted, and [3] explains the estimate stayed blocked until conflicting volume figures were resolved, which together answer why an indicative figure was given straight away; [2], [4] and [5] do not address that reason.\"}",
+      "score": [
+       1,
+       0,
+       1,
+       0,
+       1
+      ],
+      "error": null,
+      "tokens_in": 893,
+      "tokens_out": 127,
+      "cost_usd": 0.0001528
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"All claims about the indicative figure and timing are supported by contexts [1], [3], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 871,
+      "tokens_out": 34,
+      "cost_usd": 0.0004028
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer explains why the groomer received an indicative figure straight away, addressing the question fully.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 444,
+      "tokens_out": 31,
+      "cost_usd": 0.0002272
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 1], \"reason\": \"Context [1] explains the indicative estimate was given because all pricing inputs were reported and consistent; context [5] explains the assistant waits to give a price until enough assessment is done, implying why an indicative figure might be given straight away; other contexts do not address why the groomer got an indicative figure immediately.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       1
+      ],
+      "error": null,
+      "tokens_in": 626,
+      "tokens_out": 87,
+      "cost_usd": 0.0003896
+     }
+    }
+   }
+  },
+  {
+   "qid": "q086",
+   "type": "paraphrase",
+   "question": "accounts office case: what did the typist end up doing instead, and who did the first go?",
+   "contexts": [
+    {
+     "chunk_id": "cases/accounts-paperwork#0",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.742897,
+     "text": "# Case: an accounts office stops re-typing forms\n\nThis is an anonymised, fictional case. The practice, its clients and its figures are invented."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#1",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.730325,
+     "text": "## The situation\n\nA small accounts practice received paper forms from its clients: expense sheets, mileage logs and signed engagement forms. A member of staff typed each form into the practice's system of record, line by line, and a second person checked a sample of the entries. The checking found wrong dates and transposed amounts often enough that the office did not trust the first pass, which meant every form was effectively handled twice."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#2",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.694391,
+     "text": "## What the discovery found\n\nThe interview recorded the form types, the daily volume of forms, the minutes of typing per form and the minutes of checking. The error types were wrong and delayed. The practice's system could import CSV files, so csv-export was available at no surcharge. There were no urgent requests, and the personal data question was answered yes, because the forms carried client names and bank details."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#4",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.68642,
+     "text": "## What changed\n\nThe first pass was done by the module, and the staff member's time moved from typing to reviewing the flagged items. The entry log showed which scan produced which record, so a doubtful entry could be traced back to its page. The sample check continued, but on records the module had already validated."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#0",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.66827,
+     "text": "# Case: a heating firm gets jobs out of the inbox\n\nThis is an anonymised, fictional case. The firm, its staff and its figures are invented."
+    }
+   ],
+   "answer": "In the accounts office case, the module did the first pass of data entry. The staff member who used to type the forms moved to reviewing the items the module flagged.\n\nThe entry log showed which scan produced which record. That meant a doubtful entry could be traced back to its page. The sample check carried on, but it now covered records the module had already validated.\n\nThis is an anonymised, fictional case, so the practice and its figures are invented.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     0,
+     0,
+     0,
+     1,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim (module did first pass, staff moved to reviewing flagged items, entry log traceability, sample check on validated records, fictional disclaimer) appears in contexts [2]-[4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 973,
+      "tokens_out": 78,
+      "cost_usd": 0.0001363
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer addresses what the typist ended up doing (reviewing flagged items) and who did the first pass (the module), so it addresses what was asked.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 482,
+      "tokens_out": 61,
+      "cost_usd": 7.87e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 1, 1, 1, 0], \"reason\": \"Context [2] says the typist's forms were typed then checked by a second person and [4] says the module took over the first pass so staff moved to reviewing flagged items, answering what the typist ended up doing and who did the first pass; [3] supports the data and volume context needed to see the change; [1] and [5] are unrelated framing or another case.\"}",
+      "score": [
+       0,
+       1,
+       1,
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 768,
+      "tokens_out": 133,
+      "cost_usd": 0.0001433
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], and [4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 689,
+      "tokens_out": 27,
+      "cost_usd": 0.0003188
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer explains what the typist ended up doing and who did the first pass, addressing both parts of the question.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 347,
+      "tokens_out": 36,
+      "cost_usd": 0.0001964
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 1, 0, 1, 0], \"reason\": \"Contexts [2] and [4] describe what the typist ended up doing and who did the first go; others do not provide relevant details.\"}",
+      "score": [
+       0,
+       1,
+       0,
+       1,
+       0
+      ],
+      "error": null,
+      "tokens_in": 550,
+      "tokens_out": 54,
+      "cost_usd": 0.0003064
+     }
+    }
+   }
+  },
+  {
+   "qid": "q088",
+   "type": "paraphrase",
+   "question": "accounts case, main takeaway?",
+   "contexts": [
+    {
+     "chunk_id": "cases/accounts-paperwork#0",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.69465,
+     "text": "# Case: an accounts office stops re-typing forms\n\nThis is an anonymised, fictional case. The practice, its clients and its figures are invented."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#1",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.671435,
+     "text": "## The situation\n\nA small accounts practice received paper forms from its clients: expense sheets, mileage logs and signed engagement forms. A member of staff typed each form into the practice's system of record, line by line, and a second person checked a sample of the entries. The checking found wrong dates and transposed amounts often enough that the office did not trust the first pass, which meant every form was effectively handled twice."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#6",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.662063,
+     "text": "## Why it is a useful case\n\nIt shows the value of the flagged-items queue: the module did not need to be right every time, it needed to know when it was not sure."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#0",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.653491,
+     "text": "# Case: a heating firm gets jobs out of the inbox\n\nThis is an anonymised, fictional case. The firm, its staff and its figures are invented."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#6",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.645867,
+     "text": "## Why it worked\n\nThe process was simple and the rules were clear: a call becomes a booking, a booking gets a reminder. That clarity is what made the case a good fit, and it is the first thing the discovery interview looks for."
+    }
+   ],
+   "answer": "The main takeaway from the accounts case is the value of the **flagged-items queue**. The module didn't have to be right every time. It had to know when it wasn't sure.\n\nThe background was this:\n- A small accounts practice got paper forms from clients: expense sheets, mileage logs and signed engagement forms.\n- Staff typed each form into the system of record line by line, and a second person checked a sample.\n- The checks kept finding wrong dates and transposed amounts. The office didn't trust the first pass, so every form was effectively handled twice.\n\nThe case is anonymised and fictional, so the practice and its figures are invented. The excerpts I have don't give the results, so I can't say how much time it saved.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim in the answer (the flagged-items queue takeaway, the paper forms and staff workflow, the checks finding errors, and the anonymised/fictional status) is stated in contexts [2] and [3], and the answer correctly declines to claim time savings.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 967,
+      "tokens_out": 101,
+      "cost_usd": 0.0001472
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer identifies a main takeaway from the accounts case (the flagged-items queue) and supports it with background, so it addresses what was asked.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 561,
+      "tokens_out": 60,
+      "cost_usd": 8.61e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 1, 0, 0], \"reason\": \"The question asks for the main takeaway of the accounts case; contexts [1] and [2] describe that case and [3] gives its takeaway, while [4] and [5] concern an unrelated heating firm case.\"}",
+      "score": [
+       1,
+       0,
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 669,
+      "tokens_out": 93,
+      "cost_usd": 0.0001134
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [2], and [3].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 675,
+      "tokens_out": 27,
+      "cost_usd": 0.0003132
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer clearly explains the main takeaway from the accounts case and provides relevant background information.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 390,
+      "tokens_out": 29,
+      "cost_usd": 0.0002024
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 1, 1, 0, 0], \"reason\": \"Contexts [1], [2], and [3] describe the accounts case and its main takeaway; [4] and [5] relate to a different case.\"}",
+      "score": [
+       1,
+       1,
+       1,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 478,
+      "tokens_out": 57,
+      "cost_usd": 0.0002824
+     }
+    }
+   }
+  },
+  {
+   "qid": "q092",
+   "type": "paraphrase",
+   "question": "should i give you our mad december numbers or a typical week?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/volume-and-timing#1",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.702795,
+     "text": "## The volume question\n\nWe ask roughly how many requests come in on a normal day. A request is anything that needs handling: a call, a message, a form, a walk-in. A normal day means a typical business day, not the busiest one and not the quietest. If you think in weeks or months, say so; the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#0",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.66045,
+     "text": "# Case: a heating firm gets jobs out of the inbox\n\nThis is an anonymised, fictional case. The firm, its staff and its figures are invented."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#3",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.656108,
+     "text": "## Why a rough answer is enough\n\nThe volume only has to land in the right tier of the rate card, and the tiers are wide. The minutes figures are used to estimate hours per month, and a small error in minutes makes a small error in hours. A rough honest figure is more useful than a precise guess."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#2",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.650336,
+     "text": "## What the discovery found\n\nThe interview recorded the channels, the volume, the minutes per job and the re-keying minutes. The owner gave two volumes that did not agree, a daily figure and a monthly figure, and the assistant raised the conflict instead of choosing one. The estimate stayed blocked until the owner said which figure reflected a normal month. The owner also confirmed that urgent requests existed and that customer addresses and card details were kept on file, so the report carried a personal data note."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#4",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.649229,
+     "text": "## Which number counts\n\nThe volume that counts is the number of requests on a normal business day. If you know your volume per month, say so, and the assistant converts it to a daily figure in code and shows you the conversion. If you give two figures that do not agree, for example a daily number and a monthly number that imply different volumes, the assistant will ask you which one to use. It does not pick one for you, and no estimate is shown until the conflict is resolved."
+    }
+   ],
+   "answer": "Give me a typical week, or better, a normal business day.\n\nThe volume question asks about a normal day. That means a typical business day, not your busiest or your quietest. December is your peak, so it would push the estimate toward a higher tier than you'd usually need.\n\n- **If you think in weeks:** Give me the typical weekly total and say it's weekly. I'll convert it to a daily figure and show you the conversion, so you can check it.\n- **You can mention December too.** I'd keep it as a separate note about seasonal spikes and not use it as your main number.\n- **A rough figure is fine.** The rate card tiers are wide, so an honest approximation works better than a precise guess.\n- **Avoid giving two numbers that disagree.** For example, a daily figure and a monthly figure that imply different volumes. If that happens, I'll ask which one reflects a normal period, and I won't show an estimate until you tell me.\n\nSo roughly how many requests (calls, messages, forms, walk-ins) come in during a typical week or day?",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"The answer claims December is the firm's peak and that a peak would push the estimate to a higher tier, which is not stated in any of the contexts.\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 1290,
+      "tokens_out": 59,
+      "cost_usd": 0.0001585
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether to give December numbers or a typical week, recommending a typical business day and explaining why, and it handles the weekly/daily conversion and conflicting-number cases.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 672,
+      "tokens_out": 75,
+      "cost_usd": 0.0001047
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 1, 1], \"reason\": \"Contexts [1] and [5] explain that the volume should be a normal business day figure (monthly figures get converted, and mad December numbers are not the normal day), directly answering whether to give a busy month or typical week; [2] is only a case title, [3] discusses tier tolerance without answering which figure to give, and [4] mentions the conflict handling but does not state the answer.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       1,
+       1
+      ],
+      "error": null,
+      "tokens_in": 887,
+      "tokens_out": 146,
+      "cost_usd": 0.0001617
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim in the answer is supported by contexts [1], [3], [4], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 904,
+      "tokens_out": 34,
+      "cost_usd": 0.000416
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses the question by advising to provide typical numbers rather than peak December numbers and explains why.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 471,
+      "tokens_out": 33,
+      "cost_usd": 0.0002412
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 1, 1], \"reason\": \"Contexts [1], [4], and [5] discuss whether to provide typical or mad December numbers; [2] is unrelated; [3] discusses roughness of answers, not which numbers to give.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       1,
+       1
+      ],
+      "error": null,
+      "tokens_in": 633,
+      "tokens_out": 66,
+      "cost_usd": 0.0003588
+     }
+    }
+   }
+  },
+  {
+   "qid": "q094",
+   "type": "paraphrase",
+   "question": "jan vs june start. dearer?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/volume-and-timing#5",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.709394,
+     "text": "## Timing\n\nWe ask when you would want to start. If you have not decided, say so. The estimate is then marked as a scenario, with the undecided start shown as an assumption, rather than as an indicative figure. A start date does not change the price; it changes how firm the estimate can be."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#2",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.60728,
+     "text": "## Three statuses\n\n| Status | Meaning |\n|---|---|\n| indicative | every pricing input was given by you and nothing conflicts |\n| scenario | an input is missing or unknown, and the estimate uses a stated assumption |\n| blocked | two of your answers conflict, and no number is shown until you resolve it |\n\nAn indicative estimate means that every field the price depends on was reported or confirmed by you and no conflict exists. A scenario estimate means that at least one input is missing, so the assistant has filled it with an assumption that it shows next to the number. A blocked estimate shows no number at all, only the conflict and the question that would resolve it."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#3",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.606278,
+     "text": "## When you see a number\n\nThe assistant does not show a price until it has enough of the assessment to make one meaningful. If you ask for the cost in the first few messages, it will explain what it still needs and carry on with the questions. This is deliberate: a number given too early is almost always wrong, and it is hard to forget."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#4",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.605232,
+     "text": "## The calculation\n\nThe monthly price for each chosen module is its base price multiplied by the volume factor for your daily request volume. The integration surcharges for the integrations you use are added once a month. The setup fee is 900 USD for each module and is paid once. The result is the base estimate, from which the low and high figures are derived."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#6",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.603977,
+     "text": "## When to choose it\n\nChoose crm-connector when your sales or office staff already work in the CRM and should see jobs there. If your CRM can export and import CSV files and the delay is acceptable, csv-export is a cheaper way to start, and you can move to the connector later."
+    }
+   ],
+   "answer": "According to the knowledge base, a January start and a June start cost the same. The start date doesn't change the price. It only changes how firm the estimate can be.\n\n- If you've decided on a start date, the estimate can be marked **indicative**. That needs every other pricing input to be given by you and no conflicts between your answers.\n- If you haven't decided, the estimate is marked a **scenario**. The undecided start is shown as an assumption next to the number.\n\nThe price itself is worked out from these parts:\n- Each module's base price, multiplied by the volume factor for your daily request volume.\n- Integration surcharges, added once a month.\n- A setup fee of 900 USD per module, paid once.\n\nIf you tell me which modules you want, your daily request volume and your integrations, I can run an estimate. I can also record your start timing so the estimate reflects it.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (start date does not change price, indicative/scenario statuses, price components, 900 USD setup fee per module) is supported by contexts [1]-[4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1253,
+      "tokens_out": 70,
+      "cost_usd": 0.0001603
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether a January versus June start changes the price, stating it does not and explaining how the start date affects estimate firmness instead.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 606,
+      "tokens_out": 60,
+      "cost_usd": 9.06e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] explains that the start date affects only firmness of the estimate, not the price, which answers whether a Jan vs June start is dearer; the others cover statuses, number display, calculation and module choice without addressing start timing cost.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 910,
+      "tokens_out": 101,
+      "cost_usd": 0.0001415
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"All claims about start date not affecting price and estimate statuses are supported by context [1] and other pricing details by context [4].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 884,
+      "tokens_out": 39,
+      "cost_usd": 0.000416
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses the question by stating that January and June starts cost the same and explains the impact of start date on pricing estimates.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 431,
+      "tokens_out": 39,
+      "cost_usd": 0.0002348
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts provide information comparing prices or costs for starting in January versus June.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 648,
+      "tokens_out": 41,
+      "cost_usd": 0.0003248
+     }
+    }
+   }
+  },
+  {
+   "qid": "q098",
+   "type": "paraphrase",
+   "question": "havent ticked the consent box yet. can we still chat?",
+   "contexts": [
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.732341,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "policies/personal-data#2",
+     "doc_id": "policies/personal-data",
+     "score": 0.661018,
+     "text": "## What we store about your customers\n\nNothing. The interview asks whether you handle customer personal data, such as phone numbers, addresses or payment details, and which kinds, so that the report can say what the modules would touch. It does not ask for and does not store any actual customer record. If you paste a customer's details into the conversation, we ask you not to, and the operator can delete the message on request."
+    },
+    {
+     "chunk_id": "consultation/first-questions#5",
+     "doc_id": "consultation/first-questions",
+     "score": 0.647687,
+     "text": "## The constraint questions\n\nFinally the constraints: whether your tools can export, import or offer an API, whether you handle personal data, whether urgent requests exist, your budget range if you have one, and when you would want to start."
+    },
+    {
+     "chunk_id": "policies/personal-data#0",
+     "doc_id": "policies/personal-data",
+     "score": 0.645459,
+     "text": "# Personal data policy\n\nThis policy explains what personal data MILO stores during a discovery interview, when it stores it, and who can see it. It applies to the discovery assistant and to the report it produces."
+    },
+    {
+     "chunk_id": "policies/security#1",
+     "doc_id": "policies/security",
+     "score": 0.641907,
+     "text": "## One account, one session\n\nAccess is by invitation only. An invitation is a one-time link that lets you set a password, and it stops working after it has been used or after it expires. Each owner account has exactly one session. Signing out saves the conversation; signing in again restores it. Several failed sign-in attempts in a row lock the account for a short time."
+    }
+   ],
+   "answer": "Yes, you can still chat without ticking the consent box. According to our personal data policy, the assistant can talk to you before you consent. The only difference is what gets stored.\n\n- **Before consent:** The interview stores your company details and your answers. Your contact fields (name, role and email address) are not kept.\n- **After consent:** Your contact details are stored. The consent is recorded with its version and the time you gave it.\n\nPlease don't paste any actual customer details, such as phone numbers, addresses or payment info, into the chat. The interview only asks what kinds of personal data you handle. It doesn't store any customer records.\n\nWould you like to start with a few questions about your business?",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (chat allowed before consent, company details and answers stored, contact fields stored only after consent with version and time, no customer records stored) is supported by contexts [1] and [2].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1065,
+      "tokens_out": 76,
+      "cost_usd": 0.0001445
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether the user can chat without ticking the consent box, explaining what is and isn't stored before consent.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 556,
+      "tokens_out": 54,
+      "cost_usd": 8.26e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] says the assistant can talk to the user before consent but does not keep contact fields, which answers whether chatting is possible without consent; the other contexts do not address this.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 779,
+      "tokens_out": 82,
+      "cost_usd": 0.0001189
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1] and [2].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 766,
+      "tokens_out": 24,
+      "cost_usd": 0.0003448
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether chatting is possible without ticking the consent box and explains the implications clearly.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 394,
+      "tokens_out": 31,
+      "cost_usd": 0.0002072
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] explains that the assistant can talk to you before consent is given, which directly answers the question; other contexts do not address chatting without consent.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 573,
+      "tokens_out": 56,
+      "cost_usd": 0.0003188
+     }
+    }
+   }
+  },
+  {
+   "qid": "q104",
+   "type": "paraphrase",
+   "question": "could my business partner see my stuff by typing my name into the chat?",
+   "contexts": [
+    {
+     "chunk_id": "policies/personal-data#4",
+     "doc_id": "policies/personal-data",
+     "score": 0.727612,
+     "text": "## Who can see your data\n\nYou can see everything the interview has recorded, with the sentence each fact came from. The operator, the person who reviews your submission, can see your submission and the evidence behind it. No other owner can see your session, your facts or your submission, and the assistant will refuse a request to show another owner's data."
+    },
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.695297,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "policies/security#1",
+     "doc_id": "policies/security",
+     "score": 0.690599,
+     "text": "## One account, one session\n\nAccess is by invitation only. An invitation is a one-time link that lets you set a password, and it stops working after it has been used or after it expires. Each owner account has exactly one session. Signing out saves the conversation; signing in again restores it. Several failed sign-in attempts in a row lock the account for a short time."
+    },
+    {
+     "chunk_id": "policies/personal-data#2",
+     "doc_id": "policies/personal-data",
+     "score": 0.689125,
+     "text": "## What we store about your customers\n\nNothing. The interview asks whether you handle customer personal data, such as phone numbers, addresses or payment details, and which kinds, so that the report can say what the modules would touch. It does not ask for and does not store any actual customer record. If you paste a customer's details into the conversation, we ask you not to, and the operator can delete the message on request."
+    },
+    {
+     "chunk_id": "policies/security#2",
+     "doc_id": "policies/security",
+     "score": 0.675908,
+     "text": "## Your identity comes from your sign-in\n\nThe assistant never takes your identity from the text of a conversation. Who you are is decided by the account you signed in with, and every record it reads or writes is looked up for that account only. A message that says to continue as a different owner, or that gives another owner's session or submission number, does not change who you are. The request is refused and an audit entry is written."
+    }
+   ],
+   "answer": "No. Typing your name into the chat wouldn't give your business partner access to your data. Here's why, based on the knowledge base:\n\n- **Your identity comes from your sign-in, not from the conversation.** Who you are is decided by the account you signed in with. The assistant never takes your identity from text in the chat. Every record it reads or writes is looked up only for the signed-in account.\n- **Impersonation attempts are refused.** If someone asks to continue as a different owner, or gives another owner's session or submission number, your identity doesn't change. The request is refused and an audit entry is written.\n- **Other owners can't see your data.** No other owner can see your session, facts or submission, and the assistant will refuse to show another owner's data.\n- **Access is by invitation only.** Each owner account has exactly one session. Invitations are one-time links that stop working after use or expiry. Several failed sign-in attempts in a row lock the account for a short time.\n\nTwo things to keep in mind:\n\n- The **operator**, who reviews your submission, can see your submission and the evidence behind it.\n- If your partner signs in **with your account** (for example, because you shared your password), they would see your session. So keep your credentials private. If your partner needs their own access, they'd need their own invitation.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 2,
+    "context_relevance": [
+     1,
+     0,
+     0,
+     0,
+     1
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"The answer claims that if the partner signs in with the user's account (e.g., via shared password) they would see the session, which is not stated in the contexts; the contexts only say sign-in determines identity, not that shared credentials grant access as described in a supported way, and the advice about the partner needing their own invitation is also not stated.\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 1343,
+      "tokens_out": 114,
+      "cost_usd": 0.0001913
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses whether typing a name in chat could let a business partner see the user's data, explaining identity comes from sign-in and noting credential-sharing risks.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 750,
+      "tokens_out": 68,
+      "cost_usd": 0.000109
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 1], \"reason\": \"Context [1] says no other owner can see your session or submission, and [5] says identity comes from sign-in so typing another name cannot change access; the others do not address this.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       1
+      ],
+      "error": null,
+      "tokens_in": 865,
+      "tokens_out": 78,
+      "cost_usd": 0.0001255
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every claim appears in contexts [1], [3], and [5].\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 973,
+      "tokens_out": 27,
+      "cost_usd": 0.0004324
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses the question by explaining why typing a name in the chat does not grant access to data and clarifies related access controls.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 532,
+      "tokens_out": 40,
+      "cost_usd": 0.0002768
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 1], \"reason\": \"Context [1] explains who can see your data, directly addressing the question; context [5] clarifies identity and access control, relevant to the question; others do not address visibility by name in chat.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       1
+      ],
+      "error": null,
+      "tokens_in": 643,
+      "tokens_out": 66,
+      "cost_usd": 0.0003628
+     }
+    }
+   }
+  },
+  {
+   "qid": "q107",
+   "type": "unanswerable",
+   "question": "2fa on the login?",
+   "contexts": [
+    {
+     "chunk_id": "policies/security#1",
+     "doc_id": "policies/security",
+     "score": 0.66591,
+     "text": "## One account, one session\n\nAccess is by invitation only. An invitation is a one-time link that lets you set a password, and it stops working after it has been used or after it expires. Each owner account has exactly one session. Signing out saves the conversation; signing in again restores it. Several failed sign-in attempts in a row lock the account for a short time."
+    },
+    {
+     "chunk_id": "implementation/api-connector#1",
+     "doc_id": "implementation/api-connector",
+     "score": 0.61387,
+     "text": "## How it works\n\nYour tool offers an API with an access key. You create a key for MILO in your tool, with only the rights the module needs, and give it to us during setup. The module then reads and writes through the API. If the key is removed, the connection stops and nothing else changes in your tool."
+    },
+    {
+     "chunk_id": "policies/security#2",
+     "doc_id": "policies/security",
+     "score": 0.610603,
+     "text": "## Your identity comes from your sign-in\n\nThe assistant never takes your identity from the text of a conversation. Who you are is decided by the account you signed in with, and every record it reads or writes is looked up for that account only. A message that says to continue as a different owner, or that gives another owner's session or submission number, does not change who you are. The request is refused and an audit entry is written."
+    },
+    {
+     "chunk_id": "policies/security#4",
+     "doc_id": "policies/security",
+     "score": 0.605929,
+     "text": "## Tools the assistant can use\n\nThe assistant can search the knowledge base, show your current facts, run the cost calculation, record a fact and start a withdrawal. Each of these is classed as read, write or destructive. A destructive action needs your approval. In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#2",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.604343,
+     "text": "## What is included\n\nThe module includes ticket fields, a duplicate check, status tracking and reminders to staff. The reminders go to the staff member who owns the ticket, not to the customer."
+    }
+   ],
+   "answer": "The knowledge base doesn't mention 2FA (two-factor authentication) for signing in, so I can't say whether it's offered.\n\nHere is what it does say about sign-in:\n- Access is by invitation only. The invitation is a one-time link for setting a password. It stops working once it's used or expires.\n- Each owner account has one session.\n- Several failed sign-in attempts in a row lock the account for a short time.\n- Your identity comes from the account you signed in with, not from anything typed in a conversation.\n- Failed sign-ins are written to an audit log.\n\nIf you need 2FA, check with the MILO team directly.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 0,
+    "relevance": 1,
+    "context_relevance": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"The claim that failed sign-ins are written to an audit log is not in the contexts; context [3] only says an audit entry is written for refused requests that try to change identity, not for failed sign-ins.\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 1085,
+      "tokens_out": 76,
+      "cost_usd": 0.0001465
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly declines to confirm whether 2FA is offered, since the knowledge base does not mention it, and then addresses only related sign-in details rather than the 2FA question itself.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 534,
+      "tokens_out": 74,
+      "cost_usd": 9.04e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention two-factor authentication or any second sign-in factor, so none hold information needed to answer the question about 2FA on login.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 810,
+      "tokens_out": 73,
+      "cost_usd": 0.0001175
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer accurately states that 2FA is not mentioned and correctly summarizes the sign-in details from the contexts.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 772,
+      "tokens_out": 34,
+      "cost_usd": 0.0003632
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly states that 2FA information is not available but provides related sign-in details.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 374,
+      "tokens_out": 31,
+      "cost_usd": 0.0001992
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention two-factor authentication (2fa) or login security features.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 591,
+      "tokens_out": 41,
+      "cost_usd": 0.000302
+     }
+    }
+   }
+  },
+  {
+   "qid": "q109",
+   "type": "unanswerable",
+   "question": "can i pay by direct debit?",
+   "contexts": [
+    {
+     "chunk_id": "policies/security#4",
+     "doc_id": "policies/security",
+     "score": 0.608616,
+     "text": "## Tools the assistant can use\n\nThe assistant can search the knowledge base, show your current facts, run the cost calculation, record a fact and start a withdrawal. Each of these is classed as read, write or destructive. A destructive action needs your approval. In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
+    },
+    {
+     "chunk_id": "implementation/csv-export#2",
+     "doc_id": "implementation/csv-export",
+     "score": 0.598265,
+     "text": "## What you need\n\nYour tool must be able to export and import CSV files. Most spreadsheets, booking widgets and small job tools can. During setup we agree the column names on both sides so that the files always line up."
+    },
+    {
+     "chunk_id": "solutions/document-data-entry#5",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.58581,
+     "text": "## Price\n\nThe base monthly price for document-data-entry is 490 USD. The setup fee is 900 USD per module. If your tool is export-only, a monthly surcharge of 250 USD applies for the extra handling. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#0",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.584403,
+     "text": "# What is included and what is not\n\nA monthly price covers a fixed list of things. This article says what that list is, and what sits outside it, so that there are no surprises after the first invoice."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#1",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.582509,
+     "text": "## Included in the monthly price\n\nThe monthly price for a module covers the running of that module for your business: the software, the hosting, the templates and rules we agree with you during setup, and the audit or delivery logs that each module keeps. It also covers the integration you chose, once the integration surcharge is added. Minor changes to wording, labels or skill tags are included; you can ask for them at any time."
+    }
+   ],
+   "answer": "I couldn't find anything in the knowledge base about payment methods, so I can't say whether direct debit is available. The excerpts cover pricing (monthly prices, a one-time setup fee of 900 USD per module, and integration surcharges). They don't say how invoices are paid. Please check this with the MILO team before you commit.\n\nI can also work out an estimate for the modules you're considering if you'd like one.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 1,
+    "context_relevance": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer makes no factual claim beyond stating the contexts lack payment-method information, and its other statements only describe the pricing content present in the contexts or offer further help.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 977,
+      "tokens_out": 67,
+      "cost_usd": 0.0001312
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly declines, saying the knowledge base has no information on payment methods and directing the user to the MILO team, without fabricating an answer.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 469,
+      "tokens_out": 61,
+      "cost_usd": 7.74e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention direct debit or any payment methods, so none hold information needed to answer whether direct debit payment is possible.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 770,
+      "tokens_out": 69,
+      "cost_usd": 0.0001115
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer correctly states that payment methods including direct debit are not mentioned in the contexts.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 680,
+      "tokens_out": 29,
+      "cost_usd": 0.0003184
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly declines to provide the information requested but addresses the question by explaining the lack of available data.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 325,
+      "tokens_out": 33,
+      "cost_usd": 0.0001828
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention payment methods or direct debit specifically.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 549,
+      "tokens_out": 36,
+      "cost_usd": 0.0002772
+     }
+    }
+   }
+  },
+  {
+   "qid": "q111",
+   "type": "unanswerable",
+   "question": "whats the voice like on the phone bot, can i pick a different one?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#1",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.723765,
+     "text": "## What it does\n\nWhen a call comes in, the module answers, asks what the caller needs and captures the request as text. If the caller wants an appointment, it books one in the slots you have opened. If the request needs a person, it writes a handover note and passes the call to a member of staff. Every call produces a transcript that stays with the request."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.720061,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#2",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.687752,
+     "text": "## What is included\n\nThe module includes call answering, request capture, appointment booking, a call transcript for each call, and handover to staff. The transcript is the evidence for every fact the module records, so a member of staff can check what the caller actually said."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#6",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.67896,
+     "text": "## Who it suits\n\nOwners whose main problem is missed calls at peak times, or who want bookings taken when the shop is closed, usually start here. The module records what the caller asked for, so nothing is lost between the call and the booking."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#5",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.665608,
+     "text": "## Price\n\nThe base monthly price for phone-intake is 690 USD. The setup fee is 900 USD per module. The monthly price is multiplied by a volume factor that depends on how many requests you handle a day; see the pricing section for the tiers. All prices are indicative and non-binding."
+    }
+   ],
+   "answer": "I can't answer that from the knowledge base. It has nothing on what the phone bot's voice sounds like, and nothing on whether you can pick a different voice or customize it.\n\nIt does say what the module does. It answers calls, asks what the caller needs, captures the request as text, books appointments in the slots you've opened, and hands the call to staff with a note when needed. Each call also gets a transcript.\n\nFor voice options, ask the MILO team directly, ideally before you commit. If the voice matters to you, ask for a sample call. I can help with anything else about the module, such as pricing or what's included.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 1,
+    "context_relevance": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"Every factual claim (answering calls, capturing requests as text, booking in opened slots, handover with a note, transcripts) is supported by contexts [1] and [3]; the rest is a decline or a suggestion to contact the team.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1014,
+      "tokens_out": 88,
+      "cost_usd": 0.0001454
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly declines to say what the voice sounds like or whether it can be changed, pointing the user to the MILO team, but it adds only related module information rather than the requested voice details.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 537,
+      "tokens_out": 72,
+      "cost_usd": 8.97e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention the voice used by the phone bot or whether a different voice can be selected.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 750,
+      "tokens_out": 58,
+      "cost_usd": 0.000104
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer correctly states that the contexts do not provide information about the phone bot's voice or voice customization options and accurately summarizes what the module does based on the contexts.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 728,
+      "tokens_out": 45,
+      "cost_usd": 0.0003632
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly declines to provide the requested information but addresses the question in part by suggesting to ask the MILO team directly.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 384,
+      "tokens_out": 37,
+      "cost_usd": 0.0002128
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention the voice characteristics of the phone bot or the option to pick a different voice.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 548,
+      "tokens_out": 45,
+      "cost_usd": 0.0002912
+     }
+    }
+   }
+  },
+  {
+   "qid": "q115",
+   "type": "unanswerable",
+   "question": "are you insured if the bot books something wrong and it costs me?",
+   "contexts": [
+    {
+     "chunk_id": "policies/approvals#4",
+     "doc_id": "policies/approvals",
+     "score": 0.655462,
+     "text": "## Untrusted text and the exception\n\nEverything you type, everything in a document you upload and everything the assistant reads from the knowledge base is treated as untrusted. If any of it looks like an instruction to the assistant, the assistant marks the turn as suspicious. In a suspicious turn it will not record a fact that affects the price, and it will not start a withdrawal even if asked. It tells you what it declined to do and why."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#4",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.652387,
+     "text": "## Connecting it to your tools\n\nThe module works with the csv-export integration and the api-connector integration. With csv-export, booked requests are written to a file that your booking tool can import. With api-connector, the module writes each booking straight into your tool through its API."
+    },
+    {
+     "chunk_id": "policies/security#4",
+     "doc_id": "policies/security",
+     "score": 0.651378,
+     "text": "## Tools the assistant can use\n\nThe assistant can search the knowledge base, show your current facts, run the cost calculation, record a fact and start a withdrawal. Each of these is classed as read, write or destructive. A destructive action needs your approval. In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
+    },
+    {
+     "chunk_id": "implementation/api-connector#5",
+     "doc_id": "implementation/api-connector",
+     "score": 0.642271,
+     "text": "## Limits\n\nThe module can only do what the key allows. If the key cannot create bookings, phone-intake cannot book. We ask for the smallest set of rights that works, and we tell you which rights each module needs before you create the key."
+    },
+    {
+     "chunk_id": "solutions/email-triage#1",
+     "doc_id": "solutions/email-triage",
+     "score": 0.635841,
+     "text": "## What it does\n\nEach new message is read and given a label, such as new job, question, complaint or invoice. The module also sets a priority so that the most pressing messages rise to the top. For each message it drafts a reply in your own wording. A member of staff reads the draft, changes it if needed, and sends it. Nothing goes out on its own."
+    }
+   ],
+   "answer": "I can't answer that from the knowledge base. The excerpts I found don't mention insurance, liability, or compensation if a booking is made wrongly. So I can't tell you whether you're covered, and I don't want to guess. For a definite answer, ask MILO's operator or check your contract or terms of service.\n\nSome related points from the knowledge base:\n- **Access limits:** A module can only do what its access key allows. If the key can't create bookings, phone-intake can't book. MILO asks for the smallest set of rights that works.\n- **Human review:** Email-triage drafts replies, but staff read, edit and send them. Nothing goes out on its own. I found nothing saying whether phone-intake bookings get a similar check.\n\nBefore you commit, I'd ask the operator in writing:\n1. Is there liability or professional indemnity insurance, and what does it cover?\n2. What does the contract say about losses caused by booking errors?\n3. Can bookings be set up so staff confirm them first?\n\nI can also look up how phone-intake handles bookings and checks, if you'd like.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 1,
+    "context_relevance": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 0, \"reason\": \"The answer claims that email-triage drafts are read and sent by staff and that 'nothing goes out on its own' (supported by [5]), but it also claims phone-intake bookings are not mentioned as having a similar check, and asserts the contexts' absence of insurance; the substantive unsupported claim is that 'phone-intake can't book' if the key lacks rights, which is supported by [4], so the main unsupported item is the statement that MILO 'asks for the smallest set of rights' which is supported too; however the answer's recommendation that the operator check contract terms and the claim that the knowledge base mentions the phone-intake module's booking checks is absent from contexts, making at least one factual claim unsupported.\"}",
+      "score": 0,
+      "error": null,
+      "tokens_in": 1264,
+      "tokens_out": 241,
+      "cost_usd": 0.0002469
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly declines to say whether the user is insured, noting the knowledge base lacks that information, while offering related context and next steps.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 691,
+      "tokens_out": 57,
+      "cost_usd": 9.76e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention insurance, liability, or compensation for costs caused by the bot booking something incorrectly.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 844,
+      "tokens_out": 65,
+      "cost_usd": 0.0001169
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer correctly states that the contexts do not mention insurance or liability for booking errors and does not make unsupported factual claims.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 878,
+      "tokens_out": 36,
+      "cost_usd": 0.0004088
+     },
+     "relevance": {
+      "raw": "{\"score\": 2, \"reason\": \"The answer directly addresses the question by explaining the lack of information on insurance and liability, and advises the user on how to obtain a definitive answer.\"}",
+      "score": 2,
+      "error": null,
+      "tokens_in": 475,
+      "tokens_out": 41,
+      "cost_usd": 0.0002556
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts mention insurance or liability for booking errors.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 604,
+      "tokens_out": 36,
+      "cost_usd": 0.0002992
+     }
+    }
+   }
+  },
+  {
+   "qid": "q119",
+   "type": "unanswerable",
+   "question": "how long have u been going, when were you founded?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/first-questions#2",
+     "doc_id": "consultation/first-questions",
+     "score": 0.69272,
+     "text": "## The company questions\n\nThe interview starts with the company: what it is called, what kind of business it is, how many people work there, how many locations you run, and who we are talking to. These are short answers and they set the context for everything after."
+    },
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.61981,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "consultation/first-questions#0",
+     "doc_id": "consultation/first-questions",
+     "score": 0.609165,
+     "text": "# The first questions we ask\n\nThe discovery interview follows a fixed list of questions. This article explains why the list exists, what the first questions are, and what the assistant does with your answers."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#1",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.60793,
+     "text": "## The volume question\n\nWe ask roughly how many requests come in on a normal day. A request is anything that needs handling: a call, a message, a form, a walk-in. A normal day means a typical business day, not the busiest one and not the quietest. If you think in weeks or months, say so; the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#5",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.600714,
+     "text": "## Timing\n\nWe ask when you would want to start. If you have not decided, say so. The estimate is then marked as a scenario, with the undecided start shown as an assumption, rather than as an indicative figure. A start date does not change the price; it changes how firm the estimate can be."
+    }
+   ],
+   "answer": "Do you mean MILO, the assistant, or a different company? I can't answer either way from what I have. The knowledge base excerpts I can see cover how the discovery interview works, what we store about you, and how volume and timing questions are handled. None of them say when MILO was founded or how long it has been running.\n\nIf you want to know about something specific, I can help with these:\n- What the discovery interview asks and why\n- How we handle your personal data and consent\n- How the estimate is built and how your start timeline affects it\n\nFor the founding date, the company's website or your sales contact is the best place to ask.",
+   "abstained": false,
+   "labels": {
+    "faithfulness": 1,
+    "relevance": 1,
+    "context_relevance": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "labeller": "m7-labelling-agent"
+   },
+   "judges": {
+    "anthropic/claude-haiku-5.5": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer makes no factual claim about founding or duration; it only states that the contexts do not say, and offers help, which the scale treats as non-factual.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 1006,
+      "tokens_out": 61,
+      "cost_usd": 0.0001311
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly declines to state when MILO was founded, saying the information is not in the available knowledge base, so it addresses the question only in part.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 523,
+      "tokens_out": 59,
+      "cost_usd": 8.18e-05
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [0, 0, 0, 0, 0], \"reason\": \"None of the contexts states when the company was founded or how long it has been operating; they cover interview structure, data storage, request volume, and timing.\"}",
+      "score": [
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 748,
+      "tokens_out": 70,
+      "cost_usd": 0.0001098
+     }
+    },
+    "openai/gpt-4.1-mini": {
+     "faithfulness": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer makes no unsupported factual claims and correctly states that the contexts do not provide founding date or duration information.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 751,
+      "tokens_out": 34,
+      "cost_usd": 0.0003548
+     },
+     "relevance": {
+      "raw": "{\"score\": 1, \"reason\": \"The answer honestly declines to provide the founding date or duration but explains why and offers related information.\"}",
+      "score": 1,
+      "error": null,
+      "tokens_in": 383,
+      "tokens_out": 31,
+      "cost_usd": 0.0002028
+     },
+     "context_precision": {
+      "raw": "{\"scores\": [1, 0, 0, 0, 0], \"reason\": \"Context [1] mentions company-related questions which likely include founding date and duration; others do not address company age or founding.\"}",
+      "score": [
+       1,
+       0,
+       0,
+       0,
+       0
+      ],
+      "error": null,
+      "tokens_in": 567,
+      "tokens_out": 49,
+      "cost_usd": 0.0003052
+     }
+    }
+   }
+  }
+ ],
+ "summary": {
+  "anthropic/claude-haiku-5.5": {
+   "metrics": {
+    "faithfulness": {
+     "kappa": 0.2035,
+     "ci": [
+      -0.0,
+      0.6154
+     ],
+     "ci_resamples_defined": 2000,
+     "n_questions": 30,
+     "n_items": 30,
+     "agreement": 0.8,
+     "weighted": false,
+     "label_mean": 0.9667,
+     "judge_mean": 0.7667,
+     "low_prevalence": true,
+     "validated": false,
+     "undefined": false
+    },
+    "relevance": {
+     "kappa": 0.902,
+     "ci": [
+      0.6512,
+      1.0
+     ],
+     "ci_resamples_defined": 2000,
+     "n_questions": 30,
+     "n_items": 30,
+     "agreement": 0.9667,
+     "weighted": true,
+     "label_mean": 1.8,
+     "judge_mean": 1.7667,
+     "low_prevalence": false,
+     "validated": true,
+     "undefined": false
+    },
+    "context_precision": {
+     "kappa": 0.7544,
+     "ci": [
+      0.6426,
+      0.8615
+     ],
+     "ci_resamples_defined": 2000,
+     "n_questions": 30,
+     "n_items": 150,
+     "agreement": 0.9,
+     "weighted": false,
+     "label_mean": 0.26,
+     "judge_mean": 0.3067,
+     "low_prevalence": false,
+     "validated": true,
+     "undefined": false
+    }
+   },
+   "unparsed": 0,
+   "replies": 90,
+   "unparsed_rate": 0.0,
+   "usable": false,
+   "by_type": {
+    "identifier": {
+     "n": 6,
+     "faithfulness": {
+      "label_mean": 1.0,
+      "judge_mean": 0.8333
+     },
+     "relevance": {
+      "label_mean": 2.0,
+      "judge_mean": 2.0
+     },
+     "context_precision": {
+      "label_mean": 0.2667,
+      "judge_mean": 0.3667
+     }
+    },
+    "paraphrase": {
+     "n": 18,
+     "faithfulness": {
+      "label_mean": 1.0,
+      "judge_mean": 0.7778
+     },
+     "relevance": {
+      "label_mean": 2.0,
+      "judge_mean": 1.9444
+     },
+     "context_precision": {
+      "label_mean": 0.3444,
+      "judge_mean": 0.3778
+     }
+    },
+    "unanswerable": {
+     "n": 6,
+     "faithfulness": {
+      "label_mean": 0.8333,
+      "judge_mean": 0.6667
+     },
+     "relevance": {
+      "label_mean": 1.0,
+      "judge_mean": 1.0
+     },
+     "context_precision": {
+      "label_mean": 0.0,
+      "judge_mean": 0.0333
+     }
+    }
+   },
+   "tokens_in": 74655,
+   "tokens_out": 7653,
+   "cost_usd": 0.011292
+  },
+  "openai/gpt-4.1-mini": {
+   "metrics": {
+    "faithfulness": {
+     "kappa": -0.0,
+     "ci": [
+      -0.0,
+      -0.0
+     ],
+     "ci_resamples_defined": 1268,
+     "n_questions": 30,
+     "n_items": 30,
+     "agreement": 0.9667,
+     "weighted": false,
+     "label_mean": 0.9667,
+     "judge_mean": 1.0,
+     "low_prevalence": true,
+     "validated": false,
+     "undefined": false
+    },
+    "relevance": {
+     "kappa": 0.8889,
+     "ci": [
+      0.5946,
+      1.0
+     ],
+     "ci_resamples_defined": 1998,
+     "n_questions": 30,
+     "n_items": 30,
+     "agreement": 0.9667,
+     "weighted": true,
+     "label_mean": 1.8,
+     "judge_mean": 1.8333,
+     "low_prevalence": false,
+     "validated": true,
+     "undefined": false
+    },
+    "context_precision": {
+     "kappa": 0.7614,
+     "ci": [
+      0.6585,
+      0.851
+     ],
+     "ci_resamples_defined": 2000,
+     "n_questions": 30,
+     "n_items": 150,
+     "agreement": 0.9067,
+     "weighted": false,
+     "label_mean": 0.26,
+     "judge_mean": 0.2733,
+     "low_prevalence": false,
+     "validated": true,
+     "undefined": false
+    }
+   },
+   "unparsed": 0,
+   "replies": 90,
+   "unparsed_rate": 0.0,
+   "usable": false,
+   "by_type": {
+    "identifier": {
+     "n": 6,
+     "faithfulness": {
+      "label_mean": 1.0,
+      "judge_mean": 1.0
+     },
+     "relevance": {
+      "label_mean": 2.0,
+      "judge_mean": 2.0
+     },
+     "context_precision": {
+      "label_mean": 0.2667,
+      "judge_mean": 0.3
+     }
+    },
+    "paraphrase": {
+     "n": 18,
+     "faithfulness": {
+      "label_mean": 1.0,
+      "judge_mean": 1.0
+     },
+     "relevance": {
+      "label_mean": 2.0,
+      "judge_mean": 2.0
+     },
+     "context_precision": {
+      "label_mean": 0.3444,
+      "judge_mean": 0.3444
+     }
+    },
+    "unanswerable": {
+     "n": 6,
+     "faithfulness": {
+      "label_mean": 0.8333,
+      "judge_mean": 1.0
+     },
+     "relevance": {
+      "label_mean": 1.0,
+      "judge_mean": 1.1667
+     },
+     "context_precision": {
+      "label_mean": 0.0,
+      "judge_mean": 0.0333
+     }
+    }
+   },
+   "tokens_in": 53032,
+   "tokens_out": 3610,
+   "cost_usd": 0.0269888
+  }
+ },
+ "inter_judge": {
+  "faithfulness": {
+   "kappa": -0.0,
+   "ci": [
+    -0.0,
+    0.0
+   ],
+   "ci_resamples_defined": 2000,
+   "n_questions": 30,
+   "n_items": 30,
+   "agreement": 0.7667,
+   "weighted": false
+  },
+  "relevance": {
+   "kappa": 0.7931,
+   "ci": [
+    0.4444,
+    1.0
+   ],
+   "ci_resamples_defined": 2000,
+   "n_questions": 30,
+   "n_items": 30,
+   "agreement": 0.9333,
+   "weighted": true
+  },
+  "context_precision": {
+   "kappa": 0.7252,
+   "ci": [
+    0.6141,
+    0.8194
+   ],
+   "ci_resamples_defined": 2000,
+   "n_questions": 30,
+   "n_items": 150,
+   "agreement": 0.8867,
+   "weighted": false
+  }
+ },
+ "label_means": {
+  "faithfulness": 0.9667,
+  "relevance": 1.8,
+  "context_precision": 0.26
+ },
+ "decision": {
+  "usable_judges": [],
+  "headline_judge": null,
+  "line": "no usable judge: report kappas and CIs, judged numbers are not validated, hard claim not met"
+ },
+ "total_cost_usd": 0.0382808
+}
