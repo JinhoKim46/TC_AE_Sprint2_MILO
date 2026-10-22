@@ -1,0 +1,40 @@
+{% from "_macros.html" import icon with context %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<title>{{ title }} - MILO</title>
+<link rel="stylesheet" href="{{ url_for('web.static', filename='css/app.css') }}">
+<script src="{{ url_for('web.static', filename='js/app.js') }}" defer></script>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('web.index') if user else url_for('web.login') }}"><span class="mark-small" aria-hidden="true"></span>MILO</a>
+  {% if user %}
+  <nav class="nav" aria-label="Main">
+    <a href="{{ url_for('web.index') }}">Conversation</a>
+    <a href="{{ url_for('web.spec_page') }}">Specification</a>
+    <a href="{{ url_for('web.reports') }}">Reports</a>
+    <a href="{{ url_for('web.profile') }}">Profile</a>
+    {% if user.role == 'operator' %}
+    <a href="{{ url_for('web.ops_submissions') }}">Submissions</a>
+    <a href="{{ url_for('web.ops_audit') }}">Audit</a>
+    <a href="{{ url_for('web.traces') }}">Traces</a>
+    {% endif %}
+  </nav>
+  <span class="save-indicator" id="save-indicator" role="status"><span class="dot dot-green" aria-hidden="true"></span>Saved</span>
+  <span class="who">{{ user.first_name }}</span>
+  <form method="post" action="{{ url_for('web.logout') }}" class="inline">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn btn-quiet" type="submit">Save and leave</button>
+  </form>
+  {% endif %}
+</header>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+{% block shell %}<main id="main" class="page">{% block content %}{% endblock %}</main>{% endblock %}
+<footer class="footer">{{ tagline }}</footer>
+</body>
+</html>

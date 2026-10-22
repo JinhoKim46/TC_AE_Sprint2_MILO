@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ report.title }}</h1>
+<p><a class="btn btn-quiet" href="{{ url_for('web.report_download', report_id=report.id) }}">Download</a></p>
+{% for s in report.sections %}
+<section class="card"><h2>{{ s.heading }}</h2><div class="plain-text">{{ s.text }}</div></section>
+{% else %}
+<p class="card empty muted">This report has no sections yet.</p>
+{% endfor %}
+{% endblock %}
