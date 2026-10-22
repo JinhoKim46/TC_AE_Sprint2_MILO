@@ -1,10 +1,10 @@
 {
- "git_commit": "c999c9b9abeeea3132ce3a3e98b725989c97a87d",
+ "git_commit": "2f6648ede4f8ce75607411730c60b55c2a08b340",
  "model": "dry-scripted",
  "seed": 0,
  "temperature": 0.0,
  "command": "uv run python evals/discovery/run_discovery.py --dry",
- "timestamp": "2026-10-22T15:54:21Z",
+ "timestamp": "2026-10-22T15:58:49Z",
  "inputs": {
   "protocol": "aed2654f2c13ed438f4f79e42bb17c94a06c3a8d8b34eab71fdb2416f031399e",
   "upload": "663b6ca1549188fa34b0546f0081b3ddc4c21c67e82bca5380fac213e38b8d27",
