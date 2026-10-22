@@ -77,9 +77,21 @@ class Database:
         max_size: int = 5,
         pool: Any = None,
         schema: str | None = None,
+        set_role: str | None = None,
+        admin: bool = False,
     ) -> None:
         """`schema` pins `search_path` for a throwaway schema (SPEC D77); the verifier's RLS run uses it."""
-        self.role = check_role(url)
+        if set_role is not None and set_role not in ALLOWED_ROLES:
+            raise ValueError("set_role must be milo_app or milo_operator")
+        # The app and operator URLs must name their own role (D74). The administrative URL (D153) is accepted only
+        # when asked for: by the verifier's RLS run (`set_role`) or by migrate and reset (`admin=True`).
+        if set_role is not None:
+            self.role = set_role
+        elif admin:
+            self.role = "admin"
+        else:
+            self.role = check_role(url)
+        self.set_role = set_role
         if schema is not None and not SCHEMA_RE.match(schema):
             raise ValueError("invalid schema name")
         if pool is None:
@@ -112,6 +124,10 @@ class Database:
         who = uuid_text(user_hex(owner_id)) if owner_id is not None else None
         try:
             with self._pool.connection() as conn:
+                if (
+                    self.set_role is not None
+                ):  # transaction-local, so a pooled connection never keeps it
+                    conn.execute(f"set local role {self.set_role}")
                 if who is not None:
                     conn.execute("select set_config('milo.user_id', %s, true)", (who,))
                 yield conn

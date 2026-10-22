@@ -25,10 +25,10 @@ URL. The app never uses the secret key or the service-role key (D74, D88); leave
 `make migrate` applies `db/migrations/*.sql` in order and records them in `schema_migrations`. Migration 0001
 creates the roles `milo_app` and `milo_operator` and every table with its row-level security policies.
 
-Creating roles needs an administrative database role. The connection variable in `.env.example` is written for
-`milo_app`, which cannot create roles. For the first run only, put the project's administrative session-pooler
-URL (role `postgres`, shown in the dashboard under Connect) into the test-project variable, run `make migrate`,
-then put the `milo_app` URL back (step 3). Never commit or paste either URL.
+`make migrate` uses the administrative session-pooler string only (role `postgres`, SPEC D153); the app never
+does. It refuses production unless you set `MILO_MIGRATE_PROD=1` by hand. In the test project no role passwords
+are needed: the migration lets the administrative role `SET ROLE` to both app roles. `make db-reset` empties the
+test project again (never production). Never commit or paste a connection string.
 
 ## 3. Set the passwords of `milo_app` and `milo_operator`
 

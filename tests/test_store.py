@@ -696,3 +696,71 @@ def test_importing_the_store_and_building_repositories_opens_no_driver() -> None
         "print([m for m in sys.modules if m.split('.')[0] in ('psycopg', 'psycopg_pool')])"
     )
     assert bad == []
+
+
+# ---- administrative connection, migrate and reset (SPEC D153 to D155) ----
+
+ADMIN_URL = "p" + "ostgresql://postgres.projectref@pooler.example.test:5432/db"
+
+
+def test_set_role_runs_first_and_is_transaction_local() -> None:
+    pool = FakePool()
+    db = Database(ADMIN_URL, pool=pool, set_role="milo_app")
+    db.one(OWNER, "select 1")
+    assert [s for s, _ in pool.log[:2]] == [
+        "set local role milo_app",
+        "select set_config('milo.user_id', %s, true)",
+    ]
+    with pytest.raises(ValueError):
+        Database(ADMIN_URL, pool=pool, set_role="postgres")
+    with pytest.raises(RuntimeError):  # an admin URL is refused unless asked for
+        Database(ADMIN_URL, pool=pool)
+    assert Database(ADMIN_URL, pool=pool, admin=True).role == "admin"
+
+
+def test_migrate_refuses_prod_without_the_owner_flag() -> None:
+    from milo.store.migrate import check_target
+
+    check_target({})
+    check_target({"MILO_ENV": "test"})
+    with pytest.raises(RuntimeError):
+        check_target({"MILO_ENV": "prod"})
+    check_target({"MILO_ENV": "prod", "MILO_MIGRATE_PROD": "1"})
+
+
+def test_reset_covers_every_migration_object_and_refuses_prod() -> None:
+    import re
+
+    from milo.store import reset
+
+    sql = (ROOT / "db/migrations/0001_init.sql").read_text()
+    created = set(re.findall(r"^create table (\w+) \(", sql, re.MULTILINE))
+    assert created <= set(reset.tables())
+    stmts = reset.statements()
+    assert stmts[0] == "drop trigger if exists on_auth_user_confirmed on auth.users"
+    for fn in re.findall(r"create or replace function ([\w.]+\([^)]*\))", sql):
+        name = fn if "." in fn else "public." + fn
+        assert any(name.split("(")[0] in s for s in stmts), fn
+    assert any("drop role milo_app" in s for s in stmts) and any(
+        "drop role milo_operator" in s for s in stmts
+    )
+    assert all("prod" not in s for s in stmts)
+    with pytest.raises(RuntimeError):
+        reset.refuse_prod({"MILO_ENV": "prod", "MILO_MIGRATE_PROD": "1"})
+    reset.refuse_prod({"MILO_ENV": "test"})
+
+
+def test_migration_is_idempotent_in_form() -> None:
+    import re
+
+    sql = (ROOT / "db/migrations/0001_init.sql").read_text()
+    assert not re.search(r"^create function", sql, re.MULTILINE)
+    assert "search_path" not in sql
+    assert "drop trigger if exists on_auth_user_confirmed on auth.users;" in sql
+    assert "drop trigger if exists submissions_immutable_trg on submissions;" in sql
+    assert (
+        "grant %I to current_user" in sql
+        and "grant milo_app, milo_operator to current_user" in sql
+    )
+    assert sql.count("$$") % 2 == 0
+    assert sql.count("(") == sql.count(")")

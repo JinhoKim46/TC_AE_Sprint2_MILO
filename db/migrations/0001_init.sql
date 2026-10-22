@@ -27,6 +27,24 @@ begin
 end
 $$;
 
+-- The administrative role may SET ROLE to both (D153), so the RLS test needs no role passwords.
+do $$
+declare r text;
+begin
+    foreach r in array array['milo_app', 'milo_operator'] loop
+        if not exists (
+            select 1 from pg_auth_members m
+            join pg_roles g on g.oid = m.roleid
+            join pg_roles u on u.oid = m.member
+            where g.rolname = r and u.rolname = current_user
+        ) then
+            execute format('grant %I to current_user', r);
+        end if;
+    end loop;
+end
+$$;
+-- grant milo_app, milo_operator to current_user (the guarded form above, so a rerun is quiet)
+
 grant usage on schema public to milo_app, milo_operator;
 
 -- ---- tables ----
@@ -157,7 +175,7 @@ create table submissions (
 
 -- A submission revision is immutable (D41): the report fields may be filled once and the status may change;
 -- the snapshot and identity of the revision never change.
-create function submissions_immutable() returns trigger language plpgsql as $$
+create or replace function submissions_immutable() returns trigger language plpgsql as $$
 begin
     if new.session_id <> old.session_id or new.revision <> old.revision
        or new.spec_snapshot_json <> old.spec_snapshot_json or new.submitted_at <> old.submitted_at then
@@ -166,6 +184,7 @@ begin
     return new;
 end
 $$;
+drop trigger if exists submissions_immutable_trg on submissions;
 create trigger submissions_immutable_trg before update on submissions
     for each row execute function submissions_immutable();
 
@@ -232,8 +251,8 @@ create table rate_limits (
 );
 
 -- ---- profile trigger (D89) ----
-create function public.handle_confirmed_user() returns trigger
-    language plpgsql security definer set search_path = public as $$
+create or replace function public.handle_confirmed_user() returns trigger
+    language plpgsql security definer as $$
 begin
     if new.email_confirmed_at is not null then
         insert into public.profiles (id, email) values (new.id, new.email) on conflict (id) do nothing;
@@ -241,22 +260,23 @@ begin
     return new;
 end
 $$;
+drop trigger if exists on_auth_user_confirmed on auth.users;
 create trigger on_auth_user_confirmed after insert or update of email_confirmed_at on auth.users
     for each row execute function public.handle_confirmed_user();
 
 -- ---- ownership helpers (security definer, so a policy never recurses into another table's policy) ----
-create function milo_user() returns uuid language sql stable as $$
+create or replace function public.milo_user() returns uuid language sql stable as $$
     select nullif(current_setting('milo.user_id', true), '')::uuid
 $$;
 
-create function owns_session(sid uuid) returns boolean language sql stable security definer set search_path = public as $$
-    select exists (select 1 from sessions s where s.id = sid and s.user_id = milo_user())
+create or replace function public.owns_session(sid uuid) returns boolean language sql stable security definer as $$
+    select exists (select 1 from public.sessions s where s.id = sid and s.user_id = public.milo_user())
 $$;
 
-create function owns_turn(tid uuid) returns boolean language sql stable security definer set search_path = public as $$
+create or replace function public.owns_turn(tid uuid) returns boolean language sql stable security definer as $$
     select exists (
-        select 1 from turns t join sessions s on s.id = t.session_id
-        where t.id = tid and s.user_id = milo_user()
+        select 1 from public.turns t join public.sessions s on s.id = t.session_id
+        where t.id = tid and s.user_id = public.milo_user()
     )
 $$;
 

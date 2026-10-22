@@ -4,13 +4,13 @@ Every owner-facing call that carries another owner's ids must fail with `not_fou
 call keyed only by the caller's own id must show nothing of another owner's data. The suite runs two ways:
 
 * in pytest, against the in-memory repositories (offline);
-* by the verifier against Postgres, outside pytest, with row-level security doing the filtering:
+* by the verifier against Postgres, outside pytest (SPEC D153, D154), with row-level security doing the filtering:
 
-      uv run python tests/test_store_identity.py --postgres --owner-a <uuid> --owner-b <uuid> [--schema milo_<hex>]
+      make migrate && uv run python tests/test_store_identity.py --postgres && make db-reset
 
-  The verifier provisions the test project (schema, `make migrate`, two confirmed profiles) with its own
-  privileges first. This script connects as `milo_app` through `settings.database_url()`, refuses production
-  settings (D76) and prints PASS or FAIL per call.
+  It opens the administrative connection, creates two confirmed test accounts, and runs every check under
+  `SET LOCAL ROLE milo_app`. No role password is used. It refuses production settings (D76), prints PASS or FAIL
+  per call, and deletes its two accounts at the end.
 """
 
 from __future__ import annotations
@@ -338,21 +338,34 @@ def main(argv: list[str] | None = None) -> int:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
     ap.add_argument("--postgres", action="store_true", required=True)
-    ap.add_argument("--owner-a", required=True)
-    ap.add_argument("--owner-b", required=True)
-    ap.add_argument("--schema", default=None)
     args = ap.parse_args(argv)
+    assert args.postgres
 
     from milo import settings
     from milo.store import pg_repositories
     from milo.store.db import Database
+    from milo.store.migrate import admin_url
 
     settings.assert_not_prod()  # D76: tests and evals refuse production settings
-    db = Database(settings.database_url(), schema=args.schema)
-    db.open()
+    url = admin_url()
+    admin = Database(url, admin=True)
+    app = Database(
+        url, set_role="milo_app"
+    )  # the administrative connection, SET LOCAL ROLE per transaction
+    users = [str(uuid.uuid4()), str(uuid.uuid4())]
+    admin.open()
+    app.open()
     try:
-        r = pg_repositories(db)
-        a, b = uuid.UUID(args.owner_a).hex, uuid.UUID(args.owner_b).hex
+        for i, who in enumerate(
+            users
+        ):  # confirmed accounts; the trigger of D89 creates their profiles
+            admin.run(
+                None,
+                "insert into auth.users (id, email, email_confirmed_at) values (%s, %s, now())",
+                (who, f"rls-test-{i}@example.test"),
+            )
+        r = pg_repositories(app)
+        a, b = (uuid.UUID(u).hex for u in users)
         ids = seed(r, a)
         failures = []
         for name in [*NOT_FOUND, *EMPTY, *OWN]:
@@ -368,7 +381,10 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 1 if failures else 0
     finally:
-        db.close()
+        for who in users:
+            admin.run(None, "delete from auth.users where id = %s", (who,))
+        app.close()
+        admin.close()
 
 
 if __name__ == "__main__":

@@ -3,32 +3,35 @@
 Integrator-owned paths: `src/milo/settings.py`, `src/milo/app.py`, `.env.example`, `pyproject.toml`. Nothing here
 has been edited by M5-store. Each request names the test that will show it works.
 
-## 1. `settings.py`: Auth configuration and the operator database URL
+## 1. `settings.py` accessors (SPEC D153)
 
-`milo.auth` takes the project's Auth URL, publishable key and JWKS URL as arguments, because only `settings.py`
-may read the variables (HARNESS 3.3). Please add, next to `database_url()`:
+`settings.py` is the only reader of the connection and Auth variables. The store takes URLs as arguments
+(`Database(url, ...)`); `migrate.py` and `reset.py` already call `settings.admin_database_url` when it exists and
+fall back to `settings.database_url` until then. Please add, each reading the env var for the current `MILO_ENV`:
 
-```python
-@dataclass(frozen=True)
-class AuthConfig:
-    url: str  # the project's base URL; SupabaseAuth appends /auth/v1
-    publishable_key: str  # never the secret or service-role key
-    jwks_url: str  # JwtVerifier(jwks_url=...) fetches it over https
-    issuer: str  # f"{url}/auth/v1"
+Each returns the pooler string named in D153 for the current `MILO_ENV`:
 
+- `admin_database_url(environ=None) -> str`: the administrative string (role `postgres`); migrate, db-reset and
+  the RLS test only.
+- `app_database_url(environ=None) -> str`: the `milo_app` string; `create_app` only.
+- `operator_database_url(environ=None) -> str | None`: the `milo_operator` string in prod; `None` in test, where
+  the operator path is `Database(admin_url, set_role="milo_operator")`.
+- `auth_config(environ=None) -> AuthConfig`, a frozen dataclass of `url: str` (project base URL; `SupabaseAuth`
+  appends `/auth/v1`), `publishable_key: str` (never the secret or service-role key), `jwks_url: str` and
+  `issuer: str` (`f"{url}/auth/v1"`); the prod set only when `MILO_ENV=prod`.
 
-def auth_config(
-    environ=None,
-) -> AuthConfig: ...  # test project unless MILO_ENV=prod, like database_url()
-def operator_database_url(
-    environ=None,
-) -> str: ...  # a milo_operator URL for /ops (SPEC D130, D144)
+`Database` modes: `Database(app_url)` (role must be `milo_app` or `milo_operator`), `Database(admin_url,
+set_role="milo_app" | "milo_operator")` (runs `set local role` first in every transaction), and
+`Database(admin_url, admin=True)` (migrate and reset only).
+
+## 1b. `Makefile`
+
+```make
+db-reset:
+	uv run python -m milo.store.reset
 ```
 
-and the matching placeholder lines in `.env.example` (D88 names `SUPABASE_*_JWKS_URL`; the exact names are yours).
-SPEC D127 lists only the two `milo_app` pooler variables, so there is no variable for `milo_operator` yet.
-Test: `tests/test_s0_smoke.py::test_env_example_has_placeholders_only` still passes, and a new settings test
-asserts `auth_config({...})` picks the prod set only when `MILO_ENV=prod`.
+`reset.py` refuses `MILO_ENV=prod` outright. `make migrate` already refuses prod without `MILO_MIGRATE_PROD=1`.
 
 ## 2. `app.py`: wiring (M6 and M5b, at merge)
 
@@ -55,42 +58,11 @@ asserts `auth_config({...})` picks the prod set only when `MILO_ENV=prod`.
   `window_s` and `retry_after_s`; `AuthError` to 401; `PolicyDenied` to 403.
 - Message and upload limits (D131): `RateLimiter.hit(ratelimit.MESSAGES, owner)` and `UPLOADS`.
 
-## 3. `make migrate` and the administrative role
+## 3. Closed by D153 to D155
 
-`src/milo/store/migrate.py` connects with `settings.database_url()`, which is a `milo_app` URL, but migration
-0001 creates roles and policies and needs an administrative role. `docs/operations.md` section 2 gives the manual
-workaround (temporarily point the variable at the administrative URL). A cleaner fix is a third variable for
-migrations, or a documented rule that `make migrate` is run by the owner only.
+Migration 0001 is now idempotent in form, pins no `search_path`, and grants both roles to the administrative role; `migrate.py` uses the administrative URL only; `store/reset.py` implements `make db-reset`. The RLS test (`tests/test_store_identity.py --postgres`) runs on the administrative connection with `SET LOCAL ROLE`, never with passwords.
 
-## 4. Migration 0001 cannot run in a throwaway schema (blocks HARNESS 7 item 8, SPEC D77)
-
-The verifier flow (create schema `milo_<hex>`, `make migrate`, run the RLS test, drop the schema) does not work
-with 0001 and `migrate.py` as they are:
-
-- `migrate.py` has no `search_path` option, so `make migrate` always targets `public`.
-- `owns_session` and `owns_turn` declare `set search_path = public`, so in another schema they read
-  `public.sessions` and `public.turns` (the wrong tables).
-- `grant usage on schema public`, `revoke all on all tables in schema public` and `grant select on all tables
-  in schema public` are hardcoded, so in another schema the grants land on the wrong tables or on nothing.
-- `public.handle_confirmed_user()` is `create function` (not `or replace`) and `on_auth_user_confirmed` is
-  `create trigger` on `auth.users`, both outside the schema. A second throwaway schema, or a rerun on the test
-  project, fails at them, and `drop schema milo_<hex> cascade` leaves both behind. Roles are shared and
-  persist, which is fine, but the trigger and function are not.
-- Nearly every `create table`, `create function` and `create policy` lacks `if not exists` / `or replace`.
-
-Options for the integrator: (a) run the RLS test in the dedicated test project's `public` schema, resetting it
-between runs; (b) make 0001 schema-relocatable (unqualified grants through `current_schema()`, helpers without a
-pinned `search_path`, trigger and function created `or replace` / dropped first) and add `--schema` to
-`migrate.py`. `Database(url, schema=...)` in `milo.store.db` already pins `search_path` on the app side.
-Do not add a 0002 on top of a 0001 that fails first.
-
-## 5. No connection variable for `milo_operator`
-
-SPEC D127 lists two variables, both `milo_app`. `pg_repositories(db)` without `operator_db` routes `audit` and
-`operator` through the `milo_app` connection, and `milo_app` has no grant on `audit_log` or `customers` delete,
-so those calls fail with a permission error until request 1 supplies an operator URL.
-
-## 6. Appendix A rows
+## 4. Appendix A rows
 
 `docs/operations.md` (SPEC section 23 calls it an integrator file) and `docs/m5-store_report.md` were granted to
 M5-store in the task but are not in the M5-store row of HARNESS Appendix A. Please add them before verification,
