@@ -82,12 +82,13 @@ RUNS = [
     ),
     LiveRun(
         "SR live-model cases (5)",
-        "(no runner yet) evals/security live runner",
+        f"MILO_LIVE=1 {PY} evals/security/run_live.py --live --model <D3_model> "
+        '--price-in <usd/M> --price-out <usd/M> --max-cost 0.50 --gate <M5G_gate> --reason "<why>"',
         "evals/protocols/sr-live.md",
         0.10,
         0.50,
         "about 0.10 USD, cap 0.50 USD",
-        None,
+        "evals/security/run_live.py",
     ),
     LiveRun(
         "M5G gate probes (Jev)",

@@ -12,7 +12,7 @@ endef
 .PHONY: check test audit migrate db-reset index record eval final-test discovery-table \
 	kit-sources kit-abstains kit-tools kit-security kit-errors kit-threads kit-cost \
 	eval-retrieval eval-retrieval-replay eval-tools eval-tools-replay eval-attacks eval-attacks-replay \
-	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay live-check
+	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay eval-sr-live eval-sr-live-replay live-check
 
 check:
 	uv run ruff check .
@@ -129,6 +129,13 @@ eval-chat:
 
 eval-chat-replay:
 	uv run python evals/chat/compare_chat.py --replay
+
+# SR live-model cases (protocol sr-live.md). `eval-sr-live` refuses without MILO_LIVE=1; pass SR_ARGS="--model .. --price-in .. --price-out .. --reason .. --gate <M5G gate>".
+eval-sr-live:
+	uv run python evals/security/run_live.py --live $(SR_ARGS)
+
+eval-sr-live-replay:
+	uv run python evals/security/run_live.py --replay
 
 # The whole live batch in one table: command, protocol and its commit, estimated cost, and whether each runner
 # refuses without MILO_LIVE=1. No network, no key, no spend (integrator decision 44).
