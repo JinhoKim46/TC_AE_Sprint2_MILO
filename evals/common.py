@@ -12,6 +12,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import subprocess
 import time
 from pathlib import Path
@@ -106,8 +107,19 @@ def provenance(
     command: str,
     inputs: dict[str, Path | str],
 ) -> dict[str, Any]:
-    """The provenance block every result file carries (SPEC D56). `inputs` maps a label to a file to hash."""
+    """The provenance block every result file carries (SPEC D56). `inputs` maps a label to a file to hash.
+
+    When `model` names a live slug (`vendor/name`), `reasoning` records per slug whether reasoning was `off` or at
+    `low_effort` (D159).
+    """
+    slugs = [t for t in re.split(r"[\s,;=]+", model) if "/" in t]
+    extra: dict[str, Any] = {}
+    if slugs:
+        from milo.llm.cloud import reasoning_mode
+
+        extra["reasoning"] = {s: reasoning_mode(s) for s in slugs}
     return {
+        **extra,
         "git_commit": git_commit(),
         "model": model,
         "seed": seed,

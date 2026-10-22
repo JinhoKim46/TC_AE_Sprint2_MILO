@@ -521,6 +521,9 @@ def run_row(
             raw = invoke_with_retry(meter, messages, None, sleep=sleep).content
     except ProviderFailure as exc:
         row["error"] = exc.error
+        cause = exc.__cause__  # decision 72: keep the provider's own message
+        if cause is not None:
+            row["provider_message"] = f"{type(cause).__name__}: {cause}"[:500]
     row.update(
         raw=raw, parsed=parsed, retry=retry, calls=meter.calls, temperature=0.0,
         usage={"input": meter.tokens_in, "output": meter.tokens_out},
