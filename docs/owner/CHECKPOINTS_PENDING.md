@@ -79,3 +79,8 @@
 
 - Verifier PASS (docs/verify/m5c.md) with A-1 recomputed by hand (monthly 1372.50 / 1525.00 / 1830.00, setup 2700); fix cycle 1 for pii in conflicts and derived sources.
 - Owner question: none.
+
+## M6 — Web UI wiring (merged 2026-10-22)
+
+- Verifier PASS and SR review 53 of 57 (4 low, fixed); T1 (refresh token readable in the signed cookie) fixed by encrypting the tokens; production guard refuses consent v0 and no operator; live gate wired; record.py 24 of 24 on Chromium.
+- Owner question: the muted text colour (D45 #909090 fails AA) and the consent text (checklist item 2) before production.
