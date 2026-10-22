@@ -1,0 +1,629 @@
+{
+  "git_commit": "8e222e1d4049705e5a62b8cdbd7fde5d0f035426",
+  "model": "fake-hash-256",
+  "seed": 0,
+  "temperature": null,
+  "command": "python evals/retrieval/run_retrieval.py --dry",
+  "timestamp": "2026-10-22T15:06:36Z",
+  "inputs": {
+    "fixture": "a9397d0414e967629d7596a008dc0ec22eecc697fe5c9f8050fe903185d54250",
+    "script": "69b7571f7449b04f1acbe0da29014c9b84825b2729ad46bf9ed1445ffd27165a"
+  },
+  "temperature_note": "embeddings have no temperature",
+  "dry": true,
+  "split": "dev",
+  "k": 5,
+  "bootstrap": 2000,
+  "query_prefix": "none",
+  "chunk_size": 800,
+  "overlap": 100,
+  "chunk_count": 10,
+  "chunk_sha256": "40ff7421b99eba4ee8f1d47d72dc4118f8032e85b19e3966ac990148f6d62780",
+  "embedding_dim": 256,
+  "embedding_requests": 0,
+  "total_cost_usd": 0.0,
+  "cost_note": "dry run: no call",
+  "spend_reason": "none (fake embedder)",
+  "queries_without_chunk": [],
+  "summary": {
+    "n": 6,
+    "recall5": {
+      "mean": 0.8333,
+      "ci": [
+        0.5,
+        1.0
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.6488,
+      "ci": [
+        0.377,
+        0.877
+      ]
+    },
+    "mrr": {
+      "mean": 0.6019,
+      "ci": [
+        0.3704,
+        0.8333
+      ]
+    },
+    "p5": {
+      "mean": 0.1667,
+      "ci": [
+        0.1,
+        0.2
+      ]
+    },
+    "ap": {
+      "mean": 0.6019,
+      "ci": [
+        0.3704,
+        0.8333
+      ]
+    }
+  },
+  "summary_excluding_no_chunk": {
+    "n": 6,
+    "recall5": {
+      "mean": 0.8333,
+      "ci": [
+        0.5,
+        1.0
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.6488,
+      "ci": [
+        0.377,
+        0.877
+      ]
+    },
+    "mrr": {
+      "mean": 0.6019,
+      "ci": [
+        0.3704,
+        0.8333
+      ]
+    },
+    "p5": {
+      "mean": 0.1667,
+      "ci": [
+        0.1,
+        0.2
+      ]
+    },
+    "ap": {
+      "mean": 0.6019,
+      "ci": [
+        0.3704,
+        0.8333
+      ]
+    }
+  },
+  "by_type": {
+    "identifier": {
+      "n": 2,
+      "recall5": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.8155,
+        "ci": [
+          0.6309,
+          1.0
+        ]
+      },
+      "mrr": {
+        "mean": 0.75,
+        "ci": [
+          0.5,
+          1.0
+        ]
+      },
+      "p5": {
+        "mean": 0.2,
+        "ci": [
+          0.2,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.75,
+        "ci": [
+          0.5,
+          1.0
+        ]
+      }
+    },
+    "paraphrase": {
+      "n": 4,
+      "recall5": {
+        "mean": 0.75,
+        "ci": [
+          0.25,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.5655,
+        "ci": [
+          0.1577,
+          0.9077
+        ]
+      },
+      "mrr": {
+        "mean": 0.5278,
+        "ci": [
+          0.2083,
+          0.875
+        ]
+      },
+      "p5": {
+        "mean": 0.15,
+        "ci": [
+          0.05,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.5278,
+        "ci": [
+          0.2083,
+          0.875
+        ]
+      }
+    }
+  },
+  "weakest_type": {
+    "type": "paraphrase",
+    "ndcg5": 0.5655
+  },
+  "filtered": {
+    "n": 3,
+    "unfiltered_summary": {
+      "n": 3,
+      "recall5": {
+        "mean": 0.6667,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.5436,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "mrr": {
+        "mean": 0.537,
+        "ci": [
+          0.1111,
+          1.0
+        ]
+      },
+      "p5": {
+        "mean": 0.1333,
+        "ci": [
+          0.0,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.537,
+        "ci": [
+          0.1111,
+          1.0
+        ]
+      }
+    },
+    "filtered_summary": {
+      "n": 3,
+      "recall5": {
+        "mean": 0.6667,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.6667,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "mrr": {
+        "mean": 0.7222,
+        "ci": [
+          0.1667,
+          1.0
+        ]
+      },
+      "p5": {
+        "mean": 0.1333,
+        "ci": [
+          0.0,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.7222,
+        "ci": [
+          0.1667,
+          1.0
+        ]
+      }
+    }
+  },
+  "calibration": {
+    "answerable_top1_min": 0.236433,
+    "unanswerable_top1_max": 0.448618,
+    "unanswerable_n": 2,
+    "fixed_030": {
+      "min_score": 0.3,
+      "answered_rate": 0.6667,
+      "abstain_rate": 0.5
+    },
+    "chosen": 0.27,
+    "at_chosen": {
+      "min_score": 0.27,
+      "answered_rate": 0.8333,
+      "abstain_rate": 0.5
+    },
+    "separable": false
+  },
+  "rows": [
+    {
+      "qid": "d01",
+      "type": "identifier",
+      "question": "Does the alpha desk module take card payments over the phone?",
+      "answerable": true,
+      "filters": {
+        "product": "alpha-desk"
+      },
+      "relevant": [
+        "solutions/alpha-desk#1"
+      ],
+      "top5": [
+        "solutions/alpha-desk#1",
+        "cases/bakery-orders#1",
+        "solutions/alpha-desk#0",
+        "solutions/beta-mail#0",
+        "solutions/beta-mail#1"
+      ],
+      "top5_scores": [
+        0.693889,
+        0.495261,
+        0.470871,
+        0.392232,
+        0.38829
+      ],
+      "top1_score": 0.693889,
+      "relevant_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/alpha-desk#1",
+          "cases/bakery-orders#1",
+          "solutions/alpha-desk#0",
+          "solutions/alpha-desk#2",
+          "cases/bakery-orders#0"
+        ],
+        "top5_scores": [
+          0.693889,
+          0.495261,
+          0.470871,
+          0.236525,
+          0.0
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "d02",
+      "type": "identifier",
+      "question": "Will beta mail ever delete a message?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/beta-mail#1"
+      ],
+      "top5": [
+        "solutions/beta-mail#0",
+        "solutions/beta-mail#1",
+        "solutions/beta-mail#2",
+        "cases/bakery-orders#0",
+        "solutions/alpha-desk#1"
+      ],
+      "top5_scores": [
+        0.445435,
+        0.302372,
+        0.157622,
+        0.145479,
+        0.145479
+      ],
+      "top1_score": 0.445435,
+      "relevant_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "d03",
+      "type": "paraphrase",
+      "question": "How long does it take to get the alpha desk running?",
+      "answerable": true,
+      "filters": {
+        "section": "solutions"
+      },
+      "relevant": [
+        "solutions/alpha-desk#2"
+      ],
+      "top5": [
+        "solutions/alpha-desk#0",
+        "solutions/beta-mail#1",
+        "solutions/alpha-desk#1",
+        "cases/bakery-orders#1",
+        "pricing/rate-card#0"
+      ],
+      "top5_scores": [
+        0.336336,
+        0.33282,
+        0.320256,
+        0.266679,
+        0.240192
+      ],
+      "top1_score": 0.336336,
+      "relevant_ranks": [
+        9
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/alpha-desk#0",
+          "solutions/beta-mail#1",
+          "solutions/alpha-desk#1",
+          "solutions/beta-mail#0",
+          "solutions/beta-mail#2"
+        ],
+        "top5_scores": [
+          0.336336,
+          0.33282,
+          0.320256,
+          0.196116,
+          0.173494
+        ],
+        "relevant_ranks": [
+          6
+        ],
+        "metrics": {
+          "recall5": 0.0,
+          "ndcg5": 0.0,
+          "mrr": 0.16666666666666666,
+          "p5": 0.0,
+          "ap": 0.16666666666666666,
+          "first_relevant_rank": 6
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.1111111111111111,
+        "p5": 0.0,
+        "ap": 0.1111111111111111,
+        "first_relevant_rank": 9
+      }
+    },
+    {
+      "qid": "d04",
+      "type": "paraphrase",
+      "question": "What extra charge applies to urgent requests?",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/rate-card#1"
+      ],
+      "top5": [
+        "solutions/beta-mail#2",
+        "pricing/rate-card#1",
+        "solutions/alpha-desk#2",
+        "pricing/rate-card#0",
+        "solutions/beta-mail#1"
+      ],
+      "top5_scores": [
+        0.236433,
+        0.231455,
+        0.161165,
+        0.109109,
+        0.075593
+      ],
+      "top1_score": 0.236433,
+      "relevant_ranks": [
+        2
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/rate-card#1",
+          "pricing/rate-card#0"
+        ],
+        "top5_scores": [
+          0.231455,
+          0.109109
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "d05",
+      "type": "paraphrase",
+      "question": "Is there a surcharge for CSV export?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/rate-card#1"
+      ],
+      "top5": [
+        "pricing/rate-card#1",
+        "cases/bakery-orders#0",
+        "pricing/rate-card#0",
+        "solutions/alpha-desk#0",
+        "solutions/beta-mail#2"
+      ],
+      "top5_scores": [
+        0.385758,
+        0.290957,
+        0.218218,
+        0.18334,
+        0.157622
+      ],
+      "top1_score": 0.385758,
+      "relevant_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "d06",
+      "type": "paraphrase",
+      "question": "What access does beta mail need before it can start?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/beta-mail#2"
+      ],
+      "top5": [
+        "solutions/beta-mail#0",
+        "solutions/beta-mail#2",
+        "solutions/beta-mail#1",
+        "solutions/alpha-desk#1",
+        "solutions/alpha-desk#2"
+      ],
+      "top5_scores": [
+        0.298142,
+        0.197814,
+        0.189737,
+        0.182574,
+        0.13484
+      ],
+      "top1_score": 0.298142,
+      "relevant_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "d07",
+      "type": "unanswerable",
+      "question": "Which tractor model has the best fuel economy in winter?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "cases/bakery-orders#1",
+        "solutions/beta-mail#1",
+        "solutions/beta-mail#0",
+        "solutions/alpha-desk#2",
+        "solutions/alpha-desk#1"
+      ],
+      "top5_scores": [
+        0.260623,
+        0.252982,
+        0.149071,
+        0.13484,
+        0.121716
+      ],
+      "top1_score": 0.260623,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "d08",
+      "type": "unanswerable",
+      "question": "What is the capital of Australia?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "cases/bakery-orders#1",
+        "solutions/alpha-desk#2",
+        "pricing/rate-card#0",
+        "solutions/beta-mail#2",
+        "solutions/beta-mail#1"
+      ],
+      "top5_scores": [
+        0.448618,
+        0.435194,
+        0.353553,
+        0.340503,
+        0.326599
+      ],
+      "top1_score": 0.448618,
+      "relevant_ranks": []
+    }
+  ]
+}

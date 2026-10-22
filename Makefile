@@ -12,7 +12,7 @@ endef
 .PHONY: check test audit migrate db-reset index record eval final-test discovery-table \
 	kit-sources kit-abstains kit-tools kit-security kit-errors kit-threads kit-cost \
 	eval-retrieval eval-retrieval-replay eval-tools eval-tools-replay eval-attacks eval-attacks-replay \
-	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay
+	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay live-check
 
 check:
 	uv run ruff check .
@@ -109,7 +109,12 @@ eval-discovery:
 	$(call need,evals/discovery/run_discovery.py,M5b)
 	uv run python evals/discovery/run_discovery.py --replay
 
+# Live A/B (integrator's batch): needs MILO_LIVE=1 and AB_ARGS="--max-cost .. --reason .. --chat-model .. --price-in .. --price-out .."
 eval-ab:
+	$(call need,evals/retrieval/ab.py,M2)
+	uv run python evals/retrieval/ab.py $(AB_ARGS)
+
+eval-ab-replay:
 	$(call need,evals/retrieval/ab.py,M2)
 	uv run python evals/retrieval/ab.py --replay
 
@@ -124,3 +129,8 @@ eval-chat:
 
 eval-chat-replay:
 	uv run python evals/chat/compare_chat.py --replay
+
+# The whole live batch in one table: command, protocol and its commit, estimated cost, and whether each runner
+# refuses without MILO_LIVE=1. No network, no key, no spend (integrator decision 44).
+live-check:
+	uv run python scripts/live_check.py

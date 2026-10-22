@@ -87,12 +87,12 @@ D110 supersedes the D103 "unclear plus lexicon term" rule; `undecided` always go
 |---|---|---|
 | 1 | Text is only a greeting or thanks from the greeting list | `greeting` (fixed reply, no model) |
 | 2 | Text contains at least one *strong* lexicon term (a module id or name, an integration id, a protocol field id or its listed synonyms, a product word such as "module" or "setup", or a session and account action word), or at least two *weak* terms (bare trade words such as "job", "booking", "invoice", and generic business words); word-boundary, case-folded, with the listed short forms. A single weak term is not a pass (D157) | `pass` |
-| 3 | Text contains a number with a unit from the lexicon (a day, a month, staff, vans, minutes) | `pass` |
+| 3 | Text contains a number with a unit from the lexicon (a day, a month, staff, vans, minutes); a number may carry an approximation marker ("40ish", "~40", "about 40", "40-50") (D158) | `pass` |
 | 4 | Text matches a narrow refuse pattern and no lexicon term: a request for a poem, joke, story, song, rap, riddle, horoscope, recipe, lyrics, code in a named language, homework, essay, translation of unrelated text | `refuse` (fixed reply, cost 0) |
 | 5 | (folded into rule 2: action words are strong terms, D157) | - |
 | 6 | Anything else, including a single weak term, every follow-up without a lexicon term, negation and non-English | `undecided` (stage 2) |
 
-Rule 4 never fires when rule 2 or 3 would, so a mixed message passes; because action words are strong terms, "tell me a joke, then send me the report" passes by rule 2. The lexicon marks every term `strong` or `weak` (v3). A bare trade word alone reaches stage 2, which costs one Jev call; this is the price of not letting off-topic text through on one word (audit pass 2 showed that 17 of 68 out-of-scope test rows would otherwise bypass the judge and cap refusal at 88 percent). The D22 taint check runs
+Rule 4 never fires when rule 2 or 3 would, so a mixed message passes; because action words are strong terms, "tell me a joke, then send me the report" passes by rule 2. The lexicon marks every term `strong` or `weak` (v3). Counting rule (D158): weak terms are counted by lemma, so a singular and its plural ("customer", "customers") count once; a message needs two different weak lemmas to pass. Known limit (D158): an off-topic request that names one strong term ("write a poem about phone-intake") passes stage 1; the D108 reply check is the defence for that case, and the SR live cases measure it. A bare trade word alone reaches stage 2, which costs one Jev call; this is the price of not letting off-topic text through on one word (audit pass 2 showed that 17 of 68 out-of-scope test rows would otherwise bypass the judge and cap refusal at 88 percent). The D22 taint check runs
 separately and is not part of the gate.
 
 Stage 1 test (`tests/test_gate.py`, offline, loads `split == dev` rows only, so the test is not a
