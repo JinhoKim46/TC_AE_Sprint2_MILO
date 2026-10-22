@@ -1,0 +1,35 @@
+{% from "_macros.html" import status, csrf with context %}
+<aside class="panel panel-right" aria-label="Spec and evidence" id="spec-panel">
+  <h2>Spec and evidence</h2>
+  {% if spec %}
+  <p class="small muted" id="progress-label">{{ spec.progress }} of {{ spec.total }} fields covered</p>
+  <progress max="{{ spec.total }}" value="{{ spec.progress }}" aria-labelledby="progress-label"></progress>
+  <ul class="plain fields">
+    {% for f in spec.fields %}
+    <li class="field">
+      <div class="field-head"><strong>{{ f.label }}</strong> {{ status(f.status) }}</div>
+      {% if f.value %}<div class="plain-text">{{ f.value }}</div>{% endif %}
+      {% if f.quote %}<blockquote class="plain-text quote">{{ f.quote }}</blockquote>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% if spec.missing %}
+  <h3>Still missing</h3>
+  <ul>{% for m in spec.missing %}<li>{{ m }}</li>{% endfor %}</ul>
+  {% endif %}
+  {% if spec.estimate %}
+  <div class="estimate card"><span class="chip chip-estimated"><span class="dot" aria-hidden="true"></span>indicative</span><div class="plain-text">{{ spec.estimate }}</div></div>
+  {% endif %}
+  {% else %}
+  <p class="muted empty-note">Nothing recorded yet. Facts you share appear here with their evidence.</p>
+  {% endif %}
+  <button class="btn btn-primary btn-block" type="button" data-open="#submit-dialog"{% if not spec %} disabled{% endif %}>Submit</button>
+</aside>
+<dialog id="submit-dialog" aria-labelledby="submit-title">
+  <form method="post" action="{{ url_for('web.submit') }}" class="stack">
+    {{ csrf() }}
+    <h2 id="submit-title">Submit this diagnosis?</h2>
+    <p>You will get a report. The estimate is indicative, not a quote, and is non-binding.</p>
+    <div class="row"><button class="btn btn-quiet" type="button" data-close>Cancel</button><button class="btn btn-primary" type="submit">Submit</button></div>
+  </form>
+</dialog>

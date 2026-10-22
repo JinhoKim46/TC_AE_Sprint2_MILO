@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% from "_macros.html" import csrf with context %}
+{% block content %}
+<h1>{{ row.title }}</h1>
+<section class="card"><dl><dt>Customer</dt><dd>{{ row.customer }}</dd><dt>Status</dt><dd>{{ row.status }}</dd></dl>
+<p><a class="btn btn-quiet" href="{{ url_for('web.ops_export', submission_id=row.id) }}">Export JSON</a></p></section>
+<section class="card"><h2>Delete customer data</h2>
+<form method="post" action="{{ url_for('web.ops_customer_delete', customer_id=row.customer) }}">{{ csrf() }}<button class="btn btn-danger" type="submit">Delete customer</button></form></section>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% from "_macros.html" import csrf with context %}
+{% block content %}
+<section class="card narrow">
+  <h1>Set a new password</h1>
+  {% if error %}<p class="msg msg-error" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" action="{{ url_for('web.reset_token_post', token=token) }}" class="stack">
+    {{ csrf() }}
+    <label>New password (12 characters or more)<input type="password" name="password" autocomplete="new-password" minlength="12" required></label>
+    <button class="btn btn-primary" type="submit">Save password</button>
+  </form>
+</section>
+{% endblock %}

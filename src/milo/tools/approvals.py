@@ -12,22 +12,23 @@ loop (taint low, since no model text is involved).
 
 from __future__ import annotations
 
+import threading
 from dataclasses import dataclass
 from typing import Any
 
-from milo.security.policy import decide
+from milo.security.policy import decide, decide_on_approve
 from milo.store.memory import args_hash
 from milo.tools.args import clean_args
-from milo.types import ApprovalStore, ToolsBackend
+from milo.types import ApprovalStore, Taint, ToolsBackend
 
 WITHDRAW = "withdraw_submission"
+# One claim at a time: the status check and the pending -> approved write are a single step (compare-and-set).
+_CLAIM_LOCK = threading.Lock()
 
 
 @dataclass
 class ApprovalOutcome:
-    status: (
-        str  # not_found, expired, already_handled, kept, used, denied, failed, pending
-    )
+    status: str  # not_found, expired, already_resolved, denied_at_approve, kept, used, denied, failed, pending
     approval_id: str | None = None
     output: Any = None
     ok: bool = False
@@ -69,23 +70,50 @@ class ApprovalService:
         )
         return ApprovalOutcome("pending", approval_id)
 
-    def resolve(self, approval_id: str, decision: str, user_id: str) -> ApprovalOutcome:
-        """`approve` runs the bound tool once; `keep` runs nothing. No model call either way."""
+    def _claim(self, approval_id: str, user_id: str, new: str = "approved") -> bool:
+        """Compare-and-set: `pending` -> `new` succeeds for exactly one caller."""
+        with _CLAIM_LOCK:
+            row = self.approvals.get(approval_id, user_id)
+            if row is None or row["status"] != "pending":
+                return False
+            self.approvals.set_status(approval_id, user_id, new)
+            return True
+
+    def resolve(
+        self,
+        approval_id: str,
+        decision: str,
+        user_id: str,
+        taint: Taint = "low",
+    ) -> ApprovalOutcome:
+        """`approve` runs the bound tool once; `keep` runs nothing. No model call either way.
+
+        `taint` is the session's taint now (default low: no model text is involved). The policy is asked again with
+        the stored arguments before the tool runs; a denial marks the row `denied_at_approve` and runs nothing.
+        """
         row = self.approvals.get(approval_id, user_id)
         if row is None:
             return ApprovalOutcome("not_found", approval_id)
         if row["status"] == "expired":
             return ApprovalOutcome("expired", approval_id)
         if row["status"] != "pending":
-            return ApprovalOutcome("already_handled", approval_id)
+            return ApprovalOutcome("already_resolved", approval_id)
         if decision == "keep":
-            self.approvals.set_status(approval_id, user_id, "kept")
+            if not self._claim(approval_id, user_id, "kept"):
+                return ApprovalOutcome("already_resolved", approval_id)
             return ApprovalOutcome("kept", approval_id)
         if decision != "approve":
             return ApprovalOutcome("denied", approval_id)
         if row.get("args_hash") not in (None, args_hash(row["args"])):
             return ApprovalOutcome("denied", approval_id)
-        self.approvals.set_status(approval_id, user_id, "approved")
+        if not self._claim(approval_id, user_id):
+            return ApprovalOutcome("already_resolved", approval_id)
+        spec = next((s for s in self.tools.specs() if s.name == row["tool_name"]), None)
+        pricing = getattr(self.tools, "pricing_fields", ())
+        verdict = decide_on_approve(spec, clean_args(row["args"]), pricing, taint)
+        if verdict.decision == "denied":
+            self.approvals.set_status(approval_id, user_id, "denied_at_approve")
+            return ApprovalOutcome("denied_at_approve", approval_id)
         try:
             output = self.tools.call(
                 row["tool_name"], dict(row["args"]), user_id=row["owner_id"]

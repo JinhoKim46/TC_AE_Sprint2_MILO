@@ -493,8 +493,6 @@ def test_role_checks_never_echo_the_url_and_refuse_admin_roles() -> None:
         with pytest.raises(RuntimeError) as info:
             check_role(bad)
         assert bad not in str(info.value) and "projectref" not in str(info.value)
-    with pytest.raises(ValueError):
-        Database(APP_URL, pool=object(), schema="x; drop table y")
 
 
 def test_transaction_sets_the_rls_identity_first_and_only_with_an_owner() -> None:
@@ -758,9 +756,17 @@ def test_migration_is_idempotent_in_form() -> None:
     assert "search_path" not in sql
     assert "drop trigger if exists on_auth_user_confirmed on auth.users;" in sql
     assert "drop trigger if exists submissions_immutable_trg on submissions;" in sql
-    assert (
-        "grant %I to current_user" in sql
-        and "grant milo_app, milo_operator to current_user" in sql
+    for role in ("milo_app", "milo_operator"):
+        assert f"grant {role} to current_user with set true, inherit false;" in sql
+    forced = set(
+        re.findall(r"^alter table (\w+) force row level security;", sql, re.MULTILINE)
     )
+    enabled = set(
+        re.findall(r"^alter table (\w+) enable row level security;", sql, re.MULTILINE)
+    )
+    assert forced == enabled - {"schema_migrations"}, (
+        "every owner table is forced (SR A-09c)"
+    )
+    assert "security definer" not in sql.split("ownership helpers")[1]
     assert sql.count("$$") % 2 == 0
     assert sql.count("(") == sql.count(")")

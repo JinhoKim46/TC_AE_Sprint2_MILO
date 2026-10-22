@@ -57,16 +57,22 @@ Check it with `select id, email, role from public.profiles where role = 'operato
 from the database on every `/ops` and `/traces` request (D144), so the change takes effect at once and a
 revoked operator loses access on the next request. To revoke, set `role = 'owner'`.
 
-## 5. Check row-level security (the verifier's run, SPEC D140)
+## 5. Check row-level security (the verifier's run, SPEC D140, D153, D154)
 
-With a throwaway schema, two confirmed test accounts and the test project's `milo_app` URL in `.env`:
+Test project only, with the administrative string in `.env` and the migration applied:
 
 ```text
-uv run python tests/test_store_identity.py --postgres --owner-a <uuid> --owner-b <uuid> [--schema milo_<hex>]
+make migrate
+uv run python tests/test_store_identity.py --postgres
+make db-reset
 ```
 
-It refuses production settings, seeds owner A, makes every call as owner B with A's ids and prints PASS or FAIL
-per call. Drop the schema afterwards (D77).
+The script takes no other option. It opens the administrative connection, creates two confirmed test accounts,
+and runs every check under `SET LOCAL ROLE milo_app` or `milo_operator`, so no role password is needed. It
+refuses production settings, prints PASS or FAIL per repository call, then probes every table named in
+`db/migrations`: row-level security enabled and forced, at least one policy, no rows without an identity, none of
+another owner's rows, no way to change `profiles.role`, and an append-only `audit_log`. `make db-reset` returns
+the test project to empty.
 
 ## 6. Before production
 
