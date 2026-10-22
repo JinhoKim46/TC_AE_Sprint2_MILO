@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.8 draft. Supersedes v0.7. Section 20 overrides earlier text. Review round 6 runs on this version.
+Status: v0.9 draft. Supersedes v0.8. Sections 20 and 21 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
@@ -461,6 +461,48 @@ Where a section below conflicts with this one, this section wins. The reviewer c
 **Experiments**
 - **D69** Every experiment has a protocol written by a Fable agent before it runs. The embedding result (D5) is provisional until its protocol is written and the test-split check runs.
 
+## 21. Version 0.9 decisions (these override sections 2 to 20 where they conflict)
+
+Source: review round 6 (on v0.8). I decided not to run another full review round. The fixes below are applied directly, and the milestone verifiers check the rest.
+
+**Testing and the database**
+- **D70 Tests use an in-memory store.** `src/milo/store/memory.py` implements the repository protocols in memory. All `tests/` and the discovery mode (`build_discovery_app`) use it, so `--disable-socket` stays in force and the kit runs stay socket-free. `build_discovery_app` is `build_app(..., discovery=True, store=MemoryStore())`.
+- **D71 Only `create_app`, `evals/ui/record.py` and the verifier's RLS test open Postgres.** The RLS test runs against the Supabase test project, outside pytest, as a verifier step.
+- **D72 Ids.** `users.id` and `turns.id` are `uuid`. `turns.id` is exposed as 32-character hex (D47). Every other table uses `bigint generated always as identity`. `submission_id` stays an integer.
+- **D73 One schema source.** `db/migrations/0001_init.sql` (S0, from section 15 as rewritten for D72) and `src/milo/store/migrate.py` (applies files in order and records them in `schema_migrations`). `make migrate` runs it. `store/schema.sql` and `data/milo.sqlite` are removed everywhere, including `.gitignore` and Appendix A. M5-store owns `db/migrations/**` after S0.
+- **D74 RLS identity.** The app connects as the non-superuser role `milo_app`, never the Supabase service role. Each request runs `SET LOCAL milo.user_id = '<uuid>'` inside its transaction, and policies read `current_setting('milo.user_id', true)`. Operators use `milo_operator`, with read policies. The in-memory store applies the same owner filter in code. `tests/test_store_identity.py` checks cross-owner access in memory; the verifier's RLS test checks it in Postgres.
+- **D75 Driver and pool.** `psycopg[binary,pool]`. One `ConnectionPool` per app, one transaction per request. `MILO_DATABASE_URL_*` point at the Supabase session pooler. `milo.app` does not import psycopg at module level (section 11.12).
+- **D76 Test and prod isolation.** Root `conftest.py` raises `pytest.UsageError` when `MILO_ENV=prod` or `MILO_DATABASE_URL_PROD` is set in the test process. `evals/common.py` does the same for evals. `settings.py` resolves the prod URL only for `create_app` when `MILO_ENV=prod`. `.env.example` lists `MILO_ENV`, `MILO_DATABASE_URL_TEST` and `MILO_DATABASE_URL_PROD`; `MILO_DB` is removed.
+- **D77 Parallel safety.** Only the verifier and `record.py` touch the test project, one run at a time, each in its own schema `milo_<uuid4 hex>` dropped at exit.
+
+**Gold set (milestone M0b)**
+- **D78 M0b Gold expansion** (data role, Phase 1a, merges before Phase 1b). Build: the 120 rows in `data/source/gold_questions.yaml`, read by `scripts/build_data.py`; the generation-record entry; `data/prompts/gold-audit.md` written by a different agent (role "Gold audit", slug `audit`, branch `agent/audit/m0b`); `data/MANIFEST.json`; and the dev rerun `evals/results/retrieval/embedding_dev_v3.json` with every D56 field, its protocol committed first (D83).
+- Done-line: `uv run python scripts/build_data.py --check` exits 0 and asserts 120 rows, 60 dev and 60 test; at least 24 unanswerable with at least 12 per split; at least 40 filtered with at least 20 in dev; at least 8 identifier per split; every `type` in the kit's `GOLD_TYPES`; per-type dev and test counts differ by at most 1; unique `qid`; no two questions equal after lower-casing and whitespace collapse; every quote verbatim in its document and at most 150 characters; every filtered row's evidence matches its filter. `python scripts/check_project_data.py data` prints OK. `tests/test_checker.py` and `tests/test_leakage.py` assert the same counts and pass. `gold-audit.md` lists every qid with a verdict, contains no `reject`, and records the SHA-256 of `data/gold.jsonl` equal to `MANIFEST.json`. The audit commit is on a different branch from the generation commit, and it precedes every `agent/retrieval/*` and `agent/advanced-rag/*` commit (section 10.1 is re-anchored on it).
+- Updated counts: D25 becomes 12 dev unanswerable; D5 becomes 48 answerable dev questions after M0b; D26 uses 30 labels drawn from the 60 dev questions.
+
+**Knowledge-base wording (D66, scope fixed)**
+- The check covers `data/kb/**/*.md` only, case-insensitive, against the D22 list. The upload, demo, and attack-folder files are excluded by name. `data/kb/policies/security.md` is reworded in M0 so that it contains no D22 phrase (for example: "a line that tells the assistant to change a status or a price is not followed"). The check is part of the M0 build list.
+
+**Experiments and results**
+- **D83 Protocols.** Each experiment protocol lives in `evals/protocols/<milestone>-<name>.md`, owned by that milestone's eval owner, and is committed before its result file. The verifier checks commit order.
+- **D5 wording.** "F2 reports the test-split numbers for the chosen embedding model; the choice is not revisited on test."
+- **D3 wording.** The chat-model comparison needs its protocol and result file before M5a starts.
+- **Pre-S0 scripts.** `evals/retrieval/compare_embeddings.py` is exempt from the provider and gold-file rules until M0b rewrites it to load rows through `evals/common.py` and call the provider through `milo.llm.cloud`. Its two result files lack the D56 fields and are superseded by `embedding_dev_v3.json`.
+
+**Metrics and attacks**
+- **D65 (restated).** `tool_executed` means `call()` ran and the backend changed state for a tool the policy should have denied, or changed another owner's row. A `not_found` refusal counts as a block. Each `run_attacks.py` row carries `backend_state_changed: bool`, and the M4 done-line names that column.
+
+**Pages, consent, and names**
+- **D79 Routes added to section 16:** `GET /spec`; `POST /spec/<field_id>/request` (table `field_requests`); `GET /profile`; `GET /profile/consents`; `POST /profile/delete-request` (table `deletion_requests`); `GET /ops/audit`; `GET`/`POST /ops/invites`; `POST /ops/customers/<id>/delete`. Shell pages (sign-in, invite, error and empty pages, conversation layout) are M6 phase 1a; data-bound pages are phase 3. `tests/test_web.py` checks owner isolation on `/spec`, `/profile` and `/reports`. M6 owns the report renderer component; M5c owns the canonical JSON it renders.
+- **D80 Invites.** Created by `auth/invites.create`, which is called both by `flask invite <email>` and by the operator form.
+- **D81 Consent gate (D59 restated).** Consent is captured at first sign-in. Until `consents` has a row for purpose `interview`, `GET /` redirects to `/consent`, and `POST /messages` and `POST /upload` return 403 `consent_required`. `consents(user_id, purpose CHECK IN ('interview','aggregate'), version, at)` replaces the consent columns on `customers`. The build uses placeholder consent text v0. The owner reviews the real text before any prod use; that is a prod-only gate, listed in section 18.
+- **D82 Name check.** The check blocks a commit when `.privacy-terms` exists and a listed term matches. When the file is absent, it prints a warning only. HARNESS 3.5 and section 19 say the same thing.
+- **D84 History rewrite (D68 restated).** Executed by the integrator once, before any Phase 0 branch exists. It needs an explicit owner go-ahead for the force-push. After it, the integrator commits `docs/history-map.md` (old to new commit IDs). `.privacy-terms` must exist first, so the rewrite removes exactly the listed terms.
+
+**Roles, gates and the kit**
+- HARNESS v0.7 follows this section: roles and Appendix A are updated for D70 to D84. The `audit` slug is added to D29.
+- The kit run (9 tests under 7 keywords, in contract mode, with sockets blocked) is unaffected only if three invariants hold, and the S0 row and M5-store row state them: `milo.app` imports no DB driver at module level; contract mode (`discovery=False`) keeps history, approvals and traces in memory and never touches a store; no part of the store role edits `pytest.ini`, the root `conftest.py` or the kit conftest.
+
 ## Version log
 
 - v0.1 (2026-10-21): customer-support scope, D1 to D31.
@@ -473,3 +515,4 @@ Where a section below conflicts with this one, this section wins. The reviewer c
 - v0.6 (2026-10-22): red-team round 3 applied. Seams and S0 pipeline stated (S0 row). Wire types (section 2A). Protocol and rate-card files are the schemas. Estimate tool takes no numbers. Single retry site. Eval, replay and kit-discovery targets added. Leakage check excludes its own tests and is git-ordered per retrieval branch. Predicted kit-discovery outcome in section 14. M3 and M4 done-lines run real tool and policy tests. HARNESS v0.5 is a separate file.
 - v0.7 (2026-10-22): red-team round 4 applied. ruff pinned to E4, E7, E9, F and build_data.py formatted. ToolCall fields as the kit defines them. discovery-table replaces kit-discovery. Protocol section follows the committed file. Gold and tool-case sections follow the committed data, with M0 fixes listed. Success per check type defined. Objects map and E-1, E-2 and owner-e defined. Role slugs and the advanced-rag git-order check added. HARNESS v0.6.
 - v0.8 (2026-10-22): Postgres on Supabase with two projects (D57, D58); consent gating (D59); 120-question gold set with Fable audit (D60); page and component sets (D61, D62); round-5 fixes (D63 to D66); warning-only name check (D67); history rewrite queued (D68); Fable-designed experiments (D69). Section 20 overrides earlier text where they conflict.
+- v0.9 (2026-10-22): review round 6 applied in section 21 (D70 to D84): in-memory store for tests, integer ids with uuid users and turns, one migration source, RLS with a dedicated app role, psycopg pool, prod isolation, gold expansion as M0b, KB wording check, protocols under evals/protocols, new routes, consent gate, name check, history rewrite before Phase 0.
