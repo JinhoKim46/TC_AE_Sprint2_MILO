@@ -384,7 +384,7 @@
 {"sid": "s384", "text": "nope", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Do you get urgent requests that must be handled straight away, at any hour?"}], "split": "test"}
 {"sid": "s385", "text": "roughly, yes", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Recorded: about 20 requests per day. Is that a normal day?"}], "split": "dev"}
 {"sid": "s386", "text": "can't say really", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "What matters most to you here: saving time, fewer errors, lower cost or room to grow?"}], "split": "test"}
-{"sid": "s387", "text": "we'll see", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Do you have a budget range in mind? It is fine to say you do not know yet."}], "split": "dev"}
+{"sid": "s387", "text": "we'll see", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Shall I add the status updates module to the estimate?"}], "split": "dev"}
 {"sid": "s388", "text": "same, nothing to add", "label": "in_scope", "style": "follow_up", "recent_turns": [{"role": "assistant", "text": "Anything else you would want handed over to an automated system?"}], "split": "test"}
 {"sid": "s389", "text": "we're a bakery, every recipe card gets typed up by hand", "label": "in_scope", "style": "colloquial", "recent_turns": [], "split": "dev"}
 {"sid": "s390", "text": "I know it sounds like a joke but we still run everything off a fax machine", "label": "in_scope", "style": "colloquial", "recent_turns": [], "split": "test"}

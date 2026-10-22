@@ -39,7 +39,9 @@
 # v3 (fix cycle 2, D157): strength per group; bare and generic short forms moved to `weak_forms` or
 # `generic_words`; the re-key family kept only under the export-only integration (strong). Simulated with
 # data/scope/tools/stage1_sim.py (no network).
-version: scope-lexicon.v3
+# v4 (fix cycle 3, D158): 19 generic kb short forms moved to weak_forms; `short_forms` key on protocol fields
+# (strong) for spreadsheets, walk-in, walkins, call-out; weak terms count by lemma.
+version: scope-lexicon.v4
 updated: "2026-10-22"
 
 # D157 strength per group. Entries of modules, integrations and kb_titles: id, name, title and short_forms
@@ -110,6 +112,7 @@ protocol_fields:
     synonyms: [my role, job title, i'm the manager, i run the place, i'm the director]
   - id: request_channels
     synonyms: [web form, walk-ins, by phone, by email, contact form]
+    short_forms: [walk-in, walkins]
   - id: daily_request_volume
     synonyms: [requests a day, calls a day, jobs a day, bookings a day, daily volume]
   - id: average_handling_minutes
@@ -118,6 +121,7 @@ protocol_fields:
     synonyms: [typing it in, type it up, typing up, minutes of typing, entering it into]
   - id: tools_in_use
     synonyms: [spreadsheet, booking tool, shared inbox, paper forms, which software]
+    short_forms: [spreadsheets]
   - id: steps_in_process
     synonyms: [the steps, our process, workflow, from start to finish, how we handle]
   - id: approval_steps
@@ -140,6 +144,7 @@ protocol_fields:
     synonyms: [urgent, emergency, emergencies, out of hours, out-of-hours]
   - id: urgent_request_types
     synonyms: [what counts as urgent, emergency line, night calls, on call, callout]
+    short_forms: [call-out]
   - id: budget_range
     synonyms: [budget, how much we can spend, price range, afford, spend on this]
   - id: start_timeline
@@ -157,8 +162,8 @@ kb_titles:
   - title: "case: a heating firm gets jobs out of the inbox"
     short_forms: [heating firm case, jobs out of the inbox, lost in the inbox, lose jobs in the inbox]
   - title: the first questions we ask
-    short_forms: [first questions, the questions you ask, skip a question]
-    weak_forms: [your questions]
+    short_forms: [skip a question]
+    weak_forms: [your questions, first questions, the questions you ask]
   - title: urgent requests and out-of-hours work
     short_forms: [urgent requests, out-of-hours work]
     weak_forms: [after hours]
@@ -170,31 +175,34 @@ kb_titles:
   - title: crm connector
     short_forms: [crm connector]
   - title: csv export and import
-    short_forms: [csv export and import, export and import]
+    short_forms: [csv export and import]
+    weak_forms: [export and import]
   - title: export-only tools
     short_forms: [export-only tools, export-only tool, export only tool]
   - title: approvals policy
-    short_forms: [approvals policy, approval policy, needs a person, never do on its own, can never do]
+    short_forms: [approvals policy, approval policy, never do on its own]
+    weak_forms: [needs a person, can never do]
   - title: personal data policy
-    short_forms: [personal data policy, privacy policy, delete everything, delete my data]
-    weak_forms: [who can see]
+    short_forms: [personal data policy, delete everything, delete my data]
+    weak_forms: [who can see, privacy policy]
   - title: security policy
-    short_forms: [security policy, input limits]
-    weak_forms: [how secure, is it secure]
+    short_forms: [security policy]
+    weak_forms: [how secure, is it secure, input limits]
   - title: how we price
-    short_forms: [how you price, how do you price, rate card, base price]
-    weak_forms: [pricing, calculation]
+    short_forms: [how you price, how do you price, rate card]
+    weak_forms: [pricing, calculation, base price]
   - title: low, base and high, and what an estimate status means
-    short_forms: ["low, base and high", low base high, estimate status, indicative estimate, scenario estimate, the estimate, an estimate, estimate now]
-    weak_forms: [indicative, scenario]
+    short_forms: ["low, base and high", low base high, estimate status, indicative estimate, scenario estimate, estimate now]
+    weak_forms: [indicative, scenario, the estimate, an estimate]
   - title: setup fees and integration surcharges
-    short_forms: [setup fee, setup fees, set-up fee, setup cost, surcharge, surcharges]
-    weak_forms: [one-off, once off, one off]
+    short_forms: [setup fee, setup fees, set-up fee, setup cost]
+    weak_forms: [one-off, once off, one off, surcharge, surcharges]
   - title: volume tiers
     short_forms: [volume tier, volume tiers, over the top tier]
     weak_forms: [tier, tiers]
   - title: what is included and what is not
-    short_forms: [what's included, what is included, whats included, included in the price, not included, monthly price, monthly fee, per month price]
+    short_forms: [included in the price]
+    weak_forms: [what's included, what is included, whats included, not included, monthly price, monthly fee, per month price]
   - title: ai phone intake
     short_forms: [phone intake module]
   - title: email triage
@@ -215,7 +223,7 @@ product_words: [module, modules, setup, set-up, contract length, minimum contrac
 # Words the demo-company owners use for their own business (D106). Weak: one alone goes to stage 2.
 # (Each term is listed once: "ticket", "tickets" and the re-key family sit under their module or
 # integration; "callout", "walk-ins", "spreadsheet" and "paper forms" are protocol-field synonyms, strong.)
-trade_words: [booking, bookings, book in, booked, dispatch, dispatcher, job sheet, job sheets, invoice, invoices, invoicing, no-show, no-shows, no shows, van, vans, call-out, groomer, grooming, salon, salons, boiler, boilers, quote, quotes, quoting, appointment, appointments, reminder, reminders, walk-in, walkins, inbox, customer, customers, client, clients, job, jobs, order, orders, request, requests, enquiry, enquiries, staff, technician, technicians, engineer, engineers, receptionist, receptionists, front desk, shift, shifts, rota, spreadsheets, paper sheets, work order, work orders, refund, refunds, practitioner, practitioners, clinic, repair shop, repairs, yard, office staff, the office]
+trade_words: [booking, bookings, book in, booked, dispatch, dispatcher, job sheet, job sheets, invoice, invoices, invoicing, no-show, no-shows, no shows, van, vans, groomer, grooming, salon, salons, boiler, boilers, quote, quotes, quoting, appointment, appointments, reminder, reminders, inbox, customer, customers, client, clients, job, jobs, order, orders, request, requests, enquiry, enquiries, staff, technician, technicians, engineer, engineers, receptionist, receptionists, front desk, shift, shifts, rota, paper sheets, work order, work orders, refund, refunds, practitioner, practitioners, clinic, repair shop, repairs, yard, office staff, the office]
 
 # Generic business words (D157, weak): words any message about work might use. Two of them, or one with
 # a trade word, pass; one alone goes to stage 2.

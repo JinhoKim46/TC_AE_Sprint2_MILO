@@ -1,4 +1,4 @@
-"""Stage-1 simulation of the M5G input gate (protocol evals/protocols/m5g-gate.md, SPEC D110, D157).
+"""Stage-1 simulation of the M5G input gate (protocol evals/protocols/m5g-gate.md, SPEC D110, D157, D158).
 
 Pure Python plus PyYAML; no model call, no network call, no .env. Reads `lexicon.yaml`,
 `scope_set.jsonl` and `probes.jsonl` from data/scope and prints, per split and label, how many rows
@@ -11,7 +11,8 @@ Rules, in order; the first that fires decides (the amended rule table):
    with word boundaries, longest first, on non-overlapping spans, so "job sheet" is one term and
    "staff assignment" (strong) does not also yield "staff" (weak). A singular and its plural
    ("job", "jobs") count as one weak term.
-3. pass: a digit sequence followed, within two words, by a number unit.
+3. pass: a digit sequence followed, within two words, by a number unit. The number may be approximate
+   (D158): "40ish", "~40", "about 40" (a word gap), "40-50" (a range), "10k".
 4. refuse: a verb-plus-object refuse pattern matches (only reached when rules 2 and 3 did not pass).
 6. undecided: anything else, including a single weak term. Only `text` is read; `recent_turns`
    are stage-2 state.
@@ -72,7 +73,9 @@ def term_strengths(lex: dict) -> dict[str, str]:
             add(entry.get("weak_forms", []), "weak")
     for field in lex["protocol_fields"]:
         add(
-            [field["id"], field["id"].replace("_", " ")] + list(field["synonyms"]),
+            [field["id"], field["id"].replace("_", " ")]
+            + list(field["synonyms"])
+            + list(field.get("short_forms", [])),
             strength["protocol_fields"],
         )
     for group in LIST_GROUPS:
@@ -114,7 +117,8 @@ class Stage1:
         unit_alt = "|".join(re.escape(u) for u in units)
         # a number, then at most two intervening words, then a unit; "/day" and "%" may attach
         self.number_re = re.compile(
-            r"(?<![\w])\d+(?:[.,]\d+)*\s*(?:[^\W\d][\w'-]*\s+){0,2}?(?:"
+            r"(?<![\w])~?\d+(?:[.,]\d+)*(?:\s*[-\u2013]\s*\d+(?:[.,]\d+)*)?"
+            r"(?:ish|k|x)?\s*(?:[^\W\d][\w'-]*\s+){0,2}?(?:"
             + unit_alt
             + r")(?!\w)"
         )
