@@ -27,6 +27,12 @@ begin
 end
 $$;
 
+-- The administrative role may SET ROLE to both (D153), so the RLS test needs no role passwords. On PostgreSQL 16+ a
+-- CREATEROLE role that creates a role holds only ADMIN membership, so the grant names SET explicitly; INHERIT lets the administrative role drop the roles' objects at db-reset. Granting
+-- again is harmless, which keeps the file idempotent.
+grant milo_app to current_user with set true, inherit true;
+grant milo_operator to current_user with set true, inherit true;
+
 grant usage on schema public to milo_app, milo_operator;
 
 -- ---- tables ----
@@ -157,7 +163,7 @@ create table submissions (
 
 -- A submission revision is immutable (D41): the report fields may be filled once and the status may change;
 -- the snapshot and identity of the revision never change.
-create function submissions_immutable() returns trigger language plpgsql as $$
+create or replace function submissions_immutable() returns trigger language plpgsql as $$
 begin
     if new.session_id <> old.session_id or new.revision <> old.revision
        or new.spec_snapshot_json <> old.spec_snapshot_json or new.submitted_at <> old.submitted_at then
@@ -166,6 +172,7 @@ begin
     return new;
 end
 $$;
+drop trigger if exists submissions_immutable_trg on submissions;
 create trigger submissions_immutable_trg before update on submissions
     for each row execute function submissions_immutable();
 
@@ -232,8 +239,8 @@ create table rate_limits (
 );
 
 -- ---- profile trigger (D89) ----
-create function public.handle_confirmed_user() returns trigger
-    language plpgsql security definer set search_path = public as $$
+create or replace function public.handle_confirmed_user() returns trigger
+    language plpgsql security definer as $$
 begin
     if new.email_confirmed_at is not null then
         insert into public.profiles (id, email) values (new.id, new.email) on conflict (id) do nothing;
@@ -241,22 +248,24 @@ begin
     return new;
 end
 $$;
+drop trigger if exists on_auth_user_confirmed on auth.users;
 create trigger on_auth_user_confirmed after insert or update of email_confirmed_at on auth.users
     for each row execute function public.handle_confirmed_user();
 
--- ---- ownership helpers (security definer, so a policy never recurses into another table's policy) ----
-create function milo_user() returns uuid language sql stable as $$
+-- ---- ownership helpers (security invoker: under FORCE the table owner is subject to policies too, so the helpers
+-- run as the caller, whose own policies on sessions and turns give the same answer; no policy calls itself) ----
+create or replace function public.milo_user() returns uuid language sql stable as $$
     select nullif(current_setting('milo.user_id', true), '')::uuid
 $$;
 
-create function owns_session(sid uuid) returns boolean language sql stable security definer set search_path = public as $$
-    select exists (select 1 from sessions s where s.id = sid and s.user_id = milo_user())
+create or replace function public.owns_session(sid uuid) returns boolean language sql stable security invoker as $$
+    select exists (select 1 from public.sessions s where s.id = sid and s.user_id = public.milo_user())
 $$;
 
-create function owns_turn(tid uuid) returns boolean language sql stable security definer set search_path = public as $$
+create or replace function public.owns_turn(tid uuid) returns boolean language sql stable security invoker as $$
     select exists (
-        select 1 from turns t join sessions s on s.id = t.session_id
-        where t.id = tid and s.user_id = milo_user()
+        select 1 from public.turns t join public.sessions s on s.id = t.session_id
+        where t.id = tid and s.user_id = public.milo_user()
     )
 $$;
 
@@ -337,6 +346,28 @@ alter table rate_limits enable row level security;
 create policy rate_limits_app on rate_limits for all to milo_app using (true) with check (true);
 
 alter table schema_migrations enable row level security;
+
+-- ---- force row level security (SR A-09c) ----
+-- The table owner is subject to the policies too. schema_migrations is excluded: migrate.py writes it as the owner.
+-- The profile trigger runs as the migrating role, so it gets its own insert policy.
+create policy profiles_trigger_insert on profiles for insert to current_user with check (true);
+alter table profiles force row level security;
+alter table customers force row level security;
+alter table consents force row level security;
+alter table sessions force row level security;
+alter table messages force row level security;
+alter table turns force row level security;
+alter table turn_events force row level security;
+alter table facts force row level security;
+alter table fact_history force row level security;
+alter table evidence force row level security;
+alter table submissions force row level security;
+alter table approvals force row level security;
+alter table audit_log force row level security;
+alter table traces force row level security;
+alter table field_requests force row level security;
+alter table deletion_requests force row level security;
+alter table rate_limits force row level security;
 
 -- operator: SELECT on every table, nothing else except the two writes of D130
 create policy profiles_operator_read on profiles for select to milo_operator using (true);

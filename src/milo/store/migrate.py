@@ -8,8 +8,9 @@ Tests use `plan()` only; they never open a database.
 from __future__ import annotations
 
 import hashlib
+import os
 import sys
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -82,15 +83,34 @@ def apply_pending(url: str, directory: Path | str = MIGRATIONS_DIR) -> list[str]
     return done
 
 
-def main(argv: list[str] | None = None) -> int:
+def check_target(environ: Mapping[str, str] | None = None) -> None:
+    """Production is migrated only when the owner sets `MILO_MIGRATE_PROD=1` by hand (SPEC D155)."""
     from milo import settings
 
+    env = os.environ if environ is None else environ
+    if settings.is_prod(env) and env.get("MILO_MIGRATE_PROD") != "1":
+        raise RuntimeError(
+            "refusing to migrate production: set MILO_MIGRATE_PROD=1 by hand (SPEC D155)"
+        )
+
+
+def admin_url() -> str:
+    """The administrative connection string (SPEC D153): `settings.admin_database_url()` once it exists, else
+    `settings.database_url()`, which is the same administrative pooler string until the integrator splits them."""
+    from milo import settings
+
+    getter = getattr(settings, "admin_database_url", settings.database_url)
+    return str(getter())
+
+
+def main(argv: list[str] | None = None) -> int:
     args: Any = argv if argv is not None else sys.argv[1:]
     if args == ["--plan"]:
         for mig in discover():
             print(mig.version)
         return 0
-    versions = apply_pending(settings.database_url())
+    check_target()
+    versions = apply_pending(admin_url())
     print("applied:", ", ".join(versions) if versions else "nothing to do")
     return 0
 
