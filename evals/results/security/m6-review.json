@@ -1,0 +1,425 @@
+{
+  "git_commit": "e1f6e0befb68a06f707f28f308f8fc85f59b7d5f",
+  "model": null,
+  "seed": null,
+  "temperature": null,
+  "command": "uv run python evals/results/security/m6-review.py",
+  "timestamp": "2026-10-22T20:02:42+00:00",
+  "inputs": {
+    "evals/security/payloads/xss.txt": "cfcfc6f184df91984f01720f9e209332c8650777a174f5deecfdf1ff812f1eb1",
+    "evals/security/payloads/traversal_names.txt": "23ca084c6c8d5016d3b67e64874dea028b7525e0f53c9506caecb730d8485537",
+    "evals/security/cases.jsonl": "a9296e64323b1660e7a8ee0ebbef9a5fe183b84a5aed197f7fc8239c60dc0786",
+    "src/milo/web/routes.py": "9d19f0c39733ee87a48133785af677bcf26f4cbf2a0c9ea55db1261ca5d14808",
+    "src/milo/web/data.py": "e627e65a0a208c075eaf0db775fd96f355b218a26f231846574ee1c6312217d6",
+    "src/milo/web/accounts.py": "8c198b5ae01061ce7199d7b5f8b2472d72333062f69b615843fbc684a7965b9f",
+    "src/milo/app.py": "9dca2c042c8c2a012107d087452b5d8acd839ea9610f6ab960dc765114791f18"
+  },
+  "note": "SR review of M6 phase 3 (web wiring); offline, scripted model, in-memory store, no spend (model/seed/temperature do not apply)",
+  "summary": {
+    "checks": 57,
+    "pass": 53,
+    "fail": 4,
+    "fail_high_or_critical": 0
+  },
+  "rows": [
+    {
+      "case": "A-08a..f (T-07)",
+      "check": "owner B with owner A's real ids on every id-bearing route (+ body-carried session ids): 404 not_found",
+      "result": "pass",
+      "evidence": "41 requests (JSON and HTML variants); failures: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-08a..f",
+      "check": "every id-bearing URL rule is covered by the walk (enumerated from url_map)",
+      "result": "pass",
+      "evidence": "14 id-bearing rules (reset token excluded); not walked: none",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-08a/f",
+      "check": "no owner-A text (company, owner name) in any owner-B body",
+      "result": "pass",
+      "evidence": "leaks: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-08b..e",
+      "check": "backend state unchanged (every table of the in-memory store)",
+      "result": "pass",
+      "evidence": "tables changed: none; A's submission status report_ready, session title 'My name is Ada Lovelace and I run Bright Cuts, a hair salon' status submitted",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-08",
+      "check": "positive control: owner A reads its own session, report, spec (200)",
+      "result": "pass",
+      "evidence": "3 pages",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-15 (T-14)",
+      "check": "every POST/PATCH/DELETE without a token, with another session's token (header and form) or an empty token -> 403 csrf_failed",
+      "result": "pass",
+      "evidence": "19 write rules, 171 requests (owner, operator, anonymous); failures: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-15",
+      "check": "store unchanged after the CSRF walk (real ids of owner A used)",
+      "result": "pass",
+      "evidence": "tables changed: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-15",
+      "check": "CSP carries form-action 'self'",
+      "result": "pass",
+      "evidence": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-ancestors 'none'; form-action 'self'",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-11 (T-10, D81, D135)",
+      "check": "every non-exempt write route before the interview consent row -> 403 consent_required (1 KB body or file)",
+      "result": "pass",
+      "evidence": "13 write rules walked; failures: none",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-11",
+      "check": "no row written before consent",
+      "result": "pass",
+      "evidence": "tables changed: none",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-11",
+      "check": "GET / without consent -> 302 /consent",
+      "result": "pass",
+      "evidence": "302 /consent",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-11 / D81",
+      "check": "POST /consent with JSON {\"agree\": \"no\"} does not record consent",
+      "result": "FAIL",
+      "evidence": "status 200, consent row recorded: True",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "A-11",
+      "check": "form agree=no -> 400, agree=yes -> 302 and the row exists; GET / then 200",
+      "result": "pass",
+      "evidence": "400, 302",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-11",
+      "check": "POST /logout -> 302",
+      "result": "pass",
+      "evidence": "302",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "A-08f / D144",
+      "check": "/ops/* and /traces answer 404 (JSON not_found) to an owner and to anonymous, every rule from url_map",
+      "result": "pass",
+      "evidence": "6 rules x 2 actors x 2 modes; failures: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-08f",
+      "check": "owner's ops delete attempt changes nothing (customers row kept, no audit row)",
+      "result": "pass",
+      "evidence": "tables changed: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "D144",
+      "check": "operator reads every operator GET route (200)",
+      "result": "pass",
+      "evidence": "[('/traces', 200), ('/ops/submissions', 200), ('/ops/submissions/169', 200), ('/ops/export/169.json', 200), ('/ops/audit', 200)]",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "A-29 / D144",
+      "check": "role re-read per request: demoted operator gets 404 with the same cookie",
+      "result": "pass",
+      "evidence": "404",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-29",
+      "check": "the cookie carries no role and no user id",
+      "result": "pass",
+      "evidence": "cookie keys: ['auth', 'csrf']; auth keys: ['a', 'r']",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-13a (T-12, D139)",
+      "check": "13 xss.txt payloads in company name, evidence, message, reply, tool argument, session title, first name, consent version, field and deletion notes, upload name and text, every report string leaf and key, audit action/target, search query, 404 path; owner pages",
+      "result": "pass",
+      "evidence": "208 page reads; no raw payload, no live tag/handler/javascript:/markdown anchor; marker seen on pages ['/', 'ops', 'profile', 'reports', 'sessions', 'spec']; failures: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-14 (T-13)",
+      "check": "operator pages (/ops/submissions, /ops/submissions/<id> for a normal and a poisoned report, /ops/audit, /traces) escape owner text",
+      "result": "pass",
+      "evidence": "failures: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-13a / A-14",
+      "check": "turn events, report download and operator export are application/json (+nosniff, attachment); tool arguments travel only as JSON",
+      "result": "pass",
+      "evidence": "failures: none",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-13b / A-14 (D138, D139)",
+      "check": "no |safe, Markup, innerHTML-type sinks; no inline script, style, style= or on*= in templates",
+      "result": "pass",
+      "evidence": "hits: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-13b (D138)",
+      "check": "the four headers with exact values on every response recorded in this run (every test client, every check); HSTS only in prod",
+      "result": "pass",
+      "evidence": "1072 responses, statuses seen [200, 302, 400, 401, 403, 404, 405, 413, 429, 500]; mismatches: none",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-13b",
+      "check": "prod adds Strict-Transport-Security: max-age=31536000",
+      "result": "pass",
+      "evidence": "max-age=31536000",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "T-19",
+      "check": "a forced 500 renders the error page without a traceback",
+      "result": "pass",
+      "evidence": "500",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-16a (T-15)",
+      "check": "cookie flags Secure, HttpOnly, SameSite=Lax (debug off)",
+      "result": "pass",
+      "evidence": "Secure; HttpOnly; Path=/; SameSite=Lax",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a / D137",
+      "check": "sign-in regenerates the session: cookie and CSRF token change; the pre-login token is refused",
+      "result": "pass",
+      "evidence": "cookie changed True, token changed True, old token -> 403",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a / D137",
+      "check": "sign-out regenerates: 302 /login, new CSRF token, the old token refused",
+      "result": "pass",
+      "evidence": "302 /login, old token -> 403",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a",
+      "check": "replay of the pre-sign-out cookie (in-memory accounts) -> redirected to /login",
+      "result": "pass",
+      "evidence": "302 /login",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-16a",
+      "check": "the cookie holds only the tokens and the CSRF token (no user id, no role)",
+      "result": "pass",
+      "evidence": "keys ['auth', 'csrf']",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "open point (D136)",
+      "check": "with SupabaseAccounts the cookie carries the access and refresh tokens readable without the key (signed, not encrypted)",
+      "result": "pass",
+      "evidence": "decoded without MILO_SECRET_KEY: auth keys ['a', 'r'], refresh token readable True, cookie 222 bytes; assessed in docs/verify/m6.md (informational row)",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-16b (D136)",
+      "check": "reported: a pre-sign-out cookie replayed with SupabaseAccounts is accepted while the access JWT is unexpired (local verification); Supabase logout (scope local) was called",
+      "result": "pass",
+      "evidence": "replay GET / -> 200; service.logout called 1x; the accepted residual of D136 / section 18 item 9",
+      "severity_if_fails": "info"
+    },
+    {
+      "case": "A-19 (T-18, D92)",
+      "check": "sign-up, sign-in, reset: same status and body for a known and an unknown email",
+      "result": "pass",
+      "evidence": "200/200, 401/401, 200/200",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "D92",
+      "check": "an 11-character password is refused at sign-up",
+      "result": "pass",
+      "evidence": "400",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-10a (rule 12)",
+      "check": "sign-up with role=operator creates an owner; /ops 404",
+      "result": "pass",
+      "evidence": "role owner, /ops 404",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-17 (D92)",
+      "check": "repeated failed sign-ins for one account are limited (429)",
+      "result": "pass",
+      "evidence": "statuses [401, 401, 401, 401, 401, 429, 429]",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-25 (T-24, D132)",
+      "check": "13 traversal filenames: parsed in memory, nothing opened for writing (audit hook on open/os.open/tempfile)",
+      "result": "pass",
+      "evidence": "statuses [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200]; write opens: none",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "A-25 / D132",
+      "check": "a 5 MB upload is never written to disk (\"the original file is never written to disk\")",
+      "result": "FAIL",
+      "evidence": "status 200; write opens during the request: [\"open '/tmp' mode=w+ flags=524866\", \"open '/tmp' mode=None flags=4915330\"] (Werkzeug's default stream factory spools a file part over 500 KB to an unnamed temp file)",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "A-25 / D46 / D132",
+      "check": "upload caps: 5 MiB accepted; 5 MiB + 1 refused; past the multipart margin 413 too_large",
+      "result": "pass",
+      "evidence": "5 MiB -> 200; 5 MiB+1 -> 400 {'error': 'invalid_input:file_too_large'}; 5 MiB+64 KiB+1 -> 413 {'error': 'too_large'}",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-25",
+      "check": "MIME spoofing: PDF magic on a non-PDF, binary named .txt, unknown MIME -> 400 invalid_input",
+      "result": "pass",
+      "evidence": "{'error': 'invalid_input:unreadable_pdf'}, {'error': 'invalid_input:not_utf8'}, {'error': 'invalid_input:mime_not_allowed'}",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-25 / D132",
+      "check": "text past 20,000 characters is dropped with a document_truncated event",
+      "result": "pass",
+      "evidence": "32400 chars uploaded; event {'dropped_chars': 12400, 'kept_chars': 20000}",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-25",
+      "check": "a small PDF that expands past pypdf's 75 MB stream cap is refused as invalid_input, not a 500",
+      "result": "FAIL",
+      "evidence": "pdf_text: ['2000000 chars drawn, 5000 bytes file -> 2002000 chars in 0.49s', '80000000 chars drawn, 172335 bytes file -> LimitReachedError in 0.1s']; POST /upload bomb -> 500 {'error': 'internal'} in 0.4s (pypdf LimitReachedError is not caught by pdf_text)",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "A-23 (D99, D131)",
+      "check": "running turn: same session 409 turn_running; another session of the account 429 rate_limited with Retry-After",
+      "result": "pass",
+      "evidence": "409 {'error': 'turn_running'}; 429 {'error': 'rate_limited', 'retry_after_s': 120, 'scope': 'running_turns', 'window_s': 120}",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-23 (D131)",
+      "check": "the 11th message in a minute is 429 rate_limited with the window",
+      "result": "pass",
+      "evidence": "[200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 429]; {'error': 'rate_limited', 'retry_after_s': 22, 'scope': 'messages', 'window_s': 60}",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-23 (D131)",
+      "check": "the 6th upload in an hour is 429 rate_limited",
+      "result": "pass",
+      "evidence": "[200, 200, 200, 200, 200, 429]",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-23 (D131)",
+      "check": "daily spend at 0.50 USD -> 429 rate_limited (no model call)",
+      "result": "pass",
+      "evidence": "429 {'error': 'rate_limited', 'retry_after_s': 14241, 'scope': 'daily_spend', 'window_s': 86400}; model calls 0",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "A-26 (T-25)",
+      "check": "owner A's canary never reaches owner B's pages, report or download; A's download is 404 for B; upload text not in the shared index",
+      "result": "pass",
+      "evidence": "B pages with canary: none; A download as B -> 404; canary in retriever store: False",
+      "severity_if_fails": "critical"
+    },
+    {
+      "case": "D141 (T-19)",
+      "check": "traces hold no owner text: the canary and message text are absent from /traces and recent_traces",
+      "result": "pass",
+      "evidence": "42 traces; owner text found: none",
+      "severity_if_fails": "medium"
+    },
+    {
+      "case": "D137 (G-11)",
+      "check": "create_app refuses production for every production_problems item and with the debugger on, before opening anything",
+      "result": "pass",
+      "evidence": "{'short key': 'refused', 'example key': 'refused', 'FLASK_DEBUG=1': 'refused', 'no key': 'refused', 'debugger on': 'refused'}",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "D137",
+      "check": "positive control: a clean prod environment with injected stores starts",
+      "result": "pass",
+      "evidence": "started",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "D137 (shell F2)",
+      "check": "create_flask_app refuses prod with debug=True",
+      "result": "pass",
+      "evidence": "refused",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "D121 (section 18 items 2, 3)",
+      "check": "production refuses to start while the consent text is v0 or no operator profile exists",
+      "result": "FAIL",
+      "evidence": "create_app(prod, consent version 'v0' in routes.CONSENT_TEXT_VERSION, store without an operator) -> started",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "SPEC 16 (verifier-manual), shell F4",
+      "check": "text token pairs reach WCAG AA 4.5:1 in light and dark",
+      "result": "pass",
+      "evidence": "{'light ink/surface': 20.53, 'light ink/canvas': 19.16, 'light muted/surface': 6.33, 'light muted/canvas': 5.91, 'light accent/surface': 7.13, 'light accent/canvas': 6.65, 'light danger/surface': 5.2, 'light danger/canvas': 4.85, 'light on-ink/ink-button': 20.28, 'light ink/tint': 18.74, 'light accent/tint': 6.51, 'dark ink/surface': 15.97, 'dark ink/canvas': 17.35, 'dark muted/surface': 7.13, 'dark muted/canvas': 7.74, 'dark accent/surface': 6.64, 'dark accent/canvas': 7.21, 'dark danger/surface': 7.06, 'dark danger/canvas': 7.67, 'dark on-ink/ink-button': 18.39, 'dark ink/tint': 14.24, 'dark accent/tint': 5.92}; below 4.5: none",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "keyboard (verifier-manual)",
+      "check": ":focus-visible rule and skip link exist in app.css",
+      "result": "pass",
+      "evidence": "app.css",
+      "severity_if_fails": "low"
+    },
+    {
+      "case": "A-13a (browser)",
+      "check": "payload with an onerror image and an inline script never executes in Chromium on any owner page",
+      "result": "pass",
+      "evidence": "pages 11; executed on none; dialogs none; CSP console reports 0",
+      "severity_if_fails": "high"
+    },
+    {
+      "case": "keyboard (verifier-manual)",
+      "check": "Tab reaches the skip link first, then the session panel, composer and buttons; Ctrl+Enter in the composer sends",
+      "result": "pass",
+      "evidence": "first Tab on /login: 'skip:Skip to content'; Enter sent: True; tab order (40): a:Skip to content | a:MILO | a:Conversation | a:Specification | a:Reports | a:Profile | button:Save and leave | button:New diagnosis | input[q]#session-search: | a:<img src=x onerror=\"wind | button:Archive <img src=x onerr | a:Show archived | summary:Rename | textarea[text]#composer-input: | input[file]#upload-input: | button:Send | button#submit-open:Submit | body:Skip to content\n\n  MILO\n | a:Skip to content | a:MILO | a:Conversation | a:Specification | a:Reports | a:Profile | button:Save and leave | button:New diagnosis | input[q]#session-search: | a:<img src=x onerror=\"wind | button:Archive <img src=x onerr | a:Show archived | summary:Rename | textarea[text]#composer-input: | input[file]#upload-input: | button:Send | button#submit-open:Submit | body:Skip to content\n\n  MILO\n | a:Skip to content | a:MILO | a:Conversation | a:Specification",
+      "severity_if_fails": "low"
+    }
+  ]
+}
