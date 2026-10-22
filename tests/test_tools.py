@@ -647,7 +647,7 @@ def test_approve_runs_the_bound_call_once_with_the_bound_identity(
         ("withdraw_submission", OWNER_A)
     ]
     again = svc.resolve(aid, "approve", OWNER_A)
-    assert again.status == "already_handled" and len(backend.executed) == 1
+    assert again.status == "already_resolved" and len(backend.executed) == 1
 
 
 def test_keep_runs_nothing(backend: MiloBackend) -> None:

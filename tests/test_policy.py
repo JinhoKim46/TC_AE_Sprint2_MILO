@@ -414,3 +414,79 @@ def test_the_injecting_wrapper_appends_the_payload_to_the_tool_output() -> None:
         and out["chunks"][0]["text"] == "a"
     )
     assert append_payload({"facts": []}, "PAYLOAD")["note"] == "PAYLOAD"
+
+
+# ---- approval service: compare-and-set and the approve-time policy (fix cycle 1) ----
+
+
+def _service(backend: MiloBackend) -> Any:
+    from milo.store.memory import MemoryApprovals
+    from milo.tools.approvals import ApprovalService
+
+    return ApprovalService(backend, MemoryApprovals())
+
+
+def test_two_threads_resolving_one_approval_run_the_tool_once(
+    backend: MiloBackend,
+) -> None:
+    import threading
+
+    svc = _service(backend)
+    pending = svc.request(
+        "withdraw_submission", {"submission_id": 1}, user_id="owner-a", scope="s"
+    )
+    barrier = threading.Barrier(8)
+    outcomes: list[Any] = []
+
+    def go() -> None:
+        barrier.wait()
+        outcomes.append(svc.resolve(pending.approval_id, "approve", "owner-a"))
+
+    threads = [threading.Thread(target=go) for _ in range(8)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    assert [e.name for e in backend.executed] == ["withdraw_submission"]
+    assert sorted(o.status for o in outcomes) == ["already_resolved"] * 7 + ["used"]
+    assert (
+        svc.resolve(pending.approval_id, "approve", "owner-a").status
+        == "already_resolved"
+    )
+    assert len(backend.executed) == 1
+
+
+def test_taint_rising_before_approval_denies_and_runs_nothing(
+    backend: MiloBackend,
+) -> None:
+    svc = _service(backend)
+    pending = svc.request(
+        "withdraw_submission", {"submission_id": 1}, user_id="owner-a", scope="s"
+    )
+    out = svc.resolve(pending.approval_id, "approve", "owner-a", taint="high")
+    assert out.status == "denied_at_approve" and not out.executed
+    assert backend.executed == []
+    row = svc.approvals.get(pending.approval_id, "owner-a")
+    assert row["status"] == "denied_at_approve"
+    assert (
+        svc.resolve(pending.approval_id, "approve", "owner-a").status
+        == "already_resolved"
+    )
+
+
+def test_a_tool_removed_before_approval_is_denied_at_approve(
+    backend: MiloBackend, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    svc = _service(backend)
+    pending = svc.request(
+        "withdraw_submission", {"submission_id": 1}, user_id="owner-a", scope="s"
+    )
+    monkeypatch.setattr(
+        backend,
+        "specs",
+        lambda: [
+            s for s in MiloBackend.specs(backend) if s.name != "withdraw_submission"
+        ],
+    )
+    out = svc.resolve(pending.approval_id, "approve", "owner-a")
+    assert out.status == "denied_at_approve" and backend.executed == []

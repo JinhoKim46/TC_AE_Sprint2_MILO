@@ -63,17 +63,18 @@ def decide_on_approve(
     spec: ToolSpec | None,
     args: dict[str, Any],
     pricing_fields: Collection[str] = (),
+    taint: Taint = "low",
 ) -> Decision:
     """The policy again, at the moment an owner approves a stored call.
 
     An approval row exists only because the policy said `needs_approval` at taint low, and the owner's approve
-    click is that approval, so the row is judged at taint low. The call may run when the tool still exists and the
+    click is that approval, so the row is judged at taint low unless the caller passes the session's current taint. The call may run when the tool still exists and the
     policy does not deny it now (a tool removed, or a risk tier or pricing field changed since the row was made).
     The answer is `allowed` when the call may run, `denied` otherwise.
     """
     if spec is None:
         return Decision("denied", "unknown tool at approve time")
-    now = decide(spec, args, "low", pricing_fields)
+    now = decide(spec, args, taint, pricing_fields)
     if now.decision == "denied":
         return Decision("denied", f"denied at approve time: {now.reason}")
     return Decision("allowed", "approved by the owner")
