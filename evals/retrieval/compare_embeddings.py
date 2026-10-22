@@ -10,16 +10,23 @@ Metrics per question (binary relevance; a chunk is relevant when it contains the
 Comparisons: paired bootstrap of the per-question difference between each model and the chosen
 reference model (2000 resamples, seed 0). Chunk configurations: 800/100, 400/50, 1500/150 characters.
 Never reads the test split. Writes evals/results/retrieval/embedding_dev_v3.json (the file e01-rerun.md names).
+
+    MILO_LIVE=1 python evals/retrieval/compare_embeddings.py [--max-cost 0.05]   live (stops between models past the cap)
+    python evals/retrieval/compare_embeddings.py --replay [--result F]          recompute summaries and paired CIs from rows
 """
-import hashlib, json, math, os, random, re, sys, time
+import argparse, hashlib, json, math, os, random, re, sys, time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
+from evals import common  # noqa: E402
 from evals.common import load_gold  # the only reader of the gold file (SPEC 10.1)
 OUT = Path(os.environ.get("EMBED_OUT", REPO / "evals" / "results" / "retrieval"))
 PROTOCOL = REPO / "evals" / "protocols" / "e01-rerun.md"
 RESULT_NAME = "embedding_dev_v3.json"
+DEFAULT_CAP_USD = 0.05  # e01-rerun.md, measured-call budget
+SPEND_REASON = "candidate embedding vectors needed for the comparison (D126)"
+METRICS = ("recall5", "ndcg5", "mrr", "p5", "ap")
 # Fallback USD per token when a response has no cost field (the listed prices of E01/E01b).
 LISTED_PRICE = {
     "google/gemini-embedding-2": 0.0000002,
@@ -120,7 +127,56 @@ def paired_diff(a, b):
     return {"mean_diff": round(mean(diffs), 4), "ci": boot_ci(diffs)}
 
 
-def main():
+def summarise(rows, exclude=()):
+    rows = [r for r in rows if r["qid"] not in set(exclude)]
+    return {key: {"mean": round(mean([r[key] for r in rows]), 4), "ci": boot_ci([r[key] for r in rows])}
+            for key in METRICS}
+
+
+def paired(cfg_models, reference, exclude=()):
+    out = {}
+    ref_rows = [r for r in cfg_models[reference]["rows"] if r["qid"] not in set(exclude)]
+    for model, block in cfg_models.items():
+        if model == reference:
+            continue
+        rows = [r for r in block["rows"] if r["qid"] not in set(exclude)]
+        out[model] = {key: paired_diff([r[key] for r in rows], [r[key] for r in ref_rows]) for key in METRICS}
+    return out
+
+
+def replay(path):
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    problems = []
+    for cfg in data["configs"]:
+        tag = f"{cfg['chunk_size']}/{cfg['overlap']}"
+        excl = cfg["queries_without_chunk"]
+        for model, block in cfg["models"].items():
+            s = summarise(block["rows"])
+            for key in METRICS:
+                if s[key] != block["summary"][key]:
+                    problems.append(f"{tag} {model} {key}")
+            if excl and summarise(block["rows"], excl) != block.get("summary_excluding_no_chunk"):
+                problems.append(f"{tag} {model} summary_excluding_no_chunk")
+        ref = data["reference"]
+        if paired(cfg["models"], ref) != json.loads(json.dumps(cfg["paired_vs_reference"])):
+            problems.append(f"{tag} paired_vs_reference")
+        if excl and paired(cfg["models"], ref, excl) != json.loads(json.dumps(cfg.get("paired_excluding_no_chunk"))):
+            problems.append(f"{tag} paired_excluding_no_chunk")
+    if problems:
+        print("replay MISMATCH: " + "; ".join(problems), file=sys.stderr)
+        return 1
+    print(f"replay OK for {path}: {len(data['configs'])} chunk settings, reference {data['reference']}")
+    return 0
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--replay", action="store_true", help="recompute from a stored result (no network)")
+    ap.add_argument("--result", default=str(OUT / RESULT_NAME), help="result file to replay")
+    ap.add_argument("--max-cost", type=float, default=DEFAULT_CAP_USD, help="live: stop between models past this USD")
+    args = ap.parse_args(argv)
+    if args.replay:
+        return replay(args.result)
     from milo.rag.embed import live_embedder  # the only client path: milo.llm.cloud (HARNESS rule 1)
 
     if os.environ.get("MILO_LIVE") != "1":
@@ -146,6 +202,8 @@ def main():
                "models": {}, "paired_vs_reference": {}}
         per_model = {}
         for model, price in MODELS:
+            if total_cost >= args.max_cost:
+                raise SystemExit(f"cost cap reached: {total_cost:.5f} USD spent, cap {args.max_cost}; no result written")
             try:
                 emb = live_embedder(model, price_usd_per_mtok=price * 1_000_000)  # refuses without MILO_LIVE=1
             except PermissionError as exc:
@@ -158,37 +216,43 @@ def main():
                 scored = sorted(((cos(qv, cv), c["chunk_id"]) for cv, c in zip(cvecs, chunks)), reverse=True)
                 ranked = [cid for _, cid in scored]
                 m = per_question_metrics(ranked, set(q["relevant"]))
-                m.update({"qid": q["qid"], "type": q["type"]})
+                m.update({"qid": q["qid"], "type": q["type"], "relevant": q["relevant"]})
                 rows.append(m)
             cost = emb.total_cost_usd  # the response's own cost, else tokens times the fallback price
             total_cost += cost
             per_model[model] = rows
-            summary = {}
-            for key in ("recall5", "ndcg5", "mrr", "p5", "ap"):
-                vals = [r[key] for r in rows]
-                summary[key] = {"mean": round(mean(vals), 4), "ci": boot_ci(vals)}
+            summary = summarise(rows)
             summary["tokens"] = ctok
+            summary["cost_unknown_calls"] = emb.cost_unknown_calls
             summary["cost_usd"] = round(cost, 6)
             cfg["models"][model] = {"summary": summary, "rows": rows}
+            if no_match:
+                cfg["models"][model]["summary_excluding_no_chunk"] = summarise(rows, no_match)
             print(f"[{size}/{overlap}] {model:32s} nDCG@5 {summary['ndcg5']['mean']:.3f}  MRR {summary['mrr']['mean']:.3f}"
                   f"  R@5 {summary['recall5']['mean']:.3f}  cost ${cost:.5f}")
-        ref_rows = per_model[REFERENCE]
-        for model, _ in MODELS:
-            if model == REFERENCE:
-                continue
-            pd = {}
-            for key in ("recall5", "ndcg5", "mrr", "p5", "ap"):
-                pd[key] = paired_diff([r[key] for r in per_model[model]], [r[key] for r in ref_rows])
-            cfg["paired_vs_reference"][model] = pd
+        cfg["paired_vs_reference"] = paired(cfg["models"], REFERENCE)
+        if no_match:
+            cfg["paired_excluding_no_chunk"] = paired(cfg["models"], REFERENCE, no_match)
         results["configs"].append(cfg)
-    results.update({"split": "dev", "k": K, "bootstrap": BOOT, "seed": SEED, "reference": REFERENCE,
+    inputs = {"gold": common.GOLD_PATH, "script": Path(__file__), "protocol": PROTOCOL}
+    for md in sorted((REPO / "data" / "kb").rglob("*.md")):
+        inputs[f"kb/{md.relative_to(REPO / 'data' / 'kb').as_posix()}"] = md
+    prov = common.provenance(model=",".join(m for m, _ in MODELS), seed=SEED, temperature=None,
+                             command=f"MILO_LIVE=1 python evals/retrieval/compare_embeddings.py --max-cost {args.max_cost}",
+                             inputs=inputs)
+    results = {**prov, **results}
+    results.update({"models": [{"slug": m, "listed_usd_per_token": p} for m, p in MODELS],
+                    "temperature_note": "embeddings have no temperature",
+                    "seed_note": "no sampling; seed 0 is the bootstrap seed",
+                    "spend_reason": SPEND_REASON, "max_cost_usd": args.max_cost,
+                    "split": "dev", "k": K, "bootstrap": BOOT, "seed": SEED, "reference": REFERENCE,
                     "query_prefix": "none", "total_cost_usd": round(total_cost, 6),
-                    "command": "MILO_LIVE=1 python evals/retrieval/compare_embeddings.py",
                     "protocol": "evals/protocols/e01-rerun.md", "date": time.strftime("%Y-%m-%d")})
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / RESULT_NAME).write_text(json.dumps(results, indent=2), encoding="utf-8")
     print(f"TOTAL cost this run: ${total_cost:.5f}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
