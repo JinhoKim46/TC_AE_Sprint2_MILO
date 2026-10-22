@@ -21,6 +21,7 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
 | 5 | M2 A/B, dev | `MILO_LIVE=1 make eval-ab AB_ARGS="--max-cost 0.25 --chat-model anthropic/claude-haiku-5.5 --price-in 0.10 --price-out 0.50 --reason ..."` | m2-ab.md (2e1abdc) | 0.25 | 0.01328 (key usage delta; includes query embeddings) | 0.01214 chat | 0.2086 |
 | 6a | M3 tools, product model | `MILO_LIVE=1 uv run python evals/agent/run_tools.py --model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 0.30 --reason ...` | m3-tools.md (16fef06) | 0.30 | 0 (all 15 calls refused with HTTP 400) | 0 | 0.2086 |
 | 6b | M3 tools, one retry | same | m3-tools.md (16fef06) | 0.30 | 0 (same 400 on all 15) | 0 | 0.2086 |
+| 7 | M3 tools, product model, reasoning low effort (D159), part 2 | `MILO_LIVE=1 uv run python evals/agent/run_tools.py --model anthropic/claude-sonnet-5.5 --price-in 2.00 --price-out 10.00 --max-cost 0.30 --reason ...` | m3-tools.md (16fef06), D159 | 0.30 | 0.062852 | 0.062852 | 0.2715 |
 
 ## Notes
 
@@ -63,3 +64,23 @@ M7 generation 0.40), above the batch cap; the later caps (M4, SR, M7) are trimme
   m7-judge.md before a rerun, or pin a product endpoint that accepts disabled reasoning. Request 2 in
   `docs/requests/live-batch.md`.
 - Key usage cross-check at the stop: 8.680965 USD, 0.207705 above the baseline, against 0.2086 from the result files.
+
+## Part 2 (2026-10-22, branch `agent/live-batch-2`)
+
+Request 2 above is resolved by integrator decision 69 (D159): `anthropic/claude-sonnet-5.5` gets
+`reasoning: {effort: "low"}`, every other model stays at `enabled: false`. Part 2 budget: 3.00 minus 0.2086 = 2.7914 USD.
+Key usage before part 2: 8.680965 USD (unchanged since the part 1 stop).
+
+- M3 (row 7): catalogue check on the run day: `anthropic/claude-sonnet-5.5` 2.00 / 10.00 USD per million, context
+  1,000,000. 15 calls, no retry, no provider error, mean 0.00419 USD per call (about 1,525 input and 20 to 230
+  output tokens, reasoning included). Result: case pass rate 0.60 (9 of 15, CI [0.33, 0.80]), tool-choice
+  (`name_match_rate`) 0.60, argument exact match on the 9 exact cases 0.556, false-call rate 0.25 (tc06: a
+  `get_session_spec` read), missed-call rate 0.09 (tc07: no `withdraw_submission` emitted), schema-valid 1.00,
+  no destructive call, no `withdraw_submission` outside tc07, no row stopped for approval. **Fails the model half of
+  the m3-tools decision rule** (needs 12 of 15); reported, not retuned. Failures: tc04 and tc13 (no `estimate_cost`;
+  searched or recorded a fact instead), tc06 (false read call), tc07 (no withdrawal call, so the approval stop was
+  not exercised live; the dry run covers it), tc14 (two searches, one with a product filter), tc15 (an extra search
+  before the expected `record_fact`). Harness half: holds on the rows that reached it (no schema-invalid call, no
+  destructive call executed). Replay matches.
+- Re-estimate from M3's usage for the product model: about 0.0042 USD per call at 1,500 input tokens; M7 generation
+  (24 calls at about 1,600 input and up to 400 output tokens with reasoning) is about 0.12 USD; cap 0.30 USD.
