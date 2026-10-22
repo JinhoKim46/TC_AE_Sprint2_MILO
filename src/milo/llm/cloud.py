@@ -17,6 +17,9 @@ from milo.spend import SpendLedger
 from milo.types import ChatReply, ToolCall, ToolSpec, Usage
 
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+# Decisions API (decision models, `output_modalities=decisions`); outside the `/api/v1` prefix. Shape to verify at
+# run time (protocol m5g-gate.md); the gate's parser is tolerant and fails open (D117).
+OPENROUTER_DECISIONS_URL = "https://openrouter.ai/api/alpha/decisions"
 DEFAULT_EMBEDDING_MODEL = "google/gemini-embedding-2"
 
 # D159: models whose endpoint refuses `reasoning.enabled=false` (HTTP 400 "Reasoning is mandatory"). They get the
@@ -203,6 +206,72 @@ class OpenRouterChat:
             tool_calls=calls,
             usage=Usage(tokens_in, tokens_out),
         )
+
+
+class OpenRouterDecisions:
+    """Decisions API client (decision models such as `typesafe/jev-*`, SPEC D111, D128).
+
+    One `POST` of `{model, state, questions}` to the Decisions endpoint; returns the response JSON as a dict.
+    The endpoint lives outside `/api/v1`, so the OpenAI client cannot reach it; `httpx` is imported inside the
+    constructor (`import milo.app` stays light). `http` is injectable (anything with `.post(url, json=, headers=,
+    timeout=)` returning an object with `.status_code` and `.json()`), so tests pass a recorded response and never
+    touch the network. One attempt per call; a non-2xx status or a non-object body raises (the gate fails open, D117).
+    """
+
+    def __init__(
+        self,
+        api_key: str,
+        *,
+        timeout: float = CALL_TIMEOUT_S,
+        http: Any = None,
+        ledger: SpendLedger | None = None,
+        purpose: str = "gate",
+    ) -> None:
+        if http is None:
+            import httpx
+
+            http = httpx.Client(timeout=timeout)
+        self._http = http
+        self._api_key = api_key
+        self._timeout = timeout
+        self._ledger = ledger
+        self._purpose = purpose
+        self.last_response_model: str | None = None
+        self.last_cost_usd: float | None = None
+
+    def decide(self, body: dict[str, Any]) -> dict[str, Any]:
+        if self._ledger is not None:
+            self._ledger.check()
+        self.last_response_model = None
+        self.last_cost_usd = None
+        resp = self._http.post(
+            OPENROUTER_DECISIONS_URL,
+            json=body,
+            headers={
+                "Authorization": f"Bearer {self._api_key}",
+                "Content-Type": "application/json",
+            },
+            timeout=self._timeout,
+        )
+        status = int(getattr(resp, "status_code", 0) or 0)
+        if not 200 <= status < 300:
+            raise RuntimeError(f"decisions endpoint returned HTTP {status}")
+        data = resp.json()
+        if not isinstance(data, dict):
+            raise ValueError("decisions response is not a JSON object")
+        served = data.get("model")
+        self.last_response_model = served if isinstance(served, str) else None
+        usage = data.get("usage")
+        cost = usage.get("cost") if isinstance(usage, dict) else None
+        if isinstance(cost, (int, float)) and not isinstance(cost, bool):
+            self.last_cost_usd = float(cost)
+            if self._ledger is not None:
+                self._ledger.record(
+                    self.last_cost_usd,
+                    model=str(body.get("model", "")),
+                    purpose=self._purpose,
+                )
+        return data
 
 
 class OpenRouterEmbeddings:
