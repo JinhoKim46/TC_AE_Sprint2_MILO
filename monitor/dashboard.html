@@ -50,6 +50,7 @@
 <body>
 <header>
   <h1>MILO build monitor</h1>
+  <div class="meta" id="clock">Loading clock...</div>
   <div class="meta" id="updated">Loading status...</div>
 </header>
 <main>
@@ -100,8 +101,24 @@
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
   var pill = function (state) { return '<span class="pill ' + esc(state) + '">' + esc(state) + "</span>"; };
 
+  var fmt = function (ms) {
+    var s = Math.max(0, Math.floor(ms / 1000)), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+    return h + " h " + (m < 10 ? "0" : "") + m + " min " + (s % 60 < 10 ? "0" : "") + (s % 60) + " s";
+  };
+  var started = S.session_started ? new Date(S.session_started) : null;
+  var written = S.status_written ? new Date(S.status_written) : null;
+  var tick = function () {
+    var now = new Date(), parts = [];
+    if (started && !isNaN(started)) parts.push("Session running for " + fmt(now - started) + " (started " + started.toLocaleString() + ")");
+    if (written && !isNaN(written)) {
+      var age = now - written, min = Math.floor(age / 60000);
+      parts.push("status written " + min + " min ago" + (min > 45 ? " (stale: the integrator has not updated it for a while)" : ""));
+    }
+    document.getElementById("clock").textContent = parts.join(" · ");
+  };
+  tick(); setInterval(tick, 1000);
   document.getElementById("updated").textContent =
-    "Updated " + esc(S.updated || "unknown") + " · refreshes every 5 s · " + (S.note || "");
+    "Refreshes every 5 s · " + (S.note || "");
 
   var running = S.agents.filter(function (a) { return a.state === "running"; }).length;
   var done = S.milestones.filter(function (m) { return m.state === "done"; }).length;
