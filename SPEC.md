@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.9.5 draft. Supersedes v0.9.4. Sections 20, 21, 23, 24, 25 and 26 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
+Status: v0.9.6 draft. Supersedes v0.9.5. Sections 20, 21, 23, 24, 25, 26 and 27 override earlier text. Review round 6 findings are applied in section 21; no further full review round is planned.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
@@ -410,6 +410,7 @@ Each done-line runs through a kit target or a test path. A milestone's done-line
 | M5c Report | `src/milo/report/**`, `tests/test_report.py` | report from a stored spec; every number traces to a source field or rate-card constant |
 | M6 UI | `src/milo/web/**` (shell in 1a, wiring in 3), `evals/ui/record.py`, `tests/test_web.py`, `docs/m6_checklist.md`, `docs/m6_recording.webm`, `evals/results/m6/m6_dom_checks.json` | `tests/test_web.py` (XSS, CSRF, owner isolation) passes; every DOM check in `m6_dom_checks.json` passes; recording produced; verifier-manual items recorded |
 | M7 Evaluation | `evals/rag/**`, `evals/rag/labels.jsonl` (written by the labelling agent and committed before the judge prompt), `docs/m7_report.md`, `docs/reflection.md` | `make eval` replays; kappa with CI for both judges; limits section filled |
+| SR Security red team (section 27) | `docs/threat_model.md`, `evals/security/**` (attack cases, runner, replay), `docs/security_report.md` | threat model committed before the M4 and M5G builds; attack cases committed before the defenses they test; every PR in the security surface has a reviewer report; zero open critical findings and every high finding fixed or accepted by the owner at F3 |
 
 **Final steps (integrator):**
 - **F1** Integrate all branches into `main`.
@@ -597,9 +598,17 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.9.3 (2026-10-22): multiple sessions per account (D97 to D100), session panel on the left (D101, D102), a deterministic scope gate that refuses out-of-scope input at zero model cost (D103 to D109).
 - v0.9.4 (2026-10-22): two-stage input gate; stage 2 is the pinned decision model typesafe/jev-1.14-20261014 (D110 to D118).
 - v0.9.5 (2026-10-22): no invites anywhere (D119); scope and Jev gate added as milestone M5G (D120); owner-only items as placeholders with a production guard and a checklist (D121). Section 26 overrides earlier text.
+- v0.9.6 (2026-10-22): security red-team lane SR added (section 27, D122 to D125).
 
 ## 26. Version 0.9.5 decisions (these override earlier text where they conflict)
 
 - **D119 No invites.** Anyone registers by themselves (D87). The invite text in D34, D61, D79, D80, section 15 and M6 checks is removed. The M5-store and M6 done-lines name sign-up and confirmation instead.
 - **D120 Milestone M5G.** The scope gate and the Jev input gate (D103 to D118) form milestone M5G, after M5b, because the gate sits in front of the chain. Its owned paths and done-line are in the table in section 17. Its protocols are committed before any result, under `evals/protocols/m5g-*.md` (D83). It runs in discovery mode only.
 - **D121 Owner-only items.** The build completes with placeholders for steps only the owner can do (section 18). Each placeholder is named in section 18. Production refuses to start while a placeholder is in effect (consent v0, no operator, Supabase not confirmed). The owner closes each item by hand before production use. The build never marks an owner item as done.
+
+## 27. Security red-team lane SR (overrides nothing; adds to M4 and F3)
+
+- **D122 Separate lane.** SR is run by agents that do not write the defenses they test. M4 keeps its policy measurement (section 8); SR tests the whole system: web, store, auth, gate, tools, prompts and uploads.
+- **D123 Order.** (1) Threat model, `docs/threat_model.md`, committed before the M4 and M5G builds. It names the assets, actors, trust boundaries and the milestone that owns each risk. (2) Attack cases, `evals/security/**`, committed before the defenses they test, under the same commit-order rule as protocols (D83). (3) Reviewer reports on every PR in the security surface, which is any change to auth, store, web, tools, the gate, prompts or uploads. (4) One pen-test pass at F3, `docs/security_report.md`.
+- **D124 Models.** Fable writes the threat model and the attack cases. Opus checks them before commit. Reviewers are a fresh agent per PR, Opus for auth, store and gate changes.
+- **D125 Limits and gates.** Test environment only (HARNESS rule 3). No real owner data and no production keys. A critical finding blocks the merge. A high finding is fixed, or the owner accepts it in writing; an agent never accepts a risk. SR has one fifth of the OpenRouter budget left at its start, with its own cap in the spend ledger.

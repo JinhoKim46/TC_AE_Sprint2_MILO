@@ -24,6 +24,7 @@ Every role is a SPEC section 13 phase entry. The integrator is one role; it may 
 | Scope and input gate (M5G) | 3 | `src/milo/gate/**`, `data/scope/**`, `evals/gate/**`, `evals/protocols/m5g-*.md`, `tests/test_gate.py`, `docs/m5g_report.md` | `app.py` (I); `chain.py` seam (M5b) |
 | Web wiring (M6, phase 3) | 3 | `src/milo/web/**` (wiring and data-bound pages and the report renderer), `evals/ui/record.py`, `tests/test_web.py`, `docs/m6_checklist.md`, `docs/m6_recording.webm`, `evals/results/m6/**` | `App` internals |
 | Labelling (M7) | 3 | `evals/rag/labels.jsonl` only; committed before the judge prompt | everything else |
+| Security red team (SR) | 0 and per PR | `docs/threat_model.md`, `evals/security/**`, `docs/security_report.md`; reviewer reports (no files) | every builder's files; never accepts a risk (owner only, SPEC D125) |
 | Evaluation (M7) | 3 | `evals/rag/**` (except labels), `docs/m7_report.md`, `docs/reflection.md` | `src/**`, `Makefile` |
 | Verifier | after each owner's merge | `docs/verify/<milestone>.md` on `verify/<milestone>` | any code; it runs commands, never fixes |
 
@@ -140,6 +141,7 @@ One owner per path. (I) marks integrator-owned. A path not listed belongs to nob
 | `src/milo/store/**` (including `memory.py`), `src/milo/auth/**`, `db/migrations/**` after S0 | M5-store |
 | `src/milo/report/**` | M5c |
 | `src/milo/gate/**`, `data/scope/**`, `evals/gate/**`, `tests/test_gate.py`, `docs/m5g_report.md` | M5G |
+| `docs/threat_model.md`, `evals/security/**`, `docs/security_report.md` | SR |
 | `src/milo/web/**` (shell and static files) | M6 (phase 1a) |
 | `src/milo/web/**` (wiring, data-bound pages, report renderer) | M6 (phase 3) |
 | `protocols/**`, `data/**` (except the gold expansion), `evals/agent/attacks_kb/**`, `scripts/build_data.py` | M0 |
