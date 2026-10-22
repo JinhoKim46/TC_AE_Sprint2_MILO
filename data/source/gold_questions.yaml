@@ -1,14 +1,15 @@
 # Gold questions for the MILO knowledge base (SPEC D60, D78, D151; protocol evals/protocols/m0b-gold-expansion.md).
 # Hand-written source of the gold rows. scripts/build_data.py reads this file and writes the gold file and
 # data/MANIFEST.json; nobody edits the gold file by hand. Rows q001 to q040 are the M0 rows, moved here unchanged
-# from scripts/build_data.py on 2026-10-22; rows q041 to q120 were added in M0b.
+# from scripts/build_data.py on 2026-10-22 (q010 and q014 were then edited in M0b fix cycle 1 after the audit);
+# rows q041 to q120 were added in M0b.
 # Fields written to the gold file: qid, question, type, gold_evidence, reference_answer, filters, split.
 # YAML-only fields (checked by build_data.py --check, never written out): section_heading (the level-2 heading the
 # quote sits under), realism (tags on the M0b rows: typo, short_form, multi_part, fragment, fragmented_owner, plain),
 # absent_terms (words of an unanswerable question that no article contains).
 rows:
   # ---------------------------------------------------------------------------------------------------------------
-  # M0 rows q001 to q040 (unchanged)
+  # M0 rows q001 to q040 (unchanged except q010 and q014, audit fixes in M0b fix cycle 1)
   # ---------------------------------------------------------------------------------------------------------------
   - qid: q001
     type: identifier
@@ -106,10 +107,10 @@ rows:
     question: "How are repeated submissions of one job prevented?"
     gold_evidence:
       - doc_id: solutions/ticket-creation
-        quote: "Before it creates a ticket it checks for duplicates, so the same request sent twice does not become two jobs."
-    reference_answer: "A duplicate check runs before a ticket is created."
+        quote: "The module includes ticket fields, a duplicate check, status tracking and reminders to staff."
+    reference_answer: "A duplicate check is part of the module."
     filters: null
-    section_heading: What it does
+    section_heading: What is included
   - qid: q011
     type: paraphrase
     split: test
@@ -146,7 +147,7 @@ rows:
     question: "Could the chatbot give me a cheaper deal if I ask nicely?"
     gold_evidence:
       - doc_id: pricing/how-we-price
-        quote: "It cannot change the arithmetic, apply a discount, or set a price itself."
+        quote: "The assistant may suggest which catalogue modules fit what you described. It cannot change the arithmetic, apply a discount, or set a price itself."
     reference_answer: "No. The assistant cannot discount or set prices."
     filters: null
     section_heading: What the assistant may and may not do
@@ -457,7 +458,7 @@ rows:
   - qid: q046
     type: identifier
     split: test
-    question: "can staff-assignment hook into anything besides a csv file?"
+    question: "can staff-assignment hook into anything besides the csv export?"
     gold_evidence:
       - doc_id: implementation/csv-export
         quote: "For staff-assignment it is the only integration offered."
@@ -471,8 +472,8 @@ rows:
     question: "450 a month is steep. could we begin on csv-export and switch up later?"
     gold_evidence:
       - doc_id: implementation/crm-connector
-        quote: "the delay is acceptable, csv-export is a cheaper way to start, and you can move to the connector later."
-    reference_answer: "Yes, if the delay is acceptable: csv-export is a cheaper way to start, and you can move to the connector later."
+        quote: "csv-export is a cheaper way to start, and you can move to the connector later."
+    reference_answer: "Yes. csv-export is a cheaper way to start, and you can move to the connector later."
     filters: null
     section_heading: When to choose it
     realism: [plain]
@@ -490,11 +491,11 @@ rows:
   - qid: q049
     type: identifier
     split: test
-    question: "can document-data-entry run over the live api connection?"
+    question: "can document data entry run over api-connector?"
     gold_evidence:
       - doc_id: implementation/api-connector
-        quote: "It is not offered for staff-assignment, which uses csv-export, or for document-data-entry, which uses csv-export or export-only-tool."
-    reference_answer: "No. document-data-entry uses csv-export or export-only-tool, not the api-connector."
+        quote: "The api-connector is available for phone-intake, email-triage, ticket-creation and customer-status-updates."
+    reference_answer: "No. The api-connector is available for phone-intake, email-triage, ticket-creation and customer-status-updates; document-data-entry is not in the list."
     filters: {section: implementation}
     section_heading: Which modules support it
     realism: [plain]
@@ -549,7 +550,7 @@ rows:
     gold_evidence:
       - doc_id: cases/accounts-paperwork
         quote: "The practice's system could import CSV files, so csv-export was available at no surcharge."
-    reference_answer: "Yes. Their system could import CSV files, so csv-export was available at no surcharge."
+    reference_answer: "No. Their system could import CSV files, so csv-export was available at no surcharge."
     filters: {section: cases}
     section_heading: What the discovery found
     realism: [plain]
@@ -582,10 +583,10 @@ rows:
     question: "what if the caller has something the bot cant deal with, do they just get hung up on?"
     gold_evidence:
       - doc_id: solutions/phone-intake
-        quote: "If the request needs a person, it writes a handover note and passes the call to a member of staff."
-    reference_answer: "No. It writes a handover note and passes the call to a member of staff."
+        quote: "The module includes call answering, request capture, appointment booking, a call transcript for each call, and handover to staff."
+    reference_answer: "No. Handover to staff is part of the module."
     filters: {product: phone-intake}
-    section_heading: What it does
+    section_heading: What is included
     realism: [typo]
   - qid: q058
     type: paraphrase
@@ -601,7 +602,7 @@ rows:
   - qid: q059
     type: paraphrase
     split: test
-    question: "my filters and folders, will it mess with those? and can it bin old emails?"
+    question: "my filters and folders, will the email bot mess with those? and can it bin old emails?"
     gold_evidence:
       - doc_id: solutions/email-triage
         quote: "It does not change the mailbox rules, and it does not delete mail."
@@ -934,8 +935,8 @@ rows:
     question: "will the bot skip questions if it thinks it knows enough?"
     gold_evidence:
       - doc_id: consultation/first-questions
-        quote: "It never decides on its own that a topic is finished."
-    reference_answer: "No. It never decides on its own that a topic is finished."
+        quote: "The assistant may phrase an acknowledgement in its own words, but the question it asks next comes from the list, word for word."
+    reference_answer: "No. The next question always comes from the fixed list, word for word."
     filters: {section: consultation}
     section_heading: Why a fixed list
     realism: [plain]
@@ -1011,8 +1012,8 @@ rows:
     question: "do i have to upload my client list for this?"
     gold_evidence:
       - doc_id: policies/personal-data
-        quote: "It does not ask for and does not store any actual customer record."
-    reference_answer: "No. It does not ask for or store any actual customer record."
+        quote: "If you paste a customer's details into the conversation, we ask you not to, and the operator can delete the message on request."
+    reference_answer: "No. The interview wants no customer records; if you paste a customer's details we ask you not to."
     filters: {section: policies}
     section_heading: What we store about your customers
     realism: [plain]
@@ -1052,7 +1053,7 @@ rows:
   - qid: q100
     type: paraphrase
     split: dev
-    question: "say my uploaded doc looked dodgy. what gets refused in that message?"
+    question: "say my uploaded doc looked dodgy. what does the assistant refuse to do with that message?"
     gold_evidence:
       - doc_id: policies/approvals
         quote: "In a suspicious turn it will not record a fact that affects the price, and it will not start a withdrawal even if asked."
@@ -1225,7 +1226,7 @@ rows:
   - qid: q118
     type: unanswerable
     split: test
-    question: "weekend support?"
+    question: "weekend support from your team?"
     gold_evidence: []
     reference_answer: INSUFFICIENT_CONTEXT
     filters: null
