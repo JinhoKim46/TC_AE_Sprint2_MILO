@@ -1,4 +1,4 @@
-"""The one retry site for model calls (SPEC D23a, HARNESS rule 10).
+"""The one retry site for model calls (chat and embedding batches) (SPEC D23a, HARNESS rule 10).
 
 Classification of a failed attempt (duck-typed, so this module imports no provider package):
 
@@ -15,11 +15,13 @@ through this function and is not a retry (HARNESS rule 10).
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import Any
+from typing import Any, TypeVar
 
 from milo.errors import ProviderFailure, SpendRefused
 from milo.settings import RETRY_ATTEMPTS, RETRY_BACKOFF_S
 from milo.types import ChatModel, ChatReply, ToolSpec
+
+T = TypeVar("T")
 
 PERMANENT_STATUS = frozenset({400, 401, 402, 403, 404, 413, 422})
 
@@ -46,21 +48,22 @@ def is_retryable(exc: BaseException) -> bool:
     return status_of(exc) not in PERMANENT_STATUS
 
 
-def invoke_with_retry(
-    chat: ChatModel,
-    messages: list[dict[str, Any]],
-    tools: list[ToolSpec] | None,
+def call_with_retry(
+    call: Callable[[], T],
     *,
     sleep: Callable[[float], None] | None = None,
     attempts: int = RETRY_ATTEMPTS,
     backoff: tuple[float, ...] = RETRY_BACKOFF_S,
-) -> ChatReply:
-    """Call the model, retrying a retryable failure. Raises `ProviderFailure` after the last attempt."""
+) -> T:
+    """Run `call`, retrying a retryable failure: the one loop for chat calls and embedding batches.
+
+    Raises `ProviderFailure` after the last attempt.
+    """
     pause = sleep or (lambda _s: None)
     last: BaseException | None = None
     for attempt in range(attempts):
         try:
-            return chat.invoke(messages, tools)
+            return call()
         except ProviderFailure:
             raise
         except Exception as exc:  # mapped to a typed error below
@@ -71,3 +74,21 @@ def invoke_with_retry(
                 pause(backoff[min(attempt, len(backoff) - 1)])
     assert last is not None
     raise ProviderFailure(classify_exception(last)) from last
+
+
+def invoke_with_retry(
+    chat: ChatModel,
+    messages: list[dict[str, Any]],
+    tools: list[ToolSpec] | None,
+    *,
+    sleep: Callable[[float], None] | None = None,
+    attempts: int = RETRY_ATTEMPTS,
+    backoff: tuple[float, ...] = RETRY_BACKOFF_S,
+) -> ChatReply:
+    """Call the model, retrying a retryable failure. Raises `ProviderFailure` after the last attempt."""
+    return call_with_retry(
+        lambda: chat.invoke(messages, tools),
+        sleep=sleep,
+        attempts=attempts,
+        backoff=backoff,
+    )
