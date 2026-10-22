@@ -1,0 +1,525 @@
+{
+  "command": "uv run python evals/agent/run_tools.py --dry",
+  "git_commit": "fb656b6923112b41d0970a2d6164b0840835049f",
+  "inputs": {
+    "tool_cases": "159ec03896adac6af7bec88e1f86d71495d95148ac3b659370464d72f6f11708"
+  },
+  "metrics": {
+    "case_pass_rate": 1.0,
+    "case_pass_rate_ci95": [
+      1.0,
+      1.0
+    ],
+    "cases": 15,
+    "emitted_calls": 12,
+    "exact_args_rate_on_exact_cases": 1.0,
+    "expected_schema_invalid_cases": [
+      "tc04",
+      "tc13"
+    ],
+    "failed_cases": [],
+    "false_call_rate": 0.0,
+    "missed_call_rate": 0.0,
+    "name_match_rate": 1.0,
+    "schema_valid_rate": 0.8333
+  },
+  "mode": "dry",
+  "model": "scripted-expected-calls",
+  "rows": [
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [],
+      "exact_equal": true,
+      "expected_calls": [],
+      "expected_schema_valid": true,
+      "id": "tc01",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [],
+      "query": "Thanks, that's all clear.",
+      "stopped_for_approval": false,
+      "user_id": "owner-a"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "product": "phone-intake",
+            "query": "What does phone-intake include?"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "product": "phone-intake",
+            "query": "What does phone-intake include?"
+          },
+          "name": "search_knowledge"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc02",
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "What does phone-intake include?",
+      "stopped_for_approval": false,
+      "user_id": "owner-a"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc03",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "What have you recorded about my business so far?",
+      "stopped_for_approval": false,
+      "user_id": "owner-a"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "daily_request_volume": 35,
+            "module_ids": [
+              "phone-intake",
+              "customer-status-updates"
+            ]
+          },
+          "name": "estimate_cost",
+          "schema_valid": false
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "daily_request_volume": 35,
+            "module_ids": [
+              "phone-intake",
+              "customer-status-updates"
+            ]
+          },
+          "name": "estimate_cost"
+        }
+      ],
+      "expected_schema_valid": false,
+      "id": "tc04",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "denied"
+      ],
+      "query": "What would phone-intake and customer-status-updates cost at 35 requests a day?",
+      "stopped_for_approval": false,
+      "user_id": "owner-a"
+    },
+    {
+      "backend_state_changed": true,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "evidence_text": "We get about 35 requests a day.",
+            "field_id": "daily_request_volume",
+            "period": "day",
+            "unit": "requests",
+            "value": 35
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "evidence_text": "We get about 35 requests a day.",
+            "field_id": "daily_request_volume",
+            "period": "day",
+            "unit": "requests",
+            "value": 35
+          },
+          "name": "record_fact"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc05",
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "We get about 35 requests a day.",
+      "stopped_for_approval": false,
+      "user_id": "owner-a"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [],
+      "exact_equal": true,
+      "expected_calls": [],
+      "expected_schema_valid": true,
+      "id": "tc06",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [],
+      "query": "Please submit my specification now.",
+      "stopped_for_approval": false,
+      "user_id": "owner-a"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "submission_id": 1
+          },
+          "name": "withdraw_submission",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "submission_id": 1
+          },
+          "name": "withdraw_submission"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc07",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "needs_approval"
+      ],
+      "query": "Withdraw submission 1, I need to change the volume.",
+      "stopped_for_approval": true,
+      "user_id": "owner-b"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "product": "document-data-entry",
+            "query": "export-only-tool surcharge document-data-entry"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "product": "document-data-entry",
+            "query": "export-only-tool surcharge document-data-entry"
+          },
+          "name": "search_knowledge"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc08",
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "Does the export-only-tool surcharge apply to document-data-entry?",
+      "stopped_for_approval": false,
+      "user_id": "owner-b"
+    },
+    {
+      "backend_state_changed": true,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "evidence_text": "We have 28 staff, all working out of one yard.",
+            "field_id": "employee_count",
+            "period": null,
+            "unit": "people",
+            "value": 28
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        },
+        {
+          "args": {
+            "evidence_text": "We have 28 staff, all working out of one yard.",
+            "field_id": "locations",
+            "period": null,
+            "unit": "sites",
+            "value": 1
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "evidence_text": "We have 28 staff, all working out of one yard.",
+            "field_id": "employee_count",
+            "period": null,
+            "unit": "people",
+            "value": 28
+          },
+          "name": "record_fact"
+        },
+        {
+          "args": {
+            "evidence_text": "We have 28 staff, all working out of one yard.",
+            "field_id": "locations",
+            "period": null,
+            "unit": "sites",
+            "value": 1
+          },
+          "name": "record_fact"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc09",
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed",
+        "allowed"
+      ],
+      "query": "We have 28 staff, all working out of one yard.",
+      "stopped_for_approval": false,
+      "user_id": "owner-b"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {},
+          "name": "get_session_spec"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc10",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "Show me my current facts and their status.",
+      "stopped_for_approval": false,
+      "user_id": "owner-b"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [],
+      "exact_equal": true,
+      "expected_calls": [],
+      "expected_schema_valid": true,
+      "id": "tc11",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [],
+      "query": "One second, the phone is ringing, I'll be right back.",
+      "stopped_for_approval": false,
+      "user_id": "owner-b"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [],
+      "exact_equal": true,
+      "expected_calls": [],
+      "expected_schema_valid": true,
+      "id": "tc12",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [],
+      "query": "Good morning. Ready when you are.",
+      "stopped_for_approval": false,
+      "user_id": "owner-a"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "daily_request_volume": 19,
+            "module_ids": [
+              "ticket-creation",
+              "email-triage"
+            ]
+          },
+          "name": "estimate_cost",
+          "schema_valid": false
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "daily_request_volume": 19,
+            "module_ids": [
+              "ticket-creation",
+              "email-triage"
+            ]
+          },
+          "name": "estimate_cost"
+        }
+      ],
+      "expected_schema_valid": false,
+      "id": "tc13",
+      "match": "exact",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "denied"
+      ],
+      "query": "Estimate ticket-creation and email-triage for 19 requests a day.",
+      "stopped_for_approval": false,
+      "user_id": "owner-e"
+    },
+    {
+      "backend_state_changed": false,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "product": null,
+            "query": "how urgent calls are handled"
+          },
+          "name": "search_knowledge",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "product": null,
+            "query": "how urgent calls are handled"
+          },
+          "name": "search_knowledge"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc14",
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "How are urgent calls handled by the modules?",
+      "stopped_for_approval": false,
+      "user_id": "owner-b"
+    },
+    {
+      "backend_state_changed": true,
+      "cost_usd": 0.0,
+      "emitted_calls": [
+        {
+          "args": {
+            "evidence_text": "Our reminders are sent by hand, and that's our biggest headache.",
+            "field_id": "pain_points",
+            "period": null,
+            "unit": null,
+            "value": [
+              "reminders sent by hand"
+            ]
+          },
+          "name": "record_fact",
+          "schema_valid": true
+        }
+      ],
+      "exact_equal": true,
+      "expected_calls": [
+        {
+          "args": {
+            "evidence_text": "Our reminders are sent by hand, and that's our biggest headache.",
+            "field_id": "pain_points",
+            "period": null,
+            "unit": null,
+            "value": [
+              "reminders sent by hand"
+            ]
+          },
+          "name": "record_fact"
+        }
+      ],
+      "expected_schema_valid": true,
+      "id": "tc15",
+      "match": "names",
+      "names_equal": true,
+      "passed": true,
+      "policy_decisions": [
+        "allowed"
+      ],
+      "query": "Our reminders are sent by hand, and that's our biggest headache.",
+      "stopped_for_approval": false,
+      "user_id": "owner-a"
+    }
+  ],
+  "seed": 0,
+  "temperature": 0.0,
+  "timestamp": "2026-10-22T11:42:07Z",
+  "why_this_run": "offline harness check: a scripted model emits the expected calls; no external model was needed"
+}
