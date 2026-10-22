@@ -40,3 +40,8 @@
 - Builder 855fd0f; verifier PASS offline (docs/verify/m1.md). 27 new tests; dry replay matches; live refuses without MILO_LIVE.
 - Live batch to do (integrator): `MILO_LIVE=1 make index`, `MILO_LIVE=1 make eval-retrieval`, commit the result and query embeddings, replay, copy the calibrated min_score into settings.py, fill docs/m1_report.md. Embedding cost comes from the OpenRouter ledger (cloud.py drops the embedding usage field).
 - Owner question: none.
+
+## M0 — Remaining data scope (merged 2026-10-22)
+
+- Builder 86a2ecd; verifier PASS (docs/verify/m0.md). Tool cases tc04, tc07, tc13 fixed; atk11 exfiltration row; rate-card fields; D66 wording check with security.md reworded; checker and leakage tests (28). Gold hash unchanged.
+- Owner question: none.
