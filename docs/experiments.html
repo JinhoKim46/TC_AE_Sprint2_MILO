@@ -40,8 +40,8 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--tint
 <div class="grid">
   <div class="kpi"><span class="muted">OpenRouter limit</span><b>15.00 USD</b></div>
   <div class="kpi"><span class="muted">Used (before the embedding run)</span><b>8.45 USD</b></div>
-  <div class="kpi"><span class="muted">Remaining (estimate after the run)</span><b>about 6.54 USD</b></div>
-  <div class="kpi"><span class="muted">Experiments run</span><b>1 of 2 planned</b></div>
+  <div class="kpi"><span class="muted">Remaining (estimate after the runs)</span><b>about 6.53 USD</b></div>
+  <div class="kpi"><span class="muted">Experiments run</span><b>2 comparisons, 3 planned</b></div>
 </div>
 <div class="note">The remaining balance is an estimate. It was read from the OpenRouter key-info endpoint before the embedding run, and the run's own cost (about 0.005 USD) is subtracted. Check the dashboard for the exact figure.</div>
 
@@ -58,6 +58,7 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--tint
   <thead><tr><th>ID</th><th>Date</th><th>Experiment</th><th>Models / data</th><th>Result</th><th>Cost (USD)</th><th>Status</th></tr></thead>
   <tbody>
     <tr><td>E01</td><td>2026-10-22</td><td>Embedding model comparison (dev split)</td><td>5 OpenRouter embedding models; 167 chunks; 16 answerable dev questions</td><td>gemini-embedding-2 recall@5 1.00, nDCG@5 0.84 (best). Gap to runner-up inside the CIs.</td><td class="num">0.005</td><td><span class="dot" style="background:var(--green)"></span>done, provisional</td></tr>
+    <tr><td>E01b</td><td>2026-10-22</td><td>Extended embedding comparison: three chunk sizes, full metrics, paired tests</td><td>same five models; chunk sizes 800/100, 400/50, 1500/150; 16 dev questions</td><td>Reference gemini-embedding-2 has the best average nDCG@5 (0.85). Every paired interval with text-embedding-3-large includes zero, so the choice stays provisional. The only clear difference is against text-embedding-3-small at 400/50. Details and interactive charts: <a href="embedding-report.html">embedding-report.html</a></td><td class="num">0.015</td><td><span class="dot" style="background:var(--green)"></span>done, provisional</td></tr>
     <tr><td>E02</td><td>planned</td><td>Chat model comparison for development and evaluation</td><td>Cheapest OpenRouter chat models that pass a small extraction test on dev</td><td>not run</td><td class="num">within 2.50 allowance</td><td><span class="dot" style="background:var(--amber)"></span>planned</td></tr>
     <tr><td>E03</td><td>planned</td><td>Judge model check (M7)</td><td>Two OpenRouter judges vs 30 labelled examples</td><td>not run</td><td class="num">within 0.50 allowance</td><td><span class="dot" style="background:var(--amber)"></span>planned</td></tr>
     <tr><td>E04</td><td>planned</td><td>Final run with Claude Sonnet</td><td>claude-sonnet-5.5, all demo conversations, final report</td><td>not run</td><td class="num">within 2.00 allowance</td><td><span class="dot" style="background:var(--amber)"></span>planned, last</td></tr>
@@ -65,6 +66,7 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--tint
 </table>
 
 <h2>E01 in detail: embedding model comparison</h2>
+<p class="note">Superseded in part by E01b below, which adds the metrics and paired tests this first run lacked. The numbers here are the first screen.</p>
 <div class="card">
   <h3>What was done</h3>
   <ol>
@@ -113,6 +115,7 @@ code{font:13px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--tint
   <tbody>
     <tr><td>2026-10-22</td><td>Key-info balance checks (free endpoint)</td><td class="num">2</td><td class="num">0.000</td><td>OpenRouter</td></tr>
     <tr><td>2026-10-22</td><td>E01 embedding comparison</td><td class="num">20</td><td class="num">0.005</td><td><code>evals/results/retrieval/embedding_dev.json</code></td></tr>
+    <tr><td>E01b extended comparison</td><td class="num">60</td><td class="num">0.015</td><td><code>evals/results/retrieval/embedding_dev_v2.json</code></td></tr>
   </tbody>
 </table>
 

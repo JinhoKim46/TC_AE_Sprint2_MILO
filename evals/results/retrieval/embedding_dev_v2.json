@@ -1,0 +1,5218 @@
+{
+  "configs": [
+    {
+      "chunk_size": 800,
+      "overlap": 100,
+      "chunk_count": 167,
+      "query_count": 16,
+      "queries_without_chunk": [],
+      "chunk_sha256": "7ed5ce134dd8efa0f1af3fac4a596663876eea1e6be134659aac37b03de50466",
+      "models": {
+        "google/gemini-embedding-2": {
+          "summary": {
+            "recall5": {
+              "mean": 1.0,
+              "ci": [
+                1.0,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.8409,
+              "ci": [
+                0.7366,
+                0.9457
+              ]
+            },
+            "mrr": {
+              "mean": 0.7865,
+              "ci": [
+                0.6458,
+                0.9271
+              ]
+            },
+            "p5": {
+              "mean": 0.2,
+              "ci": [
+                0.2,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.7865,
+              "ci": [
+                0.6458,
+                0.9271
+              ]
+            },
+            "tokens": 10654,
+            "cost_usd": 0.002131
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "cases/grooming-bookings#12",
+                "solutions/phone-intake#146",
+                "solutions/document-data-entry#135",
+                "implementation/api-connector#48"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#166",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#164"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/document-data-entry#135",
+                "solutions/document-data-entry#132",
+                "cases/accounts-paperwork#5",
+                "policies/security#90",
+                "solutions/document-data-entry#133"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "implementation/export-only-tools#68",
+                "implementation/csv-export#63",
+                "implementation/csv-export#60",
+                "implementation/csv-export#57"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#96",
+                "pricing/what-is-included#119",
+                "pricing/what-is-included#118",
+                "pricing/volume-tiers#117"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "policies/approvals#73",
+                "policies/security#87",
+                "policies/approvals#72",
+                "solutions/ticket-creation#161",
+                "solutions/document-data-entry#138"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "solutions/customer-status-updates#131",
+                "pricing/how-we-price#96",
+                "solutions/customer-status-updates#130",
+                "solutions/phone-intake#151",
+                "solutions/email-triage#144"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/security#88",
+                "pricing/how-we-price#98",
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#95",
+                "consultation/first-questions#28"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#113",
+                "pricing/volume-tiers#112",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "implementation/api-connector#47",
+                "pricing/setup-fees#109",
+                "pricing/setup-fees#107",
+                "pricing/setup-fees#108",
+                "implementation/crm-connector#54"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#97",
+                "pricing/range-and-estimates#102",
+                "pricing/how-we-price#93",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#58",
+                "implementation/csv-export#59",
+                "implementation/csv-export#57",
+                "implementation/export-only-tools#65",
+                "implementation/api-connector#43"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "implementation/api-connector#45",
+                "policies/personal-data#80",
+                "implementation/csv-export#59",
+                "solutions/customer-status-updates#130"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#35",
+                "consultation/first-questions#27",
+                "pricing/setup-fees#110",
+                "consultation/first-questions#28",
+                "consultation/first-questions#21"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/urgent-requests#34",
+                "consultation/urgent-requests#30",
+                "pricing/how-we-price#98",
+                "consultation/urgent-requests#29",
+                "consultation/urgent-requests#33"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#73",
+                "policies/security#89",
+                "policies/security#88",
+                "pricing/how-we-price#98",
+                "policies/security#87"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "openai/text-embedding-3-large": {
+          "summary": {
+            "recall5": {
+              "mean": 0.875,
+              "ci": [
+                0.6875,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.8058,
+              "ci": [
+                0.6183,
+                0.9539
+              ]
+            },
+            "mrr": {
+              "mean": 0.7979,
+              "ci": [
+                0.6271,
+                0.9375
+              ]
+            },
+            "p5": {
+              "mean": 0.175,
+              "ci": [
+                0.1375,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.7979,
+              "ci": [
+                0.6271,
+                0.9375
+              ]
+            },
+            "tokens": 10459,
+            "cost_usd": 0.00136
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "solutions/phone-intake#146",
+                "cases/grooming-bookings#10",
+                "solutions/phone-intake#151",
+                "solutions/phone-intake#148"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#166",
+                "implementation/crm-connector#51"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/document-data-entry#135",
+                "solutions/document-data-entry#132",
+                "implementation/export-only-tools#67",
+                "policies/security#90",
+                "cases/accounts-paperwork#3"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "implementation/export-only-tools#68",
+                "pricing/setup-fees#108",
+                "solutions/staff-assignment#158",
+                "implementation/csv-export#57"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#97",
+                "solutions/phone-intake#148",
+                "solutions/email-triage#144"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.16666666666666666,
+              "p5": 0.0,
+              "ap": 0.16666666666666666,
+              "first_relevant_rank": 6,
+              "top5": [
+                "policies/approvals#73",
+                "policies/approvals#72",
+                "solutions/document-data-entry#138",
+                "implementation/csv-export#58",
+                "policies/security#90"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/customer-status-updates#130",
+                "pricing/how-we-price#96",
+                "solutions/ticket-creation#165",
+                "solutions/email-triage#144",
+                "implementation/crm-connector#54"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/first-questions#28",
+                "pricing/how-we-price#98",
+                "pricing/range-and-estimates#103",
+                "consultation/urgent-requests#30",
+                "policies/security#88"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#114",
+                "pricing/volume-tiers#113",
+                "pricing/volume-tiers#112"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#109",
+                "implementation/api-connector#47",
+                "pricing/setup-fees#106",
+                "implementation/crm-connector#54",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#93",
+                "pricing/how-we-price#97",
+                "pricing/volume-tiers#114",
+                "consultation/volume-and-timing#42"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.1,
+              "p5": 0.0,
+              "ap": 0.1,
+              "first_relevant_rank": 10,
+              "top5": [
+                "implementation/csv-export#62",
+                "solutions/customer-status-updates#129",
+                "solutions/document-data-entry#136",
+                "implementation/api-connector#44",
+                "policies/personal-data#83"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "implementation/api-connector#45",
+                "implementation/csv-export#62",
+                "implementation/crm-connector#56",
+                "implementation/crm-connector#55"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#35",
+                "consultation/first-questions#27",
+                "consultation/volume-and-timing#40",
+                "consultation/first-questions#28",
+                "pricing/setup-fees#110"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/urgent-requests#34",
+                "consultation/urgent-requests#29",
+                "pricing/what-is-included#119",
+                "pricing/how-we-price#96",
+                "consultation/urgent-requests#32"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#73",
+                "pricing/how-we-price#98",
+                "policies/security#88",
+                "consultation/urgent-requests#35",
+                "consultation/first-questions#28"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "mistralai/mistral-embed-2312": {
+          "summary": {
+            "recall5": {
+              "mean": 0.9375,
+              "ci": [
+                0.8125,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.7483,
+              "ci": [
+                0.5896,
+                0.8827
+              ]
+            },
+            "mrr": {
+              "mean": 0.6888,
+              "ci": [
+                0.5214,
+                0.8438
+              ]
+            },
+            "p5": {
+              "mean": 0.1875,
+              "ci": [
+                0.1625,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.6888,
+              "ci": [
+                0.5214,
+                0.8438
+              ]
+            },
+            "tokens": 11660,
+            "cost_usd": 0.001166
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "solutions/phone-intake#146",
+                "implementation/api-connector#48",
+                "cases/grooming-bookings#10",
+                "cases/grooming-bookings#12"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#166",
+                "cases/trades-dispatch#18"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#132",
+                "solutions/document-data-entry#135",
+                "cases/accounts-paperwork#3",
+                "implementation/export-only-tools#67",
+                "solutions/document-data-entry#134"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "pricing/setup-fees#108",
+                "implementation/csv-export#63",
+                "implementation/csv-export#58",
+                "implementation/csv-export#62"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#97",
+                "pricing/how-we-price#96",
+                "solutions/phone-intake#152",
+                "implementation/api-connector#47"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/approvals#73",
+                "solutions/ticket-creation#161",
+                "policies/approvals#72",
+                "cases/trades-dispatch#17",
+                "solutions/ticket-creation#166"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.07142857142857142,
+              "p5": 0.0,
+              "ap": 0.07142857142857142,
+              "first_relevant_rank": 14,
+              "top5": [
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#94",
+                "cases/grooming-bookings#10",
+                "implementation/crm-connector#54",
+                "solutions/customer-status-updates#131"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/range-and-estimates#103",
+                "pricing/how-we-price#98",
+                "consultation/first-questions#28",
+                "policies/security#88",
+                "pricing/volume-tiers#115"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#116",
+                "consultation/volume-and-timing#40",
+                "pricing/volume-tiers#113"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#109",
+                "implementation/api-connector#47",
+                "pricing/setup-fees#106",
+                "pricing/setup-fees#107",
+                "pricing/what-is-included#120"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#93",
+                "pricing/volume-tiers#114",
+                "pricing/how-we-price#97",
+                "pricing/range-and-estimates#103"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "implementation/csv-export#62",
+                "implementation/export-only-tools#66",
+                "implementation/api-connector#49",
+                "implementation/csv-export#58",
+                "implementation/api-connector#44"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "implementation/api-connector#45",
+                "implementation/crm-connector#55",
+                "implementation/api-connector#49",
+                "implementation/csv-export#62"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/first-questions#27",
+                "consultation/urgent-requests#35",
+                "consultation/volume-and-timing#40",
+                "pricing/range-and-estimates#102",
+                "pricing/setup-fees#110"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.38685280723454163,
+              "mrr": 0.2,
+              "p5": 0.2,
+              "ap": 0.2,
+              "first_relevant_rank": 5,
+              "top5": [
+                "pricing/what-is-included#121",
+                "consultation/urgent-requests#32",
+                "consultation/urgent-requests#29",
+                "pricing/what-is-included#119",
+                "consultation/urgent-requests#34"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/how-we-price#98",
+                "policies/approvals#73",
+                "policies/security#88",
+                "policies/security#87",
+                "solutions/phone-intake#147"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "qwen/qwen3-embedding-8b": {
+          "summary": {
+            "recall5": {
+              "mean": 0.9375,
+              "ci": [
+                0.8125,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.7784,
+              "ci": [
+                0.6332,
+                0.9077
+              ]
+            },
+            "mrr": {
+              "mean": 0.7269,
+              "ci": [
+                0.5662,
+                0.878
+              ]
+            },
+            "p5": {
+              "mean": 0.1875,
+              "ci": [
+                0.1625,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.7269,
+              "ci": [
+                0.5662,
+                0.878
+              ]
+            },
+            "tokens": 10738,
+            "cost_usd": 0.000107
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "solutions/phone-intake#146",
+                "solutions/phone-intake#151",
+                "solutions/phone-intake#147",
+                "implementation/api-connector#46"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#166",
+                "solutions/ticket-creation#162"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#132",
+                "solutions/document-data-entry#135",
+                "policies/personal-data#81",
+                "policies/security#88",
+                "policies/approvals#73"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "pricing/setup-fees#108",
+                "implementation/csv-export#57",
+                "solutions/staff-assignment#158",
+                "implementation/export-only-tools#68"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#97",
+                "pricing/how-we-price#94",
+                "pricing/what-is-included#118"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "policies/approvals#72",
+                "policies/approvals#73",
+                "policies/approvals#71",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#160"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/customer-status-updates#130",
+                "pricing/how-we-price#96",
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#94",
+                "solutions/staff-assignment#158"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/security#89",
+                "pricing/how-we-price#98",
+                "pricing/range-and-estimates#103",
+                "policies/approvals#71",
+                "consultation/first-questions#28"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#113",
+                "pricing/volume-tiers#112",
+                "pricing/volume-tiers#116"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "implementation/api-connector#47",
+                "pricing/setup-fees#109",
+                "pricing/setup-fees#108",
+                "pricing/setup-fees#106",
+                "pricing/what-is-included#118"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#93",
+                "policies/security#89",
+                "pricing/how-we-price#97",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.047619047619047616,
+              "p5": 0.0,
+              "ap": 0.047619047619047616,
+              "first_relevant_rank": 21,
+              "top5": [
+                "implementation/api-connector#43",
+                "implementation/csv-export#57",
+                "policies/security#86",
+                "policies/security#89",
+                "implementation/api-connector#46"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "solutions/customer-status-updates#130",
+                "implementation/crm-connector#50",
+                "implementation/api-connector#45",
+                "implementation/csv-export#57"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/first-questions#27",
+                "consultation/urgent-requests#35",
+                "pricing/range-and-estimates#102",
+                "policies/approvals#75",
+                "consultation/volume-and-timing#40"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "pricing/what-is-included#121",
+                "pricing/what-is-included#119",
+                "consultation/urgent-requests#34",
+                "implementation/api-connector#47",
+                "pricing/how-we-price#95"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#73",
+                "policies/approvals#71",
+                "policies/security#89",
+                "solutions/document-data-entry#132",
+                "policies/security#88"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "openai/text-embedding-3-small": {
+          "summary": {
+            "recall5": {
+              "mean": 0.875,
+              "ci": [
+                0.6875,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.7077,
+              "ci": [
+                0.5346,
+                0.864
+              ]
+            },
+            "mrr": {
+              "mean": 0.6689,
+              "ci": [
+                0.4993,
+                0.8371
+              ]
+            },
+            "p5": {
+              "mean": 0.175,
+              "ci": [
+                0.1375,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.6689,
+              "ci": [
+                0.4993,
+                0.8371
+              ]
+            },
+            "tokens": 10459,
+            "cost_usd": 0.000209
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "solutions/phone-intake#146",
+                "implementation/api-connector#46",
+                "consultation/urgent-requests#32",
+                "cases/grooming-bookings#10"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#166",
+                "solutions/ticket-creation#161",
+                "implementation/crm-connector#51"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#132",
+                "solutions/document-data-entry#135",
+                "cases/accounts-paperwork#2",
+                "cases/accounts-paperwork#1",
+                "policies/security#88"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "pricing/setup-fees#108",
+                "implementation/export-only-tools#68",
+                "solutions/staff-assignment#158",
+                "implementation/csv-export#58"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#97",
+                "solutions/email-triage#144",
+                "implementation/crm-connector#54"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.14285714285714285,
+              "p5": 0.0,
+              "ap": 0.14285714285714285,
+              "first_relevant_rank": 7,
+              "top5": [
+                "policies/approvals#73",
+                "policies/approvals#72",
+                "solutions/ticket-creation#166",
+                "cases/trades-dispatch#15",
+                "solutions/document-data-entry#138"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "pricing/how-we-price#96",
+                "implementation/crm-connector#54",
+                "solutions/customer-status-updates#130",
+                "solutions/ticket-creation#165",
+                "pricing/what-is-included#119"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/how-we-price#98",
+                "consultation/first-questions#28",
+                "pricing/range-and-estimates#103",
+                "pricing/volume-tiers#115",
+                "consultation/urgent-requests#30"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "pricing/volume-tiers#112",
+                "pricing/volume-tiers#113",
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#109",
+                "implementation/api-connector#47",
+                "pricing/setup-fees#106",
+                "implementation/crm-connector#54",
+                "pricing/how-we-price#97"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#93",
+                "pricing/how-we-price#97",
+                "pricing/how-we-price#96",
+                "consultation/volume-and-timing#42"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.14285714285714285,
+              "p5": 0.0,
+              "ap": 0.14285714285714285,
+              "first_relevant_rank": 7,
+              "top5": [
+                "implementation/api-connector#44",
+                "solutions/document-data-entry#136",
+                "implementation/csv-export#62",
+                "implementation/api-connector#43",
+                "policies/security#86"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "implementation/api-connector#45",
+                "implementation/crm-connector#55",
+                "solutions/ticket-creation#164",
+                "implementation/crm-connector#56"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#35",
+                "consultation/first-questions#27",
+                "consultation/volume-and-timing#40",
+                "consultation/first-questions#28",
+                "pricing/range-and-estimates#103"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "pricing/what-is-included#121",
+                "pricing/what-is-included#119",
+                "pricing/how-we-price#96",
+                "consultation/urgent-requests#34",
+                "implementation/api-connector#47"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#73",
+                "pricing/how-we-price#98",
+                "pricing/volume-tiers#115",
+                "consultation/urgent-requests#35",
+                "policies/personal-data#79"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        }
+      },
+      "paired_vs_reference": {
+        "openai/text-embedding-3-large": {
+          "recall5": {
+            "mean_diff": -0.125,
+            "ci": [
+              -0.3125,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.0351,
+            "ci": [
+              -0.2226,
+              0.1235
+            ]
+          },
+          "mrr": {
+            "mean_diff": 0.0115,
+            "ci": [
+              -0.175,
+              0.1771
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.025,
+            "ci": [
+              -0.0625,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": 0.0115,
+            "ci": [
+              -0.175,
+              0.1771
+            ]
+          }
+        },
+        "mistralai/mistral-embed-2312": {
+          "recall5": {
+            "mean_diff": -0.0625,
+            "ci": [
+              -0.1875,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.0926,
+            "ci": [
+              -0.2501,
+              0.0586
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.0976,
+            "ci": [
+              -0.3,
+              0.0923
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.0125,
+            "ci": [
+              -0.0375,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.0976,
+            "ci": [
+              -0.3,
+              0.0923
+            ]
+          }
+        },
+        "qwen/qwen3-embedding-8b": {
+          "recall5": {
+            "mean_diff": -0.0625,
+            "ci": [
+              -0.1875,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.0625,
+            "ci": [
+              -0.2418,
+              0.0856
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.0595,
+            "ci": [
+              -0.244,
+              0.1354
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.0125,
+            "ci": [
+              -0.0375,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.0595,
+            "ci": [
+              -0.244,
+              0.1354
+            ]
+          }
+        },
+        "openai/text-embedding-3-small": {
+          "recall5": {
+            "mean_diff": -0.125,
+            "ci": [
+              -0.3125,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.1332,
+            "ci": [
+              -0.3164,
+              0.0254
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.1176,
+            "ci": [
+              -0.3147,
+              0.0625
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.025,
+            "ci": [
+              -0.0625,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.1176,
+            "ci": [
+              -0.3147,
+              0.0625
+            ]
+          }
+        }
+      }
+    },
+    {
+      "chunk_size": 400,
+      "overlap": 50,
+      "chunk_count": 191,
+      "query_count": 16,
+      "queries_without_chunk": [],
+      "chunk_sha256": "3b9e2dbe3edae9e2c9d9aa77c1860346f19e2a06b5499d8a2079be4553af9203",
+      "models": {
+        "google/gemini-embedding-2": {
+          "summary": {
+            "recall5": {
+              "mean": 1.0,
+              "ci": [
+                1.0,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.8765,
+              "ci": [
+                0.7842,
+                0.9539
+              ]
+            },
+            "mrr": {
+              "mean": 0.8333,
+              "ci": [
+                0.7083,
+                0.9375
+              ]
+            },
+            "p5": {
+              "mean": 0.2,
+              "ci": [
+                0.2,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.8333,
+              "ci": [
+                0.7083,
+                0.9375
+              ]
+            },
+            "tokens": 10921,
+            "cost_usd": 0.002184
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#172",
+                "cases/grooming-bookings#16",
+                "solutions/phone-intake#169",
+                "solutions/document-data-entry#158",
+                "implementation/api-connector#59"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#184",
+                "solutions/ticket-creation#187",
+                "solutions/ticket-creation#190",
+                "solutions/ticket-creation#185",
+                "solutions/ticket-creation#188"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/document-data-entry#158",
+                "solutions/document-data-entry#155",
+                "cases/accounts-paperwork#7",
+                "policies/security#109",
+                "solutions/document-data-entry#156"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#72",
+                "cases/grooming-bookings#13",
+                "implementation/export-only-tools#80",
+                "implementation/csv-export#74",
+                "implementation/csv-export#71"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#174",
+                "pricing/how-we-price#115",
+                "pricing/what-is-included#141",
+                "pricing/what-is-included#140",
+                "pricing/volume-tiers#139"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/ticket-creation#185",
+                "policies/approvals#87",
+                "solutions/document-data-entry#161",
+                "policies/approvals#84",
+                "cases/trades-dispatch#25"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "solutions/customer-status-updates#154",
+                "pricing/how-we-price#115",
+                "solutions/customer-status-updates#153",
+                "solutions/phone-intake#174",
+                "solutions/email-triage#167"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/security#106",
+                "pricing/how-we-price#117",
+                "pricing/how-we-price#115",
+                "pricing/how-we-price#114",
+                "consultation/first-questions#36"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/volume-tiers#136",
+                "pricing/volume-tiers#139",
+                "pricing/volume-tiers#134",
+                "pricing/volume-tiers#133",
+                "pricing/volume-tiers#135"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "implementation/api-connector#58",
+                "pricing/setup-fees#130",
+                "pricing/setup-fees#127",
+                "implementation/crm-connector#65",
+                "pricing/what-is-included#143"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#120",
+                "pricing/how-we-price#116",
+                "pricing/how-we-price#112",
+                "pricing/volume-tiers#135",
+                "pricing/how-we-price#118"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#69",
+                "implementation/csv-export#70",
+                "implementation/csv-export#68",
+                "implementation/export-only-tools#76",
+                "implementation/api-connector#54"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#63",
+                "implementation/api-connector#56",
+                "implementation/csv-export#70",
+                "solutions/customer-status-updates#153",
+                "implementation/csv-export#69"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#44",
+                "consultation/first-questions#34",
+                "pricing/setup-fees#131",
+                "consultation/volume-and-timing#51",
+                "consultation/first-questions#36"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/urgent-requests#43",
+                "consultation/urgent-requests#38",
+                "pricing/how-we-price#117",
+                "consultation/urgent-requests#37",
+                "consultation/urgent-requests#42"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#86",
+                "pricing/how-we-price#117",
+                "policies/personal-data#97",
+                "solutions/email-triage#163",
+                "policies/security#105"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "openai/text-embedding-3-large": {
+          "summary": {
+            "recall5": {
+              "mean": 0.875,
+              "ci": [
+                0.6875,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.8058,
+              "ci": [
+                0.6183,
+                0.9539
+              ]
+            },
+            "mrr": {
+              "mean": 0.796,
+              "ci": [
+                0.6233,
+                0.9375
+              ]
+            },
+            "p5": {
+              "mean": 0.175,
+              "ci": [
+                0.1375,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.796,
+              "ci": [
+                0.6233,
+                0.9375
+              ]
+            },
+            "tokens": 10724,
+            "cost_usd": 0.001394
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#172",
+                "solutions/phone-intake#169",
+                "cases/grooming-bookings#14",
+                "solutions/phone-intake#174",
+                "solutions/phone-intake#171"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/ticket-creation#187",
+                "solutions/ticket-creation#184",
+                "solutions/ticket-creation#185",
+                "solutions/ticket-creation#190",
+                "implementation/crm-connector#62"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/document-data-entry#158",
+                "solutions/document-data-entry#155",
+                "implementation/export-only-tools#79",
+                "policies/security#109",
+                "cases/accounts-paperwork#5"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#72",
+                "cases/grooming-bookings#13",
+                "pricing/setup-fees#129",
+                "implementation/export-only-tools#80",
+                "pricing/setup-fees#128"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#174",
+                "pricing/how-we-price#115",
+                "pricing/how-we-price#116",
+                "solutions/phone-intake#171",
+                "solutions/email-triage#167"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.125,
+              "p5": 0.0,
+              "ap": 0.125,
+              "first_relevant_rank": 8,
+              "top5": [
+                "policies/approvals#86",
+                "policies/approvals#87",
+                "policies/approvals#84",
+                "cases/accounts-paperwork#2",
+                "solutions/document-data-entry#161"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/customer-status-updates#153",
+                "pricing/how-we-price#115",
+                "solutions/ticket-creation#189",
+                "solutions/email-triage#167",
+                "implementation/crm-connector#65"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/first-questions#36",
+                "pricing/how-we-price#117",
+                "pricing/range-and-estimates#123",
+                "consultation/urgent-requests#38",
+                "pricing/volume-tiers#136"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/volume-tiers#139",
+                "pricing/volume-tiers#136",
+                "pricing/volume-tiers#135",
+                "pricing/volume-tiers#134",
+                "pricing/volume-tiers#133"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#130",
+                "implementation/api-connector#58",
+                "pricing/setup-fees#129",
+                "pricing/setup-fees#126",
+                "implementation/crm-connector#65"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#120",
+                "pricing/how-we-price#112",
+                "pricing/how-we-price#116",
+                "pricing/volume-tiers#135",
+                "consultation/volume-and-timing#53"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.1111111111111111,
+              "p5": 0.0,
+              "ap": 0.1111111111111111,
+              "first_relevant_rank": 9,
+              "top5": [
+                "implementation/csv-export#73",
+                "solutions/customer-status-updates#152",
+                "solutions/document-data-entry#159",
+                "implementation/api-connector#55",
+                "policies/personal-data#99"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#63",
+                "implementation/api-connector#56",
+                "implementation/csv-export#73",
+                "implementation/crm-connector#67",
+                "implementation/crm-connector#66"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#44",
+                "consultation/first-questions#34",
+                "consultation/volume-and-timing#51",
+                "consultation/volume-and-timing#50",
+                "consultation/first-questions#36"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/urgent-requests#43",
+                "consultation/urgent-requests#37",
+                "pricing/what-is-included#141",
+                "pricing/how-we-price#115",
+                "pricing/what-is-included#144"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#86",
+                "pricing/how-we-price#117",
+                "pricing/volume-tiers#138",
+                "policies/security#105",
+                "consultation/urgent-requests#44"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "mistralai/mistral-embed-2312": {
+          "summary": {
+            "recall5": {
+              "mean": 0.9375,
+              "ci": [
+                0.8125,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.7483,
+              "ci": [
+                0.5896,
+                0.8827
+              ]
+            },
+            "mrr": {
+              "mean": 0.6892,
+              "ci": [
+                0.5221,
+                0.8438
+              ]
+            },
+            "p5": {
+              "mean": 0.1875,
+              "ci": [
+                0.1625,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.6892,
+              "ci": [
+                0.5221,
+                0.8438
+              ]
+            },
+            "tokens": 11991,
+            "cost_usd": 0.001199
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#172",
+                "solutions/phone-intake#169",
+                "implementation/api-connector#59",
+                "cases/grooming-bookings#14",
+                "cases/grooming-bookings#16"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/ticket-creation#187",
+                "solutions/ticket-creation#184",
+                "solutions/ticket-creation#185",
+                "solutions/ticket-creation#190",
+                "cases/trades-dispatch#25"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#155",
+                "solutions/document-data-entry#158",
+                "cases/accounts-paperwork#5",
+                "implementation/export-only-tools#79",
+                "policies/security#104"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#72",
+                "cases/grooming-bookings#13",
+                "pricing/setup-fees#128",
+                "implementation/csv-export#74",
+                "implementation/csv-export#69"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#174",
+                "pricing/how-we-price#116",
+                "pricing/how-we-price#115",
+                "solutions/phone-intake#175",
+                "implementation/api-connector#58"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/approvals#86",
+                "solutions/ticket-creation#185",
+                "policies/approvals#84",
+                "policies/approvals#87",
+                "cases/trades-dispatch#23"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.07692307692307693,
+              "p5": 0.0,
+              "ap": 0.07692307692307693,
+              "first_relevant_rank": 13,
+              "top5": [
+                "pricing/how-we-price#115",
+                "pricing/how-we-price#113",
+                "cases/grooming-bookings#14",
+                "implementation/crm-connector#65",
+                "solutions/customer-status-updates#154"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/range-and-estimates#123",
+                "pricing/how-we-price#117",
+                "consultation/first-questions#36",
+                "pricing/volume-tiers#136",
+                "policies/security#105"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/volume-tiers#139",
+                "pricing/volume-tiers#136",
+                "consultation/volume-and-timing#50",
+                "pricing/volume-tiers#134",
+                "consultation/volume-and-timing#49"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#130",
+                "implementation/api-connector#58",
+                "pricing/setup-fees#126",
+                "pricing/setup-fees#127",
+                "pricing/what-is-included#143"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#120",
+                "pricing/how-we-price#112",
+                "pricing/volume-tiers#135",
+                "pricing/how-we-price#116",
+                "pricing/range-and-estimates#121"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "implementation/csv-export#73",
+                "implementation/export-only-tools#77",
+                "implementation/api-connector#60",
+                "implementation/csv-export#69",
+                "implementation/api-connector#55"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#63",
+                "implementation/api-connector#56",
+                "implementation/crm-connector#66",
+                "implementation/api-connector#60",
+                "implementation/csv-export#73"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/first-questions#34",
+                "consultation/urgent-requests#44",
+                "consultation/volume-and-timing#50",
+                "pricing/volume-tiers#138",
+                "pricing/setup-fees#131"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.38685280723454163,
+              "mrr": 0.2,
+              "p5": 0.2,
+              "ap": 0.2,
+              "first_relevant_rank": 5,
+              "top5": [
+                "consultation/urgent-requests#40",
+                "pricing/what-is-included#144",
+                "pricing/what-is-included#141",
+                "consultation/urgent-requests#37",
+                "consultation/urgent-requests#43"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/how-we-price#117",
+                "policies/approvals#86",
+                "pricing/volume-tiers#138",
+                "policies/security#105",
+                "solutions/phone-intake#170"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "qwen/qwen3-embedding-8b": {
+          "summary": {
+            "recall5": {
+              "mean": 0.9375,
+              "ci": [
+                0.8125,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.7597,
+              "ci": [
+                0.6198,
+                0.8847
+              ]
+            },
+            "mrr": {
+              "mean": 0.7018,
+              "ci": [
+                0.5534,
+                0.8477
+              ]
+            },
+            "p5": {
+              "mean": 0.1875,
+              "ci": [
+                0.1625,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.7018,
+              "ci": [
+                0.5534,
+                0.8477
+              ]
+            },
+            "tokens": 11027,
+            "cost_usd": 0.00011
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#172",
+                "solutions/phone-intake#169",
+                "solutions/phone-intake#174",
+                "implementation/api-connector#57",
+                "solutions/phone-intake#170"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#184",
+                "solutions/ticket-creation#187",
+                "solutions/ticket-creation#185",
+                "solutions/ticket-creation#190",
+                "cases/trades-dispatch#23"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#155",
+                "solutions/document-data-entry#158",
+                "policies/security#105",
+                "policies/personal-data#97",
+                "cases/accounts-paperwork#1"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#72",
+                "pricing/setup-fees#128",
+                "cases/grooming-bookings#13",
+                "pricing/setup-fees#129",
+                "implementation/csv-export#68"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#174",
+                "pricing/how-we-price#115",
+                "pricing/how-we-price#116",
+                "pricing/what-is-included#140",
+                "pricing/how-we-price#113"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "policies/approvals#83",
+                "policies/approvals#84",
+                "solutions/ticket-creation#185",
+                "policies/approvals#87",
+                "solutions/ticket-creation#184"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/customer-status-updates#153",
+                "pricing/how-we-price#115",
+                "solutions/phone-intake#174",
+                "pricing/how-we-price#113",
+                "solutions/staff-assignment#182"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/security#107",
+                "pricing/how-we-price#117",
+                "consultation/volume-and-timing#51",
+                "policies/security#108",
+                "pricing/range-and-estimates#123"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/volume-tiers#136",
+                "pricing/volume-tiers#139",
+                "pricing/volume-tiers#134",
+                "pricing/volume-tiers#133",
+                "solutions/staff-assignment#176"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "implementation/api-connector#58",
+                "pricing/setup-fees#130",
+                "pricing/setup-fees#126",
+                "pricing/what-is-included#140",
+                "pricing/setup-fees#128"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#120",
+                "pricing/how-we-price#112",
+                "policies/security#107",
+                "pricing/how-we-price#116",
+                "pricing/volume-tiers#135"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.0625,
+              "p5": 0.0,
+              "ap": 0.0625,
+              "first_relevant_rank": 16,
+              "top5": [
+                "implementation/api-connector#54",
+                "implementation/csv-export#68",
+                "policies/security#102",
+                "implementation/api-connector#57",
+                "policies/approvals#83"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#63",
+                "solutions/customer-status-updates#153",
+                "implementation/crm-connector#61",
+                "implementation/api-connector#56",
+                "implementation/csv-export#68"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/first-questions#34",
+                "consultation/volume-and-timing#51",
+                "consultation/urgent-requests#44",
+                "consultation/first-questions#35",
+                "pricing/range-and-estimates#121"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/what-is-included#144",
+                "consultation/urgent-requests#43",
+                "implementation/api-connector#58",
+                "pricing/how-we-price#114",
+                "pricing/what-is-included#141"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "policies/approvals#83",
+                "policies/security#107",
+                "policies/approvals#86",
+                "solutions/document-data-entry#155",
+                "policies/personal-data#97"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "openai/text-embedding-3-small": {
+          "summary": {
+            "recall5": {
+              "mean": 0.875,
+              "ci": [
+                0.6875,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.6803,
+              "ci": [
+                0.5077,
+                0.837
+              ]
+            },
+            "mrr": {
+              "mean": 0.6313,
+              "ci": [
+                0.4594,
+                0.7969
+              ]
+            },
+            "p5": {
+              "mean": 0.175,
+              "ci": [
+                0.1375,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.6313,
+              "ci": [
+                0.4594,
+                0.7969
+              ]
+            },
+            "tokens": 10724,
+            "cost_usd": 0.000214
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#172",
+                "solutions/phone-intake#169",
+                "implementation/api-connector#57",
+                "cases/grooming-bookings#14",
+                "consultation/urgent-requests#40"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#184",
+                "solutions/ticket-creation#187",
+                "solutions/ticket-creation#190",
+                "solutions/ticket-creation#185",
+                "implementation/crm-connector#62"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#155",
+                "solutions/document-data-entry#158",
+                "policies/security#105",
+                "cases/accounts-paperwork#1",
+                "cases/accounts-paperwork#3"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "cases/grooming-bookings#13",
+                "implementation/csv-export#72",
+                "pricing/setup-fees#129",
+                "pricing/setup-fees#128",
+                "implementation/export-only-tools#80"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#174",
+                "pricing/how-we-price#115",
+                "pricing/how-we-price#116",
+                "solutions/email-triage#167",
+                "implementation/crm-connector#65"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.125,
+              "p5": 0.0,
+              "ap": 0.125,
+              "first_relevant_rank": 8,
+              "top5": [
+                "policies/approvals#87",
+                "cases/accounts-paperwork#2",
+                "policies/approvals#86",
+                "cases/trades-dispatch#19",
+                "policies/approvals#84"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "pricing/how-we-price#115",
+                "implementation/crm-connector#65",
+                "solutions/customer-status-updates#153",
+                "solutions/ticket-creation#189",
+                "implementation/api-connector#58"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/how-we-price#117",
+                "consultation/first-questions#36",
+                "pricing/range-and-estimates#123",
+                "pricing/volume-tiers#136",
+                "consultation/urgent-requests#38"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "pricing/volume-tiers#133",
+                "pricing/volume-tiers#134",
+                "pricing/volume-tiers#139",
+                "pricing/volume-tiers#136",
+                "pricing/volume-tiers#135"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#130",
+                "implementation/api-connector#58",
+                "pricing/setup-fees#128",
+                "pricing/setup-fees#126",
+                "implementation/crm-connector#65"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#120",
+                "pricing/how-we-price#112",
+                "pricing/how-we-price#116",
+                "pricing/how-we-price#115",
+                "consultation/volume-and-timing#53"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.14285714285714285,
+              "p5": 0.0,
+              "ap": 0.14285714285714285,
+              "first_relevant_rank": 7,
+              "top5": [
+                "implementation/api-connector#55",
+                "solutions/document-data-entry#159",
+                "implementation/csv-export#73",
+                "implementation/api-connector#54",
+                "policies/security#102"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#63",
+                "implementation/api-connector#56",
+                "implementation/crm-connector#66",
+                "solutions/ticket-creation#188",
+                "pricing/setup-fees#129"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#44",
+                "consultation/first-questions#34",
+                "consultation/volume-and-timing#50",
+                "consultation/first-questions#36",
+                "pricing/range-and-estimates#123"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "pricing/what-is-included#144",
+                "pricing/what-is-included#141",
+                "pricing/how-we-price#115",
+                "consultation/urgent-requests#43",
+                "implementation/api-connector#58"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#86",
+                "pricing/how-we-price#117",
+                "pricing/volume-tiers#136",
+                "pricing/volume-tiers#138",
+                "consultation/urgent-requests#44"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        }
+      },
+      "paired_vs_reference": {
+        "openai/text-embedding-3-large": {
+          "recall5": {
+            "mean_diff": -0.125,
+            "ci": [
+              -0.3125,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.0707,
+            "ci": [
+              -0.2894,
+              0.1153
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.0373,
+            "ci": [
+              -0.2526,
+              0.1562
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.025,
+            "ci": [
+              -0.0625,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.0373,
+            "ci": [
+              -0.2526,
+              0.1562
+            ]
+          }
+        },
+        "mistralai/mistral-embed-2312": {
+          "recall5": {
+            "mean_diff": -0.0625,
+            "ci": [
+              -0.1875,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.1282,
+            "ci": [
+              -0.2834,
+              0.0254
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.1442,
+            "ci": [
+              -0.3348,
+              0.0469
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.0125,
+            "ci": [
+              -0.0375,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.1442,
+            "ci": [
+              -0.3348,
+              0.0469
+            ]
+          }
+        },
+        "qwen/qwen3-embedding-8b": {
+          "recall5": {
+            "mean_diff": -0.0625,
+            "ci": [
+              -0.1875,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.1168,
+            "ci": [
+              -0.2961,
+              0.0543
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.1315,
+            "ci": [
+              -0.3346,
+              0.0729
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.0125,
+            "ci": [
+              -0.0375,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.1315,
+            "ci": [
+              -0.3346,
+              0.0729
+            ]
+          }
+        },
+        "openai/text-embedding-3-small": {
+          "recall5": {
+            "mean_diff": -0.125,
+            "ci": [
+              -0.3125,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.1962,
+            "ci": [
+              -0.4067,
+              -0.0164
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.202,
+            "ci": [
+              -0.4129,
+              0.0078
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.025,
+            "ci": [
+              -0.0625,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.202,
+            "ci": [
+              -0.4129,
+              0.0078
+            ]
+          }
+        }
+      }
+    },
+    {
+      "chunk_size": 1500,
+      "overlap": 150,
+      "chunk_count": 167,
+      "query_count": 16,
+      "queries_without_chunk": [],
+      "chunk_sha256": "7ed5ce134dd8efa0f1af3fac4a596663876eea1e6be134659aac37b03de50466",
+      "models": {
+        "google/gemini-embedding-2": {
+          "summary": {
+            "recall5": {
+              "mean": 1.0,
+              "ci": [
+                1.0,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.8409,
+              "ci": [
+                0.7366,
+                0.9457
+              ]
+            },
+            "mrr": {
+              "mean": 0.7865,
+              "ci": [
+                0.6458,
+                0.9271
+              ]
+            },
+            "p5": {
+              "mean": 0.2,
+              "ci": [
+                0.2,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.7865,
+              "ci": [
+                0.6458,
+                0.9271
+              ]
+            },
+            "tokens": 10654,
+            "cost_usd": 0.002131
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "cases/grooming-bookings#12",
+                "solutions/phone-intake#146",
+                "solutions/document-data-entry#135",
+                "implementation/api-connector#48"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#166",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#164"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/document-data-entry#135",
+                "solutions/document-data-entry#132",
+                "cases/accounts-paperwork#5",
+                "policies/security#90",
+                "solutions/document-data-entry#133"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "implementation/export-only-tools#68",
+                "implementation/csv-export#63",
+                "implementation/csv-export#60",
+                "implementation/csv-export#57"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#96",
+                "pricing/what-is-included#119",
+                "pricing/what-is-included#118",
+                "pricing/volume-tiers#117"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "policies/approvals#73",
+                "policies/security#87",
+                "policies/approvals#72",
+                "solutions/ticket-creation#161",
+                "solutions/document-data-entry#138"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "solutions/customer-status-updates#131",
+                "pricing/how-we-price#96",
+                "solutions/customer-status-updates#130",
+                "solutions/phone-intake#151",
+                "solutions/email-triage#144"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/security#88",
+                "pricing/how-we-price#98",
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#95",
+                "consultation/first-questions#28"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#113",
+                "pricing/volume-tiers#112",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "implementation/api-connector#47",
+                "pricing/setup-fees#109",
+                "pricing/setup-fees#107",
+                "pricing/setup-fees#108",
+                "implementation/crm-connector#54"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#97",
+                "pricing/range-and-estimates#102",
+                "pricing/how-we-price#93",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#58",
+                "implementation/csv-export#59",
+                "implementation/csv-export#57",
+                "implementation/export-only-tools#65",
+                "implementation/api-connector#43"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "implementation/api-connector#45",
+                "policies/personal-data#80",
+                "implementation/csv-export#59",
+                "solutions/customer-status-updates#130"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#35",
+                "consultation/first-questions#27",
+                "pricing/setup-fees#110",
+                "consultation/first-questions#28",
+                "consultation/first-questions#21"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/urgent-requests#34",
+                "consultation/urgent-requests#30",
+                "pricing/how-we-price#98",
+                "consultation/urgent-requests#29",
+                "consultation/urgent-requests#33"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#73",
+                "policies/security#89",
+                "policies/security#88",
+                "pricing/how-we-price#98",
+                "policies/security#87"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "openai/text-embedding-3-large": {
+          "summary": {
+            "recall5": {
+              "mean": 0.875,
+              "ci": [
+                0.6875,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.8058,
+              "ci": [
+                0.6183,
+                0.9539
+              ]
+            },
+            "mrr": {
+              "mean": 0.7979,
+              "ci": [
+                0.6271,
+                0.9375
+              ]
+            },
+            "p5": {
+              "mean": 0.175,
+              "ci": [
+                0.1375,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.7979,
+              "ci": [
+                0.6271,
+                0.9375
+              ]
+            },
+            "tokens": 10459,
+            "cost_usd": 0.00136
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "solutions/phone-intake#146",
+                "cases/grooming-bookings#10",
+                "solutions/phone-intake#151",
+                "solutions/phone-intake#148"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#166",
+                "implementation/crm-connector#51"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/document-data-entry#135",
+                "solutions/document-data-entry#132",
+                "implementation/export-only-tools#67",
+                "policies/security#90",
+                "cases/accounts-paperwork#3"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "implementation/export-only-tools#68",
+                "pricing/setup-fees#108",
+                "solutions/staff-assignment#158",
+                "implementation/csv-export#57"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#97",
+                "solutions/phone-intake#148",
+                "solutions/email-triage#144"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.16666666666666666,
+              "p5": 0.0,
+              "ap": 0.16666666666666666,
+              "first_relevant_rank": 6,
+              "top5": [
+                "policies/approvals#73",
+                "policies/approvals#72",
+                "solutions/document-data-entry#138",
+                "implementation/csv-export#58",
+                "policies/security#90"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/customer-status-updates#130",
+                "pricing/how-we-price#96",
+                "solutions/ticket-creation#165",
+                "solutions/email-triage#144",
+                "implementation/crm-connector#54"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/first-questions#28",
+                "pricing/how-we-price#98",
+                "pricing/range-and-estimates#103",
+                "consultation/urgent-requests#30",
+                "policies/security#88"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#114",
+                "pricing/volume-tiers#113",
+                "pricing/volume-tiers#112"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#109",
+                "implementation/api-connector#47",
+                "pricing/setup-fees#106",
+                "implementation/crm-connector#54",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#93",
+                "pricing/how-we-price#97",
+                "pricing/volume-tiers#114",
+                "consultation/volume-and-timing#42"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.1,
+              "p5": 0.0,
+              "ap": 0.1,
+              "first_relevant_rank": 10,
+              "top5": [
+                "implementation/csv-export#62",
+                "solutions/customer-status-updates#129",
+                "solutions/document-data-entry#136",
+                "implementation/api-connector#44",
+                "policies/personal-data#83"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "implementation/api-connector#45",
+                "implementation/csv-export#62",
+                "implementation/crm-connector#56",
+                "implementation/crm-connector#55"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#35",
+                "consultation/first-questions#27",
+                "consultation/volume-and-timing#40",
+                "consultation/first-questions#28",
+                "pricing/setup-fees#110"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/urgent-requests#34",
+                "consultation/urgent-requests#29",
+                "pricing/what-is-included#119",
+                "pricing/how-we-price#96",
+                "consultation/urgent-requests#32"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#73",
+                "pricing/how-we-price#98",
+                "policies/security#88",
+                "consultation/urgent-requests#35",
+                "consultation/first-questions#28"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "mistralai/mistral-embed-2312": {
+          "summary": {
+            "recall5": {
+              "mean": 0.9375,
+              "ci": [
+                0.8125,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.7483,
+              "ci": [
+                0.5896,
+                0.8827
+              ]
+            },
+            "mrr": {
+              "mean": 0.6888,
+              "ci": [
+                0.5214,
+                0.8438
+              ]
+            },
+            "p5": {
+              "mean": 0.1875,
+              "ci": [
+                0.1625,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.6888,
+              "ci": [
+                0.5214,
+                0.8438
+              ]
+            },
+            "tokens": 11660,
+            "cost_usd": 0.001166
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "solutions/phone-intake#146",
+                "implementation/api-connector#48",
+                "cases/grooming-bookings#10",
+                "cases/grooming-bookings#12"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#166",
+                "cases/trades-dispatch#18"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#132",
+                "solutions/document-data-entry#135",
+                "cases/accounts-paperwork#3",
+                "implementation/export-only-tools#67",
+                "solutions/document-data-entry#134"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "pricing/setup-fees#108",
+                "implementation/csv-export#63",
+                "implementation/csv-export#58",
+                "implementation/csv-export#62"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#97",
+                "pricing/how-we-price#96",
+                "solutions/phone-intake#152",
+                "implementation/api-connector#47"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/approvals#73",
+                "solutions/ticket-creation#161",
+                "policies/approvals#72",
+                "cases/trades-dispatch#17",
+                "solutions/ticket-creation#166"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.07142857142857142,
+              "p5": 0.0,
+              "ap": 0.07142857142857142,
+              "first_relevant_rank": 14,
+              "top5": [
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#94",
+                "cases/grooming-bookings#10",
+                "implementation/crm-connector#54",
+                "solutions/customer-status-updates#131"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/range-and-estimates#103",
+                "pricing/how-we-price#98",
+                "consultation/first-questions#28",
+                "policies/security#88",
+                "pricing/volume-tiers#115"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#116",
+                "consultation/volume-and-timing#40",
+                "pricing/volume-tiers#113"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#109",
+                "implementation/api-connector#47",
+                "pricing/setup-fees#106",
+                "pricing/setup-fees#107",
+                "pricing/what-is-included#120"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#93",
+                "pricing/volume-tiers#114",
+                "pricing/how-we-price#97",
+                "pricing/range-and-estimates#103"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "implementation/csv-export#62",
+                "implementation/export-only-tools#66",
+                "implementation/api-connector#49",
+                "implementation/csv-export#58",
+                "implementation/api-connector#44"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "implementation/api-connector#45",
+                "implementation/crm-connector#55",
+                "implementation/api-connector#49",
+                "implementation/csv-export#62"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/first-questions#27",
+                "consultation/urgent-requests#35",
+                "consultation/volume-and-timing#40",
+                "pricing/range-and-estimates#102",
+                "pricing/setup-fees#110"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.38685280723454163,
+              "mrr": 0.2,
+              "p5": 0.2,
+              "ap": 0.2,
+              "first_relevant_rank": 5,
+              "top5": [
+                "pricing/what-is-included#121",
+                "consultation/urgent-requests#32",
+                "consultation/urgent-requests#29",
+                "pricing/what-is-included#119",
+                "consultation/urgent-requests#34"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "pricing/how-we-price#98",
+                "policies/approvals#73",
+                "policies/security#88",
+                "policies/security#87",
+                "solutions/phone-intake#147"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "qwen/qwen3-embedding-8b": {
+          "summary": {
+            "recall5": {
+              "mean": 0.9375,
+              "ci": [
+                0.8125,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.7784,
+              "ci": [
+                0.6332,
+                0.9077
+              ]
+            },
+            "mrr": {
+              "mean": 0.7274,
+              "ci": [
+                0.5677,
+                0.8785
+              ]
+            },
+            "p5": {
+              "mean": 0.1875,
+              "ci": [
+                0.1625,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.7274,
+              "ci": [
+                0.5677,
+                0.8785
+              ]
+            },
+            "tokens": 10738,
+            "cost_usd": 0.000107
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "solutions/phone-intake#146",
+                "solutions/phone-intake#151",
+                "implementation/api-connector#46",
+                "solutions/phone-intake#147"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#166",
+                "solutions/ticket-creation#162"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#132",
+                "solutions/document-data-entry#135",
+                "policies/personal-data#81",
+                "policies/security#88",
+                "policies/approvals#73"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "pricing/setup-fees#108",
+                "implementation/csv-export#57",
+                "solutions/staff-assignment#158",
+                "implementation/export-only-tools#68"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#97",
+                "pricing/how-we-price#94",
+                "pricing/what-is-included#118"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "policies/approvals#72",
+                "policies/approvals#73",
+                "policies/approvals#71",
+                "solutions/ticket-creation#161",
+                "solutions/ticket-creation#160"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/customer-status-updates#130",
+                "pricing/how-we-price#96",
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#94",
+                "solutions/staff-assignment#158"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "policies/security#89",
+                "pricing/how-we-price#98",
+                "pricing/range-and-estimates#103",
+                "policies/approvals#71",
+                "consultation/first-questions#28"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#113",
+                "pricing/volume-tiers#112",
+                "pricing/volume-tiers#116"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "implementation/api-connector#47",
+                "pricing/setup-fees#109",
+                "pricing/setup-fees#108",
+                "pricing/setup-fees#106",
+                "pricing/what-is-included#118"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#93",
+                "policies/security#89",
+                "pricing/how-we-price#97",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.05555555555555555,
+              "p5": 0.0,
+              "ap": 0.05555555555555555,
+              "first_relevant_rank": 18,
+              "top5": [
+                "implementation/api-connector#43",
+                "implementation/csv-export#57",
+                "policies/security#86",
+                "policies/security#89",
+                "policies/approvals#71"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "solutions/customer-status-updates#130",
+                "implementation/crm-connector#50",
+                "implementation/api-connector#45",
+                "implementation/csv-export#57"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "consultation/first-questions#27",
+                "consultation/urgent-requests#35",
+                "pricing/range-and-estimates#102",
+                "policies/approvals#75",
+                "policies/security#89"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "pricing/what-is-included#121",
+                "pricing/what-is-included#119",
+                "consultation/urgent-requests#34",
+                "implementation/api-connector#47",
+                "pricing/how-we-price#95"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#73",
+                "policies/approvals#71",
+                "policies/security#89",
+                "solutions/document-data-entry#132",
+                "policies/security#88"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        },
+        "openai/text-embedding-3-small": {
+          "summary": {
+            "recall5": {
+              "mean": 0.875,
+              "ci": [
+                0.6875,
+                1.0
+              ]
+            },
+            "ndcg5": {
+              "mean": 0.7034,
+              "ci": [
+                0.5264,
+                0.864
+              ]
+            },
+            "mrr": {
+              "mean": 0.6637,
+              "ci": [
+                0.4903,
+                0.8333
+              ]
+            },
+            "p5": {
+              "mean": 0.175,
+              "ci": [
+                0.1375,
+                0.2
+              ]
+            },
+            "ap": {
+              "mean": 0.6637,
+              "ci": [
+                0.4903,
+                0.8333
+              ]
+            },
+            "tokens": 10459,
+            "cost_usd": 0.000209
+          },
+          "rows": [
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#149",
+                "solutions/phone-intake#146",
+                "implementation/api-connector#46",
+                "consultation/urgent-requests#32",
+                "cases/grooming-bookings#10"
+              ],
+              "qid": "q001",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/ticket-creation#160",
+                "solutions/ticket-creation#163",
+                "solutions/ticket-creation#166",
+                "solutions/ticket-creation#161",
+                "implementation/crm-connector#51"
+              ],
+              "qid": "q003",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "solutions/document-data-entry#132",
+                "solutions/document-data-entry#135",
+                "cases/accounts-paperwork#2",
+                "cases/accounts-paperwork#1",
+                "policies/security#88"
+              ],
+              "qid": "q005",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/csv-export#61",
+                "pricing/setup-fees#108",
+                "implementation/export-only-tools#68",
+                "solutions/staff-assignment#158",
+                "implementation/csv-export#58"
+              ],
+              "qid": "q007",
+              "type": "identifier"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "solutions/phone-intake#151",
+                "pricing/how-we-price#96",
+                "pricing/how-we-price#97",
+                "solutions/email-triage#144",
+                "implementation/crm-connector#54"
+              ],
+              "qid": "q009",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.14285714285714285,
+              "p5": 0.0,
+              "ap": 0.14285714285714285,
+              "first_relevant_rank": 7,
+              "top5": [
+                "policies/approvals#73",
+                "policies/approvals#72",
+                "solutions/ticket-creation#166",
+                "cases/trades-dispatch#15",
+                "solutions/document-data-entry#138"
+              ],
+              "qid": "q010",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.5,
+              "mrr": 0.3333333333333333,
+              "p5": 0.2,
+              "ap": 0.3333333333333333,
+              "first_relevant_rank": 3,
+              "top5": [
+                "pricing/how-we-price#96",
+                "implementation/crm-connector#54",
+                "solutions/customer-status-updates#130",
+                "solutions/ticket-creation#165",
+                "pricing/what-is-included#119"
+              ],
+              "qid": "q012",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/how-we-price#98",
+                "consultation/first-questions#28",
+                "pricing/range-and-estimates#103",
+                "pricing/volume-tiers#115",
+                "consultation/urgent-requests#30"
+              ],
+              "qid": "q014",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "pricing/volume-tiers#112",
+                "pricing/volume-tiers#113",
+                "pricing/volume-tiers#117",
+                "pricing/volume-tiers#115",
+                "pricing/volume-tiers#114"
+              ],
+              "qid": "q016",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/setup-fees#109",
+                "implementation/api-connector#47",
+                "pricing/setup-fees#106",
+                "implementation/crm-connector#54",
+                "pricing/how-we-price#97"
+              ],
+              "qid": "q018",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "pricing/range-and-estimates#101",
+                "pricing/how-we-price#93",
+                "pricing/how-we-price#97",
+                "pricing/how-we-price#96",
+                "consultation/volume-and-timing#42"
+              ],
+              "qid": "q020",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 0.0,
+              "ndcg5": 0.0,
+              "mrr": 0.14285714285714285,
+              "p5": 0.0,
+              "ap": 0.14285714285714285,
+              "first_relevant_rank": 7,
+              "top5": [
+                "implementation/api-connector#44",
+                "solutions/document-data-entry#136",
+                "implementation/csv-export#62",
+                "implementation/api-connector#43",
+                "policies/security#86"
+              ],
+              "qid": "q022",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "implementation/crm-connector#52",
+                "implementation/api-connector#45",
+                "implementation/crm-connector#55",
+                "solutions/ticket-creation#164",
+                "implementation/crm-connector#56"
+              ],
+              "qid": "q024",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.6309297535714575,
+              "mrr": 0.5,
+              "p5": 0.2,
+              "ap": 0.5,
+              "first_relevant_rank": 2,
+              "top5": [
+                "consultation/urgent-requests#35",
+                "consultation/first-questions#27",
+                "consultation/volume-and-timing#40",
+                "consultation/first-questions#28",
+                "pricing/range-and-estimates#103"
+              ],
+              "qid": "q027",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 0.43067655807339306,
+              "mrr": 0.25,
+              "p5": 0.2,
+              "ap": 0.25,
+              "first_relevant_rank": 4,
+              "top5": [
+                "pricing/what-is-included#121",
+                "pricing/what-is-included#119",
+                "pricing/how-we-price#96",
+                "consultation/urgent-requests#34",
+                "implementation/api-connector#47"
+              ],
+              "qid": "q029",
+              "type": "paraphrase"
+            },
+            {
+              "recall5": 1.0,
+              "ndcg5": 1.0,
+              "mrr": 1.0,
+              "p5": 0.2,
+              "ap": 1.0,
+              "first_relevant_rank": 1,
+              "top5": [
+                "policies/approvals#73",
+                "pricing/how-we-price#98",
+                "pricing/volume-tiers#115",
+                "consultation/urgent-requests#35",
+                "policies/personal-data#79"
+              ],
+              "qid": "q031",
+              "type": "paraphrase"
+            }
+          ]
+        }
+      },
+      "paired_vs_reference": {
+        "openai/text-embedding-3-large": {
+          "recall5": {
+            "mean_diff": -0.125,
+            "ci": [
+              -0.3125,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.0351,
+            "ci": [
+              -0.2226,
+              0.1235
+            ]
+          },
+          "mrr": {
+            "mean_diff": 0.0115,
+            "ci": [
+              -0.175,
+              0.1771
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.025,
+            "ci": [
+              -0.0625,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": 0.0115,
+            "ci": [
+              -0.175,
+              0.1771
+            ]
+          }
+        },
+        "mistralai/mistral-embed-2312": {
+          "recall5": {
+            "mean_diff": -0.0625,
+            "ci": [
+              -0.1875,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.0926,
+            "ci": [
+              -0.2501,
+              0.0586
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.0976,
+            "ci": [
+              -0.3,
+              0.0923
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.0125,
+            "ci": [
+              -0.0375,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.0976,
+            "ci": [
+              -0.3,
+              0.0923
+            ]
+          }
+        },
+        "qwen/qwen3-embedding-8b": {
+          "recall5": {
+            "mean_diff": -0.0625,
+            "ci": [
+              -0.1875,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.0625,
+            "ci": [
+              -0.2418,
+              0.0856
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.059,
+            "ci": [
+              -0.2431,
+              0.1354
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.0125,
+            "ci": [
+              -0.0375,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.059,
+            "ci": [
+              -0.2431,
+              0.1354
+            ]
+          }
+        },
+        "openai/text-embedding-3-small": {
+          "recall5": {
+            "mean_diff": -0.125,
+            "ci": [
+              -0.3125,
+              0.0
+            ]
+          },
+          "ndcg5": {
+            "mean_diff": -0.1375,
+            "ci": [
+              -0.3212,
+              0.0211
+            ]
+          },
+          "mrr": {
+            "mean_diff": -0.1228,
+            "ci": [
+              -0.3237,
+              0.0625
+            ]
+          },
+          "p5": {
+            "mean_diff": -0.025,
+            "ci": [
+              -0.0625,
+              0.0
+            ]
+          },
+          "ap": {
+            "mean_diff": -0.1228,
+            "ci": [
+              -0.3237,
+              0.0625
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "split": "dev",
+  "k": 5,
+  "bootstrap": 2000,
+  "seed": 0,
+  "reference": "google/gemini-embedding-2",
+  "query_prefix": "none",
+  "total_cost_usd": 0.015048,
+  "command": "OPENROUTER_API_KEY=... python evals/retrieval/compare_embeddings.py",
+  "date": "2026-10-22"
+}
