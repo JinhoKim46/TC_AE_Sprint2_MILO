@@ -1,6 +1,6 @@
 # MILO — Build Specification
 
-Status: v0.7 draft. Supersedes v0.6. Red-team round 4 (on v0.6) is applied here. Round 5 is the last allowed round (cap 5).
+Status: v0.8 draft. Supersedes v0.7. Section 20 overrides earlier text. Review round 6 runs on this version.
 Agents read this file and `HARNESS.md` before anything else. Where this file and a kit file disagree, section 14 says which wins.
 
 Requirements source: the project kit (`project-kit/MILESTONES.md`, `RUBRIC.md`, `CHECKPOINTS.md`, `contract/`). Kit files are read-only.
@@ -432,6 +432,35 @@ Each done-line runs through a kit target or a test path. A milestone's done-line
 
 ---
 
+## 20. Version 0.8 decisions (these override earlier text where they conflict)
+
+Where a section below conflicts with this one, this section wins. The reviewer checks for conflicts and reports them.
+
+**Database**
+- **D57 Postgres.** The product database is Supabase PostgreSQL. SQLite is removed from the design. Override of D14 and section 15: `text`, `timestamptz`, `jsonb` for JSON, `uuid` keys, `CHECK` constraints for enums, and row-level security on every owner table (an owner reads and writes only their own rows; operators read all rows through a separate role). Migrations live in `db/migrations/`, one file per change, applied in order.
+- **D58 Two Supabase projects.** `milo-test` (tests, development runs, evaluations; can be reset freely) and `milo-prod` (real customer data). Connection strings come from `MILO_DATABASE_URL_TEST` and `MILO_DATABASE_URL_PROD`. `MILO_ENV` selects one, and it defaults to `test`. Tests and evaluations refuse to run against prod. Keys and passwords live only in the untracked `.env` file, never in the repo.
+- **D59 Consent-gated data.** Customer data enters prod only after consent is recorded (D43). Aggregate analysis across customers needs a separate consent version. The consent text is reviewed by the owner before prod is used.
+
+**Gold set**
+- **D60 120-question gold set** (overrides D25 and section 3 counts): 120 questions, 60 dev and 60 test, stratified by type. At least 24 unanswerable (12 dev, 12 test) and at least 40 with a metadata filter (20 dev). Questions are realistic: typos, short forms, multi-part questions, and owners who answer in fragments. A Fable agent generates them. A second Fable agent audits the entire dataset, old and new, before any split is read. The audit report is committed with the data. The embedding and chat comparisons are rerun on the expanded dev split under a Fable-written protocol.
+
+**Pages**
+- **D61 Pages:** sign-in; set password from invite; conversation (the main layout, section 16); specification review (every field, status, evidence, edit requests); reports (list and view); profile (company details, owner account, consent history, data-deletion request); operator (submissions list, submission detail, audit log, invite form); error and empty pages.
+
+**Components**
+- **D62 Component set:** top bar with navigation menu; conversation thread with inline evidence cards; composer with upload; evidence panel with status chips, progress and missing fields; estimate card, labelled indicative; approval banner; confirmation dialog (submit and withdraw); toast messages; tables with filters and empty states; report renderer with ten sections.
+
+**Review fixes from round 5**
+- **D63** The S0 scaffold ships `tests/test_s0_smoke.py`, so `make check` has a test to run.
+- **D64** Seams in S0: `security/identity.py` (`strip_identity_keys`), `chain.py` (discovery seam that raises `NotImplementedError` until M5b), `evals/common.py` (the only loader that names the gold file), and `evals/run_all_replay.py`.
+- **D65** A refused cross-owner request (`not_found`) counts as a block. It is an execution only when the backend changed state. The M4 report shows this as its own column.
+- **D66** Knowledge-base wording: no article contains a D22 phrase. A builder check fails the data build if one does.
+- **D67** The hidden-name check is a warning, not a block. The names come only from `.privacy-terms`.
+- **D68** The reversed names are removed from git history after v0.8 is committed. This is a force-push to the private remote, and the experiment log and submodule pointer are updated to the new commit IDs.
+
+**Experiments**
+- **D69** Every experiment has a protocol written by a Fable agent before it runs. The embedding result (D5) is provisional until its protocol is written and the test-split check runs.
+
 ## Version log
 
 - v0.1 (2026-10-21): customer-support scope, D1 to D31.
@@ -443,3 +472,4 @@ Each done-line runs through a kit target or a test path. A milestone's done-line
 - v0.5 (2026-10-22): red-team round 2 applied. Threads keyed by (user, thread) in contract mode. Tools through the backend protocol. Kit attack enums kept. Ruff excludes kit files. Contract threshold fixed at 0.30. Contract target enforced by root conftest. Store and auth roles in Phase 1a. Validation and stub retriever in S0. Protocol and rate-card schemas given. App.ingest specified. Provider error mapping. Single sealing loader. Discovery reply runs the tool loop and shows a details drawer. M7 on dev, F2 on test. Approval lifecycle. Replay-based provenance. Makefile targets with commands. Estimate numbers out of the model. Minor fixes: HTMX removed, trailers from the harness, identity before validation, lazy imports, `.python-version`, git-based privacy file list, session at sign-in, one turn per session, traces table, 44-row gold split, targets mapped to merges.
 - v0.6 (2026-10-22): red-team round 3 applied. Seams and S0 pipeline stated (S0 row). Wire types (section 2A). Protocol and rate-card files are the schemas. Estimate tool takes no numbers. Single retry site. Eval, replay and kit-discovery targets added. Leakage check excludes its own tests and is git-ordered per retrieval branch. Predicted kit-discovery outcome in section 14. M3 and M4 done-lines run real tool and policy tests. HARNESS v0.5 is a separate file.
 - v0.7 (2026-10-22): red-team round 4 applied. ruff pinned to E4, E7, E9, F and build_data.py formatted. ToolCall fields as the kit defines them. discovery-table replaces kit-discovery. Protocol section follows the committed file. Gold and tool-case sections follow the committed data, with M0 fixes listed. Success per check type defined. Objects map and E-1, E-2 and owner-e defined. Role slugs and the advanced-rag git-order check added. HARNESS v0.6.
+- v0.8 (2026-10-22): Postgres on Supabase with two projects (D57, D58); consent gating (D59); 120-question gold set with Fable audit (D60); page and component sets (D61, D62); round-5 fixes (D63 to D66); warning-only name check (D67); history rewrite queued (D68); Fable-designed experiments (D69). Section 20 overrides earlier text where they conflict.
