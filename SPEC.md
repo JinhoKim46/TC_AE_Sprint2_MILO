@@ -503,6 +503,11 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - HARNESS v0.7 follows this section: roles and Appendix A are updated for D70 to D84. The `audit` slug is added to D29.
 - The kit run (9 tests under 7 keywords, in contract mode, with sockets blocked) is unaffected only if three invariants hold, and the S0 row and M5-store row state them: `milo.app` imports no DB driver at module level; contract mode (`discovery=False`) keeps history, approvals and traces in memory and never touches a store; no part of the store role edits `pytest.ini`, the root `conftest.py` or the kit conftest.
 
+## 22. Simplifications (override earlier privacy rules)
+
+- **D85 No name check.** The hidden-name check, `.privacy-terms`, and every rule that depends on them are removed. The only privacy checks left are the generic ones: no API keys and no absolute home paths.
+- **D86 History rewritten.** Done on 2026-10-22. The old commit IDs are mapped in `docs/history-map.md`.
+
 ## Version log
 
 - v0.1 (2026-10-21): customer-support scope, D1 to D31.
@@ -516,3 +521,4 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.7 (2026-10-22): red-team round 4 applied. ruff pinned to E4, E7, E9, F and build_data.py formatted. ToolCall fields as the kit defines them. discovery-table replaces kit-discovery. Protocol section follows the committed file. Gold and tool-case sections follow the committed data, with M0 fixes listed. Success per check type defined. Objects map and E-1, E-2 and owner-e defined. Role slugs and the advanced-rag git-order check added. HARNESS v0.6.
 - v0.8 (2026-10-22): Postgres on Supabase with two projects (D57, D58); consent gating (D59); 120-question gold set with Fable audit (D60); page and component sets (D61, D62); round-5 fixes (D63 to D66); warning-only name check (D67); history rewrite queued (D68); Fable-designed experiments (D69). Section 20 overrides earlier text where they conflict.
 - v0.9 (2026-10-22): review round 6 applied in section 21 (D70 to D84): in-memory store for tests, integer ids with uuid users and turns, one migration source, RLS with a dedicated app role, psycopg pool, prod isolation, gold expansion as M0b, KB wording check, protocols under evals/protocols, new routes, consent gate, name check, history rewrite before Phase 0.
+- v0.9.1 (2026-10-22): name check removed (D85); history rewritten and mapped (D86).
