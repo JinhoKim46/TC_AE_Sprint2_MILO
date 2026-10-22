@@ -1,6 +1,6 @@
 # MILO — Agent Harness
 
-Status: v0.7, matches `SPEC.md` v0.9.1. Read `SPEC.md` first, including sections 20 to 22, which override earlier text. If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
+Status: v0.8, matches `SPEC.md` v0.9.2. Read `SPEC.md` first, including sections 20 to 22, which override earlier text. If a rule here and `SPEC.md` disagree, stop and write a request in `docs/requests/` instead of guessing.
 
 ## 1. Roles
 
@@ -14,7 +14,7 @@ Every role is a SPEC section 13 phase entry. The integrator is one role; it may 
 | Gold audit (M0b) | 1a, a different agent from Data | `data/prompts/gold-audit.md` only, on `agent/audit/m0b` | everything else |
 | Tools and pricing (M3) | 1a | `src/milo/tools/**`, `src/milo/pricing/{rate_card,estimator}.py`, `evals/agent/run_tools.py`, its tests and report | `security/**`, `llm/**` |
 | LLM and errors (M5a) | 1a | `src/milo/llm/**`, `tests/test_llm.py`, `tests/test_errors.py`, `docs/m5a_report.md` | `errors.py`, `app.py` (I) |
-| Store and auth (M5-store) | 1a | `src/milo/store/**` (including `memory.py`), `src/milo/auth/**`, `db/migrations/**` after S0, `tests/test_store.py`, `tests/test_auth.py`, `tests/test_store_identity.py` | `app.py` (I) |
+| Store and auth (M5-store) | 1a | `src/milo/store/**` (including `memory.py`), `src/milo/auth/**` (Supabase Auth client and JWT verification), `db/migrations/**` after S0, `tests/test_store.py`, `tests/test_auth.py`, `tests/test_store_identity.py` | `app.py` (I) |
 | Web shell (M6, phase 1a) | 1a | `src/milo/web/**` shell and static files, shell pages, `tests/test_web_shell.py` | `App` internals |
 | Retrieval (M1) | 1b | `src/milo/rag/{chunk,ingest,vectors,retrieve}.py`, `evals/retrieval/run_retrieval.py`, `tests/test_chunk.py`, `tests/test_vectors.py`, `docs/m1_report.md` | `data/**`, `security/**` |
 | Security (M4) | 2 | `src/milo/security/{policy,identity,taint}.py` (bodies), `evals/agent/run_attacks.py`, `tests/test_policy.py`, `tests/test_identity.py`, `docs/m4_report.md` | `tools/specs.py` (request a change) |
@@ -51,7 +51,8 @@ Role slugs for branch names (SPEC D29): `data`, `audit`, `tools`, `llm`, `store`
 8. **Contract files are read-only.** `contract/` is copied from the kit. A test that looks wrong gets a request, not an edit.
 9. **No silent skip.** `skip` and `xfail` are not allowed in a done-line.
 10. **Retries in one place.** Only `src/milo/llm/retry.py` retries a model call (SPEC D23a). A second model call for JSON re-asking goes through `retry.py` and is not a retry.
-11. **Consent before data.** `POST /messages` and `POST /upload` return 403 `consent_required` until the owner has an `interview` consent row (D81).
+11. **Self-registration only.** Accounts are created by sign-up (SPEC section 23). No invite step, and no sign-up path can create an operator.
+12. **Consent before data.** `POST /messages` and `POST /upload` return 403 `consent_required` until the owner has an `interview` consent row (D81).
 
 ## 4. Milestone cycle (no human in the loop)
 

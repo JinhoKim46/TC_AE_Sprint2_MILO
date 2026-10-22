@@ -508,6 +508,25 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - **D85 No name check.** The hidden-name check, `.privacy-terms`, and every rule that depends on them are removed. The only privacy checks left are the generic ones: no API keys and no absolute home paths.
 - **D86 History rewritten.** Done on 2026-10-22. The old commit IDs are mapped in `docs/history-map.md`.
 
+## 23. Self-registration and accounts (overrides D34, D35 invite-only text, and the identity rules of D74)
+
+- **D87 Open self-registration.** Anyone can create an account. There is no invite step. The owner's first sign-in is the sign-up.
+- **D88 Login platform: Supabase Auth.** Accounts, email and password, email confirmation, password reset and session tokens are handled by Supabase Auth in each project (`auth.users`). Our code never stores passwords. Sign-up, sign-in, sign-out, confirmation and reset go through the project's Auth API with the publishable key. The app verifies session tokens (JWT) against the project's JWKS URL (`SUPABASE_*_JWKS_URL` in `.env`), locally, on each request. The secret key is server-side only.
+- **D89 Profiles in our database.** `public.profiles(id uuid primary key references auth.users, email text, display_name text, role text not null default 'owner' check (role in ('owner','operator')), created_at timestamptz, last_seen_at timestamptz)`. A trigger on `auth.users` inserts the profile row when an account is confirmed. The `role` column is changed only by an operator in the database. A user cannot set their own role.
+- **D90 Company data.** `customers` (one row per owner account) keeps the company fields and links to `profiles.id`. Consents (D81) stay in their own table, keyed by user.
+- **D91 Row-level security.** Every owner table's policies compare the row's owner with `auth.uid()` (in Postgres) or with the verified token's `sub` (in the app, set per transaction, D74). The app connects as `milo_app`, never as the service role. Operators read through `milo_operator`, granted by `role = 'operator'` in `profiles`.
+- **D92 Protection.** Sign-up and sign-in are rate-limited per IP and per email (5 failures per 15 minutes per account, D34's lockout kept). Passwords have a minimum length of 12. Email confirmation is required before any interview page opens. Error messages do not reveal whether an email is registered.
+- **D93 Routes.** Replace the invite routes with: `GET /signup`, `POST /signup`, `GET /confirm` (the email link), `GET /login`, `POST /login`, `POST /logout`, `GET /reset` and `POST /reset` (request), `GET /reset/<token>` and `POST /reset/<token>` (set a new password). The invite route and `flask invite` are removed. `auth/invites.py` becomes `auth/accounts.py`, a thin client over Supabase Auth.
+- **D94 Operator access.** The first operator is set by hand in the database for one account (`update profiles set role = 'operator' where email = ...`), documented in `docs/operations.md`. No sign-up path can produce an operator.
+- **D95 Setup in the Supabase dashboard (owner).** Authentication → Providers → Email: enable "Confirm email"; set the site URL and the redirect URLs to the local app address for test and the real domain for prod; check the email rate limits for the free tier. These are dashboard settings, not code.
+- **D96 Consent at sign-up.** The sign-up form shows the consent text (version v0, placeholder) and records a consent row on confirmation (D81). The consent gate still blocks the interview until the row exists.
+
+**Consequences for other sections**
+- Section 16 routes: the invite routes and `GET /login` for invited accounts are replaced by D93. The operator's `/ops` pages check `role = 'operator'`.
+- Section 15 tables: `users` is replaced by `profiles` (D89). `invites` is removed.
+- Section 11.2 dependencies add `pyjwt[crypto]` and `httpx`.
+- HARNESS rule 3 and Appendix A: `auth/**` covers the Supabase Auth client and JWT verification, and `docs/operations.md` is an integrator file.
+
 ## Version log
 
 - v0.1 (2026-10-21): customer-support scope, D1 to D31.
@@ -522,3 +541,4 @@ Source: review round 6 (on v0.8). I decided not to run another full review round
 - v0.8 (2026-10-22): Postgres on Supabase with two projects (D57, D58); consent gating (D59); 120-question gold set with Fable audit (D60); page and component sets (D61, D62); round-5 fixes (D63 to D66); warning-only name check (D67); history rewrite queued (D68); Fable-designed experiments (D69). Section 20 overrides earlier text where they conflict.
 - v0.9 (2026-10-22): review round 6 applied in section 21 (D70 to D84): in-memory store for tests, integer ids with uuid users and turns, one migration source, RLS with a dedicated app role, psycopg pool, prod isolation, gold expansion as M0b, KB wording check, protocols under evals/protocols, new routes, consent gate, name check, history rewrite before Phase 0.
 - v0.9.1 (2026-10-22): name check removed (D85); history rewritten and mapped (D86).
+- v0.9.2 (2026-10-22): open self-registration with Supabase Auth and profiles in our database (D87 to D96); invite-only text overridden.
