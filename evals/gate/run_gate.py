@@ -159,8 +159,12 @@ def run_rows(
     rows: list[dict[str, Any]],
     *,
     cap: float | None = None,
+    fail_fast: bool = False,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], str | None]:
-    """Stage 1 for every row, stage 2 for the undecided; returns (result rows, replay records, stop reason)."""
+    """Stage 1 for every row, stage 2 for the undecided; returns (result rows, replay records, stop reason).
+
+    `fail_fast` (live modes): when the first stage-2 call fails, stop there, so a response shape that differs from
+    the documented one costs one call, not the whole run (the protocol's "verify at run time")."""
     out: list[dict[str, Any]] = []
     replay: list[dict[str, Any]] = []
     spent = 0.0
@@ -207,6 +211,9 @@ def run_rows(
                     "reason": WHY,
                 }
             )
+            if fail_fast and len(replay) == 1 and d.gate_failed:
+                raw = json.dumps(d.raw, default=str)[:400]
+                return out, replay, f"first stage-2 call failed: {d.failure}; raw {raw}"
     return out, replay, None
 
 
@@ -563,14 +570,22 @@ def run_live(args: argparse.Namespace) -> int:
     cap = CAP_USD if args.max_cost is None else args.max_cost
     gate, ledger = _live_gate(NO_THRESHOLDS)
     ledger.check(cap)
-    rows, recs, stop = run_rows(gate, gate_inputs("dev", with_probes=True), cap=cap)
+    rows, recs, stop = run_rows(
+        gate, gate_inputs("dev", with_probes=True), cap=cap, fail_fast=True
+    )
     write_jsonl(DEV_REPLAY, recs)
     if stop:
         print(
             f"stopped: {stop}; {len(recs)} records kept in {DEV_REPLAY.name}, no gate_dev.json written"
         )
         return 1
-    th = thresholds_from(rows)
+    try:
+        th = thresholds_from(rows)
+    except ValueError as exc:
+        print(
+            f"no thresholds: {exc}; {len(recs)} records kept, no gate_dev.json written"
+        )
+        return 1
     doc = write_result(
         args.out or DEV_PATH,
         mode="live",
@@ -611,7 +626,7 @@ def run_final(args: argparse.Namespace) -> int:
         f"budget check: projected test cost <= {projected:.6f} USD; remaining {ledger.remaining():.4f} USD"
     )
     ledger.check(projected)
-    rows, recs, stop = run_rows(gate, inputs, cap=cap)
+    rows, recs, stop = run_rows(gate, inputs, cap=cap, fail_fast=True)
     write_jsonl(DEV_REPLAY, recs, append=True)
     if stop:
         print(f"stopped: {stop}")

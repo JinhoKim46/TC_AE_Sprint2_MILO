@@ -2,12 +2,12 @@
  "reasoning": {
   "(evals/gate/fixtures/jev_dry.json": "off"
  },
- "git_commit": "76ecac9b541288a96f3c550dd58f043aa5d9a01a",
+ "git_commit": "419fa0996941db91f233a34fce076cbf0d2b5f8d",
  "model": "dry-scripted (evals/gate/fixtures/jev_dry.json, synthetic probabilities)",
  "seed": 0,
  "temperature": 0.0,
  "command": "uv run python evals/gate/run_gate.py --dry",
- "timestamp": "2026-10-22T18:31:48Z",
+ "timestamp": "2026-10-22T19:32:36Z",
  "inputs": {
   "scope_set": "dbd26441a39d1c82613cf9afd2601de47ddf6dee74eb68fdf959e24456bf4004",
   "probes": "4249ba0acf9f4d7001d3a40397c31ab7ab8443283e8b58a1339aebb824768edc",

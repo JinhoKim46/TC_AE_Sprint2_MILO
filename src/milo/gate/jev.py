@@ -273,4 +273,10 @@ def jev_from_env(
     cfg = Settings.from_env(environ)
     if not cfg.openrouter_api_key:
         return None
-    return JevGate(OpenRouterDecisions(cfg.openrouter_api_key, ledger=ledger))
+    return JevGate(
+        OpenRouterDecisions(
+            cfg.openrouter_api_key,
+            ledger=ledger,
+            price_in_usd_per_mtok=JEV_PRICE_IN_USD_PER_MTOK,
+        )
+    )

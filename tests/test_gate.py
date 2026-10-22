@@ -625,3 +625,28 @@ def test_runner_replay_matches_and_detects_a_change(tmp_path):
     bad = tmp_path / "bad.json"
     bad.write_text(json.dumps(doc))
     assert rg.replay(bad)
+
+
+def test_live_run_stops_after_a_failed_first_call():
+    rg = _runner()
+    gate = Gate(
+        jev=JevGate(OpenRouterDecisions("k", http=FakeHttp(200, {"answers": {}})))
+    )
+    rows, recs, stop = rg.run_rows(
+        gate, rg.gate_inputs("dev", with_probes=False), fail_fast=True
+    )
+    assert stop and stop.startswith("first stage-2 call failed") and len(recs) == 1
+
+
+def test_cost_falls_back_to_input_tokens_times_price():
+    body = {
+        "answers": {QUESTION_KEY: {"type": "noul", "noul": 0.4}},
+        "usage": {"input_tokens": 1000},
+    }
+    client = OpenRouterDecisions(
+        "k", http=FakeHttp(200, body), price_in_usd_per_mtok=0.042
+    )
+    client.decide(build_request(build_state("x")))
+    assert (
+        client.last_cost_usd == pytest.approx(0.000042) and client.last_cost_estimated
+    )

@@ -14,7 +14,7 @@ No number below is a measurement of Jev; the dry run uses synthetic probabilitie
 | `src/milo/llm/cloud.py` | Additive: `OPENROUTER_DECISIONS_URL` and `OpenRouterDecisions` (one POST of `{model, state, questions}`; HARNESS rule 1 keeps the URL here). |
 | `src/milo/chain.py`, `src/milo/app.py` | Call site: a `gate` node between `policy` and `extract` in the discovery pipeline; `build_discovery_app(..., gate=None)`. Contract mode never builds the discovery runtime, so it never reaches the gate. |
 | `evals/gate/run_gate.py` | `--dry`, `--replay`, `--live`, `--final`. |
-| `tests/test_gate.py` | 29 offline tests. |
+| `tests/test_gate.py` | 31 offline tests. |
 
 ## Routing
 
@@ -63,7 +63,8 @@ Zero in-scope dev rows refused by stage 1; 110 dev rows and 41 probes reach stag
 
 ## Limits
 
-- The Decisions response shape is from the documentation, not yet seen live; the first live call verifies it. The
+- The Decisions response shape is from the documentation, not yet seen live; the first live call verifies it (the live
+  and final runs stop after one call when it fails, and keep that record). The
   parser accepts the documented `answers.<key>.noul` and a few variants and fails open on anything else.
 - `scripts/live_check.py` still lists the M5G row as "no runner yet" (integrator-owned).
 - An off-topic request naming one strong term passes stage 1 (D158 accepted limit); the D108 reply check covers it.

@@ -226,6 +226,7 @@ class OpenRouterDecisions:
         http: Any = None,
         ledger: SpendLedger | None = None,
         purpose: str = "gate",
+        price_in_usd_per_mtok: float | None = None,
     ) -> None:
         if http is None:
             import httpx
@@ -236,14 +237,17 @@ class OpenRouterDecisions:
         self._timeout = timeout
         self._ledger = ledger
         self._purpose = purpose
+        self.price_in_usd_per_mtok = price_in_usd_per_mtok
         self.last_response_model: str | None = None
         self.last_cost_usd: float | None = None
+        self.last_cost_estimated = False
 
     def decide(self, body: dict[str, Any]) -> dict[str, Any]:
         if self._ledger is not None:
             self._ledger.check()
         self.last_response_model = None
         self.last_cost_usd = None
+        self.last_cost_estimated = False
         resp = self._http.post(
             OPENROUTER_DECISIONS_URL,
             json=body,
@@ -263,7 +267,14 @@ class OpenRouterDecisions:
         self.last_response_model = served if isinstance(served, str) else None
         usage = data.get("usage")
         cost = usage.get("cost") if isinstance(usage, dict) else None
-        if isinstance(cost, (int, float)) and not isinstance(cost, bool):
+        tokens = usage.get("input_tokens") if isinstance(usage, dict) else None
+        if not isinstance(cost, (int, float)) or isinstance(cost, bool):
+            cost = None
+            # no provider figure: input tokens times the pinned price (output billing unknown, flagged)
+            if isinstance(tokens, int) and self.price_in_usd_per_mtok is not None:
+                cost = tokens * self.price_in_usd_per_mtok / 1_000_000
+                self.last_cost_estimated = True
+        if cost is not None:
             self.last_cost_usd = float(cost)
             if self._ledger is not None:
                 self._ledger.record(
