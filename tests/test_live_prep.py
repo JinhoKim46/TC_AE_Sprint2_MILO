@@ -220,7 +220,7 @@ def test_tools_live_writes_result_replay_file_latency_and_real_temperature(
         json.loads(line)
         for line in (tmp_path / "tools_live_replay.jsonl").read_text().splitlines()
     ]
-    assert len(replay) == 16  # 15 cases plus the failed attempt
+    assert len(replay) == len(dev_cases) + 1  # every dev case plus the failed attempt
     assert [r["attempt"] for r in replay[:2]] == [1, 2] and replay[0]["error"]
     assert replay[1]["response"]["response_model"] == "anthropic/fake-2026"
     assert {"request_hash", "request", "usage", "cost_usd", "latency_s"} <= set(
