@@ -19,6 +19,7 @@ RUNNERS: list[tuple[str, str, bool]] = [
     ("attacks", "evals/agent/run_attacks.py", False),
     ("retrieval", "evals/retrieval/run_retrieval.py", False),
     ("ab", "evals/retrieval/ab.py", False),
+    ("kb-title", "evals/retrieval/compare_title.py", False),
     ("chat", "evals/chat/compare_chat.py", False),
     ("rag", "evals/rag/run_rag_eval.py", False),
     ("discovery", "evals/discovery/run_discovery.py", True),

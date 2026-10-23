@@ -1,0 +1,3905 @@
+{
+  "reasoning": {
+    "google/gemini-embedding-2": "off"
+  },
+  "git_commit": "bff0f240add9e444438ae9ecafecb5008f09d1ae",
+  "model": "google/gemini-embedding-2",
+  "seed": 0,
+  "temperature": null,
+  "command": "MILO_LIVE=1 python evals/retrieval/run_retrieval.py --title",
+  "timestamp": "2026-10-23T15:48:35Z",
+  "inputs": {
+    "gold": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+    "gold_alt": "eea1858463150004f90f93130f513987a882d27e8d33a927e36c0cd51da73826",
+    "kb/cases/accounts-paperwork.md": "d0d624c151af25e79e06387da979ab4b5c39333bfce840ed5420fbf5eeef6ec0",
+    "kb/cases/grooming-bookings.md": "bc9f874476d51be805632f5ed2bd57f540cff037745ba9a53d7fb46a656a2815",
+    "kb/cases/trades-dispatch.md": "58a8d9825e676df5f86506657c59a56d5aacc1b35b7da66999bca3c44cf0b64a",
+    "kb/consultation/first-questions.md": "ffaedb91b392429819353e1be7c719821b40d8551d346da3aa55d37357b18180",
+    "kb/consultation/urgent-requests.md": "a7343974f707554bcb162b52466e5c47c2c7d012cea6470c01a774cd2a554d1c",
+    "kb/consultation/volume-and-timing.md": "8dcf4f50fcac41a6e535557df9f6365ac737306876c7fe8b3b46b48147347404",
+    "kb/implementation/api-connector.md": "5c91228c51474f4d17879e19490ca10680edace6e015b509b83b1f26967abe9b",
+    "kb/implementation/crm-connector.md": "08064b9bb43c67cd1d24c7051b1a368ee8ebe3e0e45bf93fecd60dbc735e2f41",
+    "kb/implementation/csv-export.md": "18a096ea7f174cf5ce9e7e9dd1d204fa696ff4c966c095b160982f44abd2a93f",
+    "kb/implementation/export-only-tools.md": "2112c09e693940464a5aa99852814711dae2aeba0b7da0b62ea723074eeea8d4",
+    "kb/policies/approvals.md": "8c6368434555323e7c7a24b7a4faddc385cb65c9a87ce9c7038953493dd1c019",
+    "kb/policies/personal-data.md": "56b9b2f979de857c98896954a3f791aff49b8b64872228f5c949d6dc8b9f1a2a",
+    "kb/policies/security.md": "eaa7535f41bf48d52d7cb5de9d879ea459ca8ca4276f4947b49bfdada0e7b41e",
+    "kb/pricing/how-we-price.md": "2d9b3821ba0e64b14772c2aa9f620bad3ed6cd9ee567a7ce1c1a83a84ac6424a",
+    "kb/pricing/range-and-estimates.md": "33feb2e5988248e72eb4384778d8614f6d6a3c9261c4b8c2ca53fac2e4b2ed04",
+    "kb/pricing/setup-fees.md": "58ccce095dabb1ccb68d8875c6935fa24e5d601f74fb6a6fe49358ee415bfa04",
+    "kb/pricing/volume-tiers.md": "3c531f788c97df735c20dfa60c868fe63cecb1975a46a5ba0ca89a1fee3856fa",
+    "kb/pricing/what-is-included.md": "ee4f3d4bd154a8e8659209bb680c18adc710213acd327bafbe43389a44d3df0e",
+    "kb/solutions/customer-status-updates.md": "9a55700f2cfb8eaab2ba373785b9dfd44617841bd1cfe2348decdee3f931207c",
+    "kb/solutions/document-data-entry.md": "4a7995b6dc1cdb8e7e5382d72b9bbc939f561388a08a5716079c4a478ebeca9c",
+    "kb/solutions/email-triage.md": "780df4d00db12955f5db8438986219740f33463492f29bd4367e2af2afeafb1e",
+    "kb/solutions/phone-intake.md": "8ff38aa615b782d8b51a4c21c054250d1affbf165a6a0cd7088212e816d09491",
+    "kb/solutions/staff-assignment.md": "f021a53ccce5c28a21497a2d8a967c94b40b5269bf3123dec3828980fb5e3511",
+    "kb/solutions/ticket-creation.md": "0a1de3995af8ffbdb42e1820cf070f25b1dd44601151bdb15339992f43e14cc8",
+    "script": "d71310e11807ca7550c04295250c35d087dcf5543e327fa1d9ab62fb56b80d44"
+  },
+  "temperature_note": "embeddings have no temperature",
+  "dry": false,
+  "split": "dev",
+  "k": 5,
+  "bootstrap": 2000,
+  "query_prefix": "none",
+  "chunk_size": 800,
+  "overlap": 100,
+  "title_prefix": true,
+  "chunk_count": 167,
+  "chunk_sha256": "1547a2c41b6ffcc26a4f83757e4eea99837d05b115f945142efba3a44df6eb2c",
+  "embedding_dim": 3072,
+  "embedding_requests": 4,
+  "total_cost_usd": 0.00244,
+  "total_tokens": 12200,
+  "cost_note": "from the usage field of each embedding response (provider cost when returned, else tokens times the listed price of 0.2 USD per million)",
+  "spend_reason": "dense retrieval baseline needs the product embedding model's vectors for the KB and the dev questions (D126)",
+  "queries_without_chunk": [],
+  "summary": {
+    "n": 48,
+    "recall5": {
+      "mean": 0.875,
+      "ci": [
+        0.7708,
+        0.9583
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.7516,
+      "ci": [
+        0.6495,
+        0.8475
+      ]
+    },
+    "mrr": {
+      "mean": 0.7212,
+      "ci": [
+        0.6178,
+        0.821
+      ]
+    },
+    "p5": {
+      "mean": 0.175,
+      "ci": [
+        0.1542,
+        0.1917
+      ]
+    },
+    "ap": {
+      "mean": 0.7212,
+      "ci": [
+        0.6178,
+        0.821
+      ]
+    }
+  },
+  "summary_excluding_no_chunk": {
+    "n": 48,
+    "recall5": {
+      "mean": 0.875,
+      "ci": [
+        0.7708,
+        0.9583
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.7516,
+      "ci": [
+        0.6495,
+        0.8475
+      ]
+    },
+    "mrr": {
+      "mean": 0.7212,
+      "ci": [
+        0.6178,
+        0.821
+      ]
+    },
+    "p5": {
+      "mean": 0.175,
+      "ci": [
+        0.1542,
+        0.1917
+      ]
+    },
+    "ap": {
+      "mean": 0.7212,
+      "ci": [
+        0.6178,
+        0.821
+      ]
+    }
+  },
+  "by_type": {
+    "identifier": {
+      "n": 12,
+      "recall5": {
+        "mean": 1.0,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.8019,
+        "ci": [
+          0.6571,
+          0.9385
+        ]
+      },
+      "mrr": {
+        "mean": 0.7361,
+        "ci": [
+          0.5417,
+          0.9167
+        ]
+      },
+      "p5": {
+        "mean": 0.2,
+        "ci": [
+          0.2,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.7361,
+        "ci": [
+          0.5417,
+          0.9167
+        ]
+      }
+    },
+    "paraphrase": {
+      "n": 36,
+      "recall5": {
+        "mean": 0.8333,
+        "ci": [
+          0.6944,
+          0.9444
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.7348,
+        "ci": [
+          0.6043,
+          0.8496
+        ]
+      },
+      "mrr": {
+        "mean": 0.7163,
+        "ci": [
+          0.5855,
+          0.8305
+        ]
+      },
+      "p5": {
+        "mean": 0.1667,
+        "ci": [
+          0.1389,
+          0.1889
+        ]
+      },
+      "ap": {
+        "mean": 0.7163,
+        "ci": [
+          0.5855,
+          0.8305
+        ]
+      }
+    }
+  },
+  "weakest_type": {
+    "type": "paraphrase",
+    "ndcg5": 0.7348
+  },
+  "filtered": {
+    "n": 22,
+    "unfiltered_summary": {
+      "n": 22,
+      "recall5": {
+        "mean": 0.8182,
+        "ci": [
+          0.6364,
+          0.9545
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.7301,
+        "ci": [
+          0.565,
+          0.8892
+        ]
+      },
+      "mrr": {
+        "mean": 0.7181,
+        "ci": [
+          0.5557,
+          0.875
+        ]
+      },
+      "p5": {
+        "mean": 0.1636,
+        "ci": [
+          0.1273,
+          0.1909
+        ]
+      },
+      "ap": {
+        "mean": 0.7181,
+        "ci": [
+          0.5557,
+          0.875
+        ]
+      }
+    },
+    "filtered_summary": {
+      "n": 22,
+      "recall5": {
+        "mean": 0.9545,
+        "ci": [
+          0.8636,
+          1.0
+        ]
+      },
+      "ndcg5": {
+        "mean": 0.8297,
+        "ci": [
+          0.7112,
+          0.9406
+        ]
+      },
+      "mrr": {
+        "mean": 0.7924,
+        "ci": [
+          0.6614,
+          0.9205
+        ]
+      },
+      "p5": {
+        "mean": 0.1909,
+        "ci": [
+          0.1727,
+          0.2
+        ]
+      },
+      "ap": {
+        "mean": 0.7924,
+        "ci": [
+          0.6614,
+          0.9205
+        ]
+      }
+    }
+  },
+  "calibration": {
+    "answerable_top1_min": 0.591184,
+    "unanswerable_top1_max": 0.760277,
+    "unanswerable_n": 12,
+    "fixed_030": {
+      "min_score": 0.3,
+      "answered_rate": 1.0,
+      "abstain_rate": 0.0
+    },
+    "chosen": 0.71,
+    "at_chosen": {
+      "min_score": 0.71,
+      "answered_rate": 0.6667,
+      "abstain_rate": 0.75
+    },
+    "separable": false
+  },
+  "summary_accepted": {
+    "n": 48,
+    "recall5": {
+      "mean": 0.9167,
+      "ci": [
+        0.8333,
+        0.9792
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.796,
+      "ci": [
+        0.7029,
+        0.8781
+      ]
+    },
+    "mrr": {
+      "mean": 0.7632,
+      "ci": [
+        0.6625,
+        0.854
+      ]
+    },
+    "p5": {
+      "mean": 0.1833,
+      "ci": [
+        0.1667,
+        0.1958
+      ]
+    },
+    "ap": {
+      "mean": 0.7632,
+      "ci": [
+        0.6625,
+        0.854
+      ]
+    }
+  },
+  "filtered_summary_accepted": {
+    "n": 22,
+    "recall5": {
+      "mean": 0.9545,
+      "ci": [
+        0.8636,
+        1.0
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.8465,
+      "ci": [
+        0.721,
+        0.9573
+      ]
+    },
+    "mrr": {
+      "mean": 0.8152,
+      "ci": [
+        0.6742,
+        0.9432
+      ]
+    },
+    "p5": {
+      "mean": 0.1909,
+      "ci": [
+        0.1727,
+        0.2
+      ]
+    },
+    "ap": {
+      "mean": 0.8152,
+      "ci": [
+        0.6742,
+        0.9432
+      ]
+    }
+  },
+  "accepted_rows": [
+    "q003",
+    "q009",
+    "q010",
+    "q012",
+    "q018",
+    "q058",
+    "q075",
+    "q090",
+    "q100",
+    "q104"
+  ],
+  "rows": [
+    {
+      "qid": "q001",
+      "type": "identifier",
+      "question": "What activities fall outside the scope of phone-intake?",
+      "answerable": true,
+      "filters": {
+        "product": "phone-intake"
+      },
+      "relevant": [
+        "solutions/phone-intake#3"
+      ],
+      "top5": [
+        "solutions/phone-intake#3",
+        "solutions/phone-intake#2",
+        "solutions/phone-intake#0",
+        "cases/grooming-bookings#5",
+        "solutions/phone-intake#1"
+      ],
+      "top5_scores": [
+        0.826241,
+        0.744321,
+        0.717612,
+        0.706134,
+        0.699506
+      ],
+      "top1_score": 0.826241,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/phone-intake#3",
+          "solutions/phone-intake#2",
+          "solutions/phone-intake#0",
+          "cases/grooming-bookings#5",
+          "solutions/phone-intake#1"
+        ],
+        "top5_scores": [
+          0.826241,
+          0.744321,
+          0.717612,
+          0.706134,
+          0.699506
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q003",
+      "type": "identifier",
+      "question": "Can ticket-creation mark a job as finished by itself?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/ticket-creation#3"
+      ],
+      "top5": [
+        "solutions/ticket-creation#0",
+        "solutions/ticket-creation#3",
+        "solutions/ticket-creation#1",
+        "solutions/ticket-creation#2",
+        "solutions/ticket-creation#6"
+      ],
+      "top5_scores": [
+        0.786649,
+        0.785223,
+        0.766801,
+        0.748486,
+        0.746104
+      ],
+      "top1_score": 0.786649,
+      "relevant_ranks": [
+        2
+      ],
+      "accepted": [
+        "pricing/what-is-included#4"
+      ],
+      "accepted_ranks": [
+        2,
+        53
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q005",
+      "type": "identifier",
+      "question": "Which kinds of writing can document-data-entry refuse?",
+      "answerable": true,
+      "filters": {
+        "product": "document-data-entry"
+      },
+      "relevant": [
+        "solutions/document-data-entry#3"
+      ],
+      "top5": [
+        "solutions/document-data-entry#3",
+        "solutions/document-data-entry#0",
+        "solutions/document-data-entry#2",
+        "solutions/document-data-entry#1",
+        "solutions/document-data-entry#6"
+      ],
+      "top5_scores": [
+        0.773676,
+        0.771525,
+        0.747887,
+        0.744901,
+        0.726478
+      ],
+      "top1_score": 0.773676,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/document-data-entry#3",
+          "solutions/document-data-entry#0",
+          "solutions/document-data-entry#2",
+          "solutions/document-data-entry#1",
+          "solutions/document-data-entry#6"
+        ],
+        "top5_scores": [
+          0.773676,
+          0.771525,
+          0.747887,
+          0.744901,
+          0.726478
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q007",
+      "type": "identifier",
+      "question": "Is there a recurring charge when using csv-export?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "implementation/csv-export#4"
+      ],
+      "top5": [
+        "implementation/csv-export#4",
+        "implementation/csv-export#6",
+        "implementation/csv-export#0",
+        "implementation/csv-export#2",
+        "implementation/csv-export#3"
+      ],
+      "top5_scores": [
+        0.803116,
+        0.766058,
+        0.747695,
+        0.747691,
+        0.741829
+      ],
+      "top1_score": 0.803116,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q009",
+      "type": "paraphrase",
+      "question": "How much does the call answering product cost each month before any factors?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/phone-intake#5"
+      ],
+      "top5": [
+        "solutions/phone-intake#5",
+        "pricing/how-we-price#3",
+        "pricing/what-is-included#1",
+        "pricing/how-we-price#4",
+        "pricing/how-we-price#1"
+      ],
+      "top5_scores": [
+        0.768442,
+        0.725158,
+        0.711601,
+        0.709235,
+        0.708933
+      ],
+      "top1_score": 0.768442,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [
+        "pricing/how-we-price#3"
+      ],
+      "accepted_ranks": [
+        1,
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q010",
+      "type": "paraphrase",
+      "question": "How are repeated submissions of one job prevented?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/ticket-creation#2"
+      ],
+      "top5": [
+        "policies/security#2",
+        "solutions/ticket-creation#1",
+        "policies/approvals#2",
+        "policies/approvals#1",
+        "solutions/ticket-creation#3"
+      ],
+      "top5_scores": [
+        0.688375,
+        0.675016,
+        0.670609,
+        0.656129,
+        0.644015
+      ],
+      "top1_score": 0.688375,
+      "relevant_ranks": [
+        16
+      ],
+      "accepted": [
+        "solutions/ticket-creation#1"
+      ],
+      "accepted_ranks": [
+        2,
+        16
+      ],
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.0625,
+        "p5": 0.0,
+        "ap": 0.0625,
+        "first_relevant_rank": 16
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q012",
+      "type": "paraphrase",
+      "question": "What do reminders and confirmations to clients cost per month at the base rate?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/customer-status-updates#5"
+      ],
+      "top5": [
+        "solutions/customer-status-updates#6",
+        "solutions/phone-intake#5",
+        "pricing/how-we-price#3",
+        "solutions/staff-assignment#5",
+        "pricing/what-is-included#0"
+      ],
+      "top5_scores": [
+        0.736524,
+        0.717828,
+        0.711966,
+        0.695232,
+        0.693598
+      ],
+      "top1_score": 0.736524,
+      "relevant_ranks": [
+        11
+      ],
+      "accepted": [
+        "pricing/how-we-price#3"
+      ],
+      "accepted_ranks": [
+        3,
+        11
+      ],
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.09090909090909091,
+        "p5": 0.0,
+        "ap": 0.09090909090909091,
+        "first_relevant_rank": 11
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q014",
+      "type": "paraphrase",
+      "question": "Could the chatbot give me a cheaper deal if I ask nicely?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/how-we-price#5"
+      ],
+      "top5": [
+        "pricing/how-we-price#5",
+        "policies/security#3",
+        "cases/grooming-bookings#3",
+        "pricing/how-we-price#3",
+        "solutions/phone-intake#5"
+      ],
+      "top5_scores": [
+        0.657165,
+        0.646825,
+        0.644027,
+        0.643417,
+        0.641391
+      ],
+      "top1_score": 0.657165,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q016",
+      "type": "paraphrase",
+      "question": "What happens if my daily workload is larger than the top tier?",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/volume-tiers#3"
+      ],
+      "top5": [
+        "pricing/volume-tiers#3",
+        "pricing/volume-tiers#1",
+        "pricing/volume-tiers#5",
+        "pricing/volume-tiers#2",
+        "pricing/volume-tiers#0"
+      ],
+      "top5_scores": [
+        0.794077,
+        0.787614,
+        0.77091,
+        0.769819,
+        0.741994
+      ],
+      "top1_score": 0.794077,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/volume-tiers#3",
+          "pricing/volume-tiers#1",
+          "pricing/volume-tiers#5",
+          "pricing/volume-tiers#2",
+          "pricing/volume-tiers#0"
+        ],
+        "top5_scores": [
+          0.794077,
+          0.787614,
+          0.77091,
+          0.769819,
+          0.741994
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q018",
+      "type": "paraphrase",
+      "question": "If three products share one connection, how many times do I pay the connection fee?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/setup-fees#3"
+      ],
+      "top5": [
+        "pricing/setup-fees#3",
+        "implementation/api-connector#4",
+        "pricing/setup-fees#2",
+        "pricing/setup-fees#1",
+        "implementation/crm-connector#4"
+      ],
+      "top5_scores": [
+        0.732219,
+        0.712503,
+        0.70123,
+        0.697339,
+        0.695573
+      ],
+      "top1_score": 0.732219,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [
+        "implementation/api-connector#4"
+      ],
+      "accepted_ranks": [
+        1,
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q020",
+      "type": "paraphrase",
+      "question": "How is the lower end of the price bracket calculated?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/range-and-estimates#1"
+      ],
+      "top5": [
+        "pricing/range-and-estimates#1",
+        "pricing/range-and-estimates#2",
+        "pricing/how-we-price#4",
+        "pricing/how-we-price#0",
+        "pricing/range-and-estimates#3"
+      ],
+      "top5_scores": [
+        0.730237,
+        0.727367,
+        0.710242,
+        0.683508,
+        0.683146
+      ],
+      "top1_score": 0.730237,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q022",
+      "type": "paraphrase",
+      "question": "Does a file-based link keep my software permanently connected?",
+      "answerable": true,
+      "filters": {
+        "section": "implementation"
+      },
+      "relevant": [
+        "implementation/csv-export#1"
+      ],
+      "top5": [
+        "implementation/csv-export#1",
+        "implementation/csv-export#0",
+        "implementation/export-only-tools#1",
+        "implementation/api-connector#0",
+        "implementation/csv-export#6"
+      ],
+      "top5_scores": [
+        0.692802,
+        0.690984,
+        0.68128,
+        0.680279,
+        0.670459
+      ],
+      "top1_score": 0.692802,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "implementation/csv-export#1",
+          "implementation/csv-export#0",
+          "implementation/export-only-tools#1",
+          "implementation/api-connector#0",
+          "implementation/csv-export#6"
+        ],
+        "top5_scores": [
+          0.692802,
+          0.690984,
+          0.68128,
+          0.680279,
+          0.670459
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q024",
+      "type": "paraphrase",
+      "question": "How many days are needed to connect a customer database?",
+      "answerable": true,
+      "filters": {
+        "section": "implementation"
+      },
+      "relevant": [
+        "implementation/crm-connector#2"
+      ],
+      "top5": [
+        "implementation/crm-connector#2",
+        "implementation/api-connector#2",
+        "solutions/customer-status-updates#5",
+        "solutions/customer-status-updates#4",
+        "implementation/api-connector#4"
+      ],
+      "top5_scores": [
+        0.784679,
+        0.739357,
+        0.691489,
+        0.689822,
+        0.686302
+      ],
+      "top1_score": 0.784679,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "implementation/crm-connector#2",
+          "implementation/api-connector#2",
+          "implementation/api-connector#4",
+          "implementation/api-connector#6",
+          "implementation/crm-connector#4"
+        ],
+        "top5_scores": [
+          0.784679,
+          0.739357,
+          0.686302,
+          0.684438,
+          0.681485
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q027",
+      "type": "paraphrase",
+      "question": "What happens when I answer that I have no idea?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/first-questions#6"
+      ],
+      "top5": [
+        "consultation/first-questions#6",
+        "consultation/urgent-requests#6",
+        "consultation/first-questions#7",
+        "consultation/first-questions#0",
+        "consultation/volume-and-timing#5"
+      ],
+      "top5_scores": [
+        0.718925,
+        0.690331,
+        0.684974,
+        0.677842,
+        0.673603
+      ],
+      "top1_score": 0.718925,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q029",
+      "type": "paraphrase",
+      "question": "Does needing emergency cover make the modules more expensive?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/urgent-requests#5"
+      ],
+      "top5": [
+        "consultation/urgent-requests#1",
+        "consultation/urgent-requests#5",
+        "consultation/urgent-requests#0",
+        "consultation/urgent-requests#4",
+        "pricing/what-is-included#1"
+      ],
+      "top5_scores": [
+        0.735187,
+        0.724495,
+        0.712655,
+        0.706582,
+        0.700888
+      ],
+      "top1_score": 0.735187,
+      "relevant_ranks": [
+        2
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q031",
+      "type": "paraphrase",
+      "question": "Can the chat assistant file my spec for me?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "policies/approvals#2"
+      ],
+      "top5": [
+        "policies/approvals#2",
+        "policies/security#2",
+        "pricing/how-we-price#5",
+        "policies/security#3",
+        "policies/personal-data#3"
+      ],
+      "top5_scores": [
+        0.724658,
+        0.658839,
+        0.654525,
+        0.65087,
+        0.650127
+      ],
+      "top1_score": 0.724658,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q033",
+      "type": "unanswerable",
+      "question": "Which spoken languages can phone-intake understand?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/phone-intake#2",
+        "solutions/phone-intake#0",
+        "solutions/phone-intake#1",
+        "solutions/phone-intake#5",
+        "solutions/phone-intake#6"
+      ],
+      "top5_scores": [
+        0.760277,
+        0.755643,
+        0.746424,
+        0.735753,
+        0.721481
+      ],
+      "top1_score": 0.760277,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q035",
+      "type": "unanswerable",
+      "question": "Do you have a mobile app for engineers in the van?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "cases/trades-dispatch#1",
+        "solutions/staff-assignment#6",
+        "cases/trades-dispatch#3",
+        "cases/trades-dispatch#4",
+        "solutions/customer-status-updates#1"
+      ],
+      "top5_scores": [
+        0.715964,
+        0.698637,
+        0.686153,
+        0.677537,
+        0.669078
+      ],
+      "top1_score": 0.715964,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q037",
+      "type": "unanswerable",
+      "question": "What uptime percentage do you promise?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "pricing/what-is-included#5",
+        "pricing/what-is-included#1",
+        "policies/security#7",
+        "pricing/setup-fees#5",
+        "pricing/what-is-included#0"
+      ],
+      "top5_scores": [
+        0.653624,
+        0.642211,
+        0.64023,
+        0.631614,
+        0.629485
+      ],
+      "top1_score": 0.653624,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q039",
+      "type": "unanswerable",
+      "question": "What training do my staff receive after setup?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/staff-assignment#6",
+        "solutions/staff-assignment#5",
+        "pricing/what-is-included#2",
+        "solutions/staff-assignment#1",
+        "implementation/crm-connector#2"
+      ],
+      "top5_scores": [
+        0.675912,
+        0.670345,
+        0.6651,
+        0.661558,
+        0.659452
+      ],
+      "top1_score": 0.675912,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q042",
+      "type": "identifier",
+      "question": "shared inbox, 2 ppl sorting it all morning. email-triage, what do i pay each month?",
+      "answerable": true,
+      "filters": {
+        "section": "solutions"
+      },
+      "relevant": [
+        "solutions/email-triage#5"
+      ],
+      "top5": [
+        "solutions/email-triage#5",
+        "solutions/email-triage#6",
+        "solutions/email-triage#0",
+        "solutions/email-triage#1",
+        "solutions/email-triage#2"
+      ],
+      "top5_scores": [
+        0.765306,
+        0.764599,
+        0.744891,
+        0.744789,
+        0.7311
+      ],
+      "top1_score": 0.765306,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/email-triage#5",
+          "solutions/email-triage#6",
+          "solutions/email-triage#0",
+          "solutions/email-triage#1",
+          "solutions/email-triage#2"
+        ],
+        "top5_scores": [
+          0.765306,
+          0.764599,
+          0.744891,
+          0.744789,
+          0.7311
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q044",
+      "type": "identifier",
+      "question": "how much does staff-assignment set me back montly",
+      "answerable": true,
+      "filters": {
+        "section": "solutions"
+      },
+      "relevant": [
+        "solutions/staff-assignment#5"
+      ],
+      "top5": [
+        "solutions/staff-assignment#5",
+        "solutions/staff-assignment#3",
+        "solutions/staff-assignment#6",
+        "pricing/how-we-price#3",
+        "solutions/staff-assignment#1"
+      ],
+      "top5_scores": [
+        0.812545,
+        0.715271,
+        0.708021,
+        0.701083,
+        0.699197
+      ],
+      "top1_score": 0.812545,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/staff-assignment#5",
+          "solutions/staff-assignment#3",
+          "solutions/staff-assignment#6",
+          "solutions/staff-assignment#1",
+          "solutions/staff-assignment#2"
+        ],
+        "top5_scores": [
+          0.812545,
+          0.715271,
+          0.708021,
+          0.699197,
+          0.693391
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q045",
+      "type": "identifier",
+      "question": "for the customer updates, if we go with api-connector does it still need a file from us?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "solutions/customer-status-updates#4"
+      ],
+      "top5": [
+        "implementation/api-connector#3",
+        "implementation/api-connector#4",
+        "solutions/customer-status-updates#4",
+        "implementation/api-connector#0",
+        "solutions/customer-status-updates#5"
+      ],
+      "top5_scores": [
+        0.759356,
+        0.756882,
+        0.756282,
+        0.749442,
+        0.748177
+      ],
+      "top1_score": 0.759356,
+      "relevant_ranks": [
+        3
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        3
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q048",
+      "type": "identifier",
+      "question": "my api login is read only, does that stop phone-intake taking appointments?",
+      "answerable": true,
+      "filters": {
+        "section": "implementation"
+      },
+      "relevant": [
+        "implementation/api-connector#5"
+      ],
+      "top5": [
+        "solutions/phone-intake#1",
+        "implementation/api-connector#5",
+        "solutions/phone-intake#0",
+        "solutions/phone-intake#4",
+        "solutions/phone-intake#2"
+      ],
+      "top5_scores": [
+        0.76332,
+        0.755854,
+        0.743541,
+        0.735955,
+        0.735205
+      ],
+      "top1_score": 0.76332,
+      "relevant_ranks": [
+        2
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        2
+      ],
+      "filtered": {
+        "top5": [
+          "implementation/api-connector#5",
+          "implementation/api-connector#3",
+          "implementation/api-connector#0",
+          "implementation/api-connector#1",
+          "implementation/api-connector#4"
+        ],
+        "top5_scores": [
+          0.755854,
+          0.708024,
+          0.683139,
+          0.675995,
+          0.675291
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q050",
+      "type": "identifier",
+      "question": "which module goes with export-only-tool",
+      "answerable": true,
+      "filters": {
+        "section": "implementation"
+      },
+      "relevant": [
+        "implementation/export-only-tools#3"
+      ],
+      "top5": [
+        "implementation/export-only-tools#3",
+        "implementation/export-only-tools#6",
+        "implementation/export-only-tools#5",
+        "implementation/export-only-tools#0",
+        "implementation/export-only-tools#2"
+      ],
+      "top5_scores": [
+        0.799257,
+        0.77169,
+        0.760784,
+        0.758694,
+        0.753257
+      ],
+      "top1_score": 0.799257,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "implementation/export-only-tools#3",
+          "implementation/export-only-tools#6",
+          "implementation/export-only-tools#5",
+          "implementation/export-only-tools#0",
+          "implementation/export-only-tools#2"
+        ],
+        "top5_scores": [
+          0.799257,
+          0.77169,
+          0.760784,
+          0.758694,
+          0.753257
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q052",
+      "type": "identifier",
+      "question": "heating firm case, what did the report admit about export-only-tool and re keying?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "cases/trades-dispatch#3"
+      ],
+      "top5": [
+        "cases/trades-dispatch#3",
+        "implementation/export-only-tools#5",
+        "cases/trades-dispatch#2",
+        "cases/trades-dispatch#0",
+        "cases/trades-dispatch#1"
+      ],
+      "top5_scores": [
+        0.720529,
+        0.696032,
+        0.695601,
+        0.679111,
+        0.675714
+      ],
+      "top1_score": 0.720529,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q053",
+      "type": "identifier",
+      "question": "in the dog groomer story, could phone-intake take a deposit?",
+      "answerable": true,
+      "filters": {
+        "product": "phone-intake"
+      },
+      "relevant": [
+        "cases/grooming-bookings#5"
+      ],
+      "top5": [
+        "cases/grooming-bookings#1",
+        "cases/grooming-bookings#3",
+        "cases/grooming-bookings#0",
+        "cases/grooming-bookings#5",
+        "solutions/phone-intake#0"
+      ],
+      "top5_scores": [
+        0.764097,
+        0.764081,
+        0.745434,
+        0.743966,
+        0.741363
+      ],
+      "top1_score": 0.764097,
+      "relevant_ranks": [
+        4
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        4
+      ],
+      "filtered": {
+        "top5": [
+          "cases/grooming-bookings#1",
+          "cases/grooming-bookings#3",
+          "cases/grooming-bookings#0",
+          "cases/grooming-bookings#5",
+          "solutions/phone-intake#0"
+        ],
+        "top5_scores": [
+          0.764097,
+          0.764081,
+          0.745434,
+          0.743966,
+          0.741363
+        ],
+        "relevant_ranks": [
+          4
+        ],
+        "accepted_ranks": [
+          4
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.43067655807339306,
+          "mrr": 0.25,
+          "p5": 0.2,
+          "ap": 0.25,
+          "first_relevant_rank": 4
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 0.43067655807339306,
+          "mrr": 0.25,
+          "p5": 0.2,
+          "ap": 0.25,
+          "first_relevant_rank": 4
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      }
+    },
+    {
+      "qid": "q056",
+      "type": "identifier",
+      "question": "emergency emails. does email-triage flag them somehow?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/urgent-requests#3"
+      ],
+      "top5": [
+        "solutions/email-triage#0",
+        "solutions/email-triage#6",
+        "solutions/email-triage#1",
+        "consultation/urgent-requests#3",
+        "solutions/email-triage#2"
+      ],
+      "top5_scores": [
+        0.739732,
+        0.735556,
+        0.731436,
+        0.72761,
+        0.71979
+      ],
+      "top1_score": 0.739732,
+      "relevant_ranks": [
+        4
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        4
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      }
+    },
+    {
+      "qid": "q058",
+      "type": "paraphrase",
+      "question": "will the urgent emails get sorted first or do i still have to dig thru the inbox?",
+      "answerable": true,
+      "filters": {
+        "product": "email-triage"
+      },
+      "relevant": [
+        "solutions/email-triage#1"
+      ],
+      "top5": [
+        "solutions/email-triage#1",
+        "solutions/email-triage#6",
+        "solutions/email-triage#3",
+        "solutions/email-triage#0",
+        "solutions/email-triage#2"
+      ],
+      "top5_scores": [
+        0.771289,
+        0.744633,
+        0.714074,
+        0.710662,
+        0.707203
+      ],
+      "top1_score": 0.771289,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [
+        "consultation/urgent-requests#3"
+      ],
+      "accepted_ranks": [
+        1,
+        6
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/email-triage#1",
+          "solutions/email-triage#6",
+          "solutions/email-triage#3",
+          "solutions/email-triage#0",
+          "solutions/email-triage#2"
+        ],
+        "top5_scores": [
+          0.771289,
+          0.744633,
+          0.714074,
+          0.710662,
+          0.707203
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q061",
+      "type": "paraphrase",
+      "question": "does it just name someone or does it say why it picked them?",
+      "answerable": true,
+      "filters": {
+        "product": "staff-assignment"
+      },
+      "relevant": [
+        "solutions/staff-assignment#1"
+      ],
+      "top5": [
+        "solutions/staff-assignment#1",
+        "solutions/staff-assignment#2",
+        "pricing/what-is-included#6",
+        "policies/personal-data#4",
+        "solutions/staff-assignment#0"
+      ],
+      "top5_scores": [
+        0.662445,
+        0.653558,
+        0.644077,
+        0.642565,
+        0.639501
+      ],
+      "top1_score": 0.662445,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/staff-assignment#1",
+          "solutions/staff-assignment#2",
+          "solutions/staff-assignment#0",
+          "solutions/staff-assignment#3",
+          "solutions/staff-assignment#6"
+        ],
+        "top5_scores": [
+          0.662445,
+          0.653558,
+          0.639501,
+          0.636108,
+          0.616283
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q063",
+      "type": "paraphrase",
+      "question": "when a job gets typed in wrong, can we find the original bit of paper, and how?",
+      "answerable": true,
+      "filters": {
+        "product": "document-data-entry"
+      },
+      "relevant": [
+        "solutions/document-data-entry#2"
+      ],
+      "top5": [
+        "solutions/document-data-entry#6",
+        "solutions/document-data-entry#0",
+        "solutions/document-data-entry#1",
+        "cases/accounts-paperwork#1",
+        "cases/accounts-paperwork#4"
+      ],
+      "top5_scores": [
+        0.716982,
+        0.711265,
+        0.708103,
+        0.696678,
+        0.693362
+      ],
+      "top1_score": 0.716982,
+      "relevant_ranks": [
+        18
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        18
+      ],
+      "filtered": {
+        "top5": [
+          "solutions/document-data-entry#6",
+          "solutions/document-data-entry#0",
+          "solutions/document-data-entry#1",
+          "cases/accounts-paperwork#1",
+          "cases/accounts-paperwork#4"
+        ],
+        "top5_scores": [
+          0.716982,
+          0.711265,
+          0.708103,
+          0.696678,
+          0.693362
+        ],
+        "relevant_ranks": [
+          10
+        ],
+        "accepted_ranks": [
+          10
+        ],
+        "metrics": {
+          "recall5": 0.0,
+          "ndcg5": 0.0,
+          "mrr": 0.1,
+          "p5": 0.0,
+          "ap": 0.1,
+          "first_relevant_rank": 10
+        },
+        "metrics_accepted": {
+          "recall5": 0.0,
+          "ndcg5": 0.0,
+          "mrr": 0.1,
+          "p5": 0.0,
+          "ap": 0.1,
+          "first_relevant_rank": 10
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.05555555555555555,
+        "p5": 0.0,
+        "ap": 0.05555555555555555,
+        "first_relevant_rank": 18
+      },
+      "metrics_accepted": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.05555555555555555,
+        "p5": 0.0,
+        "ap": 0.05555555555555555,
+        "first_relevant_rank": 18
+      }
+    },
+    {
+      "qid": "q067",
+      "type": "paraphrase",
+      "question": "my customer database doesnt have a spot for the date they want the job done. what happens to that info?",
+      "answerable": true,
+      "filters": {
+        "section": "implementation"
+      },
+      "relevant": [
+        "implementation/crm-connector#5"
+      ],
+      "top5": [
+        "policies/personal-data#2",
+        "solutions/ticket-creation#1",
+        "implementation/crm-connector#1",
+        "solutions/customer-status-updates#1",
+        "implementation/crm-connector#6"
+      ],
+      "top5_scores": [
+        0.692889,
+        0.692591,
+        0.688784,
+        0.682189,
+        0.678342
+      ],
+      "top1_score": 0.692889,
+      "relevant_ranks": [
+        12
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        12
+      ],
+      "filtered": {
+        "top5": [
+          "implementation/crm-connector#1",
+          "implementation/crm-connector#6",
+          "implementation/csv-export#2",
+          "implementation/crm-connector#5",
+          "implementation/csv-export#5"
+        ],
+        "top5_scores": [
+          0.688784,
+          0.678342,
+          0.674061,
+          0.666164,
+          0.646072
+        ],
+        "relevant_ranks": [
+          4
+        ],
+        "accepted_ranks": [
+          4
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.43067655807339306,
+          "mrr": 0.25,
+          "p5": 0.2,
+          "ap": 0.25,
+          "first_relevant_rank": 4
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 0.43067655807339306,
+          "mrr": 0.25,
+          "p5": 0.2,
+          "ap": 0.25,
+          "first_relevant_rank": 4
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.08333333333333333,
+        "p5": 0.0,
+        "ap": 0.08333333333333333,
+        "first_relevant_rank": 12
+      },
+      "metrics_accepted": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.08333333333333333,
+        "p5": 0.0,
+        "ap": 0.08333333333333333,
+        "first_relevant_rank": 12
+      }
+    },
+    {
+      "qid": "q068",
+      "type": "paraphrase",
+      "question": "what if we pull the access token later - does it break anything on our side, and does the link keep going?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "implementation/api-connector#1"
+      ],
+      "top5": [
+        "implementation/api-connector#1",
+        "policies/security#1",
+        "implementation/api-connector#2",
+        "implementation/api-connector#6",
+        "implementation/api-connector#0"
+      ],
+      "top5_scores": [
+        0.653013,
+        0.635623,
+        0.634221,
+        0.630129,
+        0.627464
+      ],
+      "top1_score": 0.653013,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q069",
+      "type": "paraphrase",
+      "question": "our software picks up anything dropped into a certain directory. would that work for you?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "implementation/export-only-tools#2"
+      ],
+      "top5": [
+        "implementation/csv-export#1",
+        "implementation/export-only-tools#2",
+        "implementation/csv-export#2",
+        "implementation/export-only-tools#1",
+        "implementation/export-only-tools#3"
+      ],
+      "top5_scores": [
+        0.728118,
+        0.721434,
+        0.697038,
+        0.690128,
+        0.684716
+      ],
+      "top1_score": 0.728118,
+      "relevant_ranks": [
+        2
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        2
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q070",
+      "type": "paraphrase",
+      "question": "what info do u actually need off me before a number comes out?",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/how-we-price#2"
+      ],
+      "top5": [
+        "consultation/volume-and-timing#1",
+        "consultation/first-questions#7",
+        "consultation/volume-and-timing#3",
+        "consultation/first-questions#3",
+        "pricing/range-and-estimates#3"
+      ],
+      "top5_scores": [
+        0.673261,
+        0.666617,
+        0.659192,
+        0.652997,
+        0.647852
+      ],
+      "top1_score": 0.673261,
+      "relevant_ranks": [
+        13
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        13
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/range-and-estimates#3",
+          "pricing/volume-tiers#4",
+          "pricing/how-we-price#2",
+          "pricing/what-is-included#5",
+          "pricing/how-we-price#4"
+        ],
+        "top5_scores": [
+          0.647852,
+          0.63969,
+          0.63481,
+          0.628013,
+          0.620295
+        ],
+        "relevant_ranks": [
+          3
+        ],
+        "accepted_ranks": [
+          3
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.5,
+          "mrr": 0.3333333333333333,
+          "p5": 0.2,
+          "ap": 0.3333333333333333,
+          "first_relevant_rank": 3
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 0.5,
+          "mrr": 0.3333333333333333,
+          "p5": 0.2,
+          "ap": 0.3333333333333333,
+          "first_relevant_rank": 3
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.07692307692307693,
+        "p5": 0.0,
+        "ap": 0.07692307692307693,
+        "first_relevant_rank": 13
+      },
+      "metrics_accepted": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.07692307692307693,
+        "p5": 0.0,
+        "ap": 0.07692307692307693,
+        "first_relevant_rank": 13
+      }
+    },
+    {
+      "qid": "q072",
+      "type": "paraphrase",
+      "question": "if i want to tweak a template later do u charge for that",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/what-is-included#1"
+      ],
+      "top5": [
+        "pricing/what-is-included#1",
+        "solutions/customer-status-updates#6",
+        "pricing/what-is-included#2",
+        "pricing/setup-fees#1",
+        "pricing/setup-fees#2"
+      ],
+      "top5_scores": [
+        0.654596,
+        0.640887,
+        0.633567,
+        0.633551,
+        0.63291
+      ],
+      "top1_score": 0.654596,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q074",
+      "type": "paraphrase",
+      "question": "guaranteed savings?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "pricing/what-is-included#5"
+      ],
+      "top5": [
+        "pricing/what-is-included#5",
+        "cases/grooming-bookings#3",
+        "pricing/range-and-estimates#2",
+        "pricing/how-we-price#6",
+        "pricing/setup-fees#5"
+      ],
+      "top5_scores": [
+        0.69335,
+        0.616486,
+        0.610321,
+        0.609867,
+        0.609588
+      ],
+      "top1_score": 0.69335,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q075",
+      "type": "paraphrase",
+      "question": "about 100 jobs daily. multiplier?",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/volume-tiers#2"
+      ],
+      "top5": [
+        "pricing/volume-tiers#1",
+        "consultation/volume-and-timing#1",
+        "pricing/volume-tiers#2",
+        "pricing/volume-tiers#0",
+        "pricing/volume-tiers#4"
+      ],
+      "top5_scores": [
+        0.716772,
+        0.675682,
+        0.675064,
+        0.670978,
+        0.655043
+      ],
+      "top1_score": 0.716772,
+      "relevant_ranks": [
+        3
+      ],
+      "accepted": [
+        "pricing/volume-tiers#1"
+      ],
+      "accepted_ranks": [
+        1,
+        3
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/volume-tiers#1",
+          "pricing/volume-tiers#2",
+          "pricing/volume-tiers#0",
+          "pricing/volume-tiers#4",
+          "pricing/how-we-price#4"
+        ],
+        "top5_scores": [
+          0.716772,
+          0.675064,
+          0.670978,
+          0.655043,
+          0.653335
+        ],
+        "relevant_ranks": [
+          2
+        ],
+        "accepted_ranks": [
+          1,
+          2
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q077",
+      "type": "paraphrase",
+      "question": "phone and tickets together. do i pay the 900 once or twice?",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/setup-fees#1"
+      ],
+      "top5": [
+        "solutions/phone-intake#5",
+        "solutions/ticket-creation#5",
+        "implementation/crm-connector#4",
+        "solutions/ticket-creation#3",
+        "pricing/setup-fees#3"
+      ],
+      "top5_scores": [
+        0.678375,
+        0.664741,
+        0.653016,
+        0.651978,
+        0.650603
+      ],
+      "top1_score": 0.678375,
+      "relevant_ranks": [
+        6
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        6
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/setup-fees#3",
+          "pricing/setup-fees#1",
+          "pricing/how-we-price#4",
+          "pricing/setup-fees#0",
+          "pricing/what-is-included#2"
+        ],
+        "top5_scores": [
+          0.650603,
+          0.648543,
+          0.646277,
+          0.645948,
+          0.636345
+        ],
+        "relevant_ranks": [
+          2
+        ],
+        "accepted_ranks": [
+          2
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        }
+      },
+      "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.16666666666666666,
+        "p5": 0.0,
+        "ap": 0.16666666666666666,
+        "first_relevant_rank": 6
+      },
+      "metrics_accepted": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.16666666666666666,
+        "p5": 0.0,
+        "ap": 0.16666666666666666,
+        "first_relevant_rank": 6
+      }
+    },
+    {
+      "qid": "q079",
+      "type": "paraphrase",
+      "question": "mine says 'blocked' - so i get nothing?? what now",
+      "answerable": true,
+      "filters": {
+        "section": "pricing"
+      },
+      "relevant": [
+        "pricing/range-and-estimates#2"
+      ],
+      "top5": [
+        "pricing/range-and-estimates#2",
+        "solutions/customer-status-updates#2",
+        "policies/approvals#5",
+        "solutions/customer-status-updates#1",
+        "solutions/customer-status-updates#3"
+      ],
+      "top5_scores": [
+        0.591184,
+        0.588296,
+        0.587452,
+        0.579664,
+        0.578012
+      ],
+      "top1_score": 0.591184,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "pricing/range-and-estimates#2",
+          "pricing/what-is-included#5",
+          "pricing/what-is-included#6",
+          "pricing/volume-tiers#1",
+          "pricing/what-is-included#2"
+        ],
+        "top5_scores": [
+          0.591184,
+          0.572022,
+          0.570692,
+          0.569081,
+          0.564431
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q081",
+      "type": "paraphrase",
+      "question": "in the plumbing example, how did the after hours calls get to someone?",
+      "answerable": true,
+      "filters": {
+        "product": "ticket-creation"
+      },
+      "relevant": [
+        "cases/trades-dispatch#4"
+      ],
+      "top5": [
+        "cases/trades-dispatch#1",
+        "solutions/phone-intake#0",
+        "cases/trades-dispatch#4",
+        "cases/grooming-bookings#1",
+        "cases/grooming-bookings#4"
+      ],
+      "top5_scores": [
+        0.727624,
+        0.725186,
+        0.724959,
+        0.722651,
+        0.711932
+      ],
+      "top1_score": 0.727624,
+      "relevant_ranks": [
+        3
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        3
+      ],
+      "filtered": {
+        "top5": [
+          "cases/trades-dispatch#1",
+          "cases/trades-dispatch#4",
+          "cases/trades-dispatch#0",
+          "cases/trades-dispatch#3",
+          "cases/trades-dispatch#6"
+        ],
+        "top5_scores": [
+          0.727624,
+          0.724959,
+          0.708047,
+          0.703553,
+          0.679225
+        ],
+        "relevant_ranks": [
+          2
+        ],
+        "accepted_ranks": [
+          2
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      }
+    },
+    {
+      "qid": "q084",
+      "type": "paraphrase",
+      "question": "why did the groomer get an indicative figure straight away?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "cases/grooming-bookings#3"
+      ],
+      "top5": [
+        "cases/grooming-bookings#3",
+        "cases/grooming-bookings#2",
+        "cases/grooming-bookings#0",
+        "consultation/first-questions#7",
+        "cases/grooming-bookings#1"
+      ],
+      "top5_scores": [
+        0.780781,
+        0.721287,
+        0.717591,
+        0.700455,
+        0.693933
+      ],
+      "top1_score": 0.780781,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q086",
+      "type": "paraphrase",
+      "question": "accounts office case: what did the typist end up doing instead, and who did the first go?",
+      "answerable": true,
+      "filters": {
+        "product": "document-data-entry"
+      },
+      "relevant": [
+        "cases/accounts-paperwork#4"
+      ],
+      "top5": [
+        "cases/accounts-paperwork#4",
+        "cases/accounts-paperwork#0",
+        "cases/accounts-paperwork#1",
+        "cases/accounts-paperwork#6",
+        "cases/accounts-paperwork#2"
+      ],
+      "top5_scores": [
+        0.743565,
+        0.742897,
+        0.742399,
+        0.7366,
+        0.726489
+      ],
+      "top1_score": 0.743565,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "cases/accounts-paperwork#4",
+          "cases/accounts-paperwork#0",
+          "cases/accounts-paperwork#1",
+          "cases/accounts-paperwork#6",
+          "cases/accounts-paperwork#2"
+        ],
+        "top5_scores": [
+          0.743565,
+          0.742897,
+          0.742399,
+          0.7366,
+          0.726489
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q088",
+      "type": "paraphrase",
+      "question": "accounts case, main takeaway?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "cases/accounts-paperwork#6"
+      ],
+      "top5": [
+        "cases/accounts-paperwork#0",
+        "cases/accounts-paperwork#1",
+        "cases/accounts-paperwork#2",
+        "cases/accounts-paperwork#6",
+        "cases/accounts-paperwork#4"
+      ],
+      "top5_scores": [
+        0.69465,
+        0.681736,
+        0.675613,
+        0.672875,
+        0.672241
+      ],
+      "top1_score": 0.69465,
+      "relevant_ranks": [
+        4
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        4
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      }
+    },
+    {
+      "qid": "q090",
+      "type": "paraphrase",
+      "question": "if it works out a number itself, how is that labelled and whats an example?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/first-questions#6"
+      ],
+      "top5": [
+        "pricing/volume-tiers#4",
+        "consultation/first-questions#6",
+        "consultation/volume-and-timing#1",
+        "pricing/what-is-included#6",
+        "pricing/how-we-price#5"
+      ],
+      "top5_scores": [
+        0.621647,
+        0.617199,
+        0.611886,
+        0.611524,
+        0.605544
+      ],
+      "top1_score": 0.621647,
+      "relevant_ranks": [
+        2
+      ],
+      "accepted": [
+        "consultation/volume-and-timing#1"
+      ],
+      "accepted_ranks": [
+        2,
+        3
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q092",
+      "type": "paraphrase",
+      "question": "should i give you our mad december numbers or a typical week?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/volume-and-timing#1"
+      ],
+      "top5": [
+        "consultation/volume-and-timing#1",
+        "consultation/volume-and-timing#3",
+        "cases/trades-dispatch#0",
+        "cases/trades-dispatch#2",
+        "consultation/first-questions#3"
+      ],
+      "top5_scores": [
+        0.689998,
+        0.662627,
+        0.66045,
+        0.657163,
+        0.651163
+      ],
+      "top1_score": 0.689998,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q094",
+      "type": "paraphrase",
+      "question": "jan vs june start. dearer?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "consultation/volume-and-timing#5"
+      ],
+      "top5": [
+        "consultation/volume-and-timing#5",
+        "pricing/range-and-estimates#2",
+        "consultation/volume-and-timing#4",
+        "implementation/crm-connector#6",
+        "consultation/volume-and-timing#3"
+      ],
+      "top5_scores": [
+        0.695839,
+        0.63471,
+        0.605751,
+        0.604279,
+        0.601386
+      ],
+      "top1_score": 0.695839,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q096",
+      "type": "paraphrase",
+      "question": "do i have to upload my client list for this?",
+      "answerable": true,
+      "filters": {
+        "section": "policies"
+      },
+      "relevant": [
+        "policies/personal-data#2"
+      ],
+      "top5": [
+        "policies/personal-data#2",
+        "implementation/csv-export#2",
+        "policies/personal-data#1",
+        "policies/personal-data#3",
+        "policies/personal-data#6"
+      ],
+      "top5_scores": [
+        0.72169,
+        0.691958,
+        0.683215,
+        0.682539,
+        0.681753
+      ],
+      "top1_score": 0.72169,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "policies/personal-data#2",
+          "policies/personal-data#1",
+          "policies/personal-data#3",
+          "policies/personal-data#6",
+          "policies/personal-data#4"
+        ],
+        "top5_scores": [
+          0.72169,
+          0.683215,
+          0.682539,
+          0.681753,
+          0.672223
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q098",
+      "type": "paraphrase",
+      "question": "havent ticked the consent box yet. can we still chat?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "policies/personal-data#1"
+      ],
+      "top5": [
+        "policies/personal-data#1",
+        "policies/personal-data#2",
+        "policies/personal-data#4",
+        "policies/personal-data#0",
+        "consultation/first-questions#0"
+      ],
+      "top5_scores": [
+        0.716987,
+        0.659047,
+        0.655368,
+        0.645459,
+        0.639957
+      ],
+      "top1_score": 0.716987,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q100",
+      "type": "paraphrase",
+      "question": "say my uploaded doc looked dodgy. what does the assistant refuse to do with that message?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "policies/approvals#4"
+      ],
+      "top5": [
+        "policies/security#3",
+        "policies/approvals#4",
+        "policies/personal-data#3",
+        "policies/security#5",
+        "policies/security#4"
+      ],
+      "top5_scores": [
+        0.746377,
+        0.744076,
+        0.740795,
+        0.718975,
+        0.710513
+      ],
+      "top1_score": 0.746377,
+      "relevant_ranks": [
+        2
+      ],
+      "accepted": [
+        "policies/security#4"
+      ],
+      "accepted_ranks": [
+        2,
+        5
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      }
+    },
+    {
+      "qid": "q102",
+      "type": "paraphrase",
+      "question": "wrong password 5 times, locked?",
+      "answerable": true,
+      "filters": {
+        "section": "policies"
+      },
+      "relevant": [
+        "policies/security#1"
+      ],
+      "top5": [
+        "policies/security#1",
+        "policies/security#4",
+        "policies/security#2",
+        "policies/security#6",
+        "policies/security#7"
+      ],
+      "top5_scores": [
+        0.651887,
+        0.595078,
+        0.585532,
+        0.574511,
+        0.569706
+      ],
+      "top1_score": 0.651887,
+      "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
+      "filtered": {
+        "top5": [
+          "policies/security#1",
+          "policies/security#4",
+          "policies/security#2",
+          "policies/security#6",
+          "policies/security#7"
+        ],
+        "top5_scores": [
+          0.651887,
+          0.595078,
+          0.585532,
+          0.574511,
+          0.569706
+        ],
+        "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
+          1
+        ],
+        "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        }
+      },
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q104",
+      "type": "paraphrase",
+      "question": "could my business partner see my stuff by typing my name into the chat?",
+      "answerable": true,
+      "filters": null,
+      "relevant": [
+        "policies/security#2"
+      ],
+      "top5": [
+        "policies/personal-data#4",
+        "policies/security#1",
+        "policies/security#2",
+        "policies/personal-data#1",
+        "policies/personal-data#2"
+      ],
+      "top5_scores": [
+        0.722849,
+        0.688233,
+        0.687222,
+        0.686267,
+        0.672462
+      ],
+      "top1_score": 0.722849,
+      "relevant_ranks": [
+        3
+      ],
+      "accepted": [
+        "policies/personal-data#4"
+      ],
+      "accepted_ranks": [
+        1,
+        3
+      ],
+      "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      }
+    },
+    {
+      "qid": "q105",
+      "type": "unanswerable",
+      "question": "does it do whatsapp or just normal phone calls?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/phone-intake#1",
+        "solutions/phone-intake#2",
+        "solutions/phone-intake#0",
+        "solutions/phone-intake#6",
+        "solutions/phone-intake#4"
+      ],
+      "top5_scores": [
+        0.699504,
+        0.695782,
+        0.690664,
+        0.688082,
+        0.679643
+      ],
+      "top1_score": 0.699504,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q107",
+      "type": "unanswerable",
+      "question": "2fa on the login?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "policies/security#1",
+        "policies/security#6",
+        "policies/security#2",
+        "policies/security#4",
+        "implementation/api-connector#1"
+      ],
+      "top5_scores": [
+        0.668788,
+        0.627192,
+        0.623216,
+        0.617993,
+        0.609472
+      ],
+      "top1_score": 0.668788,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q109",
+      "type": "unanswerable",
+      "question": "can i pay by direct debit?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "pricing/how-we-price#1",
+        "solutions/document-data-entry#5",
+        "pricing/what-is-included#2",
+        "pricing/what-is-included#1",
+        "pricing/what-is-included#0"
+      ],
+      "top5_scores": [
+        0.592669,
+        0.591816,
+        0.590483,
+        0.584824,
+        0.584403
+      ],
+      "top1_score": 0.592669,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q111",
+      "type": "unanswerable",
+      "question": "whats the voice like on the phone bot, can i pick a different one?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/phone-intake#1",
+        "solutions/phone-intake#0",
+        "solutions/phone-intake#4",
+        "solutions/phone-intake#2",
+        "solutions/phone-intake#6"
+      ],
+      "top5_scores": [
+        0.728279,
+        0.720061,
+        0.717622,
+        0.710865,
+        0.702198
+      ],
+      "top1_score": 0.728279,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q113",
+      "type": "unanswerable",
+      "question": "does the booking bit sync with my online calendar?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "solutions/phone-intake#4",
+        "implementation/csv-export#2",
+        "implementation/api-connector#0",
+        "solutions/phone-intake#1",
+        "cases/grooming-bookings#1"
+      ],
+      "top5_scores": [
+        0.707827,
+        0.707764,
+        0.687514,
+        0.686116,
+        0.681735
+      ],
+      "top1_score": 0.707827,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q115",
+      "type": "unanswerable",
+      "question": "are you insured if the bot books something wrong and it costs me?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "policies/security#4",
+        "solutions/phone-intake#4",
+        "policies/security#3",
+        "policies/approvals#4",
+        "solutions/phone-intake#6"
+      ],
+      "top5_scores": [
+        0.680886,
+        0.671765,
+        0.666471,
+        0.663801,
+        0.641067
+      ],
+      "top1_score": 0.680886,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q117",
+      "type": "unanswerable",
+      "question": "is setup all remote or does someone come out to us?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "implementation/crm-connector#2",
+        "pricing/what-is-included#2",
+        "pricing/setup-fees#1",
+        "pricing/setup-fees#5",
+        "pricing/setup-fees#4"
+      ],
+      "top5_scores": [
+        0.682066,
+        0.671213,
+        0.664384,
+        0.662823,
+        0.662281
+      ],
+      "top1_score": 0.682066,
+      "relevant_ranks": []
+    },
+    {
+      "qid": "q119",
+      "type": "unanswerable",
+      "question": "how long have u been going, when were you founded?",
+      "answerable": false,
+      "filters": null,
+      "relevant": [],
+      "top5": [
+        "consultation/first-questions#2",
+        "consultation/first-questions#6",
+        "consultation/first-questions#4",
+        "consultation/first-questions#0",
+        "consultation/volume-and-timing#1"
+      ],
+      "top5_scores": [
+        0.658062,
+        0.619348,
+        0.610034,
+        0.609165,
+        0.608596
+      ],
+      "top1_score": 0.658062,
+      "relevant_ranks": []
+    }
+  ]
+}

@@ -23,6 +23,9 @@ from milo import settings
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 GOLD_PATH = DATA / "gold.jsonl"
+GOLD_ALT_PATH = (
+    DATA / "gold_alt.jsonl"
+)  # D168: accepted alternative passages, dev rows only
 MANIFEST_PATH = DATA / "MANIFEST.json"
 TEST_ACCESS_LOG = ROOT / "evals" / "results" / "test_access.log"
 SPLITS = ("dev", "test")
@@ -65,6 +68,19 @@ def load_gold(split: str = "dev") -> list[dict[str, Any]]:
                 if row.get("split") == split:
                     rows.append(row)
     return rows
+
+
+def load_gold_alt() -> dict[str, list[dict[str, str]]]:
+    """Accepted alternative passages of the dev rows (D168), by qid. The file holds no test row."""
+    out: dict[str, list[dict[str, str]]] = {}
+    if not GOLD_ALT_PATH.exists():
+        return out
+    for line in GOLD_ALT_PATH.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            row = json.loads(line)
+            if row.get("split") == "dev":
+                out[row["qid"]] = row["alt_evidence"]
+    return out
 
 
 def file_sha256(path: Path | str) -> str:

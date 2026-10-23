@@ -143,3 +143,13 @@ F2 total 0.887443 USD (estimate 0.95). M2 has no separate run (no arm adopted; d
 test split. Results in `docs/final_report.md`.
 
 - SR pen test (row 16): `MILO_BUDGET_USD=7.27` (approval balance 8.47 minus 1.1971); 5 of 5 pass, 0 gate failures (D117), A-04 now passes on `jev_request_keys_exact` (state keys). Written to `live-2026-10-22-pentest.json` so the earlier same-day files stay; replay matches. Cost 0.004202 USD; with F2 the run total is 2.0887 USD.
+
+## Phase C (2026-10-23, branch `agent/kb-edit`)
+
+| # | Run | Command | Protocol | Cap USD | Actual USD | Result file cost | Cumulative USD |
+|---|---|---|---|---|---|---|---|
+| C0-1 | Dev retrieval arm A, edited KB, no title prefix (rebuilds the product index) | `MILO_LIVE=1 python evals/retrieval/run_retrieval.py` (run as `--no-title` before the rename) | kb-edit-v1.md | 0.01 | 0.002280 | 0.002280 | 2.0910 |
+| C0-2 | Dev retrieval arm B, edited KB, title prefix | `MILO_LIVE=1 python evals/retrieval/run_retrieval.py --title` | kb-edit-v1.md | 0.01 | 0.002440 | 0.002440 | 2.0934 |
+
+- The arms ran before the decision; afterwards the flag was inverted (`--title` now selects arm B) and the files and
+  index folders were renamed so the product setting keeps the plain names. Both files replay and re-rank exactly.

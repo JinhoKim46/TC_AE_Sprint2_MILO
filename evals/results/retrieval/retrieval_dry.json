@@ -1,13 +1,13 @@
 {
-  "git_commit": "8e222e1d4049705e5a62b8cdbd7fde5d0f035426",
+  "git_commit": "bff0f240add9e444438ae9ecafecb5008f09d1ae",
   "model": "fake-hash-256",
   "seed": 0,
   "temperature": null,
   "command": "python evals/retrieval/run_retrieval.py --dry",
-  "timestamp": "2026-10-22T15:06:36Z",
+  "timestamp": "2026-10-23T15:50:14Z",
   "inputs": {
     "fixture": "a9397d0414e967629d7596a008dc0ec22eecc697fe5c9f8050fe903185d54250",
-    "script": "69b7571f7449b04f1acbe0da29014c9b84825b2729ad46bf9ed1445ffd27165a"
+    "script": "fef83306b0cb7dbda26624c8dcba67a70e8095b18f260d2b24ce3fb1a69faee2"
   },
   "temperature_note": "embeddings have no temperature",
   "dry": true,
@@ -17,11 +17,13 @@
   "query_prefix": "none",
   "chunk_size": 800,
   "overlap": 100,
+  "title_prefix": false,
   "chunk_count": 10,
   "chunk_sha256": "40ff7421b99eba4ee8f1d47d72dc4118f8032e85b19e3966ac990148f6d62780",
   "embedding_dim": 256,
   "embedding_requests": 0,
   "total_cost_usd": 0.0,
+  "total_tokens": 0,
   "cost_note": "dry run: no call",
   "spend_reason": "none (fake embedder)",
   "queries_without_chunk": [],

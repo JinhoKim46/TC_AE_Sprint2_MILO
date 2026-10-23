@@ -1,0 +1,10 @@
+{"qid": "q003", "split": "dev", "alt_evidence": [{"doc_id": "pricing/what-is-included", "quote": "ticket-creation never closes a ticket without a person."}]}
+{"qid": "q009", "split": "dev", "alt_evidence": [{"doc_id": "pricing/how-we-price", "quote": "| phone-intake | 690 USD |"}]}
+{"qid": "q010", "split": "dev", "alt_evidence": [{"doc_id": "solutions/ticket-creation", "quote": "Before it creates a ticket it checks for duplicates, so the same request sent twice does not become two jobs."}]}
+{"qid": "q012", "split": "dev", "alt_evidence": [{"doc_id": "pricing/how-we-price", "quote": "| customer-status-updates | 240 USD |"}]}
+{"qid": "q018", "split": "dev", "alt_evidence": [{"doc_id": "implementation/api-connector", "quote": "The api-connector surcharge is 300 USD a month, paid once however many modules share the connection."}]}
+{"qid": "q058", "split": "dev", "alt_evidence": [{"doc_id": "consultation/urgent-requests", "quote": "The email-triage module gives an urgent message the highest priority label so it sits at the top of the inbox."}]}
+{"qid": "q075", "split": "dev", "alt_evidence": [{"doc_id": "pricing/volume-tiers", "quote": "| up to 150 per day | 1.50 |"}]}
+{"qid": "q090", "split": "dev", "alt_evidence": [{"doc_id": "consultation/volume-and-timing", "quote": "the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."}]}
+{"qid": "q100", "split": "dev", "alt_evidence": [{"doc_id": "policies/security", "quote": "In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."}]}
+{"qid": "q104", "split": "dev", "alt_evidence": [{"doc_id": "policies/personal-data", "quote": "No other owner can see your session, your facts or your submission, and the assistant will refuse a request to show another owner's data."}]}

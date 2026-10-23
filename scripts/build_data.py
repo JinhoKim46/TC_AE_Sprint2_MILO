@@ -119,7 +119,8 @@ GOLD_FIELDS = (
     "filters",
     "split",
 )
-GOLD_YAML_ONLY = ("section_heading", "realism", "absent_terms")
+# alt_evidence (D168): a second passage that fully answers a dev row; it goes to gold_alt.jsonl, not to gold.jsonl.
+GOLD_YAML_ONLY = ("section_heading", "realism", "absent_terms", "alt_evidence")
 GOLD_FILTER_KEYS = ("section", "product")  # D151
 REALISM_TAGS = (
     "typo",
@@ -1156,6 +1157,21 @@ def gen_gold(source: list[dict] | None = None) -> list[dict]:
     return rows
 
 
+def gen_gold_alt(source: list[dict] | None = None) -> list[dict]:
+    """Accepted alternative passages (D168), one line per row that has them."""
+    return [
+        {
+            "qid": r["qid"],
+            "split": r["split"],
+            "alt_evidence": [
+                {"doc_id": e["doc_id"], "quote": e["quote"]} for e in r["alt_evidence"]
+            ],
+        }
+        for r in (source if source is not None else load_gold_source())
+        if r.get("alt_evidence")
+    ]
+
+
 def gen_tool_cases() -> list[dict]:
     src = load_yaml(TOOL_SRC)["tool_cases"]
     rows = []
@@ -1549,6 +1565,33 @@ def gold_summary(counts: dict) -> list[str]:
     return lines
 
 
+def check_alt_evidence(r: dict, docs, errs: list[str]) -> None:
+    """D168: an alternative passage is a verbatim quote inside one level-2 section, on an answerable dev row."""
+    w = f"gold:{r.get('qid')}"
+    alts = r.get("alt_evidence") or []
+    if alts and (r.get("split") != "dev" or not r.get("gold_evidence")):
+        errs.append(f"{w}: alt_evidence is only for answerable dev rows")
+    for e in alts:
+        if e.get("doc_id") not in docs:
+            errs.append(f"{w}: alt_evidence names unknown doc {e.get('doc_id')}")
+            continue
+        _, body, _ = docs[e["doc_id"]]
+        quote = e.get("quote", "")
+        if len(quote) > GOLD_QUOTE_MAX:
+            errs.append(f"{w}: alt quote longer than {GOLD_QUOTE_MAX} characters")
+        if quote not in body:
+            errs.append(f"{w}: alt quote not an exact substring of {e['doc_id']}")
+        elif quote_heading(body, quote) is None:
+            errs.append(
+                f"{w}: alt quote is not inside one level-2 section of {e['doc_id']}"
+            )
+        if any(
+            g["doc_id"] == e["doc_id"] and g["quote"] == quote
+            for g in r["gold_evidence"]
+        ):
+            errs.append(f"{w}: alt quote repeats the gold quote")
+
+
 def check_gold(rows: list[dict], docs, errs: list[str], catalogue: dict) -> None:
     """SPEC D78 done-line and protocol M0B-GOLD step 2, on the source rows (YAML-only fields included)."""
     cat = catalogue["catalogue"]
@@ -1688,6 +1731,7 @@ def check_gold(rows: list[dict], docs, errs: list[str], catalogue: dict) -> None
             for k, v in (f or {}).items():
                 if meta.get(k) != str(v):
                     errs.append(f"{w}: filter {k}={v!r} does not match {e['doc_id']}")
+        check_alt_evidence(r, docs, errs)
     # ---- counts of the protocol table and the D78 minima --------------------------------------------------------
     c = gold_counts(rows)
     bt = c["by_type"]
@@ -3141,6 +3185,7 @@ def check_source_conversations(docs: dict, errs: list[str], protocol: dict) -> N
 def outputs(protocol: dict, errs: list[str]) -> dict[Path, str]:
     out = {
         DATA / "gold.jsonl": jsonl(gen_gold()),
+        DATA / "gold_alt.jsonl": jsonl(gen_gold_alt()),
         DATA / "tool_cases.jsonl": jsonl(gen_tool_cases()),
         DATA / "attacks.jsonl": jsonl(gen_attacks()),
     }

@@ -20,6 +20,21 @@ Purpose: if the session stops (usage limit, crash, compaction loss), a fresh ses
 3. For each branch that exists: if `verify/<x>` has a `docs/verify/<x>.md` with PASS, merge it into main (`git merge --no-ff`), rerun `make check` and the seven kit targets on main, remove the worktrees, append the checkpoint block to `docs/owner/CHECKPOINTS_PENDING.md`. If a build branch has no verifier yet, open `verify/<x>` from it and launch a verifier with the HARNESS section 7 checklist. If an agent was mid-task, its branch holds whatever it committed; relaunch the task with the same brief (the briefs are in this session's transcript; the file ownership is in HARNESS Appendix A).
 4. Update `monitor/status.js` and this file.
 
+## Phase C: quality improvement as a learning phase (from 2026-10-23)
+
+Owner goals: learn RAG-agent building; every step reported as a short lesson (context, what was done, how to read
+it, decision). Models (D169): cheapest that work, Haiku 5.5 for agent, generation and the final run; judge must pass
+the M7 agreement check; performance against Sonnet is not a goal. OpenRouter balance about 6.37 USD.
+
+- C0 data quality: done. data-v2 (conversations, tool cases, judge pool; `evals/protocols/data-v2.md`) and the KB
+  edit round (`evals/protocols/kb-edit-v1.md`, D168; title prefix not adopted). Parameters: `docs/rag-parameters.md`.
+- C1 next: Haiku baseline on the new dev data (M5b discovery, M3 tools, M7 generation and judge), about 0.10 USD.
+- C2 (Haiku/Sonnet proxy check): dropped by D169.
+- C3: part-by-part improvement with a checkpoint after each part (abstention, tool choice, extraction, retrieval,
+  gate). Dev detects only effects of about 7 points nDCG@5 (48 questions), so small retrieval wins will not pass
+  D24 without more gold.
+- C4: final sealed run on the data-v2 test set, on Haiku.
+
 ## State at last update (2026-10-22 22:46 local): BUILD FINISHED
 
 All milestones S0 to M7, SR (threat model, cases, pen test) and F1 to F4 are merged on main. No worktree or agent branch is open.

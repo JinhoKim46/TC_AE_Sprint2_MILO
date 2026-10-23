@@ -81,6 +81,16 @@ def test_chunk_ids_metadata_and_hash() -> None:
     assert chunks_sha256(chunks) == chunks_sha256(chunk_document("kb/x", DOC, {}))
 
 
+def test_title_prefix_after_splitting() -> None:
+    chunks = chunk_document("kb/x", DOC, {"title": "A title"}, title_prefix=True)
+    # chunk 0 already opens with the article heading
+    assert chunks[0].text.startswith("# Title")
+    assert chunks[1].text == "A title\n\n## One\n\nFirst section text."
+    assert [len(c.text) for c in chunk_document("kb/x", DOC, {})] == [
+        len(p) for p in split_text(DOC)
+    ]
+
+
 def test_updated_num_only_when_updated_exists() -> None:
     assert normalise_metadata({"updated": "2026-10-01"})["updated_num"] == 20261001
     assert "updated_num" not in normalise_metadata({"section": "a"})

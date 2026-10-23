@@ -113,3 +113,8 @@ mechanical containment check. The real cost is that the edit voids stored E01 an
 call (D166). Handle the retrieval ambiguity (K09 to K12) through alternative gold evidence and the chunker title
 prefix, not through KB text. Defer the gaps (K14 to K18), K20 and the low items to a later round; none of them
 makes an answer wrong.
+
+## Applied (2026-10-23)
+
+Owner chose option A. K01 to K04 fixed, K10 to K12 handled as accepted alternative passages, K09 (title prefix)
+measured and not adopted: `evals/protocols/kb-edit-v1.md`, SPEC D168, `docs/rag-parameters.md`. The rest stay open.

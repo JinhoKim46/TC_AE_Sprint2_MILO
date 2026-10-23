@@ -15,7 +15,7 @@ A small pet grooming salon with two sites took bookings by phone and through a w
 
 ## What the discovery found
 
-The interview recorded the channels, the daily volume, the minutes per call and the minutes of spreadsheet entry, each with the owner's own sentence as evidence. The pain points were missed calls, reminders sent by hand, and no-shows. The errors were missed and duplicated bookings. The booking widget could export CSV, so the csv-export integration was available with no surcharge.
+The interview recorded the channels, the daily volume, the minutes per call and the minutes of spreadsheet entry, each with the owner's own sentence as evidence. The pain points were missed calls, reminders sent by hand, and no-shows. The errors were missed and duplicated bookings. The booking widget could export and import CSV, so the csv-export integration was available with no surcharge.
 
 ## What was recommended
 

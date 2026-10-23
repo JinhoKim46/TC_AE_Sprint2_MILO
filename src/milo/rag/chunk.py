@@ -8,6 +8,9 @@ Rules, in order:
    word boundary), when that still fits the size.
 4. A paragraph longer than `size` is cut in windows of `size` characters that step by `size - overlap`.
 
+5. When the metadata has a `title`, each chunk's text starts with it (D168), except a chunk that opens with a
+   top-level heading. The prefix is added after splitting, so it does not count against `size`.
+
 Chunk id is `<doc_id>#<index>`, the index counting from 0 within the document. Metadata keys that are absent
 stay absent; `updated_num` (int YYYYMMDD) exists only when `updated` does (SPEC section 4).
 """
@@ -22,6 +25,7 @@ from typing import Any
 
 SETTINGS: tuple[tuple[int, int], ...] = ((800, 100), (400, 50), (1500, 150))
 DEFAULT_SIZE, DEFAULT_OVERLAP = SETTINGS[0]
+TITLE_PREFIX = False  # D168: measured in kb-edit-v1, no gain on dev, so off
 
 _HEADING = re.compile(r"^#{1,6}\s")
 _DATE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})$")
@@ -136,12 +140,22 @@ def chunk_document(
     metadata: dict[str, Any] | None = None,
     size: int = DEFAULT_SIZE,
     overlap: int = DEFAULT_OVERLAP,
+    title_prefix: bool = TITLE_PREFIX,
 ) -> list[Chunk]:
     meta = normalise_metadata(dict(metadata or {}))
+    title = str(meta.get("title", "")).strip() if title_prefix else ""
     return [
-        Chunk(f"{doc_id}#{i}", doc_id, i, piece, dict(meta))
+        Chunk(f"{doc_id}#{i}", doc_id, i, with_title(piece, title), dict(meta))
         for i, piece in enumerate(split_text(text, size, overlap))
     ]
+
+
+def with_title(piece: str, title: str) -> str:
+    """Prefix the article title (D168): many sections never name their subject. The size budget and the
+    overlap are computed on the body alone, and a chunk that already opens with a top-level heading is left."""
+    if not title or piece.startswith("# "):
+        return piece
+    return f"{title}\n\n{piece}"
 
 
 def chunks_sha256(chunks: list[Chunk]) -> str:

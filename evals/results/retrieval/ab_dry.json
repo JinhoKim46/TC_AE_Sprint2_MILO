@@ -1,10 +1,10 @@
 {
-  "git_commit": "2e1abdc353d68baf26455a9e3166f3d7db8a33cb",
+  "git_commit": "bff0f240add9e444438ae9ecafecb5008f09d1ae",
   "model": "scripted-replies+fake-hash-256",
   "seed": 0,
   "temperature": null,
   "command": "python evals/retrieval/ab.py --dry",
-  "timestamp": "2026-10-22T15:30:39Z",
+  "timestamp": "2026-10-23T15:50:15Z",
   "inputs": {
     "fixture": "a9397d0414e967629d7596a008dc0ec22eecc697fe5c9f8050fe903185d54250",
     "ab_fixture": "607b634bf01c99103716273c69baeb254d2b90fb8b276475cea82cbaa77dea58",

@@ -15,7 +15,7 @@ A small accounts practice received paper forms from its clients: expense sheets,
 
 ## What the discovery found
 
-The interview recorded the form types, the daily volume of forms, the minutes of typing per form and the minutes of checking. The error types were wrong and delayed. The practice's system could import CSV files, so csv-export was available at no surcharge. There were no urgent requests, and the personal data question was answered yes, because the forms carried client names and bank details.
+The interview recorded the form types, the daily volume of forms, the minutes of typing per form and the minutes of checking. The error types were wrong and delayed. The practice's system could import CSV files, so csv-export was available at no surcharge. It could export them too, which csv-export also needs. There were no urgent requests, and the personal data question was answered yes, because the forms carried client names and bank details.
 
 ## What was recommended
 
