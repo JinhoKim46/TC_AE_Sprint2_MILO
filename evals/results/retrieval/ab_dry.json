@@ -1,10 +1,10 @@
 {
-  "git_commit": "2e1abdc353d68baf26455a9e3166f3d7db8a33cb",
+  "git_commit": "6391420ff23827fc71c5b1fece2e071010b7a5d1",
   "model": "scripted-replies+fake-hash-256",
   "seed": 0,
   "temperature": null,
   "command": "python evals/retrieval/ab.py --dry",
-  "timestamp": "2026-10-22T15:30:39Z",
+  "timestamp": "2026-10-23T15:45:31Z",
   "inputs": {
     "fixture": "a9397d0414e967629d7596a008dc0ec22eecc697fe5c9f8050fe903185d54250",
     "ab_fixture": "607b634bf01c99103716273c69baeb254d2b90fb8b276475cea82cbaa77dea58",
@@ -34,7 +34,7 @@
   "chunk_size": 800,
   "overlap": 100,
   "chunk_count": 10,
-  "chunk_sha256": "40ff7421b99eba4ee8f1d47d72dc4118f8032e85b19e3966ac990148f6d62780",
+  "chunk_sha256": "396003ab9cb4bb2b00b90adfebe0660b4e85b04912f3d167875e5c9b63f62521",
   "embedding_dim": 256,
   "embedding_requests": 0,
   "partial": false,
@@ -53,17 +53,17 @@
         ]
       },
       "ndcg5": {
-        "mean": 0.6488,
+        "mean": 0.7718,
         "ci": [
-          0.377,
-          0.877
+          0.4385,
+          1.0
         ]
       },
       "mrr": {
-        "mean": 0.6019,
+        "mean": 0.7738,
         "ci": [
-          0.3704,
-          0.8333
+          0.4881,
+          1.0
         ]
       },
       "p5": {
@@ -74,10 +74,10 @@
         ]
       },
       "ap": {
-        "mean": 0.6019,
+        "mean": 0.7738,
         "ci": [
-          0.3704,
-          0.8333
+          0.4881,
+          1.0
         ]
       }
     },
@@ -91,16 +91,16 @@
         ]
       },
       "ndcg5": {
-        "mean": 0.9385,
+        "mean": 1.0,
         "ci": [
-          0.8155,
+          1.0,
           1.0
         ]
       },
       "mrr": {
-        "mean": 0.9167,
+        "mean": 1.0,
         "ci": [
-          0.75,
+          1.0,
           1.0
         ]
       },
@@ -112,9 +112,9 @@
         ]
       },
       "ap": {
-        "mean": 0.9167,
+        "mean": 1.0,
         "ci": [
-          0.75,
+          1.0,
           1.0
         ]
       }
@@ -122,38 +122,38 @@
     "selfquery": {
       "n": 6,
       "recall5": {
-        "mean": 0.6667,
+        "mean": 0.8333,
         "ci": [
-          0.3333,
+          0.5,
           1.0
         ]
       },
       "ndcg5": {
-        "mean": 0.5436,
+        "mean": 0.6769,
         "ci": [
-          0.2103,
-          0.877
+          0.382,
+          0.9385
         ]
       },
       "mrr": {
-        "mean": 0.5278,
+        "mean": 0.625,
         "ci": [
-          0.25,
-          0.8333
+          0.3333,
+          0.9167
         ]
       },
       "p5": {
-        "mean": 0.1333,
+        "mean": 0.1667,
         "ci": [
-          0.0667,
+          0.1,
           0.2
         ]
       },
       "ap": {
-        "mean": 0.5278,
+        "mean": 0.625,
         "ci": [
-          0.25,
-          0.8333
+          0.3333,
+          0.9167
         ]
       }
     },
@@ -167,16 +167,16 @@
         ]
       },
       "ndcg5": {
-        "mean": 0.9385,
+        "mean": 1.0,
         "ci": [
-          0.8155,
+          1.0,
           1.0
         ]
       },
       "mrr": {
-        "mean": 0.9167,
+        "mean": 1.0,
         "ci": [
-          0.75,
+          1.0,
           1.0
         ]
       },
@@ -188,9 +188,9 @@
         ]
       },
       "ap": {
-        "mean": 0.9167,
+        "mean": 1.0,
         "ci": [
-          0.75,
+          1.0,
           1.0
         ]
       }
@@ -198,38 +198,38 @@
     "hybrid": {
       "n": 6,
       "recall5": {
-        "mean": 0.8333,
+        "mean": 1.0,
         "ci": [
-          0.5,
+          1.0,
           1.0
         ]
       },
       "ndcg5": {
-        "mean": 0.6885,
+        "mean": 0.8363,
         "ci": [
-          0.3552,
-          0.9385
+          0.6319,
+          1.0
         ]
       },
       "mrr": {
-        "mean": 0.6597,
+        "mean": 0.7833,
         "ci": [
-          0.3681,
-          0.9167
+          0.5167,
+          1.0
         ]
       },
       "p5": {
-        "mean": 0.1667,
+        "mean": 0.2,
         "ci": [
-          0.1,
+          0.2,
           0.2
         ]
       },
       "ap": {
-        "mean": 0.6597,
+        "mean": 0.7833,
         "ci": [
-          0.3681,
-          0.9167
+          0.5167,
+          1.0
         ]
       }
     },
@@ -243,17 +243,17 @@
         ]
       },
       "ndcg5": {
-        "mean": 0.5258,
+        "mean": 0.6488,
         "ci": [
-          0.3155,
-          0.6309
+          0.377,
+          0.877
         ]
       },
       "mrr": {
-        "mean": 0.4352,
+        "mean": 0.6071,
         "ci": [
-          0.3056,
-          0.5
+          0.381,
+          0.8333
         ]
       },
       "p5": {
@@ -264,10 +264,10 @@
         ]
       },
       "ap": {
-        "mean": 0.4352,
+        "mean": 0.6071,
         "ci": [
-          0.3056,
-          0.5
+          0.381,
+          0.8333
         ]
       }
     }
@@ -322,17 +322,17 @@
           ]
         },
         "ndcg5": {
-          "mean": 0.5655,
+          "mean": 0.75,
           "ci": [
-            0.1577,
-            0.9077
+            0.25,
+            1.0
           ]
         },
         "mrr": {
-          "mean": 0.5278,
+          "mean": 0.7857,
           "ci": [
-            0.2083,
-            0.875
+            0.3571,
+            1.0
           ]
         },
         "p5": {
@@ -343,10 +343,10 @@
           ]
         },
         "ap": {
-          "mean": 0.5278,
+          "mean": 0.7857,
           "ci": [
-            0.2083,
-            0.875
+            0.3571,
+            1.0
           ]
         }
       }
@@ -362,16 +362,16 @@
           ]
         },
         "ndcg5": {
-          "mean": 0.8155,
+          "mean": 1.0,
           "ci": [
-            0.6309,
+            1.0,
             1.0
           ]
         },
         "mrr": {
-          "mean": 0.75,
+          "mean": 1.0,
           "ci": [
-            0.5,
+            1.0,
             1.0
           ]
         },
@@ -383,9 +383,9 @@
           ]
         },
         "ap": {
-          "mean": 0.75,
+          "mean": 1.0,
           "ci": [
-            0.5,
+            1.0,
             1.0
           ]
         }
@@ -471,38 +471,38 @@
       "paraphrase": {
         "n": 4,
         "recall5": {
-          "mean": 0.5,
+          "mean": 0.75,
           "ci": [
-            0.0,
+            0.25,
             1.0
           ]
         },
         "ndcg5": {
-          "mean": 0.4077,
+          "mean": 0.6077,
           "ci": [
-            0.0,
-            0.8155
+            0.2153,
+            1.0
           ]
         },
         "mrr": {
-          "mean": 0.4167,
+          "mean": 0.5625,
           "ci": [
-            0.0833,
-            0.7917
+            0.125,
+            1.0
           ]
         },
         "p5": {
-          "mean": 0.1,
+          "mean": 0.15,
           "ci": [
-            0.0,
+            0.05,
             0.2
           ]
         },
         "ap": {
-          "mean": 0.4167,
+          "mean": 0.5625,
           "ci": [
-            0.0833,
-            0.7917
+            0.125,
+            1.0
           ]
         }
       }
@@ -518,16 +518,16 @@
           ]
         },
         "ndcg5": {
-          "mean": 0.8155,
+          "mean": 1.0,
           "ci": [
-            0.6309,
+            1.0,
             1.0
           ]
         },
         "mrr": {
-          "mean": 0.75,
+          "mean": 1.0,
           "ci": [
-            0.5,
+            1.0,
             1.0
           ]
         },
@@ -539,9 +539,9 @@
           ]
         },
         "ap": {
-          "mean": 0.75,
+          "mean": 1.0,
           "ci": [
-            0.5,
+            1.0,
             1.0
           ]
         }
@@ -627,37 +627,37 @@
       "paraphrase": {
         "n": 4,
         "recall5": {
-          "mean": 0.75,
+          "mean": 1.0,
           "ci": [
-            0.25,
+            1.0,
             1.0
           ]
         },
         "ndcg5": {
-          "mean": 0.625,
+          "mean": 0.8467,
           "ci": [
-            0.25,
+            0.5401,
             1.0
           ]
         },
         "mrr": {
-          "mean": 0.6146,
+          "mean": 0.8,
           "ci": [
-            0.2292,
+            0.4,
             1.0
           ]
         },
         "p5": {
-          "mean": 0.15,
+          "mean": 0.2,
           "ci": [
-            0.05,
+            0.2,
             0.2
           ]
         },
         "ap": {
-          "mean": 0.6146,
+          "mean": 0.8,
           "ci": [
-            0.2292,
+            0.4,
             1.0
           ]
         }
@@ -712,17 +712,17 @@
           ]
         },
         "ndcg5": {
-          "mean": 0.4732,
+          "mean": 0.6577,
           "ci": [
-            0.1577,
-            0.6309
+            0.25,
+            1.0
           ]
         },
         "mrr": {
-          "mean": 0.4028,
+          "mean": 0.6607,
           "ci": [
-            0.2083,
-            0.5
+            0.3214,
+            1.0
           ]
         },
         "p5": {
@@ -733,10 +733,10 @@
           ]
         },
         "ap": {
-          "mean": 0.4028,
+          "mean": 0.6607,
           "ci": [
-            0.2083,
-            0.5
+            0.3214,
+            1.0
           ]
         }
       }
@@ -752,17 +752,17 @@
         ]
       },
       "ndcg5": {
-        "mean_diff": 0.2897,
+        "mean_diff": 0.2282,
         "ci": [
-          0.0615,
-          0.623
+          0.0,
+          0.5615
         ]
       },
       "mrr": {
-        "mean_diff": 0.3148,
+        "mean_diff": 0.2262,
         "ci": [
-          0.0833,
-          0.6111
+          0.0,
+          0.5119
         ]
       },
       "p5": {
@@ -773,47 +773,47 @@
         ]
       },
       "ap": {
-        "mean_diff": 0.3148,
+        "mean_diff": 0.2262,
         "ci": [
-          0.0833,
-          0.6111
+          0.0,
+          0.5119
         ]
       }
     },
     "selfquery": {
       "recall5": {
-        "mean_diff": -0.1667,
+        "mean_diff": 0.0,
         "ci": [
           -0.5,
-          0.0
+          0.5
         ]
       },
       "ndcg5": {
-        "mean_diff": -0.1052,
+        "mean_diff": -0.0949,
         "ci": [
           -0.5,
-          0.1845
+          0.2153
         ]
       },
       "mrr": {
-        "mean_diff": -0.0741,
+        "mean_diff": -0.1488,
         "ci": [
-          -0.4907,
-          0.2593
+          -0.5,
+          0.0536
         ]
       },
       "p5": {
-        "mean_diff": -0.0333,
+        "mean_diff": 0.0,
         "ci": [
           -0.1,
-          0.0
+          0.1
         ]
       },
       "ap": {
-        "mean_diff": -0.0741,
+        "mean_diff": -0.1488,
         "ci": [
-          -0.4907,
-          0.2593
+          -0.5,
+          0.0536
         ]
       }
     },
@@ -826,17 +826,17 @@
         ]
       },
       "ndcg5": {
-        "mean_diff": 0.2897,
+        "mean_diff": 0.2282,
         "ci": [
-          0.0615,
-          0.623
+          0.0,
+          0.5615
         ]
       },
       "mrr": {
-        "mean_diff": 0.3148,
+        "mean_diff": 0.2262,
         "ci": [
-          0.0833,
-          0.6111
+          0.0,
+          0.5119
         ]
       },
       "p5": {
@@ -847,47 +847,47 @@
         ]
       },
       "ap": {
-        "mean_diff": 0.3148,
+        "mean_diff": 0.2262,
         "ci": [
-          0.0833,
-          0.6111
+          0.0,
+          0.5119
         ]
       }
     },
     "hybrid": {
       "recall5": {
-        "mean_diff": 0.0,
+        "mean_diff": 0.1667,
         "ci": [
           0.0,
-          0.0
+          0.5
         ]
       },
       "ndcg5": {
-        "mean_diff": 0.0397,
+        "mean_diff": 0.0645,
         "ci": [
-          -0.0655,
-          0.1845
+          0.0,
+          0.1934
         ]
       },
       "mrr": {
-        "mean_diff": 0.0579,
+        "mean_diff": 0.0095,
         "ci": [
-          -0.081,
-          0.25
+          0.0,
+          0.0286
         ]
       },
       "p5": {
-        "mean_diff": 0.0,
+        "mean_diff": 0.0333,
         "ci": [
           0.0,
-          0.0
+          0.1
         ]
       },
       "ap": {
-        "mean_diff": 0.0579,
+        "mean_diff": 0.0095,
         "ci": [
-          -0.081,
-          0.25
+          0.0,
+          0.0286
         ]
       }
     },
@@ -931,20 +931,20 @@
   },
   "decisions": {
     "rewrite": {
-      "verdict": "adopt",
-      "rule": "paired nDCG@5 CI [0.0615, 0.623] above zero"
+      "verdict": "not_adopted",
+      "rule": "paired nDCG@5 CI [0.0, 0.5615] does not lie above zero"
     },
     "selfquery": {
       "verdict": "not_adopted",
-      "rule": "paired nDCG@5 CI [-0.5, 0.1845] does not lie above zero"
+      "rule": "paired nDCG@5 CI [-0.5, 0.2153] does not lie above zero"
     },
     "rewrite_selfquery": {
-      "verdict": "adopt",
-      "rule": "paired nDCG@5 CI [0.0615, 0.623] above zero"
+      "verdict": "not_adopted",
+      "rule": "paired nDCG@5 CI [0.0, 0.5615] does not lie above zero"
     },
     "hybrid": {
       "verdict": "no_harm_not_adopted",
-      "rule": "CI [-0.0655, 0.1845] includes zero; mean >= 0, recall@5 not lower"
+      "rule": "CI [0.0, 0.1934] includes zero; mean >= 0, recall@5 not lower"
     },
     "rerank": {
       "verdict": "not_adopted",
@@ -1003,7 +1003,7 @@
       "relevant": [
         "solutions/alpha-desk#1"
       ],
-      "dense_top1_score": 0.693889,
+      "dense_top1_score": 0.724207,
       "rewrite": "alpha desk module never takes card payments over the phone",
       "arms": {
         "dense": {
@@ -1032,7 +1032,7 @@
             "solutions/alpha-desk#0",
             "solutions/beta-mail#1",
             "cases/bakery-orders#1",
-            "solutions/beta-mail#0"
+            "solutions/alpha-desk#2"
           ],
           "relevant_ranks": [
             1
@@ -1105,7 +1105,7 @@
             "solutions/alpha-desk#1",
             "cases/bakery-orders#1",
             "solutions/alpha-desk#0",
-            "pricing/rate-card#0",
+            "solutions/alpha-desk#2",
             "solutions/beta-mail#0"
           ],
           "relevant_ranks": [
@@ -1203,22 +1203,22 @@
         },
         "rewrite": {
           "top5": [
-            "solutions/beta-mail#0",
             "solutions/beta-mail#1",
+            "solutions/beta-mail#0",
+            "solutions/beta-mail#2",
             "solutions/alpha-desk#1",
-            "solutions/alpha-desk#0",
-            "solutions/beta-mail#2"
+            "solutions/alpha-desk#0"
           ],
           "relevant_ranks": [
-            2
+            1
           ],
           "metrics": {
             "recall5": 1.0,
-            "ndcg5": 0.6309297535714575,
-            "mrr": 0.5,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
             "p5": 0.2,
-            "ap": 0.5,
-            "first_relevant_rank": 2
+            "ap": 1.0,
+            "first_relevant_rank": 1
           }
         },
         "selfquery": {
@@ -1246,12 +1246,12 @@
         },
         "rewrite_selfquery": {
           "top5": [
-            "solutions/beta-mail#0",
             "solutions/beta-mail#1",
+            "solutions/beta-mail#0",
             "solutions/beta-mail#2"
           ],
           "relevant_ranks": [
-            2
+            1
           ],
           "filters": {
             "product": "beta-mail"
@@ -1262,19 +1262,19 @@
           "fallback": null,
           "metrics": {
             "recall5": 1.0,
-            "ndcg5": 0.6309297535714575,
-            "mrr": 0.5,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
             "p5": 0.2,
-            "ap": 0.5,
-            "first_relevant_rank": 2
+            "ap": 1.0,
+            "first_relevant_rank": 1
           }
         },
         "hybrid": {
           "top5": [
             "solutions/beta-mail#0",
             "solutions/beta-mail#1",
-            "cases/bakery-orders#0",
             "solutions/beta-mail#2",
+            "cases/bakery-orders#0",
             "pricing/rate-card#0"
           ],
           "relevant_ranks": [
@@ -1349,35 +1349,35 @@
       "relevant": [
         "solutions/alpha-desk#2"
       ],
-      "dense_top1_score": 0.336336,
+      "dense_top1_score": 0.386244,
       "rewrite": "alpha desk set-up takes two working days",
       "arms": {
         "dense": {
           "top5": [
+            "solutions/alpha-desk#1",
             "solutions/alpha-desk#0",
             "solutions/beta-mail#1",
-            "solutions/alpha-desk#1",
-            "cases/bakery-orders#1",
-            "pricing/rate-card#0"
+            "pricing/rate-card#1",
+            "cases/bakery-orders#1"
           ],
           "relevant_ranks": [
-            9
+            7
           ],
           "metrics": {
             "recall5": 0.0,
             "ndcg5": 0.0,
-            "mrr": 0.1111111111111111,
+            "mrr": 0.14285714285714285,
             "p5": 0.0,
-            "ap": 0.1111111111111111,
-            "first_relevant_rank": 9
+            "ap": 0.14285714285714285,
+            "first_relevant_rank": 7
           }
         },
         "rewrite": {
           "top5": [
             "solutions/alpha-desk#2",
+            "solutions/alpha-desk#1",
             "solutions/alpha-desk#0",
             "solutions/beta-mail#2",
-            "solutions/alpha-desk#1",
             "cases/bakery-orders#1"
           ],
           "relevant_ranks": [
@@ -1394,14 +1394,14 @@
         },
         "selfquery": {
           "top5": [
+            "solutions/alpha-desk#1",
             "solutions/alpha-desk#0",
             "solutions/beta-mail#1",
-            "solutions/alpha-desk#1",
-            "solutions/beta-mail#0",
-            "solutions/beta-mail#2"
+            "solutions/alpha-desk#2",
+            "solutions/beta-mail#0"
           ],
           "relevant_ranks": [
-            6
+            4
           ],
           "filters": {
             "section": "solutions"
@@ -1411,19 +1411,19 @@
           },
           "fallback": null,
           "metrics": {
-            "recall5": 0.0,
-            "ndcg5": 0.0,
-            "mrr": 0.16666666666666666,
-            "p5": 0.0,
-            "ap": 0.16666666666666666,
-            "first_relevant_rank": 6
+            "recall5": 1.0,
+            "ndcg5": 0.43067655807339306,
+            "mrr": 0.25,
+            "p5": 0.2,
+            "ap": 0.25,
+            "first_relevant_rank": 4
           }
         },
         "rewrite_selfquery": {
           "top5": [
             "solutions/alpha-desk#2",
-            "solutions/alpha-desk#0",
-            "solutions/alpha-desk#1"
+            "solutions/alpha-desk#1",
+            "solutions/alpha-desk#0"
           ],
           "relevant_ranks": [
             1
@@ -1448,43 +1448,43 @@
         },
         "hybrid": {
           "top5": [
-            "solutions/alpha-desk#0",
             "solutions/alpha-desk#1",
+            "solutions/alpha-desk#0",
             "solutions/beta-mail#1",
             "cases/bakery-orders#1",
-            "solutions/beta-mail#2"
+            "solutions/alpha-desk#2"
           ],
           "relevant_ranks": [
-            8
+            5
           ],
           "metrics": {
-            "recall5": 0.0,
-            "ndcg5": 0.0,
-            "mrr": 0.125,
-            "p5": 0.0,
-            "ap": 0.125,
-            "first_relevant_rank": 8
+            "recall5": 1.0,
+            "ndcg5": 0.38685280723454163,
+            "mrr": 0.2,
+            "p5": 0.2,
+            "ap": 0.2,
+            "first_relevant_rank": 5
           }
         },
         "rerank": {
           "top5": [
+            "solutions/beta-mail#1",
             "solutions/alpha-desk#1",
             "solutions/alpha-desk#0",
-            "solutions/beta-mail#1",
-            "cases/bakery-orders#1",
-            "pricing/rate-card#0"
+            "pricing/rate-card#1",
+            "cases/bakery-orders#1"
           ],
           "relevant_ranks": [
-            9
+            7
           ],
           "usable": true,
           "metrics": {
             "recall5": 0.0,
             "ndcg5": 0.0,
-            "mrr": 0.1111111111111111,
+            "mrr": 0.14285714285714285,
             "p5": 0.0,
-            "ap": 0.1111111111111111,
-            "first_relevant_rank": 9
+            "ap": 0.14285714285714285,
+            "first_relevant_rank": 7
           }
         }
       },
@@ -1526,27 +1526,27 @@
       "relevant": [
         "pricing/rate-card#1"
       ],
-      "dense_top1_score": 0.236433,
+      "dense_top1_score": 0.285714,
       "rewrite": "urgent requests surcharge percent monthly fee",
       "arms": {
         "dense": {
           "top5": [
-            "solutions/beta-mail#2",
             "pricing/rate-card#1",
+            "solutions/beta-mail#2",
             "solutions/alpha-desk#2",
             "pricing/rate-card#0",
             "solutions/beta-mail#1"
           ],
           "relevant_ranks": [
-            2
+            1
           ],
           "metrics": {
             "recall5": 1.0,
-            "ndcg5": 0.6309297535714575,
-            "mrr": 0.5,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
             "p5": 0.2,
-            "ap": 0.5,
-            "first_relevant_rank": 2
+            "ap": 1.0,
+            "first_relevant_rank": 1
           }
         },
         "rewrite": {
@@ -1641,23 +1641,23 @@
         },
         "rerank": {
           "top5": [
-            "solutions/beta-mail#2",
             "pricing/rate-card#1",
+            "solutions/beta-mail#2",
             "solutions/alpha-desk#2",
             "pricing/rate-card#0",
             "solutions/beta-mail#1"
           ],
           "relevant_ranks": [
-            2
+            1
           ],
           "usable": false,
           "metrics": {
             "recall5": 1.0,
-            "ndcg5": 0.6309297535714575,
-            "mrr": 0.5,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
             "p5": 0.2,
-            "ap": 0.5,
-            "first_relevant_rank": 2
+            "ap": 1.0,
+            "first_relevant_rank": 1
           }
         }
       },
@@ -1697,7 +1697,7 @@
       "relevant": [
         "pricing/rate-card#1"
       ],
-      "dense_top1_score": 0.385758,
+      "dense_top1_score": 0.357143,
       "rewrite": "exporting records as CSV surcharge",
       "arms": {
         "dense": {
@@ -1864,27 +1864,27 @@
       "relevant": [
         "solutions/beta-mail#2"
       ],
-      "dense_top1_score": 0.298142,
+      "dense_top1_score": 0.316228,
       "rewrite": "beta mail set-up needs read access shared inbox",
       "arms": {
         "dense": {
           "top5": [
-            "solutions/beta-mail#0",
             "solutions/beta-mail#2",
+            "solutions/beta-mail#0",
             "solutions/beta-mail#1",
             "solutions/alpha-desk#1",
             "solutions/alpha-desk#2"
           ],
           "relevant_ranks": [
-            2
+            1
           ],
           "metrics": {
             "recall5": 1.0,
-            "ndcg5": 0.6309297535714575,
-            "mrr": 0.5,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
             "p5": 0.2,
-            "ap": 0.5,
-            "first_relevant_rank": 2
+            "ap": 1.0,
+            "first_relevant_rank": 1
           }
         },
         "rewrite": {
@@ -1909,25 +1909,25 @@
         },
         "selfquery": {
           "top5": [
-            "solutions/beta-mail#0",
             "solutions/beta-mail#2",
+            "solutions/beta-mail#0",
             "solutions/beta-mail#1",
             "solutions/alpha-desk#1",
             "solutions/alpha-desk#2"
           ],
           "relevant_ranks": [
-            2
+            1
           ],
           "filters": null,
           "applied": null,
           "fallback": "parse:schema",
           "metrics": {
             "recall5": 1.0,
-            "ndcg5": 0.6309297535714575,
-            "mrr": 0.5,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
             "p5": 0.2,
-            "ap": 0.5,
-            "first_relevant_rank": 2
+            "ap": 1.0,
+            "first_relevant_rank": 1
           }
         },
         "rewrite_selfquery": {
@@ -1957,43 +1957,43 @@
         },
         "hybrid": {
           "top5": [
-            "solutions/beta-mail#0",
-            "solutions/alpha-desk#1",
             "solutions/beta-mail#2",
+            "solutions/alpha-desk#1",
+            "solutions/beta-mail#0",
             "solutions/beta-mail#1",
             "cases/bakery-orders#1"
           ],
           "relevant_ranks": [
-            3
+            1
           ],
           "metrics": {
             "recall5": 1.0,
-            "ndcg5": 0.5,
-            "mrr": 0.3333333333333333,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
             "p5": 0.2,
-            "ap": 0.3333333333333333,
-            "first_relevant_rank": 3
+            "ap": 1.0,
+            "first_relevant_rank": 1
           }
         },
         "rerank": {
           "top5": [
-            "solutions/beta-mail#0",
             "solutions/beta-mail#2",
+            "solutions/beta-mail#0",
             "solutions/beta-mail#1",
             "solutions/alpha-desk#1",
             "solutions/alpha-desk#2"
           ],
           "relevant_ranks": [
-            2
+            1
           ],
           "usable": true,
           "metrics": {
             "recall5": 1.0,
-            "ndcg5": 0.6309297535714575,
-            "mrr": 0.5,
+            "ndcg5": 1.0,
+            "mrr": 1.0,
             "p5": 0.2,
-            "ap": 0.5,
-            "first_relevant_rank": 2
+            "ap": 1.0,
+            "first_relevant_rank": 1
           }
         }
       },
@@ -2031,7 +2031,7 @@
       "answerable": false,
       "gold_filters": null,
       "relevant": [],
-      "dense_top1_score": 0.260623,
+      "dense_top1_score": 0.251312,
       "rewrite": "tractor fuel economy winter",
       "arms": {
         "dense": {
@@ -2136,7 +2136,7 @@
       "answerable": false,
       "gold_filters": null,
       "relevant": [],
-      "dense_top1_score": 0.448618,
+      "dense_top1_score": 0.43259,
       "rewrite": "What is the capital of Australia?",
       "arms": {
         "dense": {
@@ -2190,8 +2190,8 @@
             "cases/bakery-orders#1",
             "pricing/rate-card#0",
             "solutions/alpha-desk#1",
-            "solutions/beta-mail#1",
-            "solutions/alpha-desk#2"
+            "solutions/alpha-desk#2",
+            "solutions/beta-mail#1"
           ],
           "relevant_ranks": []
         },

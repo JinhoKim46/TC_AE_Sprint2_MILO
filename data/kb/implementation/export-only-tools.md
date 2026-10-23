@@ -31,4 +31,4 @@ The integration does not add an import to a tool that has none. If your goal is 
 
 ## When to choose it
 
-Choose export-only-tool when you are not ready to change your job tool but want the paper-to-screen step to stop producing errors. When you later move to a tool with an API, the integration changes to api-connector and the surcharge changes with it.
+Choose export-only-tool when you are not ready to change your job tool but want the paper-to-screen step to stop producing errors. When you later move to a tool with an API, the integration changes to api-connector and the surcharge changes with it. That applies to a module that offers api-connector; document-data-entry does not, so with a new tool that can import CSV files it moves to csv-export and the surcharge falls to 0 USD.

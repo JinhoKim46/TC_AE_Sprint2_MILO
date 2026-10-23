@@ -19,11 +19,11 @@ The interview recorded the channels, the volume, the minutes per job and the re-
 
 ## What was recommended
 
-Email triage to label and prioritise the inbox, ticket-creation so that each accepted job became a tracked ticket with a duplicate check, and staff-assignment to suggest which engineer should take a ticket from the skill tags the owner entered. Because the field-service tool was export-only, the report said plainly that re-keying could be shortened and checked but not removed, and the export-only-tool surcharge was shown.
+Email triage to label and prioritise the inbox, ticket-creation so that each accepted job became a tracked ticket with a duplicate check, staff-assignment to suggest which engineer should take a ticket from the skill tags the owner entered, and document-data-entry to turn the paper job sheets into a checked list for re-keying. Because the field-service tool was export-only, the report said plainly that re-keying could be shortened and checked but not removed, and the export-only-tool surcharge was shown. That surcharge applied to document-data-entry; ticket-creation and staff-assignment used csv-export with a spreadsheet, because the field-service tool could not import their output.
 
 ## What changed
 
-Mail was labelled as it arrived, so a job sent late in the day was visible the same evening. Each job had a ticket with an owner and a status. The night line was routed to the on-call engineer through the urgent label. The paper sheets stayed, but they were printed from the ticket rather than written by hand.
+Mail was labelled as it arrived, so a job sent late in the day was visible the same evening. Each job had a ticket with an owner and a status, kept in a spreadsheet fed by the CSV file rather than in the field-service tool. The night line was routed to the on-call engineer through the urgent label. The paper sheets stayed, but they were printed from the ticket rather than written by hand.
 
 ## What it did not do
 

@@ -38,6 +38,9 @@ rows:
     gold_evidence:
       - doc_id: solutions/ticket-creation
         quote: "The ticket-creation module does not close a ticket without a person."
+    alt_evidence:
+      - doc_id: pricing/what-is-included
+        quote: "ticket-creation never closes a ticket without a person."
     reference_answer: "No. A person closes the ticket."
     filters: null
     section_heading: What is not included
@@ -98,6 +101,9 @@ rows:
     gold_evidence:
       - doc_id: solutions/phone-intake
         quote: "The base monthly price for phone-intake is 690 USD."
+    alt_evidence:
+      - doc_id: pricing/how-we-price
+        quote: "| phone-intake | 690 USD |"
     reference_answer: "690 USD a month, before the volume factor."
     filters: null
     section_heading: Price
@@ -108,6 +114,9 @@ rows:
     gold_evidence:
       - doc_id: solutions/ticket-creation
         quote: "The module includes ticket fields, a duplicate check, status tracking and reminders to staff."
+    alt_evidence:
+      - doc_id: solutions/ticket-creation
+        quote: "Before it creates a ticket it checks for duplicates, so the same request sent twice does not become two jobs."
     reference_answer: "A duplicate check is part of the module."
     filters: null
     section_heading: What is included
@@ -128,6 +137,9 @@ rows:
     gold_evidence:
       - doc_id: solutions/customer-status-updates
         quote: "The base monthly price for customer-status-updates is 240 USD."
+    alt_evidence:
+      - doc_id: pricing/how-we-price
+        quote: "| customer-status-updates | 240 USD |"
     reference_answer: "240 USD a month."
     filters: null
     section_heading: Price
@@ -188,6 +200,9 @@ rows:
     gold_evidence:
       - doc_id: pricing/setup-fees
         quote: "A surcharge is counted once per integration, not once per module."
+    alt_evidence:
+      - doc_id: implementation/api-connector
+        quote: "The api-connector surcharge is 300 USD a month, paid once however many modules share the connection."
     reference_answer: "Once. The surcharge is per integration, not per module."
     filters: null
     section_heading: How surcharges combine
@@ -595,6 +610,9 @@ rows:
     gold_evidence:
       - doc_id: solutions/email-triage
         quote: "The module also sets a priority so that the most pressing messages rise to the top."
+    alt_evidence:
+      - doc_id: consultation/urgent-requests
+        quote: "The email-triage module gives an urgent message the highest priority label so it sits at the top of the inbox."
     reference_answer: "It sets a priority so the most pressing messages rise to the top."
     filters: {product: email-triage}
     section_heading: What it does
@@ -782,6 +800,9 @@ rows:
     gold_evidence:
       - doc_id: pricing/volume-tiers
         quote: "A business with volume up to 150 requests a day pays the base price multiplied by 1.50."
+    alt_evidence:
+      - doc_id: pricing/volume-tiers
+        quote: "| up to 150 per day | 1.50 |"
     reference_answer: "1.50, the factor for volume up to 150 requests a day."
     filters: {section: pricing}
     section_heading: How to read it
@@ -947,6 +968,9 @@ rows:
     gold_evidence:
       - doc_id: consultation/first-questions
         quote: "A fact the assistant derives, for example a daily volume from a monthly one, is marked estimated."
+    alt_evidence:
+      - doc_id: consultation/volume-and-timing
+        quote: "the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."
     reference_answer: "Estimated, for example a daily volume derived from a monthly one."
     filters: null
     section_heading: What happens to an answer
@@ -1057,6 +1081,9 @@ rows:
     gold_evidence:
       - doc_id: policies/approvals
         quote: "In a suspicious turn it will not record a fact that affects the price, and it will not start a withdrawal even if asked."
+    alt_evidence:
+      - doc_id: policies/security
+        quote: "In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
     reference_answer: "It will not record a fact that affects the price, and it will not start a withdrawal."
     filters: null
     section_heading: Untrusted text and the exception
@@ -1101,6 +1128,9 @@ rows:
     gold_evidence:
       - doc_id: policies/security
         quote: "Who you are is decided by the account you signed in with, and every record it reads or writes is looked up for that account only."
+    alt_evidence:
+      - doc_id: policies/personal-data
+        quote: "No other owner can see your session, your facts or your submission, and the assistant will refuse a request to show another owner's data."
     reference_answer: "No. Identity comes from the account you signed in with, and records are looked up for that account only."
     filters: null
     section_heading: Your identity comes from your sign-in

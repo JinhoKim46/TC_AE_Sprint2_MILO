@@ -40,6 +40,7 @@ from evals import common  # noqa: E402
 from milo.rag.chunk import (  # noqa: E402
     DEFAULT_OVERLAP,
     DEFAULT_SIZE,
+    TITLE_PREFIX,
     Chunk,
     chunk_document,
     chunks_sha256,
@@ -53,6 +54,9 @@ RESULTS = ROOT / "evals" / "results" / "retrieval"
 FIXTURE = ROOT / "evals" / "retrieval" / "fixtures" / "retrieval_dry_fixture.json"
 KB = ROOT / "data" / "kb"
 LIVE_RESULT = RESULTS / "retrieval_dev.json"
+NOTITLE_RESULT = (
+    RESULTS / "retrieval_dev_notitle.json"
+)  # kb-edit-v1 arm A (no title prefix)
 DRY_RESULT = RESULTS / "retrieval_dry.json"
 K = 5
 BOOT, SEED = 2000, 0
@@ -84,6 +88,13 @@ def metrics_from_ranks(ranks: list[int], n_rel: int) -> dict[str, Any]:
         "ap": sum((j + 1) / r for j, r in enumerate(ranks)) / n_rel if n_rel else 0.0,
         "first_relevant_rank": ranks[0] if ranks else None,
     }
+
+
+def accepted_metrics(r: dict[str, Any], ranks: list[int]) -> dict[str, Any]:
+    """D168: a hit on an accepted alternative counts like a hit on the gold chunk, but the ideal ranking still has
+    `len(relevant)` answers, so only the first that many hits score (one twin at rank 1 gives nDCG 1.0)."""
+    n_rel = len(r["relevant"])
+    return metrics_from_ranks(ranks[:n_rel], n_rel)
 
 
 def mean(v: list[float]) -> float:
@@ -187,6 +198,26 @@ def derive(rows: list[dict[str, Any]]) -> dict[str, Any]:
     with_chunk = [r for r in scored if r["relevant"]]
     filt = [r for r in scored if r["filters"]]
     types = by_type(scored)
+    accepted: dict[str, Any] = {}
+    if any(
+        "accepted" in r for r in scored
+    ):  # results made before D168 have no accepted ids and stay unchanged
+        for r in scored:
+            r["metrics_accepted"] = accepted_metrics(
+                r, r.get("accepted_ranks", r["relevant_ranks"])
+            )
+            if r["filters"]:
+                f = r["filtered"]
+                f["metrics_accepted"] = accepted_metrics(
+                    r, f.get("accepted_ranks", f["relevant_ranks"])
+                )
+        accepted = {
+            "summary_accepted": summarise(scored, "metrics_accepted"),
+            "filtered_summary_accepted": summarise(
+                [{"m": r["filtered"]["metrics_accepted"]} for r in filt], "m"
+            ),
+            "accepted_rows": sorted(r["qid"] for r in scored if r.get("accepted")),
+        }
     return {
         "summary": summarise(scored),
         "summary_excluding_no_chunk": summarise(with_chunk),
@@ -200,6 +231,7 @@ def derive(rows: list[dict[str, Any]]) -> dict[str, Any]:
             ),
         },
         "calibration": calibrate(rows),
+        **accepted,
     }
 
 
@@ -236,6 +268,11 @@ def relevant_ids(chunks: list[Chunk], quotes: list[dict[str, str]]) -> list[str]
     return sorted(rel)
 
 
+def hit_ranks(ranking: list[Any], ids: list[str]) -> list[int]:
+    wanted = set(ids)
+    return [i + 1 for i, h in enumerate(ranking) if h.chunk_id in wanted]
+
+
 def rank_rows(
     store: VectorStore,
     chunks: list[Chunk],
@@ -248,6 +285,12 @@ def rank_rows(
         answerable = bool(q["quotes"])
         full = store.rank(qv)
         relevant = relevant_ids(chunks, q["quotes"]) if answerable else []
+        alt = q.get("alt_quotes")
+        accepted = (
+            [i for i in relevant_ids(chunks, alt) if i not in relevant]
+            if answerable and alt is not None
+            else None
+        )
         row: dict[str, Any] = {
             "qid": q["qid"],
             "type": q["type"],
@@ -262,6 +305,9 @@ def rank_rows(
                 i + 1 for i, h in enumerate(full) if h.chunk_id in relevant
             ],
         }
+        if accepted is not None:
+            row["accepted"] = accepted
+            row["accepted_ranks"] = hit_ranks(full, relevant + accepted)
         if q["filters"]:
             ff = store.rank(qv, q["filters"])
             row["filtered"] = {
@@ -271,6 +317,8 @@ def rank_rows(
                     i + 1 for i, h in enumerate(ff) if h.chunk_id in relevant
                 ],
             }
+            if accepted is not None:
+                row["filtered"]["accepted_ranks"] = hit_ranks(ff, relevant + accepted)
         rows.append(row)
     return rows
 
@@ -281,11 +329,14 @@ def build_store(
     size: int,
     overlap: int,
     path: Path | None,
+    title_prefix: bool = TITLE_PREFIX,
 ) -> tuple[VectorStore, list[Chunk], int]:
     chunks = [
         c
         for d in docs
-        for c in chunk_document(d.doc_id, d.text, d.metadata, size, overlap)
+        for c in chunk_document(
+            d.doc_id, d.text, d.metadata, size, overlap, title_prefix
+        )
     ]
     vectors: list[list[float]] = []
     for i in range(0, len(chunks), 64):
@@ -295,8 +346,12 @@ def build_store(
     return store, chunks, len(vectors[0]) if vectors else 0
 
 
-def gold_queries(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    return [
+def gold_queries(
+    rows: list[dict[str, Any]], alt: dict[str, list[dict[str, str]]] | None = None
+) -> list[dict[str, Any]]:
+    """`alt` (D168) adds each row's accepted alternative passages; a dev run passes it, so every row then carries
+    `accepted` ids (empty when the row has none)."""
+    out = [
         {
             "qid": r["qid"],
             "type": r["type"],
@@ -308,6 +363,10 @@ def gold_queries(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         }
         for r in rows
     ]
+    if alt is not None:
+        for q in out:
+            q["alt_quotes"] = alt.get(q["qid"], [])
+    return out
 
 
 def prepare(args: argparse.Namespace) -> dict[str, Any]:
@@ -317,11 +376,16 @@ def prepare(args: argparse.Namespace) -> dict[str, Any]:
         docs = [Document(d["doc_id"], d["text"], d["metadata"]) for d in fx["docs"]]
         return {"docs": docs, "queries": fx["queries"], "inputs": {"fixture": FIXTURE}}
     # dev rows only (HARNESS rule 6); only evals/final/run_final.py passes `rows` (the test split, MILO_FINAL=1)
-    rows = getattr(args, "rows", None) or common.load_gold("dev")
+    test_rows = getattr(args, "rows", None)
+    rows = test_rows or common.load_gold("dev")
     inputs: dict[str, Path | str] = {"gold": common.GOLD_PATH}
+    alt = None
+    if not test_rows and common.GOLD_ALT_PATH.exists():
+        alt = common.load_gold_alt()
+        inputs["gold_alt"] = common.GOLD_ALT_PATH
     for md in sorted(KB.rglob("*.md")):
         inputs[f"kb/{md.relative_to(KB).as_posix()}"] = md
-    return {"docs": load_kb(KB), "queries": gold_queries(rows), "inputs": inputs}
+    return {"docs": load_kb(KB), "queries": gold_queries(rows, alt), "inputs": inputs}
 
 
 # ---------------------------------------------------------------- run
@@ -341,6 +405,7 @@ def cost_note(embedder: Any) -> str:
 
 def run(args: argparse.Namespace) -> int:
     size, overlap = (int(x) for x in args.chunk.split("/"))
+    title_prefix = not getattr(args, "no_title", False)
     if not args.dry and os.environ.get("MILO_LIVE") != "1":
         print(LIVE_REFUSAL, file=sys.stderr)
         return 2
@@ -364,10 +429,13 @@ def run(args: argparse.Namespace) -> int:
             return 2
         model = str(embedder.model)
         split = getattr(args, "split", "dev")
-        out = RESULTS / f"retrieval_{split}.json"
-        emb_out = RESULTS / f"retrieval_{split}_query_embeddings.json"
-        index_path = INDEX_ROOT / f"{model.replace('/', '_')}-{size}-{overlap}"
-    store, chunks, dim = build_store(prep["docs"], embedder, size, overlap, index_path)
+        tag = "" if title_prefix else "_notitle"
+        out = RESULTS / f"retrieval_{split}{tag}.json"
+        emb_out = RESULTS / f"retrieval_{split}{tag}_query_embeddings.json"
+        index_path = INDEX_ROOT / f"{model.replace('/', '_')}-{size}-{overlap}{tag}"
+    store, chunks, dim = build_store(
+        prep["docs"], embedder, size, overlap, index_path, title_prefix
+    )
     if index_path is not None:
         store.write_manifest(
             {
@@ -399,6 +467,7 @@ def run(args: argparse.Namespace) -> int:
         "query_prefix": "none",
         "chunk_size": size,
         "overlap": overlap,
+        "title_prefix": title_prefix,
         "chunk_count": len(chunks),
         "chunk_sha256": chunks_sha256(chunks),
         "embedding_dim": dim,
@@ -491,7 +560,12 @@ def rerank_check(stored: dict[str, Any], emb_path: Path, bad: list[str]) -> str:
         )
         tol = 1e-6
     else:
+        title_prefix = stored.get("title_prefix", False)  # results before D168 had none
+        tag = "" if title_prefix else "_notitle"
         idx = INDEX_ROOT / f"{str(stored['model']).replace('/', '_')}-{size}-{overlap}"
+        if not title_prefix and not (idx.parent / (idx.name + tag)).exists():
+            tag = ""  # a pre-D168 index sits under the plain name
+        idx = idx.parent / (idx.name + tag)
         manifest = VectorStore(idx).read_manifest() if idx.exists() else None
         if not manifest or manifest.get("chunk_sha256") != stored["chunk_sha256"]:
             return "index not on disk (data/index/), query-embedding re-rank skipped"
@@ -499,7 +573,9 @@ def rerank_check(stored: dict[str, Any], emb_path: Path, bad: list[str]) -> str:
         chunks = [
             c
             for d in load_kb(KB)
-            for c in chunk_document(d.doc_id, d.text, d.metadata, size, overlap)
+            for c in chunk_document(
+                d.doc_id, d.text, d.metadata, size, overlap, title_prefix
+            )
         ]
         tol = TOL
     fresh = rank_rows_from_stored(store, chunks, stored["rows"], qvecs)
@@ -523,10 +599,16 @@ def rank_rows_from_stored(
         row = {**r, "top5": [h.chunk_id for h in full[:K]], "top5_scores": [round(h.score, 6) for h in full[:K]],
                "top1_score": round(full[0].score, 6) if full else 0.0,
                "relevant_ranks": [i + 1 for i, h in enumerate(full) if h.chunk_id in rel]}  # fmt: skip
+        if "accepted" in r:
+            row["accepted_ranks"] = hit_ranks(full, r["relevant"] + r["accepted"])
         if r["filters"]:
             ff = store.rank(qvecs[r["qid"]], r["filters"])
             row["filtered"] = {"top5": [h.chunk_id for h in ff[:K]], "top5_scores": [round(h.score, 6) for h in ff[:K]],
                                "relevant_ranks": [i + 1 for i, h in enumerate(ff) if h.chunk_id in rel]}  # fmt: skip
+            if "accepted" in r:
+                row["filtered"]["accepted_ranks"] = hit_ranks(
+                    ff, r["relevant"] + r["accepted"]
+                )
         rows.append(row)
     return rows
 
@@ -535,7 +617,7 @@ def replay(args: argparse.Namespace) -> int:
     paths = (
         [Path(args.result)]
         if args.result
-        else [p for p in (LIVE_RESULT, DRY_RESULT) if p.exists()]
+        else [p for p in (LIVE_RESULT, NOTITLE_RESULT, DRY_RESULT) if p.exists()]
     )
     if not paths:
         print(
@@ -559,6 +641,11 @@ def main(argv: list[str] | None = None) -> int:
         "--replay", action="store_true", help="recompute from a stored result"
     )
     ap.add_argument("--result", help="result file to replay")
+    ap.add_argument(
+        "--no-title",
+        action="store_true",
+        help="chunks without the article-title prefix (kb-edit-v1 arm A)",
+    )
     ap.add_argument(
         "--chunk",
         default=f"{DEFAULT_SIZE}/{DEFAULT_OVERLAP}",

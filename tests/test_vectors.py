@@ -186,6 +186,30 @@ def test_metrics_from_ranks() -> None:
     assert abs(two["ap"] - (1 / 2 + 2 / 7) / 2) < 1e-12
 
 
+def test_accepted_alternative_scores_like_the_gold_chunk() -> None:
+    """D168: a twin passage at rank 1 is a full hit; gold plus twin in the top 5 does not score above 1."""
+    run = _runner()
+    row = {"relevant": ["a#1"]}
+    assert run.accepted_metrics(row, [1])["ndcg5"] == 1.0
+    assert run.accepted_metrics(row, [1, 2])["ndcg5"] == 1.0
+    assert run.accepted_metrics(row, [3])["mrr"] == 1 / 3
+    store = VectorStore(None)
+    chunks = [c for d in DOCS for c in chunk_document(d.doc_id, d.text, d.metadata)]
+    emb = FakeEmbedder()
+    store.add(chunks, emb.embed([c.text for c in chunks]))
+    q = {"qid": "x", "type": "paraphrase", "question": "calls", "filters": None,
+         "quotes": [{"doc_id": "misc/note", "quote": "tractors"}],
+         "alt_quotes": [{"doc_id": "solutions/phone", "quote": "answers calls"}]}  # fmt: skip
+    rows = run.rank_rows(store, chunks, [q], {"x": emb.embed(["calls for a salon"])[0]})
+    assert rows[0]["accepted"] == ["solutions/phone#0"]
+    derived = run.derive(rows)
+    assert derived["accepted_rows"] == ["x"]
+    assert (
+        derived["summary_accepted"]["ndcg5"]["mean"]
+        >= derived["summary"]["ndcg5"]["mean"]
+    )
+
+
 def test_dry_result_replays_and_a_tampered_row_does_not(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:

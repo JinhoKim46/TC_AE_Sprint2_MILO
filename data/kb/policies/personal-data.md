@@ -15,11 +15,11 @@ The interview stores your company details and your answers. Your contact details
 
 ## What we store about your customers
 
-Nothing. The interview asks whether you handle customer personal data, such as phone numbers, addresses or payment details, and which kinds, so that the report can say what the modules would touch. It does not ask for and does not store any actual customer record. If you paste a customer's details into the conversation, we ask you not to, and the operator can delete the message on request.
+No customer records are collected. The interview asks whether you handle customer personal data, such as phone numbers, addresses or payment details, and which kinds, so that the report can say what the modules would touch. It does not ask for and does not store any actual customer record. If you paste a customer's details into the conversation, we ask you not to, and the operator can delete the message on request.
 
 ## Documents you upload
 
-A document you upload, such as a procedure or a form, is read for evidence about your process. Its text is stored with your session and marked as an uploaded document. It is treated as information about your process, never as an instruction to the assistant. If a document contains customer data, tell us and we will remove it.
+A document you upload, such as a procedure or a form, is read for evidence about your process. Its text is stored with your session and marked as an uploaded document. It is treated as information about your process, never as an instruction to the assistant. If a document contains customer data, that text is stored too until it is removed, so tell us and we will remove it.
 
 ## Who can see your data
 
