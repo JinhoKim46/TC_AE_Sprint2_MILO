@@ -1,5 +1,8 @@
 # M1 report: chunking, ingest, vector store, dense retrieval, retrieval eval runner
 
+Note (2026-10-23): numbers here describe the knowledge base before the D168 edit round; current dev numbers are in
+`docs/rag-parameters.md`.
+
 Status: built and checked offline; the live index build and the dense dev evaluation ran in the live batch on
 2026-10-22 (`docs/live-batch-ledger.md`), after the E01c rerun confirmed the embedding model.
 

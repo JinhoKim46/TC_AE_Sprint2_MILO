@@ -1,5 +1,8 @@
 # M2 report: advanced retrieval (query rewrite, self-query, BM25 hybrid, rerank)
 
+Note (2026-10-23): numbers here describe the knowledge base before the D168 edit round; current dev numbers are in
+`docs/rag-parameters.md`.
+
 Status: code and protocol complete; offline checks pass. The live A/B on the dev split ran in the live batch on
 2026-10-22 (`evals/results/retrieval/ab_dev.json`, `docs/live-batch-ledger.md`). **No arm is adopted.**
 

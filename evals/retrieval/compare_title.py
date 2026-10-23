@@ -74,7 +74,13 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    ap.add_argument("--check", action="store_true", help="compare with the stored file")
+    ap.add_argument(
+        "--check",
+        "--replay",
+        dest="check",
+        action="store_true",
+        help="compare with the stored file",
+    )
     args = ap.parse_args(argv)
     fresh = compare()
     if args.check:

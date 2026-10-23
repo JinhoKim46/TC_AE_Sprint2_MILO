@@ -12,7 +12,7 @@ Built (2026-10-22). Every milestone from S0 to M7 is merged after an independent
 
 Not ready for production until the owner closes the checklist in `SPEC.md` section 18 (consent text, operator, role passwords and app connection strings, Supabase Auth settings, operator MFA, the access-token residual). The app refuses to start in production while those are open.
 
-Where to look: `SPEC.md` (specification, decisions D1 to D160), `HARNESS.md` (how the build ran), `docs/integrator-decisions.md` (every build decision with its reason), `docs/owner/CHECKPOINTS_PENDING.md` (one block per milestone, with owner questions), `docs/verify/` (verifier verdicts), `docs/live-batch-ledger.md` (every paid run), `docs/m*_report.md` (milestone reports), `docs/reflection.md` (limits and lessons).
+Where to look: `SPEC.md` (specification, decisions D1 to D169), `HARNESS.md` (how the build ran), `docs/integrator-decisions.md` (every build decision with its reason), `docs/owner/CHECKPOINTS_PENDING.md` (one block per milestone, with owner questions), `docs/verify/` (verifier verdicts), `docs/live-batch-ledger.md` (every paid run), `docs/m*_report.md` (milestone reports), `docs/reflection.md` (limits and lessons).
 
 Run it locally: `uv sync`, then `make check` (offline tests and lint), `make eval` (replays every stored evaluation), and `uv run flask --app milo.web.dev:create_dev_app run` for the web app on the in-memory store.
 
