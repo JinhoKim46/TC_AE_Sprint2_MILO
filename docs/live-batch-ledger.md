@@ -153,3 +153,17 @@ test split. Results in `docs/final_report.md`.
 
 - The arms ran before the decision; afterwards the flag was inverted (`--title` now selects arm B) and the files and
   index folders were renamed so the product setting keeps the plain names. Both files replay and re-rank exactly.
+
+## C1 baseline (2026-10-23, branch `agent/c1-baseline`, protocol `c1-baseline.md`)
+
+Key balance before C1: 4.43 USD (limit 15, usage 10.57 on the key endpoint). The 6.37 figure quoted earlier in
+phase C was wrong; part of the key's usage is not in this ledger. `MILO_BUDGET_USD` was set from the key endpoint.
+
+| # | Run | Command | Cap USD | Actual USD | Cumulative USD (ledger) |
+|---|---|---|---|---|---|
+| C1-1 | Tools, 21 dev cases, Haiku | `run_tools.py --model anthropic/claude-haiku-5.5 ... --out tools_c1.json` | 0.05 | 0.004610 | 2.0980 |
+| C1-2 | Discovery, 11 dev conversations, Haiku | `run_discovery.py --model anthropic/claude-haiku-5.5 ... --out discovery_c1.json` | 0.30 | 0.114134 | 2.2121 |
+| C1-3 | Generation, 30 sample questions, Haiku | `run_rag_eval.py --generate ... --generation-out generation_dev_c1.json` | 0.05 | 0.009758 | 2.2219 |
+| C1-4 | Judge validation, 150 items, Haiku and DeepSeek v4 flash | `run_rag_eval.py --validate-judges ...` | 0.60 | 0.068427 | 2.2903 |
+
+C1 total 0.196929 USD (estimate 0.50). Discovery and generation ran in parallel (independent runs). No restart.

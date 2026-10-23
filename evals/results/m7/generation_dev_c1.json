@@ -1,0 +1,1324 @@
+{
+ "reasoning": {
+  "anthropic/claude-haiku-5.5": "off",
+  "google/gemini-embedding-2": "off"
+ },
+ "git_commit": "8350ffba1ed9b229239d4e172d727f7f6bd9ab82",
+ "model": "chat=anthropic/claude-haiku-5.5; embedding=google/gemini-embedding-2",
+ "seed": 26,
+ "temperature": 0.0,
+ "command": "MILO_LIVE=1 python evals/rag/run_rag_eval.py --generate --max-cost 0.05 --product-model anthropic/claude-haiku-5.5",
+ "timestamp": "2026-10-23T19:23:33Z",
+ "inputs": {
+  "gold": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+  "sample": "6f3e6518e202098df7e53bf7ff05849ccc3a7f0649b16f20a82c9b22001e1c6b",
+  "evals/rag/generate.py": "570081031571d5a7206ec8e54808026acbb0481885194f5f0d0563176657593c"
+ },
+ "dry": false,
+ "partial": false,
+ "spend_reason": "c1-baseline run 3: Haiku answers for the 30 M7 sample questions (D169)",
+ "sample_file": "evals/rag/sample_dev.json",
+ "pipeline": "milo.app.build_app, contract mode, dense top 5",
+ "index": {
+  "model": "google/gemini-embedding-2",
+  "chunk_size": 800,
+  "overlap": 100,
+  "chunk_count": 167,
+  "chunk_sha256": "9badcc2013f1d386caf630b43e1d287752613b683526c6e55ba912c8e0f245e1",
+  "kb_sha256": "d527fb46a579703f25d2068ac20df750682a4acec74ae32c2709f6f98021b760"
+ },
+ "advanced_rag": "0",
+ "total_cost_usd": 0.0097582,
+ "rows": [
+  {
+   "qid": "q001",
+   "type": "identifier",
+   "question": "What activities fall outside the scope of phone-intake?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#3",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.839771,
+     "text": "## What is not included\n\nThe phone-intake module does not make outbound sales calls. It does not give medical or legal advice, and it does not take card payments by phone. If a caller asks for any of these, the module explains that a person will follow up."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#5",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.7184,
+     "text": "## What it did not do\n\nThe modules did not stop every no-show, and the report did not promise that they would. The salon still decided its own cancellation policy. Card payments by phone were out of scope for phone-intake, so deposits stayed a manual step."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.717612,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "solutions/document-data-entry#3",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.712533,
+     "text": "## What is not included\n\nThe document-data-entry module does not read handwriting outside the agreed form types. It does not do signature verification. If your team uses a form we have not set up, those sheets are flagged rather than entered."
+    },
+    {
+     "chunk_id": "implementation/api-connector#5",
+     "doc_id": "implementation/api-connector",
+     "score": 0.704335,
+     "text": "## Limits\n\nThe module can only do what the key allows. If the key cannot create bookings, phone-intake cannot book. We ask for the smallest set of rights that works, and we tell you which rights each module needs before you create the key."
+    }
+   ],
+   "answer": "According to the knowledge base, the phone-intake module does not handle the following:\n\n- **Outbound sales calls.** It only handles incoming calls.\n- **Medical advice.**\n- **Legal advice.**\n- **Card payments taken by phone.** If a caller asks for any of these, the module explains that a person will follow up.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002491
+  },
+  {
+   "qid": "q003",
+   "type": "identifier",
+   "question": "Can ticket-creation mark a job as finished by itself?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/ticket-creation#0",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.786649,
+     "text": "# Ticket creation\n\nThe ticket-creation module turns each accepted request into a ticket with the fields the team needs, and tracks its status. It sits after intake: once a request has been accepted, the module makes sure it becomes a job that someone owns."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#3",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.750966,
+     "text": "## What is not included\n\nThe ticket-creation module does not close a ticket without a person. A member of staff marks the job done. It does not do billing; invoices stay in your existing system."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#6",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.742134,
+     "text": "## Who it suits\n\nOwners who write jobs on paper or in a spreadsheet and then lose track of which ones are done usually pair this module with phone-intake or email-triage. The ticket is the single place where the job lives."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#1",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.735547,
+     "text": "## What it does\n\nFor each accepted request, the module creates a ticket and fills in the fields your team has agreed on, such as customer, address, request type and requested date. Before it creates a ticket it checks for duplicates, so the same request sent twice does not become two jobs. It then tracks the ticket's status from open to done and reminds staff when a ticket has not moved."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#4",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.72499,
+     "text": "## Connecting it to your tools\n\nThe module works with csv-export, api-connector and crm-connector. The crm-connector maps ticket fields to the fields in your CRM, so a ticket created here appears as a record there."
+    }
+   ],
+   "answer": "No. According to the knowledge base, the ticket-creation module does not close a ticket without a person. A member of staff marks the job done. The module creates tickets, fills in the agreed fields, checks for duplicates, and tracks status from open to done, reminding staff when a ticket has not moved, but the final \"done\" step is taken by a staff member.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002552
+  },
+  {
+   "qid": "q007",
+   "type": "identifier",
+   "question": "Is there a recurring charge when using csv-export?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/csv-export#4",
+     "doc_id": "implementation/csv-export",
+     "score": 0.811816,
+     "text": "## Cost\n\nThe csv-export integration carries no monthly surcharge. Its line on the rate card is 0 USD. The module's own base price and the setup fee still apply."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#4",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.753984,
+     "text": "## Cost\n\nThe export-only-tool surcharge is 250 USD a month. It covers the extra handling, the file-drop setup or the prepared re-keying list, and the checking that goes with it."
+    },
+    {
+     "chunk_id": "implementation/csv-export#6",
+     "doc_id": "implementation/csv-export",
+     "score": 0.751686,
+     "text": "## When to choose it\n\nChoose csv-export when your tool has no API, when you want to try a module without touching your tool, or when a delay of up to the export interval does not matter. Many owners start here and move to api-connector later."
+    },
+    {
+     "chunk_id": "implementation/csv-export#3",
+     "doc_id": "implementation/csv-export",
+     "score": 0.749757,
+     "text": "## Which modules support it\n\nEvery module in the catalogue works with csv-export: phone-intake, email-triage, ticket-creation, staff-assignment, document-data-entry and customer-status-updates. For staff-assignment it is the only integration offered."
+    },
+    {
+     "chunk_id": "implementation/csv-export#0",
+     "doc_id": "implementation/csv-export",
+     "score": 0.747695,
+     "text": "# CSV export and import\n\nThe csv-export integration is the simplest way to connect a module to the tool you already use. It needs no live connection, no access key and no change to your tool. This article explains how it works and when it is the right choice."
+    }
+   ],
+   "answer": "Based on the knowledge base, there is no recurring monthly charge for csv-export. Its line on the rate card is 0 USD, so it carries no monthly surcharge. The module's own base price and the one-time setup fee still apply.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.000232
+  },
+  {
+   "qid": "q009",
+   "type": "paraphrase",
+   "question": "How much does the call answering product cost each month before any factors?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#5",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.754825,
+     "text": "## Price\n\nThe base monthly price for phone-intake is 690 USD. The setup fee is 900 USD per module. The monthly price is multiplied by a volume factor that depends on how many requests you handle a day; see the pricing section for the tiers. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#3",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.72097,
+     "text": "## Base prices per module\n\n| Module | Base price per month |\n|---|---|\n| phone-intake | 690 USD |\n| email-triage | 390 USD |\n| ticket-creation | 290 USD |\n| staff-assignment | 340 USD |\n| document-data-entry | 490 USD |\n| customer-status-updates | 240 USD |"
+    },
+    {
+     "chunk_id": "pricing/what-is-included#1",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.711745,
+     "text": "## Included in the monthly price\n\nThe monthly price for a module covers the running of that module for your business: the software, the hosting, the templates and rules we agree with you during setup, and the audit or delivery logs that each module keeps. It also covers the integration you chose, once the integration surcharge is added. Minor changes to wording, labels or skill tags are included; you can ask for them at any time."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#0",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.708493,
+     "text": "# What is included and what is not\n\nA monthly price covers a fixed list of things. This article says what that list is, and what sits outside it, so that there are no surprises after the first invoice."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#5",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.708357,
+     "text": "## Why volume matters\n\nThe modules do more work when more requests come in: more calls answered, more messages labelled, more tickets checked for duplicates. The tiers keep the price proportionate without pricing each request one by one."
+    }
+   ],
+   "answer": "The call answering product is phone-intake. Its base monthly price is **690 USD** before any volume factor is applied. The setup fee is separate at 900 USD per module.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002334
+  },
+  {
+   "qid": "q012",
+   "type": "paraphrase",
+   "question": "What do reminders and confirmations to clients cost per month at the base rate?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/customer-status-updates#6",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.73828,
+     "text": "## Who it suits\n\nOwners who send reminders by hand, and who lose money to no-shows, usually add this module next to phone-intake. The approved templates keep the tone yours."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#3",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.711962,
+     "text": "## Base prices per module\n\n| Module | Base price per month |\n|---|---|\n| phone-intake | 690 USD |\n| email-triage | 390 USD |\n| ticket-creation | 290 USD |\n| staff-assignment | 340 USD |\n| document-data-entry | 490 USD |\n| customer-status-updates | 240 USD |"
+    },
+    {
+     "chunk_id": "solutions/customer-status-updates#5",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.707381,
+     "text": "## Price\n\nThe base monthly price for customer-status-updates is 240 USD. The setup fee is 900 USD per module. A monthly surcharge of 300 USD applies when the api-connector integration is used. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#5",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.704733,
+     "text": "## Price\n\nThe base monthly price for phone-intake is 690 USD. The setup fee is 900 USD per module. The monthly price is multiplied by a volume factor that depends on how many requests you handle a day; see the pricing section for the tiers. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "solutions/email-triage#5",
+     "doc_id": "solutions/email-triage",
+     "score": 0.699882,
+     "text": "## Price\n\nThe base monthly price for email-triage is 390 USD. The setup fee is 900 USD per module. A volume factor applies based on daily request volume, and a monthly surcharge applies for the api-connector integration. All prices are indicative and non-binding."
+    }
+   ],
+   "answer": "Reminders and confirmations to clients correspond to the customer-status-updates module. At the base rate, it costs **240 USD per month**.\n\nA few notes on that figure:\n- The setup fee is a separate one-time charge of 900 USD for the module.\n- If you use the api-connector integration, a monthly surcharge of 300 USD applies on top.\n- All prices are indicative and non-binding.\n\nIf you'd like, I can also estimate the cost for this module alongside others you're considering.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002829
+  },
+  {
+   "qid": "q016",
+   "type": "paraphrase",
+   "question": "What happens if my daily workload is larger than the top tier?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/volume-tiers#3",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.809763,
+     "text": "## Above the top tier\n\nAbove 150 requests per day there is no automatic estimate and a person prices it. The assistant will tell you that the number is outside the rate card and that someone will contact you, rather than showing a figure."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#5",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.764234,
+     "text": "## Why volume matters\n\nThe modules do more work when more requests come in: more calls answered, more messages labelled, more tickets checked for duplicates. The tiers keep the price proportionate without pricing each request one by one."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#1",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.750334,
+     "text": "## The table\n\n| Daily requests | Volume factor |\n|---|---|\n| up to 20 per day | 1.00 |\n| up to 60 per day | 1.25 |\n| up to 150 per day | 1.50 |\n| above 150 per day | no automatic estimate; a person prices it |"
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#0",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.741994,
+     "text": "# Volume tiers\n\nYour daily request volume changes the monthly price of every module you choose. The change is a multiplier, called the volume factor, taken from a short table. This article shows the table and how to read it."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#2",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.734651,
+     "text": "## How to read it\n\nFind the row that your normal daily volume falls into, and multiply each module's base price by the factor in that row. A business with volume up to 20 requests a day pays the base price with no change. A business with volume up to 60 requests a day pays the base price multiplied by 1.25. A business with volume up to 150 requests a day pays the base price multiplied by 1.50."
+    }
+   ],
+   "answer": "If your daily request volume is above 150 per day, the assistant can't produce an automatic estimate. The rate card has no volume factor for that range, so a person prices it. You'll be told the number is outside the rate card and that someone will contact you, rather than being shown a figure.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002467
+  },
+  {
+   "qid": "q020",
+   "type": "paraphrase",
+   "question": "How is the lower end of the price bracket calculated?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/range-and-estimates#1",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.741692,
+     "text": "## The range\n\nThe base figure is the result of the calculation described in the article on how we price. The low figure is the base multiplied by 0.90. The high figure is the base multiplied by 1.20. The base factor itself is 1.00. The range exists because the final scope is agreed during setup, and small changes in scope move the price a little either way."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#4",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.717191,
+     "text": "## The calculation\n\nThe monthly price for each chosen module is its base price multiplied by the volume factor for your daily request volume. The integration surcharges for the integrations you use are added once a month. The setup fee is 900 USD for each module and is paid once. The result is the base estimate, from which the low and high figures are derived."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#2",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.690201,
+     "text": "## Three statuses\n\n| Status | Meaning |\n|---|---|\n| indicative | every pricing input was given by you and nothing conflicts |\n| scenario | an input is missing or unknown, and the estimate uses a stated assumption |\n| blocked | two of your answers conflict, and no number is shown until you resolve it |\n\nAn indicative estimate means that every field the price depends on was reported or confirmed by you and no conflict exists. A scenario estimate means that at least one input is missing, so the assistant has filled it with an assumption that it shows next to the number. A blocked estimate shows no number at all, only the conflict and the question that would resolve it."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#0",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.683508,
+     "text": "# How we price\n\nMILO prices are arithmetic, not negotiation. Every estimate is built from a published rate card, and the same inputs always give the same number. This article explains the parts of the calculation so that you can check any estimate yourself."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#2",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.681671,
+     "text": "## How to read it\n\nFind the row that your normal daily volume falls into, and multiply each module's base price by the factor in that row. A business with volume up to 20 requests a day pays the base price with no change. A business with volume up to 60 requests a day pays the base price multiplied by 1.25. A business with volume up to 150 requests a day pays the base price multiplied by 1.50."
+    }
+   ],
+   "answer": "The lower end of the price bracket is the base estimate multiplied by 0.90. The base estimate is itself built from your chosen modules' base prices, multiplied by the volume factor for your daily request volume, plus any integration surcharges (added once a month), with the one-time setup fee of 900 USD per module. The high end is the base multiplied by 1.20, and the base factor is 1.00. The range exists because the final scope is agreed during setup, so small scope changes can move the price a little in either direction.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0003025
+  },
+  {
+   "qid": "q022",
+   "type": "paraphrase",
+   "question": "Does a file-based link keep my software permanently connected?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/csv-export#1",
+     "doc_id": "implementation/csv-export",
+     "score": 0.698895,
+     "text": "## How it works\n\nYour tool exports a CSV file, for example the list of bookings or jobs for the day. The module reads that file, does its work, and writes a CSV file back. Your tool imports that file. The exchange runs on a schedule you choose, such as every hour or at the end of the day. There is no live connection between the two systems."
+    },
+    {
+     "chunk_id": "implementation/csv-export#2",
+     "doc_id": "implementation/csv-export",
+     "score": 0.695797,
+     "text": "## What you need\n\nYour tool must be able to export and import CSV files. Most spreadsheets, booking widgets and small job tools can. During setup we agree the column names on both sides so that the files always line up."
+    },
+    {
+     "chunk_id": "implementation/csv-export#0",
+     "doc_id": "implementation/csv-export",
+     "score": 0.690984,
+     "text": "# CSV export and import\n\nThe csv-export integration is the simplest way to connect a module to the tool you already use. It needs no live connection, no access key and no change to your tool. This article explains how it works and when it is the right choice."
+    },
+    {
+     "chunk_id": "implementation/export-only-tools#1",
+     "doc_id": "implementation/export-only-tools",
+     "score": 0.681277,
+     "text": "## The problem\n\nWith an export-only tool, a module can read what is in your system, but it cannot write a new record back. Results must be re-keyed or pushed through a file drop. Many trades businesses are in this position: the tool was chosen years ago, the data is in it, and there is no API and no import."
+    },
+    {
+     "chunk_id": "implementation/api-connector#0",
+     "doc_id": "implementation/api-connector",
+     "score": 0.680279,
+     "text": "# API connector\n\nThe api-connector integration gives a module a live connection to your tool. Bookings, labels, tickets and status changes are written and read as they happen, with no files in between."
+    }
+   ],
+   "answer": "No. A file-based link (the csv-export integration) is not a permanent or live connection. Your tool exports a CSV file, the module reads it, does its work, and writes a CSV file back, which your tool imports. The exchange runs on a schedule you choose, such as hourly or at the end of the day, and there is no live connection between the two systems. It also needs no access key and no change to your tool.\n\nIf you need records to update in real time, the api-connector integration gives a live connection instead, with bookings, labels, tickets and status changes written and read as they happen.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002858
+  },
+  {
+   "qid": "q029",
+   "type": "paraphrase",
+   "question": "Does needing emergency cover make the modules more expensive?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/urgent-requests#5",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.724034,
+     "text": "## What this means for the estimate\n\nUrgent handling does not change the rate card price. It changes the setup: the handover rules and the urgent labels are agreed during the setup period covered by the setup fee. The report lists them under the recommended modules so that nothing about urgent handling is left implicit."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#1",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.719399,
+     "text": "## Why we ask\n\nAn automated system that treats a gas smell like a routine quote is dangerous. Before any module is recommended, the interview asks whether urgent requests exist, what counts as urgent for you, and who takes those calls today. The answers decide whether a module may handle a request on its own or must pass it to a person at once."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#5",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.716449,
+     "text": "## What the assistant may and may not do\n\nThe assistant may suggest which catalogue modules fit what you described. It cannot change the arithmetic, apply a discount, or set a price itself. If you see a number in the conversation that is not in the estimate panel, treat the panel as the only valid figure."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#0",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.712655,
+     "text": "# Urgent requests and out-of-hours work\n\nSome businesses receive requests that cannot wait until morning. This article explains why we ask about them, what counts as urgent, and how the modules treat an urgent request differently from a normal one."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#4",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.704031,
+     "text": "## Out-of-hours work\n\nIf you have an on-call rota, we ask who is on it and how they are reached today. The modules use that rota; they do not create one. If nobody takes night calls today, the report says so and treats it as a gap for you to decide on, not as something a module solves by itself."
+    }
+   ],
+   "answer": "Based on the knowledge base: no. Urgent handling does not change the rate card price. It changes the setup. The handover rules and urgent labels are agreed during the setup period, which is covered by the setup fee, and the report lists them under the recommended modules so nothing about urgent handling is left implicit.\n\nTwo related points from the same guidance:\n\n- **Urgent requests are checked before any module is recommended.** The interview asks whether urgent requests exist, what counts as urgent for you, and who takes those calls today. This decides whether a module can handle a request on its own or must pass it straight to a person.\n- **Out-of-hours cover is your responsibility, not a module's.** The modules use your on-call rota; they don't create one. If nobody currently takes night calls, the report flags this as a gap for you to decide on.\n\nThe knowledge base doesn't give specific figures for setup fees or rate cards. For exact numbers, the estimate panel is the only valid source, and I can request an estimate once you've chosen the modules you're considering.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.000371
+  },
+  {
+   "qid": "q039",
+   "type": "unanswerable",
+   "question": "What training do my staff receive after setup?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/crm-connector#2",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.683186,
+     "text": "## What you need\n\nSetup takes two working days. The first day is the field mapping and the connection; the second day is checking real tickets with you and adjusting the mapping where your CRM uses different values."
+    },
+    {
+     "chunk_id": "implementation/api-connector#2",
+     "doc_id": "implementation/api-connector",
+     "score": 0.67696,
+     "text": "## What you need\n\nYour tool must offer an API with an access key. Setup takes one working day. In that day we connect the module, map the fields, and run the first requests through with you watching."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#2",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.672253,
+     "text": "## Included in the setup fee\n\nThe setup fee pays for the work of getting a module live: agreeing the form types, templates or skill tags, connecting the module to your tool, and a short period of checking the first results with you. The setup fee is paid once per module."
+    },
+    {
+     "chunk_id": "pricing/setup-fees#1",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.672116,
+     "text": "## The setup fee\n\nThe setup fee is 900 USD per module and is paid once. If you choose two modules, two setup fees apply. The fee covers the work of agreeing templates, rules or skill tags with you, connecting the module to your tool, and checking the first results together."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#1",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.656289,
+     "text": "## Included in the monthly price\n\nThe monthly price for a module covers the running of that module for your business: the software, the hosting, the templates and rules we agree with you during setup, and the audit or delivery logs that each module keeps. It also covers the integration you chose, once the integration surcharge is added. Minor changes to wording, labels or skill tags are included; you can ask for them at any time."
+    }
+   ],
+   "answer": "The knowledge base doesn't say what training your staff receive after setup. The excerpts I found cover what setup includes (agreeing templates, rules or skill tags, connecting the module to your tool, and checking the first results together, plus a setup of one to two working days depending on the integration), but nothing about staff training afterward.\n\nFor a clear answer, you'd need to check with the MILO team directly. I can also help with other questions, such as what the setup fee covers or how the staff-assignment module handles overrides.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0007002
+  },
+  {
+   "qid": "q045",
+   "type": "identifier",
+   "question": "for the customer updates, if we go with api-connector does it still need a file from us?",
+   "contexts": [
+    {
+     "chunk_id": "implementation/api-connector#3",
+     "doc_id": "implementation/api-connector",
+     "score": 0.757045,
+     "text": "## Which modules support it\n\nThe api-connector is available for phone-intake, email-triage, ticket-creation and customer-status-updates. It is not offered for staff-assignment, which uses csv-export, or for document-data-entry, which uses csv-export or export-only-tool."
+    },
+    {
+     "chunk_id": "implementation/api-connector#0",
+     "doc_id": "implementation/api-connector",
+     "score": 0.749442,
+     "text": "# API connector\n\nThe api-connector integration gives a module a live connection to your tool. Bookings, labels, tickets and status changes are written and read as they happen, with no files in between."
+    },
+    {
+     "chunk_id": "implementation/api-connector#6",
+     "doc_id": "implementation/api-connector",
+     "score": 0.745556,
+     "text": "## When to choose it\n\nChoose api-connector when timing matters, for example a confirmation that should reach the customer within minutes, or when your staff work inside the tool all day and should see new tickets as they arrive. If your tool has no API, the csv-export integration does the same job with a delay."
+    },
+    {
+     "chunk_id": "implementation/csv-export#5",
+     "doc_id": "implementation/csv-export",
+     "score": 0.7368,
+     "text": "## Limits\n\nBecause the exchange runs on a schedule, a change in your tool is not seen by the module until the next export. If you need a customer status update to go out within minutes of a change, the api-connector is the better choice. CSV also carries no permissions: anyone who can read the file can read every row, so the file location must be a folder only your staff can see."
+    },
+    {
+     "chunk_id": "implementation/api-connector#4",
+     "doc_id": "implementation/api-connector",
+     "score": 0.732975,
+     "text": "## Cost\n\nThe api-connector surcharge is 300 USD a month, paid once however many modules share the connection. The module's own base price and the setup fee of 900 USD per module still apply."
+    }
+   ],
+   "answer": "No. The api-connector gives the module a live connection to your tool, so bookings, labels, tickets and status changes are read and written directly, with no files in between. Customer status updates can use the api-connector, so a file exchange isn't needed for that module.\n\nFor comparison, the csv-export integration does require files: it runs on a schedule, so changes in your tool only reach the module at the next export.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.000262
+  },
+  {
+   "qid": "q053",
+   "type": "identifier",
+   "question": "in the dog groomer story, could phone-intake take a deposit?",
+   "contexts": [
+    {
+     "chunk_id": "cases/grooming-bookings#1",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.766944,
+     "text": "## The situation\n\nA small pet grooming salon with two sites took bookings by phone and through a web form. Every booking was written into a shared spreadsheet by whoever answered, and reminders were sent by hand the day before. At peak times the phone rang while every groomer had a dog on the table, so calls went to voicemail and some were never returned. The owner's words in the interview were that the business lost money twice: once when a call was missed, and again when a customer forgot and did not show."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#0",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.745434,
+     "text": "# Case: a grooming salon stops missing bookings\n\nThis is an anonymised, fictional case. The owner, the salon and the figures are invented to show how a discovery interview turns into a working module."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.741363,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#5",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.719474,
+     "text": "## What it did not do\n\nThe modules did not stop every no-show, and the report did not promise that they would. The salon still decided its own cancellation policy. Card payments by phone were out of scope for phone-intake, so deposits stayed a manual step."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#3",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.713882,
+     "text": "## What was recommended\n\nTwo modules: phone-intake, to answer calls at peak times and out of hours and to book into open slots, and customer-status-updates, to send the reminder before each appointment from an approved template. The estimate was marked indicative because every pricing input had been reported and nothing conflicted."
+    }
+   ],
+   "answer": "No. In the grooming salon case, card payments by phone were out of scope for phone-intake, so deposits stayed a manual step for the salon. The case doesn't describe phone-intake taking a deposit at all, so I can't say it can do so.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002463
+  },
+  {
+   "qid": "q056",
+   "type": "identifier",
+   "question": "emergency emails. does email-triage flag them somehow?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/urgent-requests#3",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.751269,
+     "text": "## How the modules treat urgent requests\n\nThe phone-intake module passes an urgent call to a person immediately, using the handover you agree during setup, and does not try to book it. The email-triage module gives an urgent message the highest priority label so it sits at the top of the inbox. The ticket-creation module creates the ticket with the urgent flag so that staff-assignment can suggest the on-call person. None of the modules decides on its own that something is not urgent; if the request matches your definition, it is treated as urgent."
+    },
+    {
+     "chunk_id": "solutions/email-triage#0",
+     "doc_id": "solutions/email-triage",
+     "score": 0.739732,
+     "text": "# Email triage\n\nThe email-triage module reads a shared inbox, labels each message by request type, and drafts a first reply for staff to approve. It is for teams where requests arrive in one mailbox and get lost between other mail."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#2",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.712455,
+     "text": "## What counts as urgent\n\nYou decide. For a heating firm it might be no heat in winter or a smell of gas. For a clinic it might be a patient in pain. For a shop it might be nothing at all; many businesses have no urgent requests and say so. The assistant records your definition in your own words."
+    },
+    {
+     "chunk_id": "consultation/urgent-requests#1",
+     "doc_id": "consultation/urgent-requests",
+     "score": 0.706444,
+     "text": "## Why we ask\n\nAn automated system that treats a gas smell like a routine quote is dangerous. Before any module is recommended, the interview asks whether urgent requests exist, what counts as urgent for you, and who takes those calls today. The answers decide whether a module may handle a request on its own or must pass it to a person at once."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#4",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.695058,
+     "text": "## What changed\n\nMail was labelled as it arrived, so a job sent late in the day was visible the same evening. Each job had a ticket with an owner and a status, kept in a spreadsheet fed by the CSV file rather than in the field-service tool. The night line was routed to the on-call engineer through the urgent label. The paper sheets stayed, but they were printed from the ticket rather than written by hand."
+    }
+   ],
+   "answer": "Yes. According to the knowledge base, the email-triage module reads a shared inbox, labels each message by request type, and drafts a first reply for staff to approve. For urgent messages specifically, it gives the message the highest priority label so it sits at the top of the inbox.\n\nWhether a given email counts as urgent is your decision. The module treats anything matching your definition of urgent as urgent, and none of the modules decides on its own that a request is not urgent. So the setup step is where you define what an emergency means for your business, and that definition drives the flagging.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0003043
+  },
+  {
+   "qid": "q061",
+   "type": "paraphrase",
+   "question": "does it just name someone or does it say why it picked them?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/staff-assignment#1",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.674733,
+     "text": "## What it does\n\nYou enter a short list of skill tags for each member of staff, such as boiler, drains, grooming or front desk, and their working hours. When a ticket is created, the module compares the ticket's request type with the skill tags and the availability, and suggests one person. The suggestion comes with reasons, for example that the person has the matching skill and is free that afternoon."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#2",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.661338,
+     "text": "## What is included\n\nThe module includes skill tags, availability, a suggestion with reasons, and override by staff. The override is logged so that you can see how often the suggestion was changed."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#6",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.649394,
+     "text": "## Checking the list\n\nIf you are unsure whether something is included, ask the discovery assistant. It will show you the article it relies on, and if the article does not answer, it will say so instead of guessing."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#0",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.639501,
+     "text": "# Staff assignment\n\nThe staff-assignment module suggests which staff member should take a ticket, using the skills and availability the owner has entered. It is a suggestion, not an order: a person can always override it."
+    },
+    {
+     "chunk_id": "solutions/staff-assignment#6",
+     "doc_id": "solutions/staff-assignment",
+     "score": 0.632372,
+     "text": "## Who it suits\n\nOwners who dispatch several vans or several chairs by hand, and who find themselves asking who is free, usually add this module after ticket-creation. It works best when the skill tags are kept simple and up to date."
+    }
+   ],
+   "answer": "Based on the knowledge base, the staff-assignment module does more than name someone. When a ticket comes in, it compares the ticket's request type with each person's skill tags and availability, and suggests one person. That suggestion comes with reasons, for example that the person has the matching skill and is free that afternoon.\n\nIt's also a suggestion rather than an order: staff can override it, and each override is logged so you can see how often the suggestion gets changed.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002677
+  },
+  {
+   "qid": "q074",
+   "type": "paraphrase",
+   "question": "guaranteed savings?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/what-is-included#5",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.692988,
+     "text": "## No promised savings\n\nThe estimate is indicative and non-binding. We do not promise a saving in hours or money. The report that follows the discovery interview gives a simple return estimate built from the minutes you told us, with each input labelled, and you decide whether it is worth it."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#6",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.630733,
+     "text": "## Why we show it this way\n\nOwners told us that the thing they distrust most about automation quotes is not knowing how the number was reached. A published rate card and a visible calculation mean that an estimate can be checked line by line before anyone commits."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#3",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.621089,
+     "text": "## What was recommended\n\nTwo modules: phone-intake, to answer calls at peak times and out of hours and to book into open slots, and customer-status-updates, to send the reminder before each appointment from an approved template. The estimate was marked indicative because every pricing input had been reported and nothing conflicted."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#5",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.616599,
+     "text": "## What the assistant may and may not do\n\nThe assistant may suggest which catalogue modules fit what you described. It cannot change the arithmetic, apply a discount, or set a price itself. If you see a number in the conversation that is not in the estimate panel, treat the panel as the only valid figure."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#2",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.610928,
+     "text": "## Three statuses\n\n| Status | Meaning |\n|---|---|\n| indicative | every pricing input was given by you and nothing conflicts |\n| scenario | an input is missing or unknown, and the estimate uses a stated assumption |\n| blocked | two of your answers conflict, and no number is shown until you resolve it |\n\nAn indicative estimate means that every field the price depends on was reported or confirmed by you and no conflict exists. A scenario estimate means that at least one input is missing, so the assistant has filled it with an assumption that it shows next to the number. A blocked estimate shows no number at all, only the conflict and the question that would resolve it."
+    }
+   ],
+   "answer": "No. MILO does not promise guaranteed savings in hours or money. The estimate is indicative and non-binding. After the discovery interview, the report gives a simple return estimate built from the minutes you report, with each input labelled, so you can check the calculation and decide whether it is worth it.\n\nEstimates also come in three statuses: indicative (all pricing inputs given and no conflicts), scenario (an input is missing and an assumption is shown next to the number), or blocked (two answers conflict and no number is shown until resolved).",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002999
+  },
+  {
+   "qid": "q075",
+   "type": "paraphrase",
+   "question": "about 100 jobs daily. multiplier?",
+   "contexts": [
+    {
+     "chunk_id": "pricing/volume-tiers#1",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.721552,
+     "text": "## The table\n\n| Daily requests | Volume factor |\n|---|---|\n| up to 20 per day | 1.00 |\n| up to 60 per day | 1.25 |\n| up to 150 per day | 1.50 |\n| above 150 per day | no automatic estimate; a person prices it |"
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#1",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.69008,
+     "text": "## The volume question\n\nWe ask roughly how many requests come in on a normal day. A request is anything that needs handling: a call, a message, a form, a walk-in. A normal day means a typical business day, not the busiest one and not the quietest. If you think in weeks or months, say so; the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#2",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.680243,
+     "text": "## How to read it\n\nFind the row that your normal daily volume falls into, and multiply each module's base price by the factor in that row. A business with volume up to 20 requests a day pays the base price with no change. A business with volume up to 60 requests a day pays the base price multiplied by 1.25. A business with volume up to 150 requests a day pays the base price multiplied by 1.50."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#0",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.670978,
+     "text": "# Volume tiers\n\nYour daily request volume changes the monthly price of every module you choose. The change is a multiplier, called the volume factor, taken from a short table. This article shows the table and how to read it."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#4",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.669392,
+     "text": "## Which number counts\n\nThe volume that counts is the number of requests on a normal business day. If you know your volume per month, say so, and the assistant converts it to a daily figure in code and shows you the conversion. If you give two figures that do not agree, for example a daily number and a monthly number that imply different volumes, the assistant will ask you which one to use. It does not pick one for you, and no estimate is shown until the conflict is resolved."
+    }
+   ],
+   "answer": "The volume factor for about 100 requests a day is **1.50**, since that falls in the \"up to 150 per day\" row.\n\nNote that I'm reading \"about 100 jobs daily\" as roughly 100 requests on a normal business day. Each module's base price gets multiplied by 1.50.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002616
+  },
+  {
+   "qid": "q077",
+   "type": "paraphrase",
+   "question": "phone and tickets together. do i pay the 900 once or twice?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#5",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.673252,
+     "text": "## Price\n\nThe base monthly price for phone-intake is 690 USD. The setup fee is 900 USD per module. The monthly price is multiplied by a volume factor that depends on how many requests you handle a day; see the pricing section for the tiers. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#4",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.669406,
+     "text": "## Cost\n\nThe crm-connector surcharge is 450 USD a month. The ticket-creation base price of 290 USD a month and the setup fee of 900 USD per module still apply."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#5",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.666072,
+     "text": "## Price\n\nThe base monthly price for ticket-creation is 290 USD. The setup fee is 900 USD per module. If you use the crm-connector, a monthly surcharge of 450 USD applies for the connector. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "pricing/setup-fees#1",
+     "doc_id": "pricing/setup-fees",
+     "score": 0.655789,
+     "text": "## The setup fee\n\nThe setup fee is 900 USD per module and is paid once. If you choose two modules, two setup fees apply. The fee covers the work of agreeing templates, rules or skill tags with you, connecting the module to your tool, and checking the first results together."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#4",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.655433,
+     "text": "## The calculation\n\nThe monthly price for each chosen module is its base price multiplied by the volume factor for your daily request volume. The integration surcharges for the integrations you use are added once a month. The setup fee is 900 USD for each module and is paid once. The result is the base estimate, from which the low and high figures are derived."
+    }
+   ],
+   "answer": "Two modules means two setup fees. The setup fee is 900 USD per module and is paid once for each, so phone-intake and ticket-creation together come to 1,800 USD in one-time setup costs. The monthly prices (phone-intake 690 USD base, ticket-creation 290 USD base) are multiplied by your volume factor, and a 450 USD monthly surcharge applies if you use the crm-connector with ticket-creation. All prices are indicative and non-binding.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002815
+  },
+  {
+   "qid": "q079",
+   "type": "paraphrase",
+   "question": "mine says 'blocked' - so i get nothing?? what now",
+   "contexts": [
+    {
+     "chunk_id": "pricing/range-and-estimates#2",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.651643,
+     "text": "## Three statuses\n\n| Status | Meaning |\n|---|---|\n| indicative | every pricing input was given by you and nothing conflicts |\n| scenario | an input is missing or unknown, and the estimate uses a stated assumption |\n| blocked | two of your answers conflict, and no number is shown until you resolve it |\n\nAn indicative estimate means that every field the price depends on was reported or confirmed by you and no conflict exists. A scenario estimate means that at least one input is missing, so the assistant has filled it with an assumption that it shows next to the number. A blocked estimate shows no number at all, only the conflict and the question that would resolve it."
+    },
+    {
+     "chunk_id": "solutions/customer-status-updates#2",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.608121,
+     "text": "## What is included\n\nThe module includes status templates, approved wording, a delivery log and opt-out handling. The delivery log records which message went to which customer and when, so you can answer a customer who says they never heard from you."
+    },
+    {
+     "chunk_id": "policies/security#4",
+     "doc_id": "policies/security",
+     "score": 0.604443,
+     "text": "## Tools the assistant can use\n\nThe assistant can search the knowledge base, show your current facts, run the cost calculation, record a fact and start a withdrawal. Each of these is classed as read, write or destructive. A destructive action needs your approval. In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
+    },
+    {
+     "chunk_id": "solutions/customer-status-updates#3",
+     "doc_id": "solutions/customer-status-updates",
+     "score": 0.604152,
+     "text": "## What is not included\n\nThe customer-status-updates module does not send marketing messages. It does not send any message without an approved template. If a status has no template, nothing is sent and the gap is shown to you."
+    },
+    {
+     "chunk_id": "policies/approvals#5",
+     "doc_id": "policies/approvals",
+     "score": 0.593563,
+     "text": "## What you see\n\nThe approval appears in the conversation as a card with the action, the arguments and two choices. Nothing happens until you choose, and if you close the page the card is still there when you return, until it expires."
+    }
+   ],
+   "answer": "A \"blocked\" status means two of the answers you gave conflict with each other, so the assistant won't show a price until that's resolved. It isn't a refusal to quote you, and you don't get nothing: the estimate panel shows the conflict itself and the question that would resolve it.\n\nHere's what to do next:\n\n1. **Look at the conflict shown in the estimate panel.** It names the two answers that don't match.\n2. **Answer that question.** Tell me the correct figure or detail, and I'll record it. Once the conflict is gone, the estimate can be recalculated, and it will show as either **indicative** (all inputs confirmed) or **scenario** (some input was missing, so an assumption is shown next to the number).\n\nIf you tell me what the conflicting answers were, I can help you work out which one is right. I can also pull up the facts recorded so far so you can review them.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0003502
+  },
+  {
+   "qid": "q084",
+   "type": "paraphrase",
+   "question": "why did the groomer get an indicative figure straight away?",
+   "contexts": [
+    {
+     "chunk_id": "cases/grooming-bookings#3",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.725198,
+     "text": "## What was recommended\n\nTwo modules: phone-intake, to answer calls at peak times and out of hours and to book into open slots, and customer-status-updates, to send the reminder before each appointment from an approved template. The estimate was marked indicative because every pricing input had been reported and nothing conflicted."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#0",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.717591,
+     "text": "# Case: a grooming salon stops missing bookings\n\nThis is an anonymised, fictional case. The owner, the salon and the figures are invented to show how a discovery interview turns into a working module."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#2",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.71159,
+     "text": "## What the discovery found\n\nThe interview recorded the channels, the volume, the minutes per job and the re-keying minutes. The owner gave two volumes that did not agree, a daily figure and a monthly figure, and the assistant raised the conflict instead of choosing one. The estimate stayed blocked until the owner said which figure reflected a normal month. The owner also confirmed that urgent requests existed and that customer addresses and card details were kept on file, so the report carried a personal data note."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#1",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.710618,
+     "text": "## The situation\n\nA small pet grooming salon with two sites took bookings by phone and through a web form. Every booking was written into a shared spreadsheet by whoever answered, and reminders were sent by hand the day before. At peak times the phone rang while every groomer had a dog on the table, so calls went to voicemail and some were never returned. The owner's words in the interview were that the business lost money twice: once when a call was missed, and again when a customer forgot and did not show."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#3",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.709649,
+     "text": "## When you see a number\n\nThe assistant does not show a price until it has enough of the assessment to make one meaningful. If you ask for the cost in the first few messages, it will explain what it still needs and carry on with the questions. This is deliberate: a number given too early is almost always wrong, and it is hard to forget."
+    }
+   ],
+   "answer": "From the case study, the grooming salon's estimate was marked indicative because every pricing input had been reported and nothing conflicted. In other words, the owner supplied all the figures needed (volumes, minutes, and so on) and the facts didn't contradict each other, so the assistant could give a number while flagging it as an estimate rather than a firm price.\n\nBy contrast, the trades-dispatch case shows the opposite: when the owner gave a daily and a monthly volume that didn't agree, the assistant raised the conflict and held the estimate until the owner clarified which figure was normal.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.00031
+  },
+  {
+   "qid": "q086",
+   "type": "paraphrase",
+   "question": "accounts office case: what did the typist end up doing instead, and who did the first go?",
+   "contexts": [
+    {
+     "chunk_id": "cases/accounts-paperwork#0",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.742897,
+     "text": "# Case: an accounts office stops re-typing forms\n\nThis is an anonymised, fictional case. The practice, its clients and its figures are invented."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#1",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.730325,
+     "text": "## The situation\n\nA small accounts practice received paper forms from its clients: expense sheets, mileage logs and signed engagement forms. A member of staff typed each form into the practice's system of record, line by line, and a second person checked a sample of the entries. The checking found wrong dates and transposed amounts often enough that the office did not trust the first pass, which meant every form was effectively handled twice."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#2",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.688145,
+     "text": "## What the discovery found\n\nThe interview recorded the form types, the daily volume of forms, the minutes of typing per form and the minutes of checking. The error types were wrong and delayed. The practice's system could import CSV files, so csv-export was available at no surcharge. It could export them too, which csv-export also needs. There were no urgent requests, and the personal data question was answered yes, because the forms carried client names and bank details."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#4",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.68642,
+     "text": "## What changed\n\nThe first pass was done by the module, and the staff member's time moved from typing to reviewing the flagged items. The entry log showed which scan produced which record, so a doubtful entry could be traced back to its page. The sample check continued, but on records the module had already validated."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#0",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.66827,
+     "text": "# Case: a heating firm gets jobs out of the inbox\n\nThis is an anonymised, fictional case. The firm, its staff and its figures are invented."
+    }
+   ],
+   "answer": "From the accounts office case: the typist's role shifted from typing to reviewing. The module did the first pass of entering the forms, and the staff member's time moved to reviewing the items the module flagged as doubtful. The sample check by a second person continued, but on records the module had already validated.\n\nOn who did the first pass: the module did it. The entry log recorded which scan produced which record, so a doubtful entry could be traced back to its page.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002738
+  },
+  {
+   "qid": "q088",
+   "type": "paraphrase",
+   "question": "accounts case, main takeaway?",
+   "contexts": [
+    {
+     "chunk_id": "cases/accounts-paperwork#0",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.69465,
+     "text": "# Case: an accounts office stops re-typing forms\n\nThis is an anonymised, fictional case. The practice, its clients and its figures are invented."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#1",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.671435,
+     "text": "## The situation\n\nA small accounts practice received paper forms from its clients: expense sheets, mileage logs and signed engagement forms. A member of staff typed each form into the practice's system of record, line by line, and a second person checked a sample of the entries. The checking found wrong dates and transposed amounts often enough that the office did not trust the first pass, which meant every form was effectively handled twice."
+    },
+    {
+     "chunk_id": "cases/accounts-paperwork#6",
+     "doc_id": "cases/accounts-paperwork",
+     "score": 0.662063,
+     "text": "## Why it is a useful case\n\nIt shows the value of the flagged-items queue: the module did not need to be right every time, it needed to know when it was not sure."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#0",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.653491,
+     "text": "# Case: a heating firm gets jobs out of the inbox\n\nThis is an anonymised, fictional case. The firm, its staff and its figures are invented."
+    },
+    {
+     "chunk_id": "cases/grooming-bookings#6",
+     "doc_id": "cases/grooming-bookings",
+     "score": 0.645867,
+     "text": "## Why it worked\n\nThe process was simple and the rules were clear: a call becomes a booking, a booking gets a reminder. That clarity is what made the case a good fit, and it is the first thing the discovery interview looks for."
+    }
+   ],
+   "answer": "The main takeaway from the accounts case is that the module doesn't have to be right every time; it has to know when it isn't sure. The case shows the value of the flagged-items queue: uncertain entries get routed to a person instead of being silently accepted or guessed.\n\nFor context, the practice was re-typing paper forms (expense sheets, mileage logs, engagement forms), and because checks kept finding wrong dates and transposed amounts, every form was effectively handled twice. The flagged-items queue addresses that by surfacing the doubtful cases for review.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002833
+  },
+  {
+   "qid": "q092",
+   "type": "paraphrase",
+   "question": "should i give you our mad december numbers or a typical week?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/volume-and-timing#1",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.702795,
+     "text": "## The volume question\n\nWe ask roughly how many requests come in on a normal day. A request is anything that needs handling: a call, a message, a form, a walk-in. A normal day means a typical business day, not the busiest one and not the quietest. If you think in weeks or months, say so; the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#0",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.66045,
+     "text": "# Case: a heating firm gets jobs out of the inbox\n\nThis is an anonymised, fictional case. The firm, its staff and its figures are invented."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#3",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.656108,
+     "text": "## Why a rough answer is enough\n\nThe volume only has to land in the right tier of the rate card, and the tiers are wide. The minutes figures are used to estimate hours per month, and a small error in minutes makes a small error in hours. A rough honest figure is more useful than a precise guess."
+    },
+    {
+     "chunk_id": "cases/trades-dispatch#2",
+     "doc_id": "cases/trades-dispatch",
+     "score": 0.650336,
+     "text": "## What the discovery found\n\nThe interview recorded the channels, the volume, the minutes per job and the re-keying minutes. The owner gave two volumes that did not agree, a daily figure and a monthly figure, and the assistant raised the conflict instead of choosing one. The estimate stayed blocked until the owner said which figure reflected a normal month. The owner also confirmed that urgent requests existed and that customer addresses and card details were kept on file, so the report carried a personal data note."
+    },
+    {
+     "chunk_id": "pricing/volume-tiers#4",
+     "doc_id": "pricing/volume-tiers",
+     "score": 0.649229,
+     "text": "## Which number counts\n\nThe volume that counts is the number of requests on a normal business day. If you know your volume per month, say so, and the assistant converts it to a daily figure in code and shows you the conversion. If you give two figures that do not agree, for example a daily number and a monthly number that imply different volumes, the assistant will ask you which one to use. It does not pick one for you, and no estimate is shown until the conflict is resolved."
+    }
+   ],
+   "answer": "Give me a typical week. The volume I need is the number of requests on a normal business day, so December's peak would overstate your ongoing load and push you into the wrong pricing tier.\n\nA few details that help:\n\n- **Typical week, not the busiest or quietest.** Tell me roughly how many requests come in across a normal week (a call, message, form, or walk-in each count as one).\n- **Say the period.** If you think in weeks or months, just say so. I'll convert it to a daily figure and show you the conversion.\n- **A rough figure is fine.** The pricing tiers are wide, so an approximate number lands in the right one.\n\nIf you also have a normal-month figure, share it too. If it doesn't match the weekly number, I'll ask you which one reflects a normal month rather than picking one myself.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.000343
+  },
+  {
+   "qid": "q094",
+   "type": "paraphrase",
+   "question": "jan vs june start. dearer?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/volume-and-timing#5",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.709394,
+     "text": "## Timing\n\nWe ask when you would want to start. If you have not decided, say so. The estimate is then marked as a scenario, with the undecided start shown as an assumption, rather than as an indicative figure. A start date does not change the price; it changes how firm the estimate can be."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#2",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.60728,
+     "text": "## Three statuses\n\n| Status | Meaning |\n|---|---|\n| indicative | every pricing input was given by you and nothing conflicts |\n| scenario | an input is missing or unknown, and the estimate uses a stated assumption |\n| blocked | two of your answers conflict, and no number is shown until you resolve it |\n\nAn indicative estimate means that every field the price depends on was reported or confirmed by you and no conflict exists. A scenario estimate means that at least one input is missing, so the assistant has filled it with an assumption that it shows next to the number. A blocked estimate shows no number at all, only the conflict and the question that would resolve it."
+    },
+    {
+     "chunk_id": "pricing/range-and-estimates#3",
+     "doc_id": "pricing/range-and-estimates",
+     "score": 0.606278,
+     "text": "## When you see a number\n\nThe assistant does not show a price until it has enough of the assessment to make one meaningful. If you ask for the cost in the first few messages, it will explain what it still needs and carry on with the questions. This is deliberate: a number given too early is almost always wrong, and it is hard to forget."
+    },
+    {
+     "chunk_id": "pricing/how-we-price#4",
+     "doc_id": "pricing/how-we-price",
+     "score": 0.605232,
+     "text": "## The calculation\n\nThe monthly price for each chosen module is its base price multiplied by the volume factor for your daily request volume. The integration surcharges for the integrations you use are added once a month. The setup fee is 900 USD for each module and is paid once. The result is the base estimate, from which the low and high figures are derived."
+    },
+    {
+     "chunk_id": "implementation/crm-connector#6",
+     "doc_id": "implementation/crm-connector",
+     "score": 0.603977,
+     "text": "## When to choose it\n\nChoose crm-connector when your sales or office staff already work in the CRM and should see jobs there. If your CRM can export and import CSV files and the delay is acceptable, csv-export is a cheaper way to start, and you can move to the connector later."
+    }
+   ],
+   "answer": "Based on the knowledge base, a start date does not change the price. The timing only affects how firm the estimate is:\n\n- If you have decided on a start date, the estimate can be marked as **indicative** (provided all other pricing inputs are confirmed and nothing conflicts).\n- If you have not decided, the estimate is marked as a **scenario**, with the undecided start shown as an assumption next to the number.\n\nSo choosing January versus June would not make it dearer. It would only change how firm the figure is. I can't see from the excerpts whether any seasonal or timing-based pricing applies beyond this, so if you want that confirmed, it's worth asking the MILO team directly.\n\nIf you'd like, I can check the current estimate for specific modules or record your start timeline so the estimate can be firmed up.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0003452
+  },
+  {
+   "qid": "q098",
+   "type": "paraphrase",
+   "question": "havent ticked the consent box yet. can we still chat?",
+   "contexts": [
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.732341,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "consultation/first-questions#5",
+     "doc_id": "consultation/first-questions",
+     "score": 0.647687,
+     "text": "## The constraint questions\n\nFinally the constraints: whether your tools can export, import or offer an API, whether you handle personal data, whether urgent requests exist, your budget range if you have one, and when you would want to start."
+    },
+    {
+     "chunk_id": "policies/personal-data#2",
+     "doc_id": "policies/personal-data",
+     "score": 0.647651,
+     "text": "## What we store about your customers\n\nNo customer records are collected. The interview asks whether you handle customer personal data, such as phone numbers, addresses or payment details, and which kinds, so that the report can say what the modules would touch. It does not ask for and does not store any actual customer record. If you paste a customer's details into the conversation, we ask you not to, and the operator can delete the message on request."
+    },
+    {
+     "chunk_id": "policies/personal-data#0",
+     "doc_id": "policies/personal-data",
+     "score": 0.645459,
+     "text": "# Personal data policy\n\nThis policy explains what personal data MILO stores during a discovery interview, when it stores it, and who can see it. It applies to the discovery assistant and to the report it produces."
+    },
+    {
+     "chunk_id": "policies/security#1",
+     "doc_id": "policies/security",
+     "score": 0.641907,
+     "text": "## One account, one session\n\nAccess is by invitation only. An invitation is a one-time link that lets you set a password, and it stops working after it has been used or after it expires. Each owner account has exactly one session. Signing out saves the conversation; signing in again restores it. Several failed sign-in attempts in a row lock the account for a short time."
+    }
+   ],
+   "answer": "Yes, you can still chat. According to our personal data policy, the assistant can talk with you before you give consent. What it doesn't do until you consent is store your contact fields, such as your name, role and email address. Your company details and interview answers are stored as part of the interview.\n\nOnce you give consent, that is recorded with its version and the time it was given. If you'd rather not share contact details at all, you can leave those fields out and continue with the company questions.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002731
+  },
+  {
+   "qid": "q104",
+   "type": "paraphrase",
+   "question": "could my business partner see my stuff by typing my name into the chat?",
+   "contexts": [
+    {
+     "chunk_id": "policies/personal-data#4",
+     "doc_id": "policies/personal-data",
+     "score": 0.727612,
+     "text": "## Who can see your data\n\nYou can see everything the interview has recorded, with the sentence each fact came from. The operator, the person who reviews your submission, can see your submission and the evidence behind it. No other owner can see your session, your facts or your submission, and the assistant will refuse a request to show another owner's data."
+    },
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.695297,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "policies/security#1",
+     "doc_id": "policies/security",
+     "score": 0.690599,
+     "text": "## One account, one session\n\nAccess is by invitation only. An invitation is a one-time link that lets you set a password, and it stops working after it has been used or after it expires. Each owner account has exactly one session. Signing out saves the conversation; signing in again restores it. Several failed sign-in attempts in a row lock the account for a short time."
+    },
+    {
+     "chunk_id": "policies/security#2",
+     "doc_id": "policies/security",
+     "score": 0.675908,
+     "text": "## Your identity comes from your sign-in\n\nThe assistant never takes your identity from the text of a conversation. Who you are is decided by the account you signed in with, and every record it reads or writes is looked up for that account only. A message that says to continue as a different owner, or that gives another owner's session or submission number, does not change who you are. The request is refused and an audit entry is written."
+    },
+    {
+     "chunk_id": "policies/security#0",
+     "doc_id": "policies/security",
+     "score": 0.665781,
+     "text": "# Security policy\n\nThis policy explains how MILO keeps one owner's interview separate from another's, how it treats text that tries to give the assistant orders, and what it records."
+    }
+   ],
+   "answer": "No. Based on MILO's policies, your business partner can't see your session, facts, or submission by typing your name into the chat:\n\n- **Your identity comes from your sign-in, not from the chat.** The assistant decides who you are from the account you signed in with. Typing someone's name, or another owner's session or submission number, doesn't change that. The request is refused and an audit entry is written.\n- **Each owner has one session, visible only to that owner.** No other owner can see your session, your facts, or your submission. The assistant will refuse any request to show another owner's data.\n- **Access is by invitation only.** Each account is set up through a one-time invitation link and a password, so your partner would need their own invitation and their own sign-in.\n\nThe operator who reviews your submission can see it, along with the evidence behind it. That's the only other party with access.\n\nIf you want to know who can access your account itself, keep your password private and sign out on shared devices. Signing out saves your conversation, and signing back in restores it.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0003606
+  },
+  {
+   "qid": "q107",
+   "type": "unanswerable",
+   "question": "2fa on the login?",
+   "contexts": [
+    {
+     "chunk_id": "policies/security#1",
+     "doc_id": "policies/security",
+     "score": 0.66591,
+     "text": "## One account, one session\n\nAccess is by invitation only. An invitation is a one-time link that lets you set a password, and it stops working after it has been used or after it expires. Each owner account has exactly one session. Signing out saves the conversation; signing in again restores it. Several failed sign-in attempts in a row lock the account for a short time."
+    },
+    {
+     "chunk_id": "implementation/api-connector#1",
+     "doc_id": "implementation/api-connector",
+     "score": 0.61387,
+     "text": "## How it works\n\nYour tool offers an API with an access key. You create a key for MILO in your tool, with only the rights the module needs, and give it to us during setup. The module then reads and writes through the API. If the key is removed, the connection stops and nothing else changes in your tool."
+    },
+    {
+     "chunk_id": "policies/security#2",
+     "doc_id": "policies/security",
+     "score": 0.610603,
+     "text": "## Your identity comes from your sign-in\n\nThe assistant never takes your identity from the text of a conversation. Who you are is decided by the account you signed in with, and every record it reads or writes is looked up for that account only. A message that says to continue as a different owner, or that gives another owner's session or submission number, does not change who you are. The request is refused and an audit entry is written."
+    },
+    {
+     "chunk_id": "policies/security#4",
+     "doc_id": "policies/security",
+     "score": 0.605929,
+     "text": "## Tools the assistant can use\n\nThe assistant can search the knowledge base, show your current facts, run the cost calculation, record a fact and start a withdrawal. Each of these is classed as read, write or destructive. A destructive action needs your approval. In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
+    },
+    {
+     "chunk_id": "solutions/ticket-creation#2",
+     "doc_id": "solutions/ticket-creation",
+     "score": 0.604343,
+     "text": "## What is included\n\nThe module includes ticket fields, a duplicate check, status tracking and reminders to staff. The reminders go to the staff member who owns the ticket, not to the customer."
+    }
+   ],
+   "answer": "The knowledge base doesn't say anything about two-factor authentication (2FA) on the login. The sign-in material I found covers only:\n\n- **Invitations:** access is invitation-only. Each invitation is a one-time link for setting a password, and it expires after use or after a set time.\n- **Lockout:** several failed sign-in attempts in a row lock the account for a short time.\n- **One session:** each owner account has one session, and signing out saves your conversation.\n\nI can't confirm whether 2FA is available or planned. For that, please contact your MILO account contact or support team.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.000636
+  },
+  {
+   "qid": "q109",
+   "type": "unanswerable",
+   "question": "can i pay by direct debit?",
+   "contexts": [
+    {
+     "chunk_id": "policies/security#4",
+     "doc_id": "policies/security",
+     "score": 0.608616,
+     "text": "## Tools the assistant can use\n\nThe assistant can search the knowledge base, show your current facts, run the cost calculation, record a fact and start a withdrawal. Each of these is classed as read, write or destructive. A destructive action needs your approval. In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
+    },
+    {
+     "chunk_id": "implementation/csv-export#2",
+     "doc_id": "implementation/csv-export",
+     "score": 0.598265,
+     "text": "## What you need\n\nYour tool must be able to export and import CSV files. Most spreadsheets, booking widgets and small job tools can. During setup we agree the column names on both sides so that the files always line up."
+    },
+    {
+     "chunk_id": "solutions/document-data-entry#5",
+     "doc_id": "solutions/document-data-entry",
+     "score": 0.58581,
+     "text": "## Price\n\nThe base monthly price for document-data-entry is 490 USD. The setup fee is 900 USD per module. If your tool is export-only, a monthly surcharge of 250 USD applies for the extra handling. All prices are indicative and non-binding."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#0",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.584403,
+     "text": "# What is included and what is not\n\nA monthly price covers a fixed list of things. This article says what that list is, and what sits outside it, so that there are no surprises after the first invoice."
+    },
+    {
+     "chunk_id": "pricing/what-is-included#1",
+     "doc_id": "pricing/what-is-included",
+     "score": 0.582509,
+     "text": "## Included in the monthly price\n\nThe monthly price for a module covers the running of that module for your business: the software, the hosting, the templates and rules we agree with you during setup, and the audit or delivery logs that each module keeps. It also covers the integration you chose, once the integration surcharge is added. Minor changes to wording, labels or skill tags are included; you can ask for them at any time."
+    }
+   ],
+   "answer": "I couldn't find anything in the knowledge base about direct debit. The excerpts cover module prices, integration surcharges, and what's included in the monthly price, but none of them mention payment methods.\n\nFor a definite answer, you'll need to check with the MILO team directly. If you tell me your email address, I can record it against your business details so the team can follow up with you.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0006014
+  },
+  {
+   "qid": "q111",
+   "type": "unanswerable",
+   "question": "whats the voice like on the phone bot, can i pick a different one?",
+   "contexts": [
+    {
+     "chunk_id": "solutions/phone-intake#1",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.723765,
+     "text": "## What it does\n\nWhen a call comes in, the module answers, asks what the caller needs and captures the request as text. If the caller wants an appointment, it books one in the slots you have opened. If the request needs a person, it writes a handover note and passes the call to a member of staff. Every call produces a transcript that stays with the request."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#0",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.720061,
+     "text": "# AI phone intake\n\nThe phone-intake module answers incoming calls out of hours and in peak times, records the request, and books or passes it on. It is built for businesses where the phone rings while every member of staff is busy with a customer."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#2",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.687752,
+     "text": "## What is included\n\nThe module includes call answering, request capture, appointment booking, a call transcript for each call, and handover to staff. The transcript is the evidence for every fact the module records, so a member of staff can check what the caller actually said."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#6",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.67896,
+     "text": "## Who it suits\n\nOwners whose main problem is missed calls at peak times, or who want bookings taken when the shop is closed, usually start here. The module records what the caller asked for, so nothing is lost between the call and the booking."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#5",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.665608,
+     "text": "## Price\n\nThe base monthly price for phone-intake is 690 USD. The setup fee is 900 USD per module. The monthly price is multiplied by a volume factor that depends on how many requests you handle a day; see the pricing section for the tiers. All prices are indicative and non-binding."
+    }
+   ],
+   "answer": "I don't have information about the voice options in the knowledge base excerpts I can access. The excerpts cover what phone-intake does (answering calls, capturing requests, booking appointments, transcripts, and handover to staff) and its pricing, but nothing about voice selection or customisation.\n\nIf you tell me more about your business, I can note it down, or you can check with the MILO team directly about voice options.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002646
+  },
+  {
+   "qid": "q115",
+   "type": "unanswerable",
+   "question": "are you insured if the bot books something wrong and it costs me?",
+   "contexts": [
+    {
+     "chunk_id": "policies/approvals#4",
+     "doc_id": "policies/approvals",
+     "score": 0.655462,
+     "text": "## Untrusted text and the exception\n\nEverything you type, everything in a document you upload and everything the assistant reads from the knowledge base is treated as untrusted. If any of it looks like an instruction to the assistant, the assistant marks the turn as suspicious. In a suspicious turn it will not record a fact that affects the price, and it will not start a withdrawal even if asked. It tells you what it declined to do and why."
+    },
+    {
+     "chunk_id": "solutions/phone-intake#4",
+     "doc_id": "solutions/phone-intake",
+     "score": 0.652387,
+     "text": "## Connecting it to your tools\n\nThe module works with the csv-export integration and the api-connector integration. With csv-export, booked requests are written to a file that your booking tool can import. With api-connector, the module writes each booking straight into your tool through its API."
+    },
+    {
+     "chunk_id": "policies/security#4",
+     "doc_id": "policies/security",
+     "score": 0.651378,
+     "text": "## Tools the assistant can use\n\nThe assistant can search the knowledge base, show your current facts, run the cost calculation, record a fact and start a withdrawal. Each of these is classed as read, write or destructive. A destructive action needs your approval. In a turn that looks like it contains an injected instruction, destructive actions are refused outright and price-related facts are not written."
+    },
+    {
+     "chunk_id": "implementation/api-connector#5",
+     "doc_id": "implementation/api-connector",
+     "score": 0.642271,
+     "text": "## Limits\n\nThe module can only do what the key allows. If the key cannot create bookings, phone-intake cannot book. We ask for the smallest set of rights that works, and we tell you which rights each module needs before you create the key."
+    },
+    {
+     "chunk_id": "solutions/email-triage#1",
+     "doc_id": "solutions/email-triage",
+     "score": 0.635841,
+     "text": "## What it does\n\nEach new message is read and given a label, such as new job, question, complaint or invoice. The module also sets a priority so that the most pressing messages rise to the top. For each message it drafts a reply in your own wording. A member of staff reads the draft, changes it if needed, and sends it. Nothing goes out on its own."
+    }
+   ],
+   "answer": "I don't have information about insurance coverage in the knowledge base excerpts I can search, so I can't say whether MILO is insured or what would happen if a booking error cost you money.\n\nWhat the excerpts do say is related:\n\n- **Phone-intake booking** only works with the integrations you connect. With csv-export, bookings are written to a file your booking tool imports. With api-connector, bookings are written straight into your tool through its API.\n- **API permissions:** phone-intake can only do what the API key allows. If the key cannot create bookings, it cannot book. MILO asks for the smallest set of rights that works and tells you which rights each module needs before you create the key.\n- **Email triage** never sends anything on its own. Staff read and approve each draft before it goes out.\n\nFor the question of insurance and liability for errors, I'd recommend asking MILO's support or checking the contract or terms of service directly. If you'd like, I can search the knowledge base for \"liability\" or \"terms\" to see if anything relevant turns up.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.000371
+  },
+  {
+   "qid": "q119",
+   "type": "unanswerable",
+   "question": "how long have u been going, when were you founded?",
+   "contexts": [
+    {
+     "chunk_id": "consultation/first-questions#2",
+     "doc_id": "consultation/first-questions",
+     "score": 0.69272,
+     "text": "## The company questions\n\nThe interview starts with the company: what it is called, what kind of business it is, how many people work there, how many locations you run, and who we are talking to. These are short answers and they set the context for everything after."
+    },
+    {
+     "chunk_id": "policies/personal-data#1",
+     "doc_id": "policies/personal-data",
+     "score": 0.61981,
+     "text": "## What we store about you\n\nThe interview stores your company details and your answers. Your contact details, such as your name, role and email address, are stored only after you have given consent, and the consent is recorded with its version and the time it was given. Until then, the assistant can talk to you but does not keep your contact fields."
+    },
+    {
+     "chunk_id": "consultation/first-questions#0",
+     "doc_id": "consultation/first-questions",
+     "score": 0.609165,
+     "text": "# The first questions we ask\n\nThe discovery interview follows a fixed list of questions. This article explains why the list exists, what the first questions are, and what the assistant does with your answers."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#1",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.60793,
+     "text": "## The volume question\n\nWe ask roughly how many requests come in on a normal day. A request is anything that needs handling: a call, a message, a form, a walk-in. A normal day means a typical business day, not the busiest one and not the quietest. If you think in weeks or months, say so; the assistant converts the figure to a daily one in code and shows the conversion as an estimated fact."
+    },
+    {
+     "chunk_id": "consultation/volume-and-timing#5",
+     "doc_id": "consultation/volume-and-timing",
+     "score": 0.600714,
+     "text": "## Timing\n\nWe ask when you would want to start. If you have not decided, say so. The estimate is then marked as a scenario, with the undecided start shown as an assumption, rather than as an indicative figure. A start date does not change the price; it changes how firm the estimate can be."
+    }
+   ],
+   "answer": "I don't have information about when MILO was founded or how long it has been operating. The knowledge base excerpts I have cover the discovery interview (company questions, volume and timing, and personal data policy), not the history of the service.\n\nIf you want to know more about MILO itself, the team behind it would be the best source. I can help with questions about how the interview works, what information is stored, or how the cost estimate is built.",
+   "abstained": false,
+   "error": null,
+   "tokens_in": 0,
+   "tokens_out": 0,
+   "cost_usd": 0.0002639
+  }
+ ]
+}

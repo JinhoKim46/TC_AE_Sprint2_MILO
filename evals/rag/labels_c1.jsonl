@@ -1,0 +1,30 @@
+{"qid": "q001", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q003", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 1, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q007", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "calls the setup fee 'one-time'; no shown context says it is paid once"}
+{"qid": "q009", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q012", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 1, 1, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "calls the 900 USD setup fee a 'one-time charge'; contexts only say 900 USD per module"}
+{"qid": "q016", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q020", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q022", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q029", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q039", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "honest decline: no context covers staff training; setup facts given are supported"}
+{"qid": "q045", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q053", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 0, 0, 1, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q056", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "says the urgent definition is set in the setup step; contexts say the interview asks and records it (setup covers the handover, not the definition)"}
+{"qid": "q061", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 1, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q074", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q075", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q077", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 1, 1], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q079", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q084", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "adds that the groomer supplied 'volumes, minutes'; context only says every pricing input was reported"}
+{"qid": "q086", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 1, 0, 1, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q088", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 1, 1, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "says uncertain entries are routed to a person for review; shown contexts only say the module needed to know when it was not sure"}
+{"qid": "q092", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 1], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q094", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q098", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "claims you can leave contact fields out and continue with company questions; not stated in contexts"}
+{"qid": "q104", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 1, 0], "labeller": "c1-labeller (Opus session, blind)"}
+{"qid": "q107", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "honest decline: contexts do not mention 2FA; sign-in facts listed are supported"}
+{"qid": "q109", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "honest decline: no context mentions payment methods"}
+{"qid": "q111", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "honest decline: no context covers voice options"}
+{"qid": "q115", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "honest decline on insurance; related facts given are supported"}
+{"qid": "q119", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "c1-labeller (Opus session, blind)", "note": "honest decline: no context covers founding date"}

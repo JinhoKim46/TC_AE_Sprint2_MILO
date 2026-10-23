@@ -10,6 +10,9 @@
         --product-model <slug> --price-in <usd/Mtok> --price-out <usd/Mtok>
     MILO_LIVE=1 python evals/rag/run_rag_eval.py --judge --max-cost 0.50 --reason "..." \\
         --judge <slug>,<usd/Mtok in>,<usd/Mtok out> --judge <slug>,<in>,<out>
+    MILO_LIVE=1 python evals/rag/run_rag_eval.py --validate-judges --max-cost 0.40 --reason "..." \\
+        --judge <slug>,<in>,<out> --judge <slug>,<in>,<out>     (protocol c1-baseline.md)
+    python evals/rag/run_rag_eval.py --generate ... --generation-out F   write the generation to F instead
 
 Order (D26): sample, generate, labels (separate labelling agent), judge prompts, judge. `--judge` refuses while a
 prompt is a placeholder, while the labels are missing or invalid, or while git does not show the labels committed
@@ -49,6 +52,10 @@ FIXTURE = RAG_DIR / "fixtures" / "rag_dry_fixture.json"
 GEN_RESULT = RESULTS / "generation_dev.json"
 JUDGE_RESULT = RESULTS / "judge_dev.json"
 DRY_RESULT = RESULTS / "rag_dry.json"
+# c1-baseline (D169): Haiku generation, its blind labels, and the judge validation over three sets
+GEN_C1 = RESULTS / "generation_dev_c1.json"
+LABELS_C1 = RAG_DIR / "labels_c1.jsonl"
+VALIDATION_RESULT = RESULTS / "judge_validation_c1.json"
 DRY_TEMPLATE = "DRY {{question}} || {{contexts}} || {{answer}}"
 SEED = smp.SEED
 POOL_DIR = ROOT / "data" / "judge_pool"
@@ -458,6 +465,177 @@ def live_judge(args: argparse.Namespace) -> int:
     return 1 if partial else 0
 
 
+# ---------------------------------------------------------------- judge validation (c1-baseline)
+
+
+VALIDATION_SETS = ("real-m7", "real-c1", "pool")
+
+
+def validation_rows() -> tuple[list[dict[str, Any]], list[str]]:
+    """The three labelled sets of c1-baseline, each row tagged with `set`. Pool rows keep their `pid` and
+    `source: pool`; this path never writes a product score, so it does not call the pool refusal."""
+    problems: list[str] = []
+    rows: list[dict[str, Any]] = []
+    qids = sample_qids()
+    gold_type = {g["qid"]: g["type"] for g in common.load_gold("dev")}
+    for name, gen_path, lab_path in (
+        ("real-m7", GEN_RESULT, schema.LABELS),
+        ("real-c1", GEN_C1, LABELS_C1),
+    ):
+        if not gen_path.exists():
+            problems.append(f"{_rel(gen_path)} is missing")
+            continue
+        gen_rows = _load(gen_path)["rows"]
+        counts = {g["qid"]: len(g["contexts"]) for g in gen_rows}
+        labels, bad = schema.validate_labels(lab_path, qids, counts)
+        problems += [f"{lab_path.name}: {b}" for b in bad]
+        if not bad:
+            rows += [{**r, "set": name} for r in assemble(gen_rows, labels)]
+    pool, bad = load_pool()
+    problems += bad
+    for it in pool:
+        rows.append(
+            {
+                "qid": it["pid"],
+                "pid": it["pid"],
+                "source": "pool",
+                "gold_qid": it["qid"],
+                "type": gold_type.get(it["qid"], "unknown"),
+                "question": it["question"],
+                "contexts": it["contexts"],
+                "answer": it["answer"],
+                "abstained": not it["contexts"],
+                "labels": {
+                    k: it["labels"][k]
+                    for k in (
+                        "faithfulness",
+                        "relevance",
+                        "context_relevance",
+                        "labeller",
+                    )
+                },
+                "set": "pool",
+            }
+        )
+    return rows, problems
+
+
+def prevalence(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    n = len(rows)
+    unf = sum(1 for r in rows if r["labels"]["faithfulness"] == 0)
+    rel0 = sum(1 for r in rows if r["labels"]["relevance"] == 0)
+    return {
+        "n": n,
+        "unfaithful": unf,
+        "unfaithful_share": round(unf / n, 4) if n else None,
+        "relevance_0": rel0,
+    }
+
+
+def derive_validation(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    """Per set and combined; the decision is the combined set's (c1-baseline protocol)."""
+    sets = {
+        s: {"prevalence": prevalence(sub), **jd.derive(sub)}
+        for s in VALIDATION_SETS
+        if (sub := [r for r in rows if r["set"] == s])
+    }
+    combined = {"prevalence": prevalence(rows), **jd.derive(rows)}
+    return {"sets": sets, "combined": combined, "decision": combined["decision"]}
+
+
+def validation_doc(
+    rows: list[dict[str, Any]],
+    judges: dict[str, jd.JudgeFn],
+    templates: dict[str, str],
+    max_cost: float | None,
+) -> tuple[dict[str, Any], bool]:
+    partial = jd.run_judges(rows, judges, templates, max_cost)
+    return {"partial": partial, **derive_validation(rows), "rows": rows}, partial
+
+
+def live_validate(args: argparse.Namespace) -> int:
+    if not _live_args_ok(args, ["judge"]):
+        return 2
+    if len(args.judge) != 2:
+        print(
+            "refusing to run: exactly two --judge are required (D26)", file=sys.stderr
+        )
+        return 2
+    rows, problems = validation_rows()
+    templates = jd.load_templates(PROMPTS)
+    problems += [
+        f"{n} is a placeholder"
+        for m, n in jd.PROMPT_NAMES.items()
+        if jd.is_placeholder(templates[m])
+    ]
+    if problems:
+        print("refusing to run: " + "; ".join(problems[:10]), file=sys.stderr)
+        return 2
+    judges = {
+        slug: live_judge_fn(_chat(slug, price, "c1-judge-validation"))
+        for slug, price in parse_judges(args.judge)
+    }
+    body, partial = validation_doc(rows, judges, templates, float(args.max_cost))
+    inputs: dict[str, Path | str] = {
+        "gold": common.GOLD_PATH,
+        "sample": SAMPLE,
+        "generation": GEN_RESULT,
+        "labels": schema.LABELS,
+        "generation_c1": GEN_C1,
+        "labels_c1": LABELS_C1,
+        "pool_answers": POOL_ANSWERS,
+        "pool_labels": POOL_LABELS,
+        "evals/rag/judge.py": RAG_DIR / "judge.py",
+        "evals/rag/stats.py": RAG_DIR / "stats.py",
+    }
+    for n in jd.PROMPT_NAMES.values():
+        inputs[f"prompt/{n}"] = PROMPTS / n
+    doc = {
+        **common.provenance(
+            model="judges=" + ",".join(judges),
+            seed=SEED,
+            temperature=0.0,
+            command="MILO_LIVE=1 python evals/rag/run_rag_eval.py --validate-judges "
+            f"--max-cost {args.max_cost} "
+            + " ".join(f"--judge {j}" for j in args.judge),
+            inputs=inputs,
+        ),
+        "dry": False,
+        "spend_reason": args.reason,
+        "judge_prices_usd_per_mtok": {s: list(p) for s, p in parse_judges(args.judge)},
+        **body,
+    }
+    doc["total_cost_usd"] = round(
+        sum(v["cost_usd"] for v in doc["combined"]["summary"].values()), 8
+    )
+    _write(VALIDATION_RESULT, doc)
+    print(
+        f"wrote {_rel(VALIDATION_RESULT)}: {len(rows)} rows, cost {doc['total_cost_usd']} USD, partial={partial}"
+    )
+    for name, block in [*doc["sets"].items(), ("combined", doc["combined"])]:
+        print(f"== {name} {block['prevalence']}")
+        print_table(block)
+    return 1 if partial else 0
+
+
+def replay_validation_file(path: Path) -> bool:
+    stored = _load(path)
+    rows = json.loads(json.dumps(stored["rows"]))
+    bad: list[str] = []
+    for key, val in derive_validation(rows).items():
+        rr._same(
+            json.loads(json.dumps(stored[key])),
+            json.loads(json.dumps(val)),
+            0.0,
+            key,
+            bad,
+        )
+    print(f"{'MATCH' if not bad else 'MISMATCH'} {_rel(path)}: recomputed from rows")
+    for line in bad[:20]:
+        print("  ", line)
+    return not bad
+
+
 # ---------------------------------------------------------------- offline steps
 
 
@@ -601,14 +779,19 @@ def replay(args: argparse.Namespace) -> int:
             )
         paths = [Path(args.result)]
     else:
-        paths = [p for p in (GEN_RESULT, JUDGE_RESULT, DRY_RESULT) if p.exists()]
+        paths = [
+            p
+            for p in (GEN_RESULT, JUDGE_RESULT, DRY_RESULT, GEN_C1, VALIDATION_RESULT)
+            if p.exists()
+        ]
     for p in paths:
         found = True
-        ok &= (
-            replay_generation_file(p)
-            if p.name.startswith("generation")
-            else replay_judge_file(p)
-        )
+        if p.name.startswith("generation"):
+            ok &= replay_generation_file(p)
+        elif p.name.startswith("judge_validation"):
+            ok &= replay_validation_file(p)
+        else:
+            ok &= replay_judge_file(p)
     if not found:
         print("no stored result to replay (evals/results/m7/*.json)", file=sys.stderr)
         return 1
@@ -641,12 +824,16 @@ def main(argv: list[str] | None = None) -> int:
         "dry",
         "replay",
         "generate",
+        "validate-judges",
     ):
         mode.add_argument("--" + flag, action="store_true")
     ap.add_argument(
         "--generation", help="--make-template: the generation result (context counts)"
     )
     ap.add_argument("--result", help="--replay: one result file")
+    ap.add_argument(
+        "--generation-out", help="--generate: where to write the generation"
+    )
     ap.add_argument("--max-cost", type=float)
     ap.add_argument("--reason")
     ap.add_argument("--product-model")
@@ -675,7 +862,10 @@ def main(argv: list[str] | None = None) -> int:
         print_table(doc)
         return 0
     if args.generate:
-        return live_generate(args)
+        out = Path(args.generation_out) if args.generation_out else GEN_RESULT
+        return live_generate(args, out_path=out)
+    if args.validate_judges:
+        return live_validate(args)
     return live_judge(
         args
     )  # no flag, or --judge: it refuses without MILO_LIVE=1 (D126)

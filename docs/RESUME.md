@@ -28,7 +28,8 @@ the M7 agreement check; performance against Sonnet is not a goal. OpenRouter bal
 
 - C0 data quality: done. data-v2 (conversations, tool cases, judge pool; `evals/protocols/data-v2.md`) and the KB
   edit round (`evals/protocols/kb-edit-v1.md`, D168; title prefix not adopted). Parameters: `docs/rag-parameters.md`.
-- C1 next: Haiku baseline on the new dev data (M5b discovery, M3 tools, M7 generation and judge), about 0.10 USD.
+- C1 baseline: done (`docs/c1_report.md`, 0.20 USD). Key balance about 4.23 USD after C1 (the key endpoint is the
+  source; the ledger misses some usage).
 - C2 (Haiku/Sonnet proxy check): dropped by D169.
 - C3: part-by-part improvement with a checkpoint after each part (abstention, tool choice, extraction, retrieval,
   gate). Dev detects only effects of about 7 points nDCG@5 (48 questions), so small retrieval wins will not pass

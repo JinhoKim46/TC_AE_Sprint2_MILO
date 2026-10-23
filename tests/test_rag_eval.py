@@ -409,3 +409,60 @@ def test_generate_stops_at_the_cap_between_questions() -> None:
     assert partial and len(rows) == 3
     rows, partial = gen.generate(sample, ask, None)
     assert not partial and len(rows) == 5
+
+
+# ---------------------------------------------------------------- judge validation (c1-baseline)
+
+
+def _vrow(qid: str, name: str, faithful: int) -> dict[str, Any]:
+    return {
+        "qid": qid,
+        "type": "paraphrase",
+        "question": "q",
+        "contexts": [{"chunk_id": "a#0", "doc_id": "a", "text": "t"}],
+        "answer": "a",
+        "abstained": False,
+        "labels": {
+            "faithfulness": faithful,
+            "relevance": 2,
+            "context_relevance": [1],
+            "labeller": "x",
+        },
+        "set": name,
+    }
+
+
+def test_validation_scores_each_set_and_replays(tmp_path: Path) -> None:
+    rows = [_vrow(f"{s}-{i}", s, i % 2) for s in run.VALIDATION_SETS for i in range(8)]
+
+    def echo(qid: str, metric: str, prompt: str) -> jd.JudgeReply:
+        row = next(r for r in rows if r["qid"] == qid)
+        if metric == "context_precision":
+            return jd.JudgeReply(
+                json.dumps({"scores": row["labels"]["context_relevance"]})
+            )
+        return jd.JudgeReply(json.dumps({"score": row["labels"][metric]}))
+
+    templates = {m: run.DRY_TEMPLATE for m in jd.METRICS}
+    doc, partial = run.validation_doc(rows, {"a": echo, "b": echo}, templates, None)
+    assert not partial and set(doc["sets"]) == set(run.VALIDATION_SETS)
+    assert doc["combined"]["prevalence"] == {
+        "n": 24,
+        "unfaithful": 12,
+        "unfaithful_share": 0.5,
+        "relevance_0": 0,
+    }
+    assert doc["combined"]["summary"]["a"]["metrics"]["faithfulness"]["kappa"] == 1.0
+    path = tmp_path / "judge_validation_c1.json"
+    path.write_text(json.dumps(doc), encoding="utf-8")
+    assert run.replay_validation_file(path)
+    doc["rows"][0]["labels"]["faithfulness"] = (
+        1 - doc["rows"][0]["labels"]["faithfulness"]
+    )
+    path.write_text(json.dumps(doc), encoding="utf-8")
+    assert not run.replay_validation_file(path)
+
+
+def test_validate_refuses_without_milo_live(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("MILO_LIVE", raising=False)
+    assert run.main(["--validate-judges", "--max-cost", "0.1", "--reason", "x"]) == 2
