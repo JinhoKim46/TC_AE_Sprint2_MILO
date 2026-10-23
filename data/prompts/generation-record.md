@@ -175,3 +175,32 @@ P1–P3 require additional input: P1 requires `data/source/catalogue.yaml` and `
   rule in `build_data.py`); early mentions recorded at the turn they happen; every fact carries a verbatim evidence span;
   the industry label never appears in the owner text; upload facts are fields not yet recorded at the upload turn.
 - checked by: `scripts/build_data.py --check` (counts, tag minimums, evidence, truth values, enums, leakage, names).
+## data-v2 tool cases and label pool
+
+- date: 2026-10-23; written by the data-v2 generator (Sonnet session agent, branch `agent/gen-tools`), protocol
+  `evals/protocols/data-v2.md` Data 2 and Data 3. No model API call, no network, no `.env`, no `MILO_LIVE` or
+  `MILO_FINAL` (D126). No test-split result and no retired conversation was opened.
+- inputs read: the protocol, `data/tool_cases.jsonl` (15 rows), `src/milo/tools/specs.py` and `objects.json`,
+  `protocols/discovery.v1.yaml`, `data/source/catalogue.yaml`, `evals/rag/schema.py`, `evals/rag/labels.jsonl` (the 30
+  dev labels), `evals/rag/sample_dev.json`, `evals/results/m7/generation_dev.json` (dev contexts and dev answers only,
+  as the base of the rewrites and perturbations; never altered), the dev rows of `data/gold.jsonl`, `data/kb/`.
+- tool cases: source moved to `data/source/tool_cases.yaml`; `build_data.py` derives `data/tool_cases.jsonl`.
+  41 rows, 21 dev (tc01 to tc15 unchanged plus tc16 to tc21) and 20 test (tc22 to tc41). New fields `split`,
+  `category`, `rationale` (one line, at most 160 characters), `expected_outcome` and `tempting_invalid` where the
+  protocol asks. Owners stay `owner-a`, `-b`, `-e`; withdraw rows use submission 1 (owner-a), 2 (owner-b) and 3
+  (owner-c) of `objects.json`. `check_tool_cases` now asserts the protocol list (counts, category table, five tools
+  per split, schema-valid calls through `milo.tools.specs`, field types, owners, no_tool rows empty, Jaccard).
+- judge pool: 90 items over the 60 dev gold questions (30 with the stored dev contexts, 30 with the offline BM25
+  top 5 over `data/kb/`; the BM25 contexts were computed once with `milo.rag.bm25` and their chunk ids are fixed in
+  `data/source/judge_pool.yaml`). Kinds: 35 faithful (17 rewrites of the stored dev answer of the same question,
+  none of the one unfaithful real answer q107), 40 unfaithful (one perturbation each: 9 invented, 7 number_off,
+  6 wrong_policy, 5 negation_flip, 5 added_claim, 4 wrong_module, 4 wrong_citation), 15 relevance items (10 off topic,
+  5 partial) and 10 context-swap items (one irrelevant KB chunk inserted, label 0). Deviation from the protocol
+  table: off topic 10 and partial 5 instead of 5 and 10, so that the target "at least 10 items with relevance 0"
+  holds; honest declines on unanswerable or uncovered questions are faithful items with intended relevance 1.
+- `perturbations.jsonl` holds, per pid, kind, perturbation type, base answer, changed span, swap chunk and the
+  generator's intended labels. `labels.jsonl` is not written: it is the auditor's blind file and appears after the
+  audit. Intended labels pass `evals/rag/schema.py` `validate_row`; the unfaithful share by intended labels is 40 of
+  90 in the pool and 41 of 120 with the 30 real dev labels (one unfaithful, q107).
+- check command: `uv run python scripts/build_data.py`, `uv run python scripts/build_data.py --check`,
+  `uv run python scripts/check_project_data.py data`, `uv run pytest tests/test_checker.py`

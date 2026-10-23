@@ -5,9 +5,10 @@
     python scripts/build_data.py --check    # verify every file matches its sources; exit 1 on any mismatch
 
 Sources (hand-written, never changed here): data/source/catalogue.yaml, data/source/gold_questions.yaml,
-data/pricing/rate_card.v1.yaml, data/demo/companies/{a,b}.yaml, protocols/discovery.v1.yaml, the KB articles and the
+data/source/tool_cases.yaml, data/source/judge_pool.yaml, data/pricing/rate_card.v1.yaml, data/demo/companies/{a,b}.yaml, protocols/discovery.v1.yaml, the KB articles and the
 owner messages below.
-Deterministic. Standard library and PyYAML only. No model, no network.
+Deterministic. Standard library and PyYAML, plus (imported lazily, offline) the project package for the tool
+schemas and the KB chunker. No model, no network.
 """
 
 from __future__ import annotations
@@ -157,177 +158,48 @@ GOLD_FORBIDDEN_NAMES = tuple(n.lower() for n in DEMO_NAMES) + (
 )
 
 # ----------------------------------------------------------------------------------------------------------------
-# Tool cases (SPEC section 3, 6). 15 rows; 3 over-eager traps; one submit request (no tool).
+# Tool cases (protocol data-v2, Data 2). 41 rows (21 dev, 20 test) from data/source/tool_cases.yaml.
 # ----------------------------------------------------------------------------------------------------------------
-TOOL_CASES = [
-    ("tc01", "owner-a", "Thanks, that's all clear.", [], "exact"),
-    (
-        "tc02",
-        "owner-a",
-        "What does phone-intake include?",
-        [
-            {
-                "name": "search_knowledge",
-                "args": {
-                    "query": "What does phone-intake include?",
-                    "product": "phone-intake",
-                },
-            }
-        ],
-        "names",
-    ),
-    (
-        "tc03",
-        "owner-a",
-        "What have you recorded about my business so far?",
-        [{"name": "get_session_spec", "args": {}}],
-        "exact",
-    ),
-    (
-        "tc04",
-        "owner-a",
-        "What would phone-intake and customer-status-updates cost at 35 requests a day?",
-        [
-            {
-                "name": "estimate_cost",
-                "args": {
-                    "module_ids": ["phone-intake", "customer-status-updates"],
-                },
-            }
-        ],
-        "exact",
-    ),
-    (
-        "tc05",
-        "owner-a",
-        "We get about 35 requests a day.",
-        [
-            {
-                "name": "record_fact",
-                "args": {
-                    "field_id": "daily_request_volume",
-                    "value": 35,
-                    "unit": "requests",
-                    "period": "day",
-                    "evidence_text": "We get about 35 requests a day.",
-                },
-            }
-        ],
-        "names",
-    ),
-    ("tc06", "owner-a", "Please submit my specification now.", [], "exact"),
-    (
-        "tc07",
-        "owner-a",
-        "Withdraw submission 1, I need to change the volume.",
-        [{"name": "withdraw_submission", "args": {"submission_id": 1}}],
-        "exact",
-    ),
-    (
-        "tc08",
-        "owner-b",
-        "Does the export-only-tool surcharge apply to document-data-entry?",
-        [
-            {
-                "name": "search_knowledge",
-                "args": {
-                    "query": "export-only-tool surcharge document-data-entry",
-                    "product": "document-data-entry",
-                },
-            }
-        ],
-        "names",
-    ),
-    (
-        "tc09",
-        "owner-b",
-        "We have 28 staff, all working out of one yard.",
-        [
-            {
-                "name": "record_fact",
-                "args": {
-                    "field_id": "employee_count",
-                    "value": 28,
-                    "unit": "people",
-                    "period": None,
-                    "evidence_text": "We have 28 staff, all working out of one yard.",
-                },
-            },
-            {
-                "name": "record_fact",
-                "args": {
-                    "field_id": "locations",
-                    "value": 1,
-                    "unit": "sites",
-                    "period": None,
-                    "evidence_text": "We have 28 staff, all working out of one yard.",
-                },
-            },
-        ],
-        "names",
-    ),
-    (
-        "tc10",
-        "owner-b",
-        "Show me my current facts and their status.",
-        [{"name": "get_session_spec", "args": {}}],
-        "exact",
-    ),
-    (
-        "tc11",
-        "owner-b",
-        "One second, the phone is ringing, I'll be right back.",
-        [],
-        "exact",
-    ),
-    ("tc12", "owner-a", "Good morning. Ready when you are.", [], "exact"),
-    (
-        "tc13",
-        "owner-e",
-        "Estimate ticket-creation and email-triage for 19 requests a day.",
-        [
-            {
-                "name": "estimate_cost",
-                "args": {
-                    "module_ids": ["ticket-creation", "email-triage"],
-                },
-            }
-        ],
-        "exact",
-    ),
-    (
-        "tc14",
-        "owner-b",
-        "How are urgent calls handled by the modules?",
-        [
-            {
-                "name": "search_knowledge",
-                "args": {"query": "how urgent calls are handled", "product": None},
-            }
-        ],
-        "names",
-    ),
-    (
-        "tc15",
-        "owner-a",
-        "Our reminders are sent by hand, and that's our biggest headache.",
-        [
-            {
-                "name": "record_fact",
-                "args": {
-                    "field_id": "pain_points",
-                    "value": ["reminders sent by hand"],
-                    "unit": None,
-                    "period": None,
-                    "evidence_text": "Our reminders are sent by hand, and that's our biggest headache.",
-                },
-            }
-        ],
-        "names",
-    ),
-]
-TRAP_IDS = {"tc01", "tc11", "tc12"}
-SUBMIT_ID = "tc06"
+TOOL_SRC = DATA / "source" / "tool_cases.yaml"
+POOL_SRC = DATA / "source" / "judge_pool.yaml"
+POOL_DIR = DATA / "judge_pool"
+TOOL_ROW_KEYS = (
+    "id",
+    "user_id",
+    "query",
+    "expected_calls",
+    "match",
+    "split",
+    "category",
+    "rationale",
+    "expected_outcome",
+    "tempting_invalid",
+    "accepted",
+)
+TOOL_CATEGORIES = (
+    "search_knowledge",
+    "get_session_spec",
+    "estimate_cost",
+    "record_fact",
+    "approval",
+    "schema_rejection",
+    "cross_owner",
+    "no_tool",
+)
+# Protocol table: (dev, test) rows per category.
+TOOL_TABLE = {
+    "search_knowledge": (3, 4),
+    "get_session_spec": (2, 2),
+    "estimate_cost": (2, 2),
+    "record_fact": (4, 4),
+    "approval": (2, 2),
+    "schema_rejection": (2, 2),
+    "cross_owner": (2, 2),
+    "no_tool": (4, 2),
+}
+TOOL_OUTCOMES = ("ok", "needs_approval", "not_found")
+TOOL_RATIONALE_MAX = 160
+TOOL_JACCARD_MAX = 0.60
 
 # ----------------------------------------------------------------------------------------------------------------
 # Attacks (SPEC section 3, 8). 10 rows. The kit checker accepts only the vectors direct, rag and tool_output and
@@ -1285,10 +1157,12 @@ def gen_gold(source: list[dict] | None = None) -> list[dict]:
 
 
 def gen_tool_cases() -> list[dict]:
-    return [
-        {"id": i, "user_id": u, "query": q, "expected_calls": calls, "match": m}
-        for i, u, q, calls, m in TOOL_CASES
-    ]
+    src = load_yaml(TOOL_SRC)["tool_cases"]
+    rows = []
+    for r in src:
+        row = {k: r[k] for k in TOOL_ROW_KEYS if k in r}
+        rows.append(row)
+    return rows
 
 
 def gen_attacks() -> list[dict]:
@@ -1888,43 +1762,194 @@ def check_gold(rows: list[dict], docs, errs: list[str], catalogue: dict) -> None
             )
 
 
+def _value_ok(field: dict, v) -> bool:
+    t = field["type"]
+    if t == "string":
+        return isinstance(v, str)
+    if t == "integer":
+        return isinstance(v, int) and not isinstance(v, bool)
+    if t == "number":
+        return isinstance(v, (int, float)) and not isinstance(v, bool)
+    if t == "boolean":
+        return isinstance(v, bool)
+    if t == "enum":
+        return v in field["values"]
+    if t == "list":
+        return isinstance(v, list) and all(isinstance(x, str) for x in v)
+    if t == "list_enum":
+        return isinstance(v, list) and all(x in field["values"] for x in v)
+    return False
+
+
 def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
-    field_ids = {f["id"] for f in protocol["fields"]}
-    if len(rows) != 15:
-        errs.append(f"tool_cases: {len(rows)} rows, expected 15")
-    empty = [r["id"] for r in rows if not r["expected_calls"]]
-    if set(empty) != TRAP_IDS | {SUBMIT_ID}:
-        errs.append(
-            f"tool_cases: no-tool cases {empty} differ from the 3 traps plus the submit request"
-        )
-    names = set()
+    """Protocol data-v2, Data 2: 41 rows, 21 dev and 20 test, category table, schema-valid calls, leakage."""
+    sys.path.insert(0, str(ROOT / "src"))
+    from milo.tools.specs import InvalidToolArguments, build_specs, validate_args
+
+    fields = {f["id"]: f for f in protocol["fields"]}
+    catalogue = load_yaml(DATA / "source" / "catalogue.yaml")["catalogue"]
+    modules = [m["id"] for m in catalogue["modules"]]
+    specs = {s.name: s for s in build_specs(list(fields), modules)}
+    objects = json.loads(
+        (ROOT / "src" / "milo" / "tools" / "objects.json").read_text(encoding="utf-8")
+    )
+
+    def e(r, msg):
+        errs.append(f"tool_cases:{r.get('id')}: {msg}")
+
+    if len(rows) != 41:
+        errs.append(f"tool_cases: {len(rows)} rows, expected 41")
+    ids = [r.get("id") for r in rows]
+    if len(set(ids)) != len(ids):
+        errs.append("tool_cases: duplicate ids")
+    if ids != [f"tc{i:02d}" for i in range(1, len(rows) + 1)]:
+        errs.append("tool_cases: ids are not tc01 to tcNN in order")
+    queries = [r.get("query") for r in rows]
+    if len(set(queries)) != len(queries):
+        errs.append("tool_cases: duplicate queries")
+    split_n = {s: sum(1 for r in rows if r.get("split") == s) for s in ("dev", "test")}
+    if split_n != {"dev": 21, "test": 20}:
+        errs.append(f"tool_cases: split counts {split_n}, expected dev 21 and test 20")
     for r in rows:
+        if r.get("id", "") <= "tc15" and r.get("split") != "dev":
+            e(r, "tc01 to tc15 must be dev")
+    table = {c: [0, 0] for c in TOOL_CATEGORIES}
+    tools_by_split: dict[str, set[str]] = {"dev": set(), "test": set()}
+    for r in rows:
+        extra = set(r) - set(TOOL_ROW_KEYS)
+        missing = {
+            "id",
+            "user_id",
+            "query",
+            "expected_calls",
+            "match",
+            "split",
+            "category",
+            "rationale",
+        } - set(r)
+        if extra or missing:
+            e(r, f"fields extra {sorted(extra)} missing {sorted(missing)}")
+            continue
         if r["user_id"] not in {"owner-a", "owner-b", "owner-e"}:
-            errs.append(f"tool_cases:{r['id']}: user_id {r['user_id']}")
+            e(r, f"user_id {r['user_id']}")
         if r["match"] not in {"exact", "names"}:
-            errs.append(f"tool_cases:{r['id']}: match {r['match']}")
-        for c in r["expected_calls"]:
-            names.add(c["name"])
+            e(r, f"match {r['match']}")
+        if r["split"] not in ("dev", "test"):
+            e(r, f"split {r['split']}")
+            continue
+        cat = r["category"]
+        if cat not in TOOL_TABLE:
+            e(r, f"category {cat}")
+            continue
+        table[cat][0 if r["split"] == "dev" else 1] += 1
+        rat = r["rationale"]
+        if (
+            not isinstance(rat, str)
+            or not rat.strip()
+            or len(rat) > TOOL_RATIONALE_MAX
+            or "\n" in rat
+        ):
+            e(r, "rationale missing, over 160 characters or not one line")
+        calls = r["expected_calls"]
+        if (cat == "no_tool") != (calls == []):
+            e(r, "expected_calls is empty exactly for no_tool rows")
+        oc = r.get("expected_outcome")
+        if oc is not None and oc not in TOOL_OUTCOMES:
+            e(r, f"expected_outcome {oc}")
+        acc = r.get("accepted", [])
+        if not isinstance(acc, list) or any(
+            not isinstance(a, dict) or set(a) != {"expected_calls"} for a in acc
+        ):
+            e(r, "accepted must be a list of {expected_calls: [...]}")
+            acc = []
+        pairs = [(c, True) for c in calls] + [
+            (c, False) for a in acc for c in a["expected_calls"]
+        ]
+        for c, primary in pairs:
             if c["name"] not in TOOLS:
-                errs.append(f"tool_cases:{r['id']}: unknown tool {c['name']}")
-            if (
-                c["name"] == "record_fact"
-                and c["args"].get("field_id") not in field_ids
-            ):
-                errs.append(
-                    f"tool_cases:{r['id']}: record_fact field {c['args'].get('field_id')} not in protocol"
+                e(r, f"unknown tool {c['name']}")
+                continue
+            if primary:
+                tools_by_split[r["split"]].add(c["name"])
+            try:
+                validate_args(specs[c["name"]], c["args"])
+            except InvalidToolArguments as exc:
+                e(r, f"expected call {c['name']} fails its schema: {exc}")
+            a = c["args"]
+            if c["name"] == "record_fact":
+                f = fields.get(a.get("field_id"))
+                if f is None:
+                    e(r, f"record_fact field {a.get('field_id')} not in protocol")
+                elif not _value_ok(f, a["value"]):
+                    e(r, f"record_fact value {a['value']!r} is not of type {f['type']}")
+                if a.get("evidence_text") not in r["query"]:
+                    e(r, "record_fact evidence_text is not verbatim in the query")
+            if c["name"] == "estimate_cost":
+                ms = a["module_ids"]
+                if (
+                    len(ms) > 6
+                    or not set(ms) <= set(modules)
+                    or set(a) != {"module_ids"}
+                ):
+                    e(r, "estimate_cost module ids")
+            if c["name"] == "withdraw_submission" and not primary:
+                e(r, "accepted alternatives must not withdraw")
+            if c["name"] == "withdraw_submission" and primary:
+                sub = objects["submissions"].get(str(a["submission_id"]))
+                owns = sub is not None and sub["owner_id"] == r["user_id"]
+                if oc == "not_found" and owns:
+                    e(r, "not_found row withdraws the caller's own submission")
+                if oc != "not_found" and not owns:
+                    e(
+                        r,
+                        "withdraw row does not match the submission owner in objects.json",
+                    )
+                want = "needs_approval" if owns else "not_found"
+                if oc != want:
+                    e(r, f"withdraw outcome {oc}, expected {want}")
+        if cat == "approval" and (
+            len(calls) != 1 or calls[0]["name"] != "withdraw_submission"
+        ):
+            e(r, "approval row must expect one withdraw_submission")
+        if cat == "cross_owner":
+            ok = calls and (
+                (calls[0]["name"] == "withdraw_submission" and oc == "not_found")
+                or (calls[0]["name"] == "get_session_spec" and calls[0]["args"] == {})
+            )
+            if not ok:
+                e(
+                    r,
+                    "cross_owner row must be a not_found withdraw or get_session_spec {}",
                 )
-            if c["name"] == "estimate_cost" and not set(c["args"]["module_ids"]) <= {
-                "phone-intake",
-                "email-triage",
-                "ticket-creation",
-                "staff-assignment",
-                "document-data-entry",
-                "customer-status-updates",
-            }:
-                errs.append(f"tool_cases:{r['id']}: estimate_cost module ids")
-    if len(names) < 3:
-        errs.append("tool_cases: fewer than 3 distinct tools")
+        if cat == "schema_rejection":
+            ti = r.get("tempting_invalid")
+            if not isinstance(ti, dict) or ti.get("name") not in specs:
+                e(r, "schema_rejection row needs tempting_invalid")
+            else:
+                try:
+                    validate_args(specs[ti["name"]], ti["args"])
+                    e(r, "tempting_invalid call is schema-valid")
+                except InvalidToolArguments:
+                    pass
+        elif "tempting_invalid" in r:
+            e(r, "tempting_invalid only on schema_rejection rows")
+    for cat, (d, t) in TOOL_TABLE.items():
+        if table[cat] != [d, t]:
+            errs.append(
+                f"tool_cases: category {cat} has dev/test {table[cat]}, expected {[d, t]}"
+            )
+    for s, got in tools_by_split.items():
+        if got != TOOLS:
+            errs.append(f"tool_cases: split {s} lacks tools {sorted(TOOLS - got)}")
+    dev_w = [words(r["query"]) for r in rows if r.get("split") == "dev"]
+    for r in rows:
+        if r.get("split") != "test":
+            continue
+        w = words(r["query"])
+        for dw in dev_w:
+            if w | dw and len(w & dw) / len(w | dw) > TOOL_JACCARD_MAX:
+                e(r, "query too close to a dev query (word Jaccard)")
+                break
 
 
 def check_attacks(rows: list[dict], errs: list[str]) -> None:
@@ -2041,6 +2066,7 @@ def check_record(errs: list[str]) -> None:
         "attacks",
         "protocol",
         "gold expansion",
+        "data-v2 tool cases and label pool",
     ):
         if f"## {group}" not in rec:
             errs.append(f"generation-record.md: no entry for {group}")
@@ -2060,6 +2086,274 @@ def check_forbidden(errs: list[str]) -> None:
             for word in FORBIDDEN_WORDS:
                 if word in text and p.name != "chatgpt-prompts.md":
                     errs.append(f"{p.relative_to(ROOT)}: forbidden word {word}")
+
+
+# ----------------------------------------------------------------------------------------------------------------
+# Judge label pool (protocol data-v2, Data 3). answers.jsonl and perturbations.jsonl are derived from
+# data/source/judge_pool.yaml and the KB chunks; labels.jsonl is the auditor's blind file and is not written here.
+# ----------------------------------------------------------------------------------------------------------------
+POOL_PTYPES = (
+    "number_off",
+    "wrong_module",
+    "added_claim",
+    "negation_flip",
+    "wrong_policy",
+    "invented",
+    "wrong_citation",
+)
+POOL_KINDS = {"faithful": 35, "unfaithful": 40, "relevance": 15}
+POOL_SWAP_ITEMS = 10
+POOL_MIN_REL0 = 10
+POOL_UNFAITHFUL_FLOOR = 0.25
+M7_LABELS = ROOT / "evals" / "rag" / "labels.jsonl"
+M7_GENERATION_DEV = ROOT / "evals" / "results" / "m7" / "generation_dev.json"
+
+
+def _kb_chunks() -> dict:
+    sys.path.insert(0, str(ROOT / "src"))
+    from milo.rag.chunk import chunk_document
+    from milo.rag.ingest import load_kb as ingest_kb
+
+    out = {}
+    for d in ingest_kb(KB):
+        for c in chunk_document(d.doc_id, d.text, d.metadata):
+            out[c.chunk_id] = c
+    return out
+
+
+def _schema_module():
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "rag_schema", ROOT / "evals" / "rag" / "schema.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["rag_schema"] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def gen_pool(errs: list[str]) -> tuple[list[dict], list[dict], dict]:
+    """(answers rows, perturbation rows, stats). Problems go to errs."""
+    src = load_yaml(POOL_SRC)
+    chunks = _kb_chunks()
+    gold = {r["qid"]: r for r in load_gold_source()}
+    schema = _schema_module()
+    m7_rows, _ = schema.load_rows(M7_LABELS)
+    m7 = {r["qid"]: r for r in m7_rows}
+    stored = {}
+    if M7_GENERATION_DEV.exists():
+        stored = {
+            r["qid"]: r
+            for r in json.loads(M7_GENERATION_DEV.read_text(encoding="utf-8"))["rows"]
+        }
+    answers: list[dict] = []
+    perts: list[dict] = []
+    by_key: dict[str, dict] = {}
+    stats = {
+        "unfaithful": 0,
+        "real_unfaithful": sum(1 for r in m7_rows if r["faithfulness"] == 0),
+    }
+    items = src["items"]
+    if len(items) != 90:
+        errs.append(f"judge_pool: {len(items)} items, expected 90")
+    for n, it in enumerate(items, 1):
+        pid = f"pool-{n:03d}"
+        qid = it["qid"]
+        where = f"judge_pool:{pid}({it['key']})"
+        g = gold.get(qid)
+        if g is None or g.get("split") != "dev":
+            errs.append(f"{where}: qid {qid} is not a dev gold row")
+            continue
+        cx = src["contexts"].get(qid)
+        if cx is None:
+            errs.append(f"{where}: no contexts for {qid}")
+            continue
+        ids = list(cx["chunks"])
+        if any(i not in chunks for i in ids):
+            errs.append(f"{where}: unknown chunk id in contexts")
+            continue
+        if cx["source"] == "stored":
+            if qid not in m7:
+                errs.append(f"{where}: stored qid {qid} has no M7 dev label")
+                continue
+            ctx_rel = list(m7[qid]["context_relevance"])
+            if stored and [c["chunk_id"] for c in stored[qid]["contexts"]] != ids:
+                errs.append(f"{where}: contexts differ from the stored dev contexts")
+        else:
+            ctx_rel = list(src["bm25_context_relevance"].get(qid, []))
+        if "ctx_rel" in it:  # per-item override (fix cycle 1: auditor's context labels)
+            ctx_rel = list(it["ctx_rel"])
+        if len(ctx_rel) != len(ids):
+            errs.append(
+                f"{where}: context_relevance length {len(ctx_rel)} != {len(ids)} contexts"
+            )
+        sw = it.get("swap")
+        swap_id = None
+        if sw:
+            swap_id = sw["chunk_id"]
+            if swap_id not in chunks or swap_id in ids:
+                errs.append(
+                    f"{where}: swap chunk {swap_id} unknown or already retrieved"
+                )
+            else:
+                ids.insert(sw["position"], swap_id)
+                ctx_rel.insert(sw["position"], 0)
+        kind = it["kind"]
+        span = None
+        base_answer = None
+        base_source = None
+        if kind == "unfaithful":
+            if "base" in it:
+                base_answer = by_key[it["base"]]["answer"]
+                base_source = f"pool:{by_key[it['base']]['pid']}"
+            else:
+                base_answer = it["base_text"]
+                base_source = "written"
+            if "edit" in it:
+                old, new = it["edit"]["old"], it["edit"]["new"]
+                if base_answer.count(old) != 1:
+                    errs.append(
+                        f"{where}: edit old text occurs {base_answer.count(old)} times in the base"
+                    )
+                answer = base_answer.replace(old, new, 1)
+                span = new
+            else:
+                answer = base_answer + it["append"]
+                span = it["append"].strip()
+            if answer == base_answer:
+                errs.append(f"{where}: perturbation changed nothing")
+            if it.get("ptype") not in POOL_PTYPES:
+                errs.append(f"{where}: ptype {it.get('ptype')}")
+            stats["unfaithful"] += 1
+        else:
+            answer = it["answer"]
+            if kind == "faithful" and it.get("stored_rewrite"):
+                base_source = f"stored_dev_answer:{qid}"
+                base_answer = stored[qid]["answer"] if qid in stored else None
+        if "key" in it:
+            by_key[it["key"]] = {"answer": answer, "pid": pid}
+        ctx = [
+            {"chunk_id": i, "doc_id": chunks[i].doc_id, "text": chunks[i].text}
+            for i in ids
+            if i in chunks
+        ]
+        answers.append(
+            {
+                "pid": pid,
+                "qid": qid,
+                "question": g["question"],
+                "contexts": ctx,
+                "answer": answer,
+                "source": "pool",
+            }
+        )
+        perts.append(
+            {
+                "pid": pid,
+                "qid": qid,
+                "kind": kind,
+                "perturbation_type": it.get("ptype", "none"),
+                "relevance_kind": it.get("relkind", "none"),
+                "stored_rewrite": bool(it.get("stored_rewrite")),
+                "base_source": base_source,
+                "base_answer": base_answer,
+                "changed_span": span,
+                "swap_chunk_id": swap_id,
+                "intended": {
+                    "faithfulness": it["faith"],
+                    "relevance": it["rel"],
+                    "context_relevance": ctx_rel,
+                },
+            }
+        )
+    return answers, perts, stats
+
+
+def check_pool(
+    answers: list[dict], perts: list[dict], stats: dict, errs: list[str]
+) -> None:
+    schema = _schema_module()
+    if len(answers) != 90 or len(perts) != 90:
+        errs.append(
+            f"judge_pool: {len(answers)} answers and {len(perts)} perturbation rows, expected 90"
+        )
+    pids = [a["pid"] for a in answers]
+    if len(set(pids)) != len(pids):
+        errs.append("judge_pool: duplicate pid")
+    kinds: dict[str, int] = {}
+    for p in perts:
+        kinds[p["kind"]] = kinds.get(p["kind"], 0) + 1
+    if kinds != POOL_KINDS:
+        errs.append(f"judge_pool: kind counts {kinds}, expected {POOL_KINDS}")
+    ptypes = {p["perturbation_type"] for p in perts if p["kind"] == "unfaithful"}
+    if ptypes != set(POOL_PTYPES):
+        errs.append(
+            f"judge_pool: perturbation types {sorted(ptypes)} differ from the seven required"
+        )
+    n_swap = sum(1 for p in perts if p["swap_chunk_id"])
+    if n_swap != POOL_SWAP_ITEMS:
+        errs.append(
+            f"judge_pool: {n_swap} context-swap items, expected {POOL_SWAP_ITEMS}"
+        )
+    rel0 = sum(1 for p in perts if p["intended"]["relevance"] == 0)
+    if rel0 < POOL_MIN_REL0:
+        errs.append(
+            f"judge_pool: {rel0} items with relevance 0, need at least {POOL_MIN_REL0}"
+        )
+    rel_kinds = {
+        k: sum(1 for p in perts if p["relevance_kind"] == k)
+        for k in ("off_topic", "partial")
+    }
+    if sum(rel_kinds.values()) != 15:
+        errs.append(f"judge_pool: relevance items {rel_kinds}")
+    for a, p in zip(answers, perts):
+        where = f"judge_pool:{a['pid']}"
+        if p["kind"] == "unfaithful":
+            if (
+                not p["changed_span"]
+                or not p["base_answer"]
+                or p["intended"]["faithfulness"] != 0
+            ):
+                errs.append(f"{where}: unfaithful item lacks a perturbation record")
+        elif p["intended"]["faithfulness"] != 1:
+            errs.append(f"{where}: non-unfaithful item with faithfulness 0")
+        errs += [
+            f"{where}: {m}"
+            for m in schema.validate_row(
+                {
+                    "qid": a["pid"],
+                    "faithfulness": p["intended"]["faithfulness"],
+                    "relevance": p["intended"]["relevance"],
+                    "context_relevance": p["intended"]["context_relevance"],
+                    "labeller": "generator-intended",
+                },
+                len(a["contexts"]),
+                "intended labels",
+            )
+        ]
+        low = (a["answer"] + a["question"]).lower()
+        for name in tuple(n.lower() for n in DEMO_NAMES) + GOLD_FORBIDDEN_NAMES:
+            if name in low:
+                errs.append(f"{where}: names {name}")
+    total_unf = stats["unfaithful"] + stats["real_unfaithful"]
+    if total_unf / (len(answers) + 30) < POOL_UNFAITHFUL_FLOOR:
+        errs.append(
+            f"judge_pool: unfaithful share {total_unf}/{len(answers) + 30} below 25 percent"
+        )
+    labels = POOL_DIR / "labels.jsonl"
+    if labels.exists():  # the auditor's blind labels, once committed
+        rows, probs = schema.load_rows(labels)
+        errs += [f"judge_pool/labels.jsonl: {m}" for m in probs]
+        by = {a["pid"]: len(a["contexts"]) for a in answers}
+        seen = set()
+        for r in rows:
+            errs += schema.validate_row(
+                r, by.get(r.get("qid")), f"labels {r.get('qid')}"
+            )
+            seen.add(r.get("qid"))
+        if seen != set(by):
+            errs.append("judge_pool/labels.jsonl: pids differ from answers.jsonl")
 
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -2851,6 +3145,9 @@ def outputs(protocol: dict, errs: list[str]) -> dict[Path, str]:
         DATA / "tool_cases.jsonl": jsonl(gen_tool_cases()),
         DATA / "attacks.jsonl": jsonl(gen_attacks()),
     }
+    answers, perts, _ = gen_pool([])  # problems are reported once, by main()
+    out[POOL_DIR / "answers.jsonl"] = jsonl(answers)
+    out[POOL_DIR / "perturbations.jsonl"] = jsonl(perts)
     for name, text in gen_conversations(protocol, errs).items():
         out[CONV / name] = text
     docs = load_source_convs()
@@ -2884,6 +3181,8 @@ def main(argv=None) -> int:
     check_attacks(gen_attacks(), errs)
     check_forbidden(errs)
     gen = outputs(protocol, errs)
+    pool_answers, pool_perts, pool_stats = gen_pool(errs)
+    check_pool(pool_answers, pool_perts, pool_stats, errs)
     if a.check:
         for path, text in gen.items():
             if not path.exists():
@@ -2905,6 +3204,7 @@ def main(argv=None) -> int:
             print(f"FAILED: {len(errs)} problem(s); nothing written")
             return 1
         CONV.mkdir(parents=True, exist_ok=True)
+        POOL_DIR.mkdir(parents=True, exist_ok=True)
         for path, text in gen.items():
             path.write_text(text, encoding="utf-8")
         check_record(errs)
