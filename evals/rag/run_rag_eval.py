@@ -5,6 +5,7 @@
     python evals/rag/run_rag_eval.py --check-labels            validate evals/rag/labels.jsonl against the sample
     python evals/rag/run_rag_eval.py --dry                     offline: scripted product and judges on the committed fixture
     python evals/rag/run_rag_eval.py --replay [--result F]     recompute every number from the stored rows
+    python evals/rag/run_rag_eval.py --check-pool              validate data/judge_pool/ (judge validation only)
     MILO_LIVE=1 python evals/rag/run_rag_eval.py --generate --max-cost 0.40 --reason "..." \\
         --product-model <slug> --price-in <usd/Mtok> --price-out <usd/Mtok>
     MILO_LIVE=1 python evals/rag/run_rag_eval.py --judge --max-cost 0.50 --reason "..." \\
@@ -14,6 +15,10 @@ Order (D26): sample, generate, labels (separate labelling agent), judge prompts,
 prompt is a placeholder, while the labels are missing or invalid, or while git does not show the labels committed
 before the prompts. Live modes refuse without MILO_LIVE=1, `--max-cost` and `--reason` (SPEC D126). The dev split is
 read only through `evals/common.py`. Rows store every model reply (D56).
+
+Judge-pool rows (data-v2: perturbed answers, `source: pool`, a `pid`) never enter a product score: every product
+step (assemble, judge, result, replay) refuses them with `PoolRowError`. `load_pool` is the only reader of
+`data/judge_pool/`; its rows feed judge validation (kappa against the auditor's labels), nothing else.
 """
 
 from __future__ import annotations
@@ -46,6 +51,10 @@ JUDGE_RESULT = RESULTS / "judge_dev.json"
 DRY_RESULT = RESULTS / "rag_dry.json"
 DRY_TEMPLATE = "DRY {{question}} || {{contexts}} || {{answer}}"
 SEED = smp.SEED
+POOL_DIR = ROOT / "data" / "judge_pool"
+POOL_ANSWERS = POOL_DIR / "answers.jsonl"
+POOL_LABELS = POOL_DIR / "labels.jsonl"
+POOL_PERTURBATIONS = POOL_DIR / "perturbations.jsonl"
 LIVE_REFUSAL = (
     "refusing to run: a live M7 step calls OpenRouter models (SPEC D126) and needs MILO_LIVE=1, --max-cost and "
     "--reason ({need}); use --dry for the offline harness or --replay to recompute a stored result"
@@ -71,12 +80,88 @@ def sample_qids() -> list[str]:
     return [r["qid"] for r in _load(SAMPLE)["rows"]]
 
 
+# ---------------------------------------------------------------- judge pool (validation only)
+
+
+class PoolRowError(SystemExit):
+    """A judge-pool row reached a product score (data-v2, Data 3: no contamination)."""
+
+
+def is_pool_row(row: Any) -> bool:
+    return isinstance(row, dict) and (row.get("source") == "pool" or "pid" in row)
+
+
+def refuse_pool_rows(rows: list[Any], where: str) -> None:
+    """Product scores come from real answers only: refuse the step when any row is a judge-pool row."""
+    bad = [str(r.get("pid") or r.get("qid")) for r in rows if is_pool_row(r)]
+    if bad:
+        raise PoolRowError(
+            f"refusing to run: {where} holds judge-pool rows ({', '.join(bad[:5])}"
+            f"{', ...' if len(bad) > 5 else ''}); pool rows are for judge validation only, "
+            "never for product scores"
+        )
+
+
+def _is_pool_path(path: Path) -> bool:
+    return POOL_DIR.resolve() in Path(path).resolve().parents
+
+
+def load_pool(
+    answers: Path = POOL_ANSWERS, labels: Path = POOL_LABELS
+) -> tuple[list[dict[str, Any]], list[str]]:
+    """Pool items joined with the auditor's labels, and the problems found. Judge validation only.
+
+    Each answers row: `pid`, `qid`, `question`, `contexts`, `answer`, `source: "pool"`. Each labels row follows
+    `schema.py` with its `qid` field holding the item's `pid` (several items share a gold qid, so qid is not a key).
+    The joined rows carry `source: "pool"` and the label fields; they are not valid product rows."""
+    problems: list[str] = []
+    items, bad = schema.load_rows(answers) if answers.exists() else ([], [])
+    problems += bad or ([] if answers.exists() else [f"{answers.name} does not exist"])
+    pids: set[str] = set()
+    for n, it in enumerate(items, 1):
+        where = f"{answers.name} line {n}"
+        if it.get("source") != "pool":
+            problems.append(f"{where}: source must be 'pool'")
+        for k in ("pid", "qid", "question", "contexts", "answer"):
+            if k not in it:
+                problems.append(f"{where}: missing field {k!r}")
+        pid = it.get("pid")
+        if pid in pids:
+            problems.append(f"{where}: duplicate pid {pid}")
+        pids.add(str(pid))
+    counts = {str(i.get("pid")): len(i.get("contexts") or []) for i in items}
+    lab_rows, lab_problems = schema.validate_labels(labels, sorted(pids), counts)
+    problems += lab_problems
+    by_pid = {r.get("qid"): r for r in lab_rows if isinstance(r, dict)}
+    joined = [
+        {**it, "labels": {k: v for k, v in by_pid[it["pid"]].items() if k != "qid"}}
+        for it in items
+        if it.get("pid") in by_pid
+    ]
+    return joined, problems
+
+
+def cmd_check_pool() -> int:
+    rows, problems = load_pool()
+    for p in problems:
+        print("  " + p, file=sys.stderr)
+    print(
+        f"pool OK: {len(rows)} items"
+        if not problems
+        else f"pool INVALID: {len(problems)} problem(s)",
+        file=sys.stderr if problems else sys.stdout,
+    )
+    return 1 if problems else 0
+
+
 # ---------------------------------------------------------------- pipeline
 
 
 def assemble(
     gen_rows: list[dict[str, Any]], labels: list[dict[str, Any]]
 ) -> list[dict[str, Any]]:
+    refuse_pool_rows(gen_rows, "the generation rows")
+    refuse_pool_rows(labels, "the labels")
     by_q = {r["qid"]: r for r in labels}
     return [
         {
@@ -135,6 +220,7 @@ def result_doc(
     inputs: dict[str, Path | str],
     extra: dict[str, Any],
 ) -> dict[str, Any]:
+    refuse_pool_rows(rows, "the result rows")
     for name in ("generate", "judge", "schema", "stats", "sample"):
         inputs[f"evals/rag/{name}.py"] = RAG_DIR / f"{name}.py"
     doc: dict[str, Any] = {
@@ -398,6 +484,8 @@ def cmd_sample() -> int:
 def cmd_template(args: argparse.Namespace) -> int:
     counts = None
     if args.generation:
+        if _is_pool_path(Path(args.generation)):
+            raise PoolRowError("refusing: --generation names a judge-pool file")
         counts = {
             g["qid"]: len(g["contexts"]) for g in _load(Path(args.generation))["rows"]
         }
@@ -443,6 +531,7 @@ def print_table(doc: dict[str, Any]) -> None:
 
 def replay_judge_file(path: Path) -> bool:
     stored = _load(path)
+    refuse_pool_rows(stored["rows"], _rel(path))
     rows = json.loads(json.dumps(stored["rows"]))
     bad: list[str] = []
     for key, val in jd.derive(rows).items():
@@ -481,6 +570,7 @@ def replay_judge_file(path: Path) -> bool:
 
 def replay_generation_file(path: Path) -> bool:
     stored = _load(path)
+    refuse_pool_rows(stored["rows"], _rel(path))
     bad = []
     qids = [r["qid"] for r in stored["rows"]]
     sample = ROOT / stored["sample_file"] if stored.get("sample_file") else SAMPLE
@@ -505,6 +595,10 @@ def replay(args: argparse.Namespace) -> int:
     ok = True
     found = False
     if args.result:
+        if _is_pool_path(Path(args.result)):
+            raise PoolRowError(
+                "refusing to replay a judge-pool file as a product result"
+            )
         paths = [Path(args.result)]
     else:
         paths = [p for p in (GEN_RESULT, JUDGE_RESULT, DRY_RESULT) if p.exists()]
@@ -543,6 +637,7 @@ def main(argv: list[str] | None = None) -> int:
         "sample",
         "make-template",
         "check-labels",
+        "check-pool",
         "dry",
         "replay",
         "generate",
@@ -570,6 +665,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_template(args)
     if args.check_labels:
         return cmd_check_labels()
+    if args.check_pool:
+        return cmd_check_pool()
     if args.replay:
         return replay(args)
     if args.dry:
