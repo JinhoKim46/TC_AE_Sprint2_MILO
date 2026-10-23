@@ -50,3 +50,7 @@ Milestones run in the order in `SPEC.md` section 13. Each one is done when its v
 - `docs/` holds reports, logs and the history map. Owner-only guideline files in `docs/` are git-ignored.
 - Secrets never go in the repo. Keys and connection strings live in the git-ignored `.env`. `.env.example` lists the variable names.
 - Git history was rewritten once on 2026-10-22. `docs/history-map.md` maps old commit IDs to new ones.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
