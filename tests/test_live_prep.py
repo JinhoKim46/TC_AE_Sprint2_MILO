@@ -200,9 +200,22 @@ def test_tools_live_writes_result_replay_file_latency_and_real_temperature(
     assert doc["manifest_tool_cases_sha256"] == doc["inputs"]["tool_cases"]
     assert doc["response_models"] == ["anthropic/fake-2026"]
     rows = doc["rows"]
-    assert len(rows) == 15 and all("latency_s" in r and r["usage"] for r in rows)
+    import json as _json
+
+    dev_cases = [
+        r
+        for r in (
+            _json.loads(x)
+            for x in (rt.ROOT / "data" / "tool_cases.jsonl").read_text().splitlines()
+            if x.strip()
+        )
+        if r.get("split", "dev") == "dev"
+    ]
+    assert len(rows) == len(dev_cases) and all(
+        "latency_s" in r and r["usage"] for r in rows
+    )
     assert doc["metrics"]["p95_latency_s"] is not None
-    assert doc["metrics"]["total_cost_usd"] == pytest.approx(0.015)
+    assert doc["metrics"]["total_cost_usd"] == pytest.approx(0.001 * len(dev_cases))  # fake cost 0.001 per case
     replay = [
         json.loads(line)
         for line in (tmp_path / "tools_live_replay.jsonl").read_text().splitlines()
