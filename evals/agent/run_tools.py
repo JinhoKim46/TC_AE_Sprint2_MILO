@@ -34,7 +34,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from evals.common import file_sha256, provenance  # noqa: E402
+from evals.common import file_sha256, final_mode, provenance  # noqa: E402
 from milo.loop import run_turn  # noqa: E402
 from milo.store.memory import MemoryApprovals  # noqa: E402
 from milo.tools import MiloBackend  # noqa: E402
@@ -98,9 +98,33 @@ class ScriptedExpected:
         )
 
 
-def load_cases(path: Path = CASES_PATH) -> list[dict[str, Any]]:
-    with path.open(encoding="utf-8") as fh:
-        return [json.loads(line) for line in fh if line.strip()]
+SPLITS = ("dev", "test")
+OUTCOMES = ("ok", "needs_approval", "not_found")
+
+
+def load_cases(
+    path: Path | None = None, split: str | None = None
+) -> list[dict[str, Any]]:
+    """The tool cases of one split. `split` defaults to dev, or to test under MILO_FINAL=1 (the sealed run);
+    asking for test without MILO_FINAL=1 is refused. A row without a `split` field is dev (tc01 to tc15)."""
+    if split is None:
+        split = "test" if final_mode() else "dev"
+    if split not in SPLITS:
+        raise ValueError(f"unknown split {split!r}")
+    if split == "test" and not final_mode():
+        raise PermissionError(
+            "the test tool cases are sealed; only a MILO_FINAL=1 run reads them (data-v2)"
+        )
+    with (CASES_PATH if path is None else path).open(encoding="utf-8") as fh:
+        rows = [json.loads(line) for line in fh if line.strip()]
+    for row in rows:
+        if row.get("split", "dev") not in SPLITS:
+            raise ValueError(f"{row.get('id')}: unknown split {row.get('split')!r}")
+        if row.get("expected_outcome", "ok") not in OUTCOMES:
+            raise ValueError(
+                f"{row.get('id')}: unknown expected_outcome {row['expected_outcome']!r}"
+            )
+    return [r for r in rows if r.get("split", "dev") == split]
 
 
 # ---- scoring (pure; replay recomputes it from stored rows) ----
@@ -235,7 +259,13 @@ def run_case(case: dict[str, Any], chat: ChatModel, system: str) -> dict[str, An
             {"name": call.name, "args": args, "schema_valid": valid(call.name, args)}
         )
     expected = case["expected_calls"]
+    extra = (
+        {"expected_outcome": case["expected_outcome"]}
+        if "expected_outcome" in case
+        else {}
+    )
     return {
+        **extra,
         "id": case["id"],
         "user_id": case["user_id"],
         "query": case["query"],
@@ -439,7 +469,15 @@ def check_inputs() -> str:
                 owner = objects["submissions"][str(call["args"]["submission_id"])][
                     "owner_id"
                 ]
-                if owner != case["user_id"]:
+                # a cross-owner row expects the call and the outcome `not_found` (identity and ownership are
+                # checked by the backend, not trusted from the query); every other row must own its submission
+                cross_owner = case.get("expected_outcome") == "not_found"
+                if cross_owner and owner == case["user_id"]:
+                    raise SystemExit(
+                        f"refusing to run: {case['id']} expects not_found but withdraws its own submission "
+                        f"({owner}); nothing was written"
+                    )
+                if owner != case["user_id"] and not cross_owner:
                     raise SystemExit(
                         f"refusing to run: {case['id']} withdraws a submission of {owner}, "
                         f"but its user is {case['user_id']}; nothing was written"
