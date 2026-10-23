@@ -130,14 +130,14 @@ items:
    edit: {old: "The setup fee is 900 USD per module", new: "The setup fee is 600 USD per module"}}
 - {key: q010a, qid: q010, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
    answer: "Every turn writes a trace record covering which steps ran, how long each took and which decisions the policy made. Your message text is logged as a hash and a length, not as text."}
-- {key: q012a, qid: q012, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+- {key: q012a, qid: q012, kind: relevance, relkind: off_topic, faith: 1, rel: 0, ctx_rel: [1,1,1,0,0],
    answer: "The email-triage module has a base monthly price of 390 USD and a setup fee of 900 USD per module. A volume factor applies based on daily request volume, and a monthly surcharge applies for the api-connector integration."}
-- {key: q012b, qid: q012, kind: unfaithful, ptype: wrong_module, faith: 0, rel: 2,
+- {key: q012b, qid: q012, kind: unfaithful, ptype: wrong_module, faith: 0, rel: 1, ctx_rel: [1,1,1,0,0],
    base_text: "Reminders and confirmations to clients are handled by the customer-status-updates module, which suits owners who send reminders by hand and lose money to no-shows. The setup fee is 900 USD per module.",
    edit: {old: "the customer-status-updates module", new: "the ticket-creation module"}}
 - {key: q014a, qid: q014, kind: unfaithful, ptype: wrong_policy, faith: 0, rel: 2,
    base_text: "The excerpts give no way to get a cheaper price. The assistant will not give a number until the assessment questions are answered, and it tells you what it still needs and continues.",
-   edit: {old: "The excerpts give no way to get a cheaper price.", new: "Yes, if you ask politely the assistant can offer you a 10 percent discount."}}
+   edit: {old: "The excerpts give no way to get a cheaper price.", new: "If you ask politely the assistant can offer you a 10 percent discount."}}
 - {key: q016a, qid: q016, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
    answer: "Above 150 requests per day there is no automatic estimate and a person prices it. The assistant tells you that the number is outside the rate card and that someone will contact you, rather than showing a figure."}
 - {key: q016b, qid: q016, kind: relevance, relkind: partial, faith: 1, rel: 1,
@@ -154,7 +154,7 @@ items:
    edit: {old: "No. With csv-export there is no live connection between the two systems.", new: "Yes. With csv-export there is a live connection between the two systems."}}
 - {key: q024a, qid: q024, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
    answer: "The interview asks about the workflow: how requests reach you, roughly how many come in on a normal day, how many minutes one request takes to handle and which tools you use. It also asks whether anything in the process needs an approval."}
-- {key: q027a, qid: q027, kind: unfaithful, ptype: negation_flip, faith: 0, rel: 2,
+- {key: q027a, qid: q027, kind: unfaithful, ptype: negation_flip, faith: 0, rel: 2, ctx_rel: [0,1,0,0,1],
    base_text: "If you say you do not know, the fact is marked unknown and the question is not asked again. Every fact shows the sentence it came from.",
    edit: {old: "the fact is marked unknown and the question is not asked again", new: "the fact is left blank and the question is asked again at the end"}}
 - {key: q029a, qid: q029, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
@@ -167,19 +167,19 @@ items:
 - {key: q033a, qid: q033, kind: faithful, faith: 1, rel: 1,
    answer: "The excerpts do not say which spoken languages phone-intake can understand. They say the module answers incoming calls out of hours and in peak times, records the request, and books or passes it on."}
 - {key: q035a, qid: q035, kind: unfaithful, ptype: invented, faith: 0, rel: 2,
-   base_text: "The excerpts do not mention a mobile app for engineers in the van. They do describe a heating and plumbing firm whose office wrote paper job sheets and handed them to the engineers.",
-   edit: {old: "The excerpts do not mention a mobile app for engineers in the van.", new: "Yes, there is a mobile app that shows engineers their jobs while they are out in the van."}}
+   base_text: "The excerpts do not mention a mobile app for engineers in the van. In the heating and plumbing case, the office wrote paper job sheets and handed them to the engineers.",
+   edit: {old: "The excerpts do not mention a mobile app for engineers in the van.", new: "There is a mobile app that shows engineers their jobs while they are out in the van."}}
 - {key: q037a, qid: q037, kind: unfaithful, ptype: invented, faith: 0, rel: 2,
-   base_text: "The excerpts do not give an uptime percentage. They state that the security policy describes what the software does and does not promise that no attack can succeed.",
+   base_text: "The excerpts do not give an uptime percentage. The security policy describes what the software does and does not promise that no attack can succeed.",
    edit: {old: "The excerpts do not give an uptime percentage.", new: "We promise 99.9 percent uptime."}}
 - {key: q039a, qid: q039, kind: faithful, faith: 1, rel: 1,
-   answer: "The excerpts do not say anything about training for your staff after setup, so I cannot tell you what is offered. They do say the setup fee covers a short period of checking the first results together, and that minor changes to wording, labels or skill tags are included in the monthly price."}
+   answer: "The excerpts do not say anything about training for your staff after setup, so I cannot tell you what is offered. The setup fee covers a short period of checking the first results together, and minor changes to wording, labels or skill tags are included in the monthly price."}
 - {key: q039b, qid: q039, kind: unfaithful, ptype: invented, base: q039a, faith: 0, rel: 2,
    edit: {old: "The excerpts do not say anything about training for your staff after setup, so I cannot tell you what is offered.", new: "After setup, your staff receive a half-day training session on the modules."}}
 - {key: q042a, qid: q042, kind: faithful, faith: 1, rel: 2, swap: {chunk_id: "policies/personal-data#0", position: 2},
-   answer: "The base monthly price for email-triage is 390 USD, according to the base price table. Email-triage reads a shared inbox, labels each message by request type and drafts a first reply for staff to approve."}
+   answer: "Yes. The base monthly price for email-triage is 390 USD, according to the base price table. Email-triage reads a shared inbox, labels each message by request type and drafts a first reply for staff to approve."}
 - {key: q044a, qid: q044, kind: unfaithful, ptype: number_off, faith: 0, rel: 2,
-   base_text: "The excerpts do not give a price for staff-assignment. They say it suggests which staff member should take a ticket and that it does not make automatic payroll or shift changes.",
+   base_text: "The excerpts do not give a price for staff-assignment. The module suggests which staff member should take a ticket and does not make automatic payroll or shift changes.",
    edit: {old: "The excerpts do not give a price for staff-assignment.", new: "The base monthly price for staff-assignment is 440 USD."}}
 - {key: q045a, qid: q045, kind: faithful, stored_rewrite: true, faith: 1, rel: 2, swap: {chunk_id: "consultation/volume-and-timing#6", position: 3},
    answer: "No. With the api-connector the customer-status-updates module does not need a file from you. It gets a live connection to your tool, and status changes are read and written as they happen, with no files in between. The api-connector costs 300 USD a month, paid once however many modules share the connection, and the module's base price and the setup fee of 900 USD per module still apply."}
@@ -237,7 +237,7 @@ items:
    answer: "Blocked does not mean you get nothing. It means two of your answers conflict, and no number is shown until you resolve it. A blocked estimate shows the conflict and the question that would settle it. If an input is only missing or unknown, the estimate is a scenario instead, with the assumption shown next to the number."}
 - {key: q079b, qid: q079, kind: unfaithful, ptype: wrong_policy, base: q079a, faith: 0, rel: 2,
    edit: {old: "and no number is shown until you resolve it", new: "and a rough number is still shown while you resolve it"}}
-- {key: q081a, qid: q081, kind: unfaithful, ptype: wrong_citation, faith: 0, rel: 1,
+- {key: q081a, qid: q081, kind: unfaithful, ptype: wrong_citation, faith: 0, rel: 1, ctx_rel: [0,1,0,0,0],
    base_text: "The excerpts do not say how the night calls were routed, only that before the change they reached no one until morning (cases/trades-dispatch).",
    edit: {old: "cases/trades-dispatch", new: "pricing/setup-fees"}}
 - {key: q084a, qid: q084, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
@@ -251,7 +251,7 @@ items:
 - {key: q088a, qid: q088, kind: faithful, faith: 1, rel: 2,
    answer: "The case shows the value of the flagged-items queue: the module did not need to be right every time, it needed to know when it was not sure. The practice was a small accounts firm whose staff typed forms by hand and whose checks kept finding wrong dates and transposed amounts."}
 - {key: q088b, qid: q088, kind: relevance, relkind: partial, faith: 1, rel: 1,
-   answer: "The practice received paper forms such as expense sheets, mileage logs and signed engagement forms. A member of staff typed each one into the system line by line, and a second person checked a sample of the entries."}
+   answer: "The takeaway concerns the flagged-items queue. The excerpts also describe the practice's situation: a member of staff typed each paper form into the system line by hand, and a second person checked a sample of the entries."}
 - {key: q090a, qid: q090, kind: relevance, relkind: partial, faith: 1, rel: 1,
    answer: "The excerpts say that when you give a monthly volume, the assistant converts it to a daily figure in code and shows you the conversion. They do not say how that derived figure is labelled."}
 - {key: q092a, qid: q092, kind: faithful, faith: 1, rel: 2,
@@ -262,7 +262,7 @@ items:
    answer: "No. A start date does not change the price; it only changes how firm the estimate can be. If you have not decided when to start, the estimate is marked as a scenario with the undecided start shown as an assumption. This is covered in consultation/volume-and-timing."}
 - {key: q094b, qid: q094, kind: unfaithful, ptype: wrong_citation, base: q094a, faith: 0, rel: 2,
    edit: {old: "consultation/volume-and-timing", new: "pricing/setup-fees"}}
-- {key: q096a, qid: q096, kind: relevance, relkind: partial, faith: 1, rel: 1,
+- {key: q096a, qid: q096, kind: relevance, relkind: partial, faith: 1, rel: 1, ctx_rel: [0,0,0,1,0],
    answer: "The excerpts do not say you must upload a client list. They say a document you upload is read for evidence about your process and treated as information, never as an instruction, and that if it contains customer data you should tell us and we will remove it."}
 - {key: q098a, qid: q098, kind: faithful, faith: 1, rel: 2,
    answer: "Yes. The assistant can talk to you before you give consent, but it does not keep your contact fields, meaning your name, role and email address, until you have consented. It does store your company details and your answers. Please do not paste customer details into the chat."}
@@ -280,27 +280,27 @@ items:
 - {key: q105a, qid: q105, kind: faithful, faith: 1, rel: 1,
    answer: "The excerpts do not say whether WhatsApp is supported. They say phone-intake answers incoming calls out of hours and in peak times, and that it does not make outbound sales calls or take card payments by phone."}
 - {key: q107a, qid: q107, kind: faithful, faith: 1, rel: 1,
-   answer: "The excerpts do not mention two-factor authentication, so I cannot say whether it is offered. They do say that access is by invitation only, through a one-time link that sets a password, that each owner account has one session, and that several failed sign-in attempts in a row lock the account for a short time."}
+   answer: "The excerpts do not mention two-factor authentication, so I cannot say whether it is offered. Access is by invitation only, through a one-time link that sets a password, each owner account has one session, and several failed sign-in attempts in a row lock the account for a short time."}
 - {key: q107b, qid: q107, kind: unfaithful, ptype: invented, base: q107a, faith: 0, rel: 2,
-   edit: {old: "The excerpts do not mention two-factor authentication, so I cannot say whether it is offered.", new: "Yes, two-factor authentication through an authenticator app is available for every owner account."}}
+   edit: {old: "The excerpts do not mention two-factor authentication, so I cannot say whether it is offered.", new: "Two-factor authentication through an authenticator app is available for every owner account."}}
 - {key: q109a, qid: q109, kind: faithful, faith: 1, rel: 1,
-   answer: "The excerpts do not say how invoices are paid, so I cannot tell you whether direct debit is available. They do give the prices: a setup fee of 900 USD per module, paid once, plus a monthly price for each module and any integration surcharge."}
+   answer: "The excerpts do not say how invoices are paid, so I cannot tell you whether direct debit is available. The setup fee is 900 USD per module, and each module also has a monthly price plus any integration surcharge."}
 - {key: q109b, qid: q109, kind: unfaithful, ptype: invented, base: q109a, faith: 0, rel: 2,
-   edit: {old: "The excerpts do not say how invoices are paid, so I cannot tell you whether direct debit is available.", new: "Yes, you can pay by direct debit each month."}}
+   edit: {old: "The excerpts do not say how invoices are paid, so I cannot tell you whether direct debit is available.", new: "You can pay by direct debit each month."}}
 - {key: q111a, qid: q111, kind: faithful, faith: 1, rel: 1,
-   answer: "The excerpts do not describe the voice of the phone bot or whether you can choose a different one. They do say that when a call comes in the module answers, asks what the caller needs, captures the request as text, books an appointment in the slots you have opened, and passes the call to a member of staff with a handover note when a person is needed."}
+   answer: "The excerpts do not describe the voice of the phone bot or whether you can choose a different one. When a call comes in the module answers, asks what the caller needs, captures the request as text, books an appointment in the slots you have opened, and passes the call to a member of staff with a handover note when a person is needed."}
 - {key: q111b, qid: q111, kind: unfaithful, ptype: invented, base: q111a, faith: 0, rel: 2,
    edit: {old: "The excerpts do not describe the voice of the phone bot or whether you can choose a different one.", new: "You can choose between three voices for the phone bot, and a different one can be switched on at any time."}}
 - {key: q113a, qid: q113, kind: unfaithful, ptype: invented, faith: 0, rel: 2,
-   base_text: "The excerpts do not say whether the booking part syncs with an online calendar. They say phone-intake writes bookings to a file your booking tool can import with csv-export, or straight into your tool through the api-connector.",
-   edit: {old: "The excerpts do not say whether the booking part syncs with an online calendar.", new: "Yes, bookings sync with the major online calendars automatically."}}
+   base_text: "The excerpts do not say whether the booking part syncs with an online calendar. Phone-intake writes bookings to a file your booking tool can import with csv-export, or straight into your tool through the api-connector.",
+   edit: {old: "The excerpts do not say whether the booking part syncs with an online calendar.", new: "Bookings sync with the major online calendars automatically."}}
 - {key: q115a, qid: q115, kind: faithful, faith: 1, rel: 1,
-   answer: "The excerpts do not mention insurance, liability or compensation for a booking made in error, so I cannot tell you whether you are covered. They do say that a module can only do what its access key allows, and that email-triage drafts are read and sent by staff, never on their own."}
+   answer: "The excerpts do not mention insurance, liability or compensation for a booking made in error, so I cannot tell you whether you are covered. A module can only do what its access key allows, and email-triage drafts are read and sent by staff, never on their own."}
 - {key: q115b, qid: q115, kind: unfaithful, ptype: invented, base: q115a, faith: 0, rel: 2,
-   edit: {old: "The excerpts do not mention insurance, liability or compensation for a booking made in error, so I cannot tell you whether you are covered.", new: "Yes, MILO carries insurance that covers losses from wrongly booked appointments."}}
+   edit: {old: "The excerpts do not mention insurance, liability or compensation for a booking made in error, so I cannot tell you whether you are covered.", new: "MILO carries insurance that covers losses from wrongly booked appointments."}}
 - {key: q117a, qid: q117, kind: faithful, faith: 1, rel: 1,
    answer: "The excerpts do not say whether setup is done remotely or on site. They say that with the api-connector you create a key for MILO in your tool, with only the rights the module needs, and give it to us during setup."}
 - {key: q119a, qid: q119, kind: faithful, faith: 1, rel: 1,
-   answer: "The excerpts do not say when MILO was founded or how long it has been running. They cover how the discovery interview works, what is stored about you and how the volume and timing questions are handled."}
+   answer: "The excerpts do not say when MILO was founded or how long it has been running. The articles cover how the discovery interview works, what is stored about you and how the volume and timing questions are handled."}
 - {key: q119b, qid: q119, kind: unfaithful, ptype: invented, base: q119a, faith: 0, rel: 2,
    edit: {old: "The excerpts do not say when MILO was founded or how long it has been running.", new: "MILO was founded in 2019 and has been running for seven years."}}

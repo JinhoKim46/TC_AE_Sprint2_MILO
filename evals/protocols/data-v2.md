@@ -217,3 +217,7 @@ in for real ones; sealing is a process, not encryption (SPEC 10.1); test sizes s
 0 USD for this phase. No OpenRouter, embedding or other network call; no key or `.env` is read; `MILO_LIVE` and
 `MILO_FINAL` are never set (D126, HARNESS 14). The later Haiku dev rerun on the new dev conversations and tool
 cases, and the judge run on the pool, are separate protocols with their own estimates and caps.
+
+## Fix-cycle notes
+
+- Fix cycle 1 (2026-10-23): tool rows with two defensible answers carry `accepted` alternatives (`expected_calls: []` is a refusal); `run_tools.py` scores any accepted outcome and records `matched`, and resolves the approval of a `not_found` row and scores the resolved outcome with no state change. tc41 now expects `search_knowledge` (category `search_knowledge`: test 4, `no_tool` 2). The pool keeps 10 off-topic and 5 partial relevance items: the "at least 10 relevance 0" target wins over the table.

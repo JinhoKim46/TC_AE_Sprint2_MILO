@@ -147,6 +147,7 @@ TOOL_ROW_KEYS = (
     "rationale",
     "expected_outcome",
     "tempting_invalid",
+    "accepted",
 )
 TOOL_CATEGORIES = (
     "search_knowledge",
@@ -160,14 +161,14 @@ TOOL_CATEGORIES = (
 )
 # Protocol table: (dev, test) rows per category.
 TOOL_TABLE = {
-    "search_knowledge": (3, 3),
+    "search_knowledge": (3, 4),
     "get_session_spec": (2, 2),
     "estimate_cost": (2, 2),
     "record_fact": (4, 4),
     "approval": (2, 2),
     "schema_rejection": (2, 2),
     "cross_owner": (2, 2),
-    "no_tool": (4, 3),
+    "no_tool": (4, 2),
 }
 TOOL_OUTCOMES = ("ok", "needs_approval", "not_found")
 TOOL_RATIONALE_MAX = 160
@@ -1828,11 +1829,21 @@ def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
         oc = r.get("expected_outcome")
         if oc is not None and oc not in TOOL_OUTCOMES:
             e(r, f"expected_outcome {oc}")
-        for c in calls:
+        acc = r.get("accepted", [])
+        if not isinstance(acc, list) or any(
+            not isinstance(a, dict) or set(a) != {"expected_calls"} for a in acc
+        ):
+            e(r, "accepted must be a list of {expected_calls: [...]}")
+            acc = []
+        pairs = [(c, True) for c in calls] + [
+            (c, False) for a in acc for c in a["expected_calls"]
+        ]
+        for c, primary in pairs:
             if c["name"] not in TOOLS:
                 e(r, f"unknown tool {c['name']}")
                 continue
-            tools_by_split[r["split"]].add(c["name"])
+            if primary:
+                tools_by_split[r["split"]].add(c["name"])
             try:
                 validate_args(specs[c["name"]], c["args"])
             except InvalidToolArguments as exc:
@@ -1854,7 +1865,9 @@ def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
                     or set(a) != {"module_ids"}
                 ):
                     e(r, "estimate_cost module ids")
-            if c["name"] == "withdraw_submission":
+            if c["name"] == "withdraw_submission" and not primary:
+                e(r, "accepted alternatives must not withdraw")
+            if c["name"] == "withdraw_submission" and primary:
                 sub = objects["submissions"].get(str(a["submission_id"]))
                 owns = sub is not None and sub["owner_id"] == r["user_id"]
                 if oc == "not_found" and owns:
@@ -2142,6 +2155,8 @@ def gen_pool(errs: list[str]) -> tuple[list[dict], list[dict], dict]:
                 errs.append(f"{where}: contexts differ from the stored dev contexts")
         else:
             ctx_rel = list(src["bm25_context_relevance"].get(qid, []))
+        if "ctx_rel" in it:  # per-item override (fix cycle 1: auditor's context labels)
+            ctx_rel = list(it["ctx_rel"])
         if len(ctx_rel) != len(ids):
             errs.append(
                 f"{where}: context_relevance length {len(ctx_rel)} != {len(ids)} contexts"

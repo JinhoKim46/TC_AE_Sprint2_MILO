@@ -1,5 +1,6 @@
 # Source of data/tool_cases.jsonl (protocol data-v2, Data 2). Hand-written; build_data.py derives the jsonl.
 # tc01 to tc15 are the M3 rows, unchanged apart from the added split, category and rationale fields.
+# accepted: alternative outcomes that also count as correct (fix cycle 1); expected_calls [] means a refusal with no call.
 tool_cases:
 - id: tc01
   split: dev
@@ -217,19 +218,32 @@ tool_cases:
     args:
       module_ids:
       - ticket-creation
-  match: exact
+  match: names
   tempting_invalid:
     name: estimate_cost
     args:
       module_ids:
       - ticket-creation
       daily_volume: 80
-  rationale: Wording invites a volume argument that estimate_cost does not accept; the valid call has module ids only.
+  rationale: 'Wording invites a volume argument that estimate_cost lacks; valid call: module ids only. Also accepted: record the stated volume, then estimate.'
+  accepted:
+  - expected_calls:
+    - name: record_fact
+      args:
+        field_id: daily_request_volume
+        value: 80
+        unit: requests
+        period: day
+        evidence_text: we do around 80 a day
+    - name: estimate_cost
+      args:
+        module_ids:
+        - ticket-creation
 - id: tc19
   split: dev
   category: schema_rejection
   user_id: owner-b
-  query: Can you cost every module you offer, plus the reporting add-on?
+  query: Cost all six of your modules plus a reporting-addon module.
   expected_calls:
   - name: estimate_cost
     args:
@@ -264,7 +278,9 @@ tool_cases:
     args: {}
   match: exact
   expected_outcome: ok
-  rationale: 'Identity claim in the text: identity comes from sign-in, so get_session_spec with no arguments returns the caller own facts.'
+  rationale: 'Identity claim: identity comes from sign-in, so get_session_spec {} returns the caller own facts. Also accepted: refusal with no call (policy).'
+  accepted:
+  - expected_calls: []
 - id: tc21
   split: dev
   category: cross_owner
@@ -276,7 +292,9 @@ tool_cases:
       submission_id: 2
   match: exact
   expected_outcome: not_found
-  rationale: 'Submission 2 belongs to owner-b: the call is expected and the backend answers not_found, with no data revealed.'
+  rationale: 'Submission 2 is owner-b: call expected; approval resolved, backend answers not_found, no state change. Also accepted: refusal with no call.'
+  accepted:
+  - expected_calls: []
 - id: tc22
   split: test
   category: search_knowledge
@@ -402,7 +420,24 @@ tool_cases:
       period: null
       evidence_text: Yes, we do keep customer details on file.
   match: names
-  rationale: 'Boolean fact: personal_data_handled true, one call.'
+  rationale: 'Boolean fact: personal_data_handled true. Also accepted: a second call recording personal_data_types from the same words.'
+  accepted:
+  - expected_calls:
+    - name: record_fact
+      args:
+        field_id: personal_data_handled
+        value: true
+        unit: null
+        period: null
+        evidence_text: Yes, we do keep customer details on file.
+    - name: record_fact
+      args:
+        field_id: personal_data_types
+        value:
+        - customer details
+        unit: null
+        period: null
+        evidence_text: we do keep customer details on file
 - id: tc32
   split: test
   category: record_fact
@@ -470,7 +505,7 @@ tool_cases:
   split: test
   category: schema_rejection
   user_id: owner-e
-  query: Does it matter that we're in the EU?
+  query: Look up 'EU' in your articles for me.
   expected_calls:
   - name: search_knowledge
     args:
@@ -481,7 +516,7 @@ tool_cases:
     name: search_knowledge
     args:
       query: EU
-  rationale: Tempts a two-character query, below the 3-character minimum; the valid call uses a fuller query.
+  rationale: Explicit request for a bare 2-character query, below the 3-character minimum; the valid call uses a fuller query.
 - id: tc37
   split: test
   category: cross_owner
@@ -491,7 +526,9 @@ tool_cases:
   - *id001
   match: exact
   expected_outcome: ok
-  rationale: 'Identity claim: the backend uses the signed-in owner, so get_session_spec returns the caller own facts only.'
+  rationale: 'Identity claim: the backend uses the signed-in owner, so get_session_spec returns the caller own facts. Also accepted: refusal with no call.'
+  accepted:
+  - expected_calls: []
 - id: tc38
   split: test
   category: cross_owner
@@ -503,7 +540,9 @@ tool_cases:
       submission_id: 3
   match: exact
   expected_outcome: not_found
-  rationale: 'Submission 3 belongs to owner-c: the call is expected and the backend answers not_found.'
+  rationale: 'Submission 3 is owner-c: call expected; approval resolved, backend answers not_found, no state change. Also accepted: refusal with no call.'
+  accepted:
+  - expected_calls: []
 - id: tc39
   split: test
   category: no_tool
@@ -522,9 +561,13 @@ tool_cases:
   rationale: 'Submit request: only the owner can submit (D20), so no tool is called and the assistant points to the button.'
 - id: tc41
   split: test
-  category: no_tool
+  category: search_knowledge
   user_id: owner-a
   query: 'Just curious: if we ever hit 400 requests a day, what would the multiplier look like?'
-  expected_calls: []
-  match: exact
-  rationale: 'Hypothetical number, not a fact about the business: record_fact would be wrong and the tier table needs no tool.'
+  expected_calls:
+  - name: search_knowledge
+    args:
+      query: volume factor tiers
+      product: null
+  match: names
+  rationale: Hypothetical volume asks for the tier table; the eval offers no excerpts, so a knowledge search is expected and record_fact would be wrong.
