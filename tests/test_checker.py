@@ -221,6 +221,10 @@ def test_builder_check_exits_zero():
     assert res.stdout.strip().splitlines()[-1].startswith("OK")
 
 
+@pytest.mark.skipif(
+    not (ROOT / "scripts" / "check_project_data.py").exists(),
+    reason="contract kit not present (make kit-sync)",
+)
 def test_kit_checker_prints_ok():
     res = _run("scripts/check_project_data.py", "data")
     assert res.returncode == 0, res.stdout[-2000:]

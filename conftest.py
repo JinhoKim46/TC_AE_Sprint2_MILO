@@ -17,6 +17,29 @@ os.environ.setdefault("PROJECT_APP", "milo.app:build_app")
 
 from milo import settings  # noqa: E402
 
+# The contract kit (contract/, scripts/check_project_data.py) is not tracked in git; `make kit-sync` copies it in.
+# Without it, the test modules that import the kit's fakes are left out with a notice instead of failing.
+_ROOT = os.path.dirname(os.path.abspath(__file__))
+KIT_PRESENT = os.path.exists(os.path.join(_ROOT, "contract", "fakes.py"))
+_KIT_MODULES = [
+    "tests/test_llm.py",
+    "tests/test_protocol.py",
+    "tests/test_tools.py",
+    "tests/test_gate.py",
+    "tests/test_turns.py",
+    "tests/test_policy.py",
+    "tests/test_s0_smoke.py",
+    "tests/test_errors.py",
+    "tests/test_identity.py",
+]
+collect_ignore = [] if KIT_PRESENT else _KIT_MODULES
+
+
+def pytest_report_header(config: pytest.Config) -> str | None:
+    if KIT_PRESENT:
+        return None
+    return "contract kit not present: kit-dependent test modules skipped (run `make kit-sync`)"
+
 
 def pytest_configure(config: pytest.Config) -> None:
     found = settings.prod_guard_violations()

@@ -16,6 +16,8 @@ Where to look: `SPEC.md` (specification, decisions D1 to D160), `HARNESS.md` (ho
 
 Run it locally: `uv sync`, then `make check` (offline tests and lint), `make eval` (replays every stored evaluation), and `uv run flask --app milo.web.dev:create_dev_app run` for the web app on the in-memory store.
 
+The contract kit (`contract/` and `scripts/check_project_data.py`) is not in this repository. With the kit beside the repo, `make kit-sync` copies it in (or `make kit-sync KIT_SRC=<path>`); then the `make kit-*` targets and the kit-dependent tests run. Without it, `make check` skips those test modules and says so.
+
 ## Stack
 
 - Python 3.12, Flask, Jinja templates, vanilla JavaScript

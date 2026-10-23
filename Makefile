@@ -3,6 +3,9 @@ SHELL := /bin/bash
 # A target whose milestone has not merged still runs its command's guard and fails with a clear message,
 # so no stub can pass. `kit-*` run the kit contract tests against MILO, offline.
 
+# The contract kit is not tracked in git. `make kit-sync` copies it from KIT_SRC (default: the kit beside the repo).
+KIT_SRC ?= ../../../project-kit
+KIT_GUARD = @test -f contract/test_contract.py || { echo "contract kit not present: run make kit-sync (KIT_SRC=$(KIT_SRC))"; exit 1; }
 KIT = PROJECT_APP=milo.app:build_app MILO_ADVANCED_RAG=0 MILO_LIVE= uv run pytest contract
 
 # $(call need,<file>,<milestone>): fail clearly when the milestone's entry point is missing.
@@ -14,7 +17,7 @@ endef
 	kit-sources kit-abstains kit-tools kit-security kit-errors kit-threads kit-cost \
 	eval-retrieval eval-retrieval-replay eval-tools eval-tools-replay eval-attacks eval-attacks-replay \
 	eval-discovery eval-ab eval-rag eval-chat eval-chat-replay eval-sr-live eval-sr-live-replay live-check \
-	eval-gate eval-gate-replay
+	eval-gate eval-gate-replay kit-sync
 
 check:
 	uv run ruff check .
@@ -23,7 +26,7 @@ check:
 	uv lock --check
 	uv run pytest
 	{ test ! -f data/gold.jsonl || uv run python scripts/build_data.py --check; }
-	{ test ! -f data/gold.jsonl || uv run python scripts/check_project_data.py data; }
+	{ test ! -f data/gold.jsonl || test ! -f scripts/check_project_data.py || uv run python scripts/check_project_data.py data; }
 	{ ! git ls-files -z | xargs -0 -r du -b | awk '$$1>2097152' | grep -v m6_recording; }
 
 test:
@@ -35,33 +38,48 @@ audit:
 migrate:
 	uv run python -m milo.store.migrate
 
+kit-sync:
+	@test -d $(KIT_SRC)/contract || { echo "no kit at $(KIT_SRC)"; exit 1; }
+	mkdir -p contract scripts
+	cp $(KIT_SRC)/contract/*.py $(KIT_SRC)/contract/README.md contract/
+	cp $(KIT_SRC)/scripts/check_project_data.py scripts/
+	@echo "contract kit copied from $(KIT_SRC)"
+
 db-reset:
 	uv run python -m milo.store.reset
 
 kit-sources:
+	$(KIT_GUARD)
 	$(KIT) -k sources -rA
 
 kit-abstains:
+	$(KIT_GUARD)
 	$(KIT) -k abstains -rA
 
 kit-tools:
+	$(KIT_GUARD)
 	$(KIT) -k tools -rA
 
 kit-security:
+	$(KIT_GUARD)
 	$(KIT) -k security -rA
 
 kit-errors:
+	$(KIT_GUARD)
 	$(KIT) -k errors -rA
 
 kit-threads:
+	$(KIT_GUARD)
 	$(KIT) -k threads -rA
 
 kit-cost:
+	$(KIT_GUARD)
 	$(KIT) -k cost -rA
 
 # Runs the kit against build_discovery_app and prints one block per keyword; always exits 0.
 # Before M5b, build_discovery_app raises NotImplementedError and every block reports it (not built).
 discovery-table:
+	$(KIT_GUARD)
 	@for k in sources abstains tools security errors threads cost; do \
 		echo "== discovery mode: $$k =="; \
 		PROJECT_APP=milo.app:build_discovery_app MILO_ADVANCED_RAG=0 MILO_LIVE= uv run pytest contract -k $$k -rA || true; \

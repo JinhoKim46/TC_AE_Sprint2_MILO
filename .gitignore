@@ -20,3 +20,7 @@ evals/results/**/*.tmp
 monitor/status.js
 .worktrees/
 monitor/artifact/page_doc.json
+
+# Contract kit: kept out of git; `make kit-sync` copies it in.
+contract/
+scripts/check_project_data.py
