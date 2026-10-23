@@ -82,7 +82,7 @@ def test_tool_cases_pass(tool_rows, protocol):
 
 
 def test_tool_cases_reject_wrong_count_owner_and_tool(tool_rows, protocol):
-    assert any("expected 15" in e for e in _tool_errs(tool_rows[:-1], protocol))
+    assert any("expected 41" in e for e in _tool_errs(tool_rows[:-1], protocol))
     bad = copy.deepcopy(tool_rows)
     bad[0]["user_id"] = "owner-z"
     assert any("user_id" in e for e in _tool_errs(bad, protocol))

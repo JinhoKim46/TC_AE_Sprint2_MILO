@@ -1,0 +1,306 @@
+# Source of data/judge_pool/{answers,perturbations}.jsonl (protocol data-v2, Data 3). Hand-written by the data role.
+# No model call: every answer below was written by hand from the retrieved contexts of the question.
+#
+# contexts: per dev qid, the retrieved chunk ids in stored order. `stored` qids use the 5 dev contexts of
+#   evals/results/m7/generation_dev.json; `bm25` qids use the top 5 of the offline BM25 retriever over data/kb/ (no embedding call).
+# items: one row per pool answer, in pid order (pool-001 ...).
+#   kind: faithful | unfaithful | relevance
+#   answer: the text; an unfaithful item instead gives `base` (key of an earlier item, or base_text) and exactly one
+#     change, `edit: {old, new}` (old occurs once in the base) or `append`. The changed span is recorded.
+#   ptype (unfaithful): number_off | wrong_module | added_claim | negation_flip | wrong_policy | invented | wrong_citation
+#   relkind (relevance): off_topic | partial
+#   faith, rel: the generator's intended labels (the auditor's blind labels are the ground truth).
+#   swap: {chunk_id, position}: one irrelevant KB chunk inserted at position (context-precision item).
+#   stored_rewrite: true when the answer rewrites the stored dev answer of the same qid.
+contexts:
+  q001: {source: stored, chunks: [solutions/phone-intake#3, cases/grooming-bookings#5, solutions/phone-intake#0, solutions/document-data-entry#3, implementation/api-connector#5]}
+  q003: {source: stored, chunks: [solutions/ticket-creation#0, solutions/ticket-creation#3, solutions/ticket-creation#6, solutions/ticket-creation#1, solutions/ticket-creation#4]}
+  q005: {source: bm25, chunks: [solutions/document-data-entry#0, implementation/api-connector#3, implementation/csv-export#3, implementation/export-only-tools#3, policies/personal-data#4]}
+  q007: {source: stored, chunks: [implementation/csv-export#4, implementation/export-only-tools#4, implementation/csv-export#6, implementation/csv-export#3, implementation/csv-export#0]}
+  q009: {source: stored, chunks: [solutions/phone-intake#5, pricing/how-we-price#3, pricing/what-is-included#1, pricing/what-is-included#0, pricing/volume-tiers#5]}
+  q010: {source: bm25, chunks: [policies/security#6, consultation/volume-and-timing#2, consultation/first-questions#3, policies/security#0, consultation/urgent-requests#4]}
+  q012: {source: stored, chunks: [solutions/customer-status-updates#6, pricing/how-we-price#3, solutions/customer-status-updates#5, solutions/phone-intake#5, solutions/email-triage#5]}
+  q014: {source: bm25, chunks: [consultation/first-questions#7, pricing/volume-tiers#4, implementation/crm-connector#6, solutions/phone-intake#3, cases/trades-dispatch#1]}
+  q016: {source: stored, chunks: [pricing/volume-tiers#3, pricing/volume-tiers#5, pricing/volume-tiers#1, pricing/volume-tiers#0, pricing/volume-tiers#2]}
+  q018: {source: bm25, chunks: [implementation/api-connector#4, pricing/setup-fees#3, implementation/api-connector#1, consultation/first-questions#3, implementation/csv-export#0]}
+  q020: {source: stored, chunks: [pricing/range-and-estimates#1, pricing/how-we-price#4, pricing/range-and-estimates#2, pricing/how-we-price#0, pricing/volume-tiers#2]}
+  q022: {source: stored, chunks: [implementation/csv-export#1, implementation/csv-export#2, implementation/csv-export#0, implementation/export-only-tools#1, implementation/api-connector#0]}
+  q024: {source: bm25, chunks: [consultation/first-questions#3, implementation/csv-export#0, consultation/first-questions#2, cases/accounts-paperwork#6, consultation/volume-and-timing#2]}
+  q027: {source: bm25, chunks: [consultation/volume-and-timing#0, consultation/first-questions#6, policies/approvals#5, consultation/volume-and-timing#4, pricing/setup-fees#4]}
+  q029: {source: stored, chunks: [consultation/urgent-requests#5, consultation/urgent-requests#1, pricing/how-we-price#5, consultation/urgent-requests#0, consultation/urgent-requests#4]}
+  q031: {source: bm25, chunks: [implementation/csv-export#1, implementation/csv-export#5, policies/approvals#2, solutions/document-data-entry#4, solutions/phone-intake#4]}
+  q033: {source: bm25, chunks: [implementation/api-connector#5, implementation/api-connector#3, solutions/phone-intake#0, implementation/csv-export#3, solutions/ticket-creation#6]}
+  q035: {source: bm25, chunks: [consultation/volume-and-timing#6, cases/trades-dispatch#1, pricing/setup-fees#4, consultation/urgent-requests#4, solutions/document-data-entry#3]}
+  q037: {source: bm25, chunks: [policies/security#7, cases/grooming-bookings#5, pricing/what-is-included#5, implementation/export-only-tools#0, implementation/api-connector#5]}
+  q039: {source: stored, chunks: [implementation/crm-connector#2, implementation/api-connector#2, pricing/what-is-included#2, pricing/setup-fees#1, pricing/what-is-included#1]}
+  q042: {source: bm25, chunks: [solutions/email-triage#0, solutions/email-triage#6, cases/trades-dispatch#1, solutions/email-triage#3, pricing/how-we-price#3]}
+  q044: {source: bm25, chunks: [solutions/staff-assignment#0, implementation/csv-export#3, solutions/staff-assignment#3, policies/security#3, implementation/crm-connector#1]}
+  q045: {source: stored, chunks: [implementation/api-connector#3, implementation/api-connector#0, implementation/api-connector#6, implementation/csv-export#5, implementation/api-connector#4]}
+  q048: {source: bm25, chunks: [cases/grooming-bookings#5, implementation/api-connector#3, solutions/phone-intake#3, solutions/phone-intake#0, implementation/export-only-tools#6]}
+  q050: {source: bm25, chunks: [implementation/export-only-tools#4, implementation/api-connector#3, solutions/document-data-entry#4, implementation/export-only-tools#3, cases/trades-dispatch#3]}
+  q052: {source: bm25, chunks: [cases/trades-dispatch#0, implementation/export-only-tools#5, cases/trades-dispatch#1, solutions/document-data-entry#4, cases/trades-dispatch#5]}
+  q053: {source: stored, chunks: [cases/grooming-bookings#1, cases/grooming-bookings#0, solutions/phone-intake#0, cases/grooming-bookings#5, cases/grooming-bookings#3]}
+  q056: {source: stored, chunks: [consultation/urgent-requests#3, solutions/email-triage#0, consultation/urgent-requests#2, consultation/urgent-requests#1, consultation/urgent-requests#0]}
+  q058: {source: bm25, chunks: [solutions/email-triage#6, solutions/email-triage#0, consultation/urgent-requests#3, pricing/range-and-estimates#3, pricing/setup-fees#4]}
+  q061: {source: stored, chunks: [solutions/staff-assignment#1, solutions/staff-assignment#2, pricing/what-is-included#6, solutions/staff-assignment#0, solutions/staff-assignment#6]}
+  q063: {source: bm25, chunks: [solutions/document-data-entry#6, cases/accounts-paperwork#1, solutions/document-data-entry#0, cases/trades-dispatch#1, consultation/volume-and-timing#0]}
+  q067: {source: bm25, chunks: [solutions/document-data-entry#1, solutions/customer-status-updates#1, consultation/volume-and-timing#5, solutions/ticket-creation#1, implementation/api-connector#6]}
+  q068: {source: bm25, chunks: [consultation/volume-and-timing#4, solutions/document-data-entry#0, policies/personal-data#2, policies/personal-data#1, pricing/what-is-included#6]}
+  q069: {source: bm25, chunks: [solutions/document-data-entry#0, pricing/volume-tiers#2, cases/accounts-paperwork#3, solutions/document-data-entry#1, consultation/volume-and-timing#2]}
+  q070: {source: bm25, chunks: [solutions/customer-status-updates#1, solutions/phone-intake#2, pricing/how-we-price#6, cases/accounts-paperwork#5, pricing/volume-tiers#4]}
+  q072: {source: bm25, chunks: [implementation/csv-export#6, pricing/range-and-estimates#5, solutions/customer-status-updates#3, implementation/export-only-tools#6, solutions/customer-status-updates#1]}
+  q074: {source: stored, chunks: [pricing/what-is-included#5, pricing/how-we-price#6, cases/grooming-bookings#3, pricing/how-we-price#5, pricing/range-and-estimates#2]}
+  q075: {source: stored, chunks: [pricing/volume-tiers#1, consultation/volume-and-timing#1, pricing/volume-tiers#2, pricing/volume-tiers#0, pricing/volume-tiers#4]}
+  q077: {source: stored, chunks: [solutions/phone-intake#5, implementation/crm-connector#4, solutions/ticket-creation#5, pricing/setup-fees#1, pricing/how-we-price#4]}
+  q079: {source: stored, chunks: [pricing/range-and-estimates#2, solutions/customer-status-updates#2, policies/security#4, solutions/customer-status-updates#3, policies/approvals#5]}
+  q081: {source: bm25, chunks: [solutions/ticket-creation#0, cases/trades-dispatch#1, cases/grooming-bookings#4, consultation/volume-and-timing#3, consultation/urgent-requests#4]}
+  q084: {source: stored, chunks: [cases/grooming-bookings#3, cases/grooming-bookings#0, cases/trades-dispatch#2, cases/grooming-bookings#1, pricing/range-and-estimates#3]}
+  q086: {source: stored, chunks: [cases/accounts-paperwork#0, cases/accounts-paperwork#1, cases/accounts-paperwork#2, cases/accounts-paperwork#4, cases/trades-dispatch#0]}
+  q088: {source: stored, chunks: [cases/accounts-paperwork#0, cases/accounts-paperwork#1, cases/accounts-paperwork#6, cases/trades-dispatch#0, cases/grooming-bookings#6]}
+  q090: {source: bm25, chunks: [consultation/urgent-requests#4, pricing/volume-tiers#4, pricing/range-and-estimates#0, pricing/how-we-price#5, consultation/volume-and-timing#2]}
+  q092: {source: stored, chunks: [consultation/volume-and-timing#1, cases/trades-dispatch#0, consultation/volume-and-timing#3, cases/trades-dispatch#2, pricing/volume-tiers#4]}
+  q094: {source: stored, chunks: [consultation/volume-and-timing#5, pricing/range-and-estimates#2, pricing/range-and-estimates#3, pricing/how-we-price#4, implementation/crm-connector#6]}
+  q096: {source: bm25, chunks: [consultation/volume-and-timing#6, cases/accounts-paperwork#5, consultation/first-questions#0, policies/personal-data#3, pricing/what-is-included#0]}
+  q098: {source: stored, chunks: [policies/personal-data#1, policies/personal-data#2, consultation/first-questions#5, policies/personal-data#0, policies/security#1]}
+  q100: {source: bm25, chunks: [policies/security#2, pricing/volume-tiers#4, consultation/first-questions#6, policies/personal-data#4, policies/personal-data#2]}
+  q102: {source: bm25, chunks: [policies/security#1, consultation/volume-and-timing#4, solutions/phone-intake#6, solutions/phone-intake#0, cases/grooming-bookings#3]}
+  q104: {source: stored, chunks: [policies/personal-data#4, policies/personal-data#1, policies/security#1, policies/personal-data#2, policies/security#2]}
+  q105: {source: bm25, chunks: [solutions/phone-intake#3, solutions/phone-intake#0, cases/grooming-bookings#5, pricing/volume-tiers#4, policies/security#7]}
+  q107: {source: stored, chunks: [policies/security#1, implementation/api-connector#1, policies/security#2, policies/security#4, solutions/ticket-creation#2]}
+  q109: {source: stored, chunks: [policies/security#4, implementation/csv-export#2, solutions/document-data-entry#5, pricing/what-is-included#0, pricing/what-is-included#1]}
+  q111: {source: stored, chunks: [solutions/phone-intake#1, solutions/phone-intake#0, solutions/phone-intake#2, solutions/phone-intake#6, solutions/phone-intake#5]}
+  q113: {source: bm25, chunks: [solutions/phone-intake#4, cases/grooming-bookings#6, solutions/customer-status-updates#1, cases/grooming-bookings#2, solutions/phone-intake#6]}
+  q115: {source: stored, chunks: [policies/approvals#4, solutions/phone-intake#4, policies/security#4, implementation/api-connector#5, solutions/email-triage#1]}
+  q117: {source: bm25, chunks: [solutions/staff-assignment#5, implementation/api-connector#1, solutions/document-data-entry#1, solutions/customer-status-updates#5, policies/personal-data#3]}
+  q119: {source: stored, chunks: [consultation/first-questions#2, policies/personal-data#1, consultation/first-questions#0, consultation/volume-and-timing#1, consultation/volume-and-timing#5]}
+
+# Context relevance (0 or 1 per stored context) for the 30 stored qids is read from evals/rag/labels.jsonl (dev labels);
+# for the 30 bm25 qids it is given here.
+bm25_context_relevance:
+  q005: [0,0,0,0,0]
+  q010: [0,0,0,0,0]
+  q014: [0,0,0,0,0]
+  q018: [1,1,0,0,0]
+  q024: [0,0,0,0,0]
+  q027: [0,1,0,0,0]
+  q031: [0,0,1,0,0]
+  q033: [0,0,0,0,0]
+  q035: [0,0,0,0,0]
+  q037: [0,0,0,0,0]
+  q042: [0,0,0,0,1]
+  q044: [0,0,0,0,0]
+  q048: [0,0,0,0,0]
+  q050: [0,1,1,1,0]
+  q052: [0,1,0,0,1]
+  q058: [0,0,1,0,0]
+  q063: [0,0,0,0,0]
+  q067: [0,0,0,0,0]
+  q068: [0,0,0,0,0]
+  q069: [0,0,0,0,0]
+  q070: [0,0,0,0,1]
+  q072: [0,0,0,0,0]
+  q081: [0,0,0,0,0]
+  q090: [0,1,0,0,0]
+  q096: [0,0,0,0,0]
+  q100: [0,0,0,0,0]
+  q102: [1,0,0,0,0]
+  q105: [0,0,0,0,0]
+  q113: [0,0,0,0,0]
+  q117: [0,0,0,0,0]
+
+items:
+- {key: q001a, qid: q001, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "The phone-intake module does not make outbound sales calls and does not give medical or legal advice. It does not take card payments by phone either. When a caller asks for any of these, the module explains that a person will follow up."}
+- {key: q001b, qid: q001, kind: unfaithful, ptype: negation_flip, base: q001a, faith: 0, rel: 2,
+   edit: {old: "It does not take card payments by phone either.", new: "It takes card payments by phone as well."}}
+- {key: q003a, qid: q003, kind: faithful, stored_rewrite: true, faith: 1, rel: 2, swap: {chunk_id: "policies/security#7", position: 2},
+   answer: "No. The ticket-creation module does not close a ticket without a person. A member of staff marks the job done. It does track each ticket's status from open to done and reminds staff when a ticket has not moved."}
+- {key: q003b, qid: q003, kind: unfaithful, ptype: wrong_policy, base: q003a, faith: 0, rel: 2,
+   append: " Each closing also needs the owner's approval in an approval card."}
+  # q003b has no swap: it inherits the base text only.
+- {key: q005a, qid: q005, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "The api-connector is available for phone-intake, email-triage, ticket-creation and customer-status-updates. It is not offered for staff-assignment, which uses csv-export, or for document-data-entry, which uses csv-export or export-only-tool."}
+- {key: q007a, qid: q007, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "No. The csv-export integration carries no monthly surcharge, and its line on the rate card is 0 USD. The module's own base price and the setup fee still apply. The export-only-tool surcharge, by contrast, is 250 USD a month."}
+- {key: q007b, qid: q007, kind: unfaithful, ptype: number_off, base: q007a, faith: 0, rel: 2, swap: {chunk_id: "solutions/staff-assignment#6", position: 5},
+   edit: {old: "250 USD a month", new: "150 USD a month"}}
+- {key: q009a, qid: q009, kind: faithful, stored_rewrite: true, faith: 1, rel: 2, swap: {chunk_id: "cases/grooming-bookings#6", position: 0},
+   answer: "The base monthly price for phone-intake, the call answering module, is 690 USD. That monthly price is multiplied by a volume factor that depends on how many requests you handle a day. The setup fee is 900 USD per module, and all prices are indicative and non-binding."}
+- {key: q009b, qid: q009, kind: unfaithful, ptype: number_off, base: q009a, faith: 0, rel: 2,
+   edit: {old: "The setup fee is 900 USD per module", new: "The setup fee is 600 USD per module"}}
+- {key: q010a, qid: q010, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "Every turn writes a trace record covering which steps ran, how long each took and which decisions the policy made. Your message text is logged as a hash and a length, not as text."}
+- {key: q012a, qid: q012, kind: relevance, relkind: off_topic, faith: 1, rel: 0, ctx_rel: [1,1,1,0,0],
+   answer: "The email-triage module has a base monthly price of 390 USD and a setup fee of 900 USD per module. A volume factor applies based on daily request volume, and a monthly surcharge applies for the api-connector integration."}
+- {key: q012b, qid: q012, kind: unfaithful, ptype: wrong_module, faith: 0, rel: 1, ctx_rel: [1,1,1,0,0],
+   base_text: "Reminders and confirmations to clients are handled by the customer-status-updates module, which suits owners who send reminders by hand and lose money to no-shows. The setup fee is 900 USD per module.",
+   edit: {old: "the customer-status-updates module", new: "the ticket-creation module"}}
+- {key: q014a, qid: q014, kind: unfaithful, ptype: wrong_policy, faith: 0, rel: 2,
+   base_text: "The excerpts give no way to get a cheaper price. The assistant will not give a number until the assessment questions are answered, and it tells you what it still needs and continues.",
+   edit: {old: "The excerpts give no way to get a cheaper price.", new: "If you ask politely the assistant can offer you a 10 percent discount."}}
+- {key: q016a, qid: q016, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "Above 150 requests per day there is no automatic estimate and a person prices it. The assistant tells you that the number is outside the rate card and that someone will contact you, rather than showing a figure."}
+- {key: q016b, qid: q016, kind: relevance, relkind: partial, faith: 1, rel: 1,
+   answer: "The volume table has four rows. Up to 20 requests per day has a factor of 1.00, up to 60 has 1.25 and up to 150 has 1.50. The last row covers above 150 requests per day."}
+- {key: q018a, qid: q018, kind: faithful, faith: 1, rel: 2, swap: {chunk_id: "solutions/staff-assignment#6", position: 3},
+   answer: "Once. A surcharge is counted once per integration, not once per module, so if three modules use the same api-connector you pay the surcharge once. The api-connector surcharge is 300 USD a month however many modules share the connection, and each module still has its own base price and a setup fee of 900 USD."}
+- {key: q020a, qid: q020, kind: faithful, stored_rewrite: true, faith: 1, rel: 2, swap: {chunk_id: "cases/accounts-paperwork#6", position: 1},
+   answer: "The low figure is the base estimate multiplied by 0.90, so it sits 10 percent below the base. The base is each module's base price multiplied by the volume factor, plus the integration surcharges once a month and a setup fee of 900 USD per module. The high figure is the base multiplied by 1.20."}
+- {key: q020b, qid: q020, kind: unfaithful, ptype: number_off, base: q020a, faith: 0, rel: 2,
+   edit: {old: "multiplied by 0.90, so it sits 10 percent below the base", new: "multiplied by 0.80, so it sits 20 percent below the base"}}
+- {key: q022a, qid: q022, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "No. With csv-export there is no live connection between the two systems. Your tool exports a CSV file, the module reads it, does its work and writes a CSV file back, and your tool imports that file on a schedule you choose, such as every hour or at the end of the day. If you need changes to be seen as they happen, the api-connector is the live option."}
+- {key: q022b, qid: q022, kind: unfaithful, ptype: negation_flip, base: q022a, faith: 0, rel: 2,
+   edit: {old: "No. With csv-export there is no live connection between the two systems.", new: "Yes. With csv-export there is a live connection between the two systems."}}
+- {key: q024a, qid: q024, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "The interview asks about the workflow: how requests reach you, roughly how many come in on a normal day, how many minutes one request takes to handle and which tools you use. It also asks whether anything in the process needs an approval."}
+- {key: q027a, qid: q027, kind: unfaithful, ptype: negation_flip, faith: 0, rel: 2, ctx_rel: [0,1,0,0,1],
+   base_text: "If you say you do not know, the fact is marked unknown and the question is not asked again. Every fact shows the sentence it came from.",
+   edit: {old: "the fact is marked unknown and the question is not asked again", new: "the fact is left blank and the question is asked again at the end"}}
+- {key: q029a, qid: q029, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "No. Urgent handling does not change the rate card price. It changes the setup: the handover rules and the urgent labels are agreed during the setup period covered by the setup fee, and the report lists them under the recommended modules."}
+- {key: q029b, qid: q029, kind: unfaithful, ptype: added_claim, base: q029a, faith: 0, rel: 2,
+   append: " Emergency cover also adds a flat 120 USD a month for the on-call handover."}
+- {key: q031a, qid: q031, kind: unfaithful, ptype: wrong_policy, faith: 0, rel: 2, swap: {chunk_id: "cases/trades-dispatch#5", position: 4},
+   base_text: "No. The assistant cannot submit your specification. Submission is a button you press, with a confirmation dialog that explains that a revision will be stored and cannot be edited.",
+   edit: {old: "No. The assistant cannot submit your specification.", new: "Yes. The assistant can submit your specification once you confirm in the chat."}}
+- {key: q033a, qid: q033, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not say which spoken languages phone-intake can understand. They say the module answers incoming calls out of hours and in peak times, records the request, and books or passes it on."}
+- {key: q035a, qid: q035, kind: unfaithful, ptype: invented, faith: 0, rel: 2,
+   base_text: "The excerpts do not mention a mobile app for engineers in the van. In the heating and plumbing case, the office wrote paper job sheets and handed them to the engineers.",
+   edit: {old: "The excerpts do not mention a mobile app for engineers in the van.", new: "There is a mobile app that shows engineers their jobs while they are out in the van."}}
+- {key: q037a, qid: q037, kind: unfaithful, ptype: invented, faith: 0, rel: 2,
+   base_text: "The excerpts do not give an uptime percentage. The security policy describes what the software does and does not promise that no attack can succeed.",
+   edit: {old: "The excerpts do not give an uptime percentage.", new: "We promise 99.9 percent uptime."}}
+- {key: q039a, qid: q039, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not say anything about training for your staff after setup, so I cannot tell you what is offered. The setup fee covers a short period of checking the first results together, and minor changes to wording, labels or skill tags are included in the monthly price."}
+- {key: q039b, qid: q039, kind: unfaithful, ptype: invented, base: q039a, faith: 0, rel: 2,
+   edit: {old: "The excerpts do not say anything about training for your staff after setup, so I cannot tell you what is offered.", new: "After setup, your staff receive a half-day training session on the modules."}}
+- {key: q042a, qid: q042, kind: faithful, faith: 1, rel: 2, swap: {chunk_id: "policies/personal-data#0", position: 2},
+   answer: "Yes. The base monthly price for email-triage is 390 USD, according to the base price table. Email-triage reads a shared inbox, labels each message by request type and drafts a first reply for staff to approve."}
+- {key: q044a, qid: q044, kind: unfaithful, ptype: number_off, faith: 0, rel: 2,
+   base_text: "The excerpts do not give a price for staff-assignment. The module suggests which staff member should take a ticket and does not make automatic payroll or shift changes.",
+   edit: {old: "The excerpts do not give a price for staff-assignment.", new: "The base monthly price for staff-assignment is 440 USD."}}
+- {key: q045a, qid: q045, kind: faithful, stored_rewrite: true, faith: 1, rel: 2, swap: {chunk_id: "consultation/volume-and-timing#6", position: 3},
+   answer: "No. With the api-connector the customer-status-updates module does not need a file from you. It gets a live connection to your tool, and status changes are read and written as they happen, with no files in between. The api-connector costs 300 USD a month, paid once however many modules share the connection, and the module's base price and the setup fee of 900 USD per module still apply."}
+- {key: q045b, qid: q045, kind: unfaithful, ptype: wrong_module, base: q045a, faith: 0, rel: 2,
+   edit: {old: "No. With the api-connector the customer-status-updates module does not need a file from you.", new: "No. With the crm-connector the customer-status-updates module does not need a file from you."}}
+- {key: q048a, qid: q048, kind: unfaithful, ptype: wrong_module, faith: 0, rel: 1,
+   base_text: "The excerpts do not say what a read-only key does to bookings. They do say the api-connector is available for phone-intake, email-triage, ticket-creation and customer-status-updates.",
+   edit: {old: "phone-intake, email-triage, ticket-creation and customer-status-updates", new: "phone-intake, email-triage, staff-assignment and customer-status-updates"}}
+- {key: q050a, qid: q050, kind: unfaithful, ptype: wrong_module, faith: 0, rel: 2,
+   base_text: "The export-only-tool integration is offered for document-data-entry. It pairs naturally with that module, because the paper job sheets the module reads are usually the ones that would have been re-keyed by hand.",
+   edit: {old: "offered for document-data-entry", new: "offered for staff-assignment"}}
+- {key: q052a, qid: q052, kind: faithful, faith: 1, rel: 2,
+   answer: "The report said plainly that re-keying could be made shorter and safer but not removed, because an export-only tool has no import. The modules did not replace the field-service tool and did not make the re-keying disappear."}
+- {key: q053a, qid: q053, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "No. In the grooming case, card payments by phone were out of scope for phone-intake, so deposits stayed a manual step. The module answered calls at peak times and out of hours and booked into open slots, and the salon still decided its own cancellation policy."}
+- {key: q053b, qid: q053, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "The salon had two sites and took bookings by phone and through a web form. Every booking was written into a shared spreadsheet by whoever answered, and reminders were sent by hand the day before."}
+- {key: q056a, qid: q056, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "Yes. The email-triage module gives an urgent message the highest priority label, so it sits at the top of the inbox. You decide what counts as urgent, and none of the modules decides on its own that something is not urgent. The ticket-creation module also sets an urgent flag on the ticket."}
+- {key: q056b, qid: q056, kind: unfaithful, ptype: wrong_policy, base: q056a, faith: 0, rel: 2,
+   edit: {old: "none of the modules decides on its own that something is not urgent", new: "the module decides on its own when a message is not urgent"}}
+- {key: q058a, qid: q058, kind: unfaithful, ptype: added_claim, faith: 0, rel: 2,
+   base_text: "Yes. The email-triage module sets a priority so that the most pressing messages rise to the top, and an urgent message gets the highest priority label.",
+   append: " The owner also gets a text message alert for each urgent email."}
+- {key: q061a, qid: q061, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "It gives a reason. The staff-assignment module compares a ticket's request type with each person's skill tags and availability, then suggests one person with reasons, for example that the person has the matching skill and is free that afternoon. The suggestion is not an order, and staff can override it; each override is logged."}
+- {key: q061b, qid: q061, kind: unfaithful, ptype: added_claim, base: q061a, faith: 0, rel: 2,
+   append: " Over time the module learns from the overrides and changes its suggestions on its own."}
+- {key: q063a, qid: q063, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "Document-data-entry suits owners whose office re-keys paper job sheets at the end of the day and who see wrong addresses or missed jobs as a result. Its flagged-items queue keeps a person in charge of anything doubtful."}
+- {key: q067a, qid: q067, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "When a ticket moves, for example from booked to confirmed, the customer-status-updates module sends the customer a message from a template you have approved. Customers can opt out and the module respects that."}
+- {key: q068a, qid: q068, kind: unfaithful, ptype: added_claim, faith: 0, rel: 1,
+   base_text: "The excerpts I have do not cover removing an access token, so I cannot say what happens to the link.",
+   append: " Removing the token also deletes everything the module has recorded in your tool."}
+- {key: q069a, qid: q069, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "The volume factor is 1.00 up to 20 requests a day, 1.25 up to 60 and 1.50 up to 150. You find the row your normal daily volume falls into and multiply each module's base price by that factor."}
+- {key: q070a, qid: q070, kind: relevance, relkind: partial, faith: 1, rel: 1,
+   answer: "The excerpts say the volume that counts is the number of requests on a normal business day, and that if you know your monthly volume the assistant converts it to a daily figure in code and shows you the conversion."}
+- {key: q072a, qid: q072, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "Choose csv-export when your tool has no API, or when you want to try a module without touching your tool. Many owners start there and move to the api-connector later."}
+- {key: q074a, qid: q074, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "No. The estimate is indicative and non-binding, and MILO does not promise a saving in hours or money. The report that follows the interview gives a simple return estimate built from the minutes you told us, with each input labelled, and you decide whether it is worth it."}
+- {key: q074b, qid: q074, kind: unfaithful, ptype: negation_flip, base: q074a, faith: 0, rel: 2,
+   edit: {old: "No. The estimate is indicative and non-binding, and MILO does not promise a saving in hours or money.", new: "Yes. MILO guarantees a saving in hours and money."}}
+- {key: q075a, qid: q075, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "For about 100 requests on a normal business day your volume factor is 1.50, the factor for the up to 150 per day row. Each module's monthly price is its base price multiplied by that factor. I am reading each job as one request, where a request is anything that needs handling, such as a call, a message, a form or a walk-in."}
+- {key: q075b, qid: q075, kind: unfaithful, ptype: number_off, base: q075a, faith: 0, rel: 2, swap: {chunk_id: "solutions/document-data-entry#6", position: 1},
+   edit: {old: "1.50", new: "1.25"}}
+- {key: q077a, qid: q077, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "You pay the setup fee twice. The setup fee is 900 USD per module and is paid once for each module, so phone-intake and ticket-creation together come to 1,800 USD in setup fees. Monthly, phone-intake has a base price of 690 USD and ticket-creation 290 USD, each multiplied by a volume factor."}
+- {key: q077b, qid: q077, kind: unfaithful, ptype: number_off, base: q077a, faith: 0, rel: 2,
+   edit: {old: "together come to 1,800 USD in setup fees", new: "together come to 900 USD in setup fees"}}
+- {key: q079a, qid: q079, kind: faithful, faith: 1, rel: 2,
+   answer: "Blocked does not mean you get nothing. It means two of your answers conflict, and no number is shown until you resolve it. A blocked estimate shows the conflict and the question that would settle it. If an input is only missing or unknown, the estimate is a scenario instead, with the assumption shown next to the number."}
+- {key: q079b, qid: q079, kind: unfaithful, ptype: wrong_policy, base: q079a, faith: 0, rel: 2,
+   edit: {old: "and no number is shown until you resolve it", new: "and a rough number is still shown while you resolve it"}}
+- {key: q081a, qid: q081, kind: unfaithful, ptype: wrong_citation, faith: 0, rel: 1, ctx_rel: [0,1,0,0,0],
+   base_text: "The excerpts do not say how the night calls were routed, only that before the change they reached no one until morning (cases/trades-dispatch).",
+   edit: {old: "cases/trades-dispatch", new: "pricing/setup-fees"}}
+- {key: q084a, qid: q084, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "The estimate was marked indicative because every pricing input had been reported and nothing conflicted. The assistant does not show a price until it has enough of the assessment to make one meaningful, because a number given too early is almost always wrong. This is the case recorded in cases/grooming-bookings."}
+- {key: q084b, qid: q084, kind: unfaithful, ptype: wrong_citation, base: q084a, faith: 0, rel: 2,
+   edit: {old: "cases/grooming-bookings", new: "pricing/volume-tiers"}}
+- {key: q086a, qid: q086, kind: faithful, stored_rewrite: true, faith: 1, rel: 2,
+   answer: "In the accounts case the module did the first pass of data entry, and the staff member's time moved from typing to reviewing the flagged items. The entry log showed which scan produced which record, so a doubtful entry could be traced back to its page. The sample check continued, but on records the module had already validated."}
+- {key: q086b, qid: q086, kind: unfaithful, ptype: added_claim, base: q086a, faith: 0, rel: 2,
+   append: " The practice cut its checking time by about half."}
+- {key: q088a, qid: q088, kind: faithful, faith: 1, rel: 2,
+   answer: "The case shows the value of the flagged-items queue: the module did not need to be right every time, it needed to know when it was not sure. The practice was a small accounts firm whose staff typed forms by hand and whose checks kept finding wrong dates and transposed amounts."}
+- {key: q088b, qid: q088, kind: relevance, relkind: partial, faith: 1, rel: 1,
+   answer: "The takeaway concerns the flagged-items queue. The excerpts also describe the practice's situation: a member of staff typed each paper form into the system line by hand, and a second person checked a sample of the entries."}
+- {key: q090a, qid: q090, kind: relevance, relkind: partial, faith: 1, rel: 1,
+   answer: "The excerpts say that when you give a monthly volume, the assistant converts it to a daily figure in code and shows you the conversion. They do not say how that derived figure is labelled."}
+- {key: q092a, qid: q092, kind: faithful, faith: 1, rel: 2,
+   answer: "Give a normal business day, not your December peak. A normal day means a typical business day, not the busiest one and not the quietest. If you think in weeks, say so and the assistant converts the figure to a daily one in code and shows the conversion. A rough honest figure is fine, because the volume only has to land in the right tier of the rate card."}
+- {key: q092b, qid: q092, kind: unfaithful, ptype: negation_flip, base: q092a, faith: 0, rel: 2,
+   edit: {old: "Give a normal business day, not your December peak.", new: "Give your December peak, since the volume that counts is the busiest day."}}
+- {key: q094a, qid: q094, kind: faithful, faith: 1, rel: 2,
+   answer: "No. A start date does not change the price; it only changes how firm the estimate can be. If you have not decided when to start, the estimate is marked as a scenario with the undecided start shown as an assumption. This is covered in consultation/volume-and-timing."}
+- {key: q094b, qid: q094, kind: unfaithful, ptype: wrong_citation, base: q094a, faith: 0, rel: 2,
+   edit: {old: "consultation/volume-and-timing", new: "pricing/setup-fees"}}
+- {key: q096a, qid: q096, kind: relevance, relkind: partial, faith: 1, rel: 1, ctx_rel: [0,0,0,1,0],
+   answer: "The excerpts do not say you must upload a client list. They say a document you upload is read for evidence about your process and treated as information, never as an instruction, and that if it contains customer data you should tell us and we will remove it."}
+- {key: q098a, qid: q098, kind: faithful, faith: 1, rel: 2,
+   answer: "Yes. The assistant can talk to you before you give consent, but it does not keep your contact fields, meaning your name, role and email address, until you have consented. It does store your company details and your answers. Please do not paste customer details into the chat."}
+- {key: q098b, qid: q098, kind: unfaithful, ptype: wrong_policy, base: q098a, faith: 0, rel: 2,
+   edit: {old: "but it does not keep your contact fields, meaning your name, role and email address, until you have consented", new: "and it keeps your name, role and email address from the first message, with the consent recorded later"}}
+- {key: q100a, qid: q100, kind: relevance, relkind: off_topic, faith: 1, rel: 0,
+   answer: "Each answer becomes a fact with a status: reported when you state it, confirmed when you confirm it, and estimated when the assistant derives it. If you say you do not know, the fact is marked unknown and the question is not asked again."}
+- {key: q102a, qid: q102, kind: unfaithful, ptype: number_off, faith: 0, rel: 2,
+   base_text: "Yes. Several failed sign-in attempts in a row lock the account for a short time.",
+   edit: {old: "Several failed sign-in attempts in a row lock the account for a short time", new: "Five failed sign-in attempts in a row lock the account for 24 hours"}}
+- {key: q104a, qid: q104, kind: faithful, faith: 1, rel: 2, swap: {chunk_id: "solutions/email-triage#6", position: 5},
+   answer: "No. Your identity comes from the account you signed in with, not from the text of a conversation, and every record the assistant reads or writes is looked up for that account only. A message that asks to continue as a different owner is refused and an audit entry is written. No other owner can see your session, your facts or your submission. The operator who reviews your submission can see it and the evidence behind it. This is set out in policies/security."}
+- {key: q104b, qid: q104, kind: unfaithful, ptype: wrong_citation, base: q104a, faith: 0, rel: 2,
+   edit: {old: "policies/security", new: "pricing/how-we-price"}}
+- {key: q105a, qid: q105, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not say whether WhatsApp is supported. They say phone-intake answers incoming calls out of hours and in peak times, and that it does not make outbound sales calls or take card payments by phone."}
+- {key: q107a, qid: q107, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not mention two-factor authentication, so I cannot say whether it is offered. Access is by invitation only, through a one-time link that sets a password, each owner account has one session, and several failed sign-in attempts in a row lock the account for a short time."}
+- {key: q107b, qid: q107, kind: unfaithful, ptype: invented, base: q107a, faith: 0, rel: 2,
+   edit: {old: "The excerpts do not mention two-factor authentication, so I cannot say whether it is offered.", new: "Two-factor authentication through an authenticator app is available for every owner account."}}
+- {key: q109a, qid: q109, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not say how invoices are paid, so I cannot tell you whether direct debit is available. The setup fee is 900 USD per module, and each module also has a monthly price plus any integration surcharge."}
+- {key: q109b, qid: q109, kind: unfaithful, ptype: invented, base: q109a, faith: 0, rel: 2,
+   edit: {old: "The excerpts do not say how invoices are paid, so I cannot tell you whether direct debit is available.", new: "You can pay by direct debit each month."}}
+- {key: q111a, qid: q111, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not describe the voice of the phone bot or whether you can choose a different one. When a call comes in the module answers, asks what the caller needs, captures the request as text, books an appointment in the slots you have opened, and passes the call to a member of staff with a handover note when a person is needed."}
+- {key: q111b, qid: q111, kind: unfaithful, ptype: invented, base: q111a, faith: 0, rel: 2,
+   edit: {old: "The excerpts do not describe the voice of the phone bot or whether you can choose a different one.", new: "You can choose between three voices for the phone bot, and a different one can be switched on at any time."}}
+- {key: q113a, qid: q113, kind: unfaithful, ptype: invented, faith: 0, rel: 2,
+   base_text: "The excerpts do not say whether the booking part syncs with an online calendar. Phone-intake writes bookings to a file your booking tool can import with csv-export, or straight into your tool through the api-connector.",
+   edit: {old: "The excerpts do not say whether the booking part syncs with an online calendar.", new: "Bookings sync with the major online calendars automatically."}}
+- {key: q115a, qid: q115, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not mention insurance, liability or compensation for a booking made in error, so I cannot tell you whether you are covered. A module can only do what its access key allows, and email-triage drafts are read and sent by staff, never on their own."}
+- {key: q115b, qid: q115, kind: unfaithful, ptype: invented, base: q115a, faith: 0, rel: 2,
+   edit: {old: "The excerpts do not mention insurance, liability or compensation for a booking made in error, so I cannot tell you whether you are covered.", new: "MILO carries insurance that covers losses from wrongly booked appointments."}}
+- {key: q117a, qid: q117, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not say whether setup is done remotely or on site. They say that with the api-connector you create a key for MILO in your tool, with only the rights the module needs, and give it to us during setup."}
+- {key: q119a, qid: q119, kind: faithful, faith: 1, rel: 1,
+   answer: "The excerpts do not say when MILO was founded or how long it has been running. The articles cover how the discovery interview works, what is stored about you and how the volume and timing questions are handled."}
+- {key: q119b, qid: q119, kind: unfaithful, ptype: invented, base: q119a, faith: 0, rel: 2,
+   edit: {old: "The excerpts do not say when MILO was founded or how long it has been running.", new: "MILO was founded in 2019 and has been running for seven years."}}

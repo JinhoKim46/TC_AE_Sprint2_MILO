@@ -38,6 +38,7 @@ from evals.common import file_sha256, final_mode, provenance  # noqa: E402
 from milo.loop import run_turn  # noqa: E402
 from milo.store.memory import MemoryApprovals  # noqa: E402
 from milo.tools import MiloBackend  # noqa: E402
+from milo.tools.approvals import ApprovalService  # noqa: E402
 from milo.tools.args import clean_args  # noqa: E402
 from milo.tools.specs import InvalidToolArguments, validate_args  # noqa: E402
 from milo.trace import Tracer  # noqa: E402
@@ -134,15 +135,51 @@ def names_of(calls: list[dict[str, Any]]) -> list[str]:
     return [c["name"] for c in calls]
 
 
-def score_row(row: dict[str, Any]) -> dict[str, Any]:
-    expected, emitted = row["expected_calls"], row["emitted_calls"]
+def _call_match(
+    expected: list[dict[str, Any]], emitted: list[dict[str, Any]]
+) -> tuple[bool, bool]:
     names_equal = sorted(names_of(expected)) == sorted(names_of(emitted))
     exact_equal = len(expected) == len(emitted) and all(
         e["name"] == m["name"] and e["args"] == m["args"]
         for e, m in zip(expected, emitted, strict=True)
     )
-    passed = exact_equal if row["match"] == "exact" else names_equal
-    return {"names_equal": names_equal, "exact_equal": exact_equal, "passed": passed}
+    return names_equal, exact_equal
+
+
+def score_row(row: dict[str, Any]) -> dict[str, Any]:
+    """A row passes when the emitted calls match the expected calls or any `accepted` alternative (data-v2 fix
+    cycle 1; `matched` records which), and, for a withdraw row with an observed outcome, when that outcome is the
+    expected one (a cross-owner row: `not_found` after the approval is resolved, with no state change)."""
+    emitted = row["emitted_calls"]
+    candidates = [("expected", row["expected_calls"])] + [
+        (f"accepted:{i}", a["expected_calls"])
+        for i, a in enumerate(row.get("accepted", []))
+    ]
+    names_equal = exact_equal = False
+    matched = None
+    for label, calls in candidates:
+        n, e = _call_match(calls, emitted)
+        names_equal, exact_equal = names_equal or n, exact_equal or e
+        if matched is None and (e if row["match"] == "exact" else n):
+            matched = label
+    outcome_ok = True
+    oc = row.get("expected_outcome")
+    if (
+        matched == "expected"
+        and oc in ("needs_approval", "not_found")
+        and "observed_outcome" in row
+        and any(c["name"] == "withdraw_submission" for c in row["expected_calls"])
+    ):
+        outcome_ok = row["observed_outcome"] == oc and not (
+            oc == "not_found" and row.get("backend_state_changed", False)
+        )
+    return {
+        "names_equal": names_equal,
+        "exact_equal": exact_equal,
+        "matched": matched,
+        "outcome_ok": outcome_ok,
+        "passed": matched is not None and outcome_ok,
+    }
 
 
 def bootstrap_ci(values: list[int]) -> tuple[float, float]:
@@ -225,6 +262,7 @@ def compute_metrics(rows: list[dict[str, Any]]) -> dict[str, Any]:
 def run_case(case: dict[str, Any], chat: ChatModel, system: str) -> dict[str, Any]:
     backend = MiloBackend(retriever=NullIndex())
     wrapped = FirstReply(chat)
+    approvals = MemoryApprovals()
     result = run_turn(
         chat=wrapped,
         tools=backend,
@@ -236,10 +274,31 @@ def run_case(case: dict[str, Any], chat: ChatModel, system: str) -> dict[str, An
         thread_id="eval",
         turn_id=f"eval-{case['id']}",
         untrusted_texts=[case["query"]],
-        approvals=MemoryApprovals(),
+        approvals=approvals,
         approval_scope=f"{case['user_id']}:eval",
         tracer=Tracer(),
     )
+    # The loop stops a destructive call at `needs_approval` before the ownership check runs. A cross-owner row
+    # (expected_outcome not_found) therefore resolves the approval (approve) and scores what the backend answers.
+    observed_outcome = None
+    for t in result.tool_results:
+        if t.name != "withdraw_submission":
+            continue
+        observed_outcome = t.policy_decision
+        if (
+            case.get("expected_outcome") == "not_found"
+            and t.policy_decision == "needs_approval"
+            and isinstance(t.output, dict)
+        ):
+            out = ApprovalService(backend, approvals).resolve(
+                t.output["approval_id"], "approve", case["user_id"]
+            )
+            observed_outcome = (
+                out.output.get("status")
+                if out.executed and isinstance(out.output, dict)
+                else out.status
+            )
+        break
     specs = {s.name: s for s in backend.specs()}
     first = wrapped.first.tool_calls if wrapped.first else []
 
@@ -259,11 +318,9 @@ def run_case(case: dict[str, Any], chat: ChatModel, system: str) -> dict[str, An
             {"name": call.name, "args": args, "schema_valid": valid(call.name, args)}
         )
     expected = case["expected_calls"]
-    extra = (
-        {"expected_outcome": case["expected_outcome"]}
-        if "expected_outcome" in case
-        else {}
-    )
+    extra = {k: case[k] for k in ("expected_outcome", "accepted") if k in case}
+    if "expected_outcome" in case:
+        extra["observed_outcome"] = observed_outcome
     return {
         **extra,
         "id": case["id"],
@@ -456,7 +513,10 @@ def check_inputs() -> str:
     specs = {s.name: s for s in MiloBackend(retriever=NullIndex()).specs()}
     objects = json.loads(OBJECTS_PATH.read_text(encoding="utf-8"))
     for case in load_cases():
-        for call in case["expected_calls"]:
+        all_calls = case["expected_calls"] + [
+            c for a in case.get("accepted", []) for c in a["expected_calls"]
+        ]
+        for call in all_calls:
             try:
                 if call["name"] not in specs:
                     raise InvalidToolArguments(f"unknown tool {call['name']}")
@@ -581,7 +641,9 @@ def replay(files: list[Path]) -> int:
         for row in rows:
             fresh = score_row(row)
             for key, value in fresh.items():
-                if row[key] != value:
+                if (
+                    key in row and row[key] != value
+                ):  # rows stored before fix cycle 1 lack matched, outcome_ok
                     print(
                         f"MISMATCH {path.name} {row['id']} {key}: stored {row[key]} recomputed {value}"
                     )

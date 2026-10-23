@@ -1,0 +1,90 @@
+{"qid": "pool-001", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-002", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "says it takes card payments by phone; phone-intake#3 says it does not"}
+{"qid": "pool-003", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-004", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "closing needs owner approval card: not in the contexts"}
+{"qid": "pool-005", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "answers about api-connector modules, not refused writing; supported but off topic"}
+{"qid": "pool-006", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-007", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "export-only surcharge 150 USD; context says 250"}
+{"qid": "pool-008", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 1, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-009", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "setup fee 600 USD; context says 900"}
+{"qid": "pool-010", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "trace logging, not duplicate prevention; supported but off topic"}
+{"qid": "pool-011", "faithfulness": 1, "relevance": 0, "context_relevance": [1, 1, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "gives email-triage price for a reminders question; supported but wrong module, no answer"}
+{"qid": "pool-012", "faithfulness": 0, "relevance": 1, "context_relevance": [1, 1, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "attributes reminders to ticket-creation; contexts say customer-status-updates; no price given"}
+{"qid": "pool-013", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "10 percent discount: not in the contexts (pass 2 re-label)"}
+{"qid": "pool-014", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-015", "faithfulness": 1, "relevance": 1, "context_relevance": [1, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "lists the table, never says what happens above 150"}
+{"qid": "pool-016", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-017", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-018", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "low factor 0.80; context says 0.90"}
+{"qid": "pool-019", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-020", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "says csv-export is a live connection; context says no live connection"}
+{"qid": "pool-021", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "workflow questions, not CRM setup days"}
+{"qid": "pool-022", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 1, 0, 0, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "unknown fact left blank and asked again; first-questions#6 says marked unknown and not asked again"}
+{"qid": "pool-023", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-024", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "flat 120 USD a month on-call fee: not in the contexts and contradicts 'does not change the price'"}
+{"qid": "pool-025", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "says the assistant can submit; approvals#2 says it cannot"}
+{"qid": "pool-026", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "honest abstention; second sentence supported by phone-intake#0"}
+{"qid": "pool-027", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "mobile app claim not in the contexts (pass 2)"}
+{"qid": "pool-028", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "99.9 percent uptime not in the contexts (pass 2)"}
+{"qid": "pool-029", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "honest abstention, other sentences supported (pass 2)"}
+{"qid": "pool-030", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "half-day training not in the contexts (pass 2)"}
+{"qid": "pool-031", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "supported; the opening 'Yes.' does not fit a 'what do I pay' question (pass 2)"}
+{"qid": "pool-032", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "440 USD: no staff-assignment price in these contexts (pass 2)"}
+{"qid": "pool-033", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-034", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "names crm-connector where the contexts describe api-connector"}
+{"qid": "pool-035", "faithfulness": 0, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "lists staff-assignment for api-connector; api-connector#3 lists ticket-creation and excludes staff-assignment"}
+{"qid": "pool-036", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 1, 1, 1, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "export-only-tool offered for staff-assignment; contexts say document-data-entry"}
+{"qid": "pool-037", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 1, 0, 0, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "'report said plainly' is supported by export-only-tools#5 (generic report) plus trades-dispatch#5"}
+{"qid": "pool-038", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 0, 0, 1, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-039", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 1, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "describes the salon's situation, ignores the deposit question"}
+{"qid": "pool-040", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-041", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "module decides on its own when not urgent; urgent-requests#3 says none decides that"}
+{"qid": "pool-042", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "text message alert to the owner: not in the contexts"}
+{"qid": "pool-043", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-044", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "learns from overrides on its own: not in the contexts"}
+{"qid": "pool-045", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "who the module suits; does not say how to trace the paper"}
+{"qid": "pool-046", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "status messages; does not address the missing date field"}
+{"qid": "pool-047", "faithfulness": 0, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "token removal deletes recorded data: not in the contexts"}
+{"qid": "pool-048", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "volume factors, not the file-drop question"}
+{"qid": "pool-049", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "only the volume input; partial"}
+{"qid": "pool-050", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "when to choose csv-export, not template change charges"}
+{"qid": "pool-051", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-052", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "guarantees a saving; what-is-included#5 says no promised savings"}
+{"qid": "pool-053", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-054", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "factor 1.25 for the up-to-150 row; table says 1.50"}
+{"qid": "pool-055", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 1, 1, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "context 2 (crm-connector#4) corrected 0->1 after unblinding: it states the 900 USD per-module setup fee; blind slip"}
+{"qid": "pool-056", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 1, 1, 1, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "900 USD total for two modules; 900 per module gives 1,800; context 2 (crm-connector#4) corrected 0->1 after unblinding: it states the 900 USD per-module setup fee; blind slip"}
+{"qid": "pool-057", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-058", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "rough number shown while blocked; range-and-estimates#2 says no number"}
+{"qid": "pool-059", "faithfulness": 0, "relevance": 1, "context_relevance": [0, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "cites pricing/setup-fees, not among the contexts; the fact is in trades-dispatch#1"}
+{"qid": "pool-060", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-061", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "cites pricing/volume-tiers for the groomer case; wrong source"}
+{"qid": "pool-062", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 0, 0, 1, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-063", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 1, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "checking time cut by about half: not in the contexts"}
+{"qid": "pool-064", "faithfulness": 1, "relevance": 2, "context_relevance": [0, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-065", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "names the flagged-items queue as the takeaway without its point; partial (pass 2)"}
+{"qid": "pool-066", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "example given, labelling honestly not answered (estimated status is not in these contexts)"}
+{"qid": "pool-067", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 1], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-068", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "volume that counts is the busiest day; contexts say normal day"}
+{"qid": "pool-069", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-070", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "cites pricing/setup-fees; the fact is in consultation/volume-and-timing"}
+{"qid": "pool-071", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 1, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-072", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-073", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "keeps contact fields from the first message; personal-data#1 says only after consent"}
+{"qid": "pool-074", "faithfulness": 1, "relevance": 0, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "fact statuses, not what is refused for a suspicious upload"}
+{"qid": "pool-075", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "five attempts and 24 hours: contexts say several attempts and a short time"}
+{"qid": "pool-076", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 1, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-077", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "cites pricing/how-we-price; the fact is in policies/security"}
+{"qid": "pool-078", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-079", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "honest abstention, other sentences supported (pass 2)"}
+{"qid": "pool-080", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "2FA through an authenticator app: not in the contexts (pass 2)"}
+{"qid": "pool-081", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "abstention; 'paid once' removed, rest supported (pass 2)"}
+{"qid": "pool-082", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "direct debit: not in the contexts (pass 2)"}
+{"qid": "pool-083", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "honest abstention, other sentences supported (pass 2)"}
+{"qid": "pool-084", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "three voices: not in the contexts (pass 2)"}
+{"qid": "pool-085", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "calendar sync: not in the contexts (pass 2)"}
+{"qid": "pool-086", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "honest abstention, other sentences supported (pass 2)"}
+{"qid": "pool-087", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "insurance: not in the contexts (pass 2)"}
+{"qid": "pool-088", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
+{"qid": "pool-089", "faithfulness": 1, "relevance": 1, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "honest abstention, other sentences supported (pass 2)"}
+{"qid": "pool-090", "faithfulness": 0, "relevance": 2, "context_relevance": [0, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "founded 2019: not in the contexts (pass 2)"}
