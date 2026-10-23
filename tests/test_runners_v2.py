@@ -369,3 +369,105 @@ def test_load_pool_reports_bad_items_and_labels(tmp_path: Path) -> None:
     text = " | ".join(problems)
     assert "duplicate pid p1" in text and "source must be 'pool'" in text
     assert "faithfulness" in text and "missing label for sampled qid p3" in text
+
+
+# ---------------------------------------------------------------- discovery: company and uploads per conversation
+
+
+def _clone_b1(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, header: bool) -> Path:
+    """B-1 copied as N-1 into a temporary conversations folder, its upload moved from the turn to the header."""
+    monkeypatch.delenv("MILO_FINAL", raising=False)
+    d = tmp_path / "conversations"
+    d.mkdir()
+    (d / "splits.json").write_text(json.dumps({"dev": ["N-1"], "test": []}))
+    (d / "N-1.jsonl").write_text((REAL_CONV / "B-1.jsonl").read_text(encoding="utf-8"))
+    exp = json.loads((REAL_CONV / "B-1.audited.expected.json").read_text("utf-8"))
+    if header:
+        for t in exp["turns"]:
+            t.pop("upload", None)
+        exp["company"] = "b.yaml"
+        exp["uploads"] = {"22": "ironbridge-procedure.txt"}
+    (d / "N-1.audited.expected.json").write_text(json.dumps(exp), encoding="utf-8")
+    script = json.loads(rd.DRY_SCRIPT.read_text(encoding="utf-8"))
+    scripts = tmp_path / "dry_scripts"
+    scripts.mkdir()
+    (scripts / "n.json").write_text(
+        json.dumps({"conversations": {"N-1": script["conversations"]["B-1"]}})
+    )
+    monkeypatch.setattr(rd, "CONV_DIR", d)
+    monkeypatch.setattr(rd, "SPLITS_PATH", d / "splits.json")
+    monkeypatch.setattr(rd, "DRY_SCRIPT_DIR", scripts)
+    return d
+
+
+def test_header_upload_and_company_give_the_same_rows_as_the_legacy_fields(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _clone_b1(tmp_path, monkeypatch, header=True)
+    script = rd.load_dry_script()
+    assert "N-1" in script["conversations"] and "B-1" in script["conversations"]
+    new = rd.run_conversation("N-1", rd.DryChat(script))
+    monkeypatch.undo()
+    old = rd.run_conversation("B-1", rd.DryChat(rd.load_dry_script()))
+    assert [r["upload"] for r in new if r["upload"]] == [
+        "data/demo/uploads/ironbridge-procedure.txt"
+    ]
+
+    def strip(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        out = []
+        for r in rows:
+            r = {k: v for k, v in r.items() if k != "conversation"}
+            exp = {k: v for k, v in r["expected"].items() if k != "upload"}
+            exp["flags"] = {k: v for k, v in exp["flags"].items() if k != "upload"}
+            r["expected"] = exp
+            out.append(r)
+        return out
+
+    a, b = strip(new), strip(old)
+    assert a == b
+
+
+def test_a_header_naming_a_missing_file_or_a_path_outside_is_refused(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    with pytest.raises(FileNotFoundError, match="nope.yaml"):
+        rd.conversation_company({"company": "nope.yaml"})
+    with pytest.raises(FileNotFoundError):
+        rd.conversation_uploads({"uploads": {"3": "nope.txt"}})
+    # only the file name counts: a traversal resolves inside the folder or fails
+    assert (
+        rd.conversation_company({"company": "../../../etc/b.yaml"}).parent
+        == rd.COMPANIES
+    )
+
+
+def test_a_conversation_without_a_header_keeps_the_legacy_behaviour() -> None:
+    exp = json.loads((REAL_CONV / "B-1.audited.expected.json").read_text("utf-8"))
+    assert list(rd.conversation_uploads(exp)) == [22]
+    assert rd.conversation_company({}) is None
+    assert rd.conversation_uploads({}) == {}
+
+
+def test_dry_run_skips_a_conversation_without_an_entry_and_says_so(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    d = _clone_b1(tmp_path, monkeypatch, header=True)
+    (d / "splits.json").write_text(json.dumps({"dev": ["N-1", "M-1"], "test": []}))
+    monkeypatch.setattr(
+        rd, "DRY_SCRIPT_DIR", tmp_path / "none"
+    )  # no entry for N-1 or M-1
+    doc = rd.run_dry(tmp_path / "out.json")
+    err = capsys.readouterr().err
+    assert "no dry script entry for N-1" in err and "no dry script entry for M-1" in err
+    assert doc["conversations"] == []
+
+
+def test_a_dry_script_defined_twice_is_an_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _clone_b1(tmp_path, monkeypatch, header=True)
+    (tmp_path / "dry_scripts" / "dup.json").write_text(
+        json.dumps({"conversations": {"N-1": {}}})
+    )
+    with pytest.raises(ValueError, match="twice"):
+        rd.load_dry_script()
