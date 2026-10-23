@@ -1,0 +1,467 @@
+{
+  "changes": [],
+  "audit": "data/prompts/data-v2-audit.md",
+  "conversation_id": "E-3",
+  "split": "dev",
+  "company": "e.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-e",
+  "generated_by": "scripts/build_data.py",
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Saltmarsh Catering",
+          "status": "reported",
+          "evidence": "Saltmarsh Catering"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Hugo Reinholt",
+          "status": "reported",
+          "evidence": "Hugo Reinholt"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Co-owner",
+          "status": "reported",
+          "evidence": "co-owner"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "food-hospitality",
+          "status": "reported",
+          "evidence": "We run a cafe and do catering for offices and weddings"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 3,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count",
+      "asks_cost": true,
+      "premature_estimate_expected": false,
+      "note": "owner asked for a price before assessment_ready: no number may be shown"
+    },
+    {
+      "turn": 4,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 15,
+          "status": "reported",
+          "evidence": "Fifteen people"
+        },
+        {
+          "field_id": "locations",
+          "value": 2,
+          "status": "reported",
+          "evidence": "two sites"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "request_channels",
+          "value": [
+            "phone",
+            "email",
+            "our website order form",
+            "walk-in customers at the cafe"
+          ],
+          "status": "reported",
+          "evidence": "Orders come by phone, by email, through our website order form, and walk-in customers at the cafe"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "daily_request_volume"
+    },
+    {
+      "turn": 6,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": 40,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day",
+          "evidence": "about 40 orders a day"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": 6,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "Six minutes"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "manual_entry_minutes"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 3,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "three minutes of re-typing"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use"
+    },
+    {
+      "turn": 9,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": [
+            40,
+            630
+          ],
+          "status": "conflicting",
+          "values": [
+            {
+              "value": 40,
+              "unit": "requests",
+              "period": "day"
+            },
+            {
+              "value": 630,
+              "unit": "requests",
+              "period": "month"
+            }
+          ],
+          "evidence": "630 orders a month"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_blocked",
+      "estimate_status": "blocked",
+      "number_allowed": false,
+      "next_question_id": "confirm_daily_request_volume"
+    },
+    {
+      "turn": 10,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": 30,
+          "status": "confirmed",
+          "unit": "requests",
+          "period": "day",
+          "derived_from": {
+            "value": 630,
+            "period": "month",
+            "business_days": 21
+          },
+          "evidence": "Go with the monthly figure"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use",
+      "answers_conflict": "daily_request_volume"
+    },
+    {
+      "turn": 11,
+      "facts": [
+        {
+          "field_id": "tools_in_use",
+          "value": [
+            "an order book",
+            "a spreadsheet",
+            "the card terminal"
+          ],
+          "status": "reported",
+          "evidence": "An order book, a spreadsheet, and the card terminal"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "steps_in_process"
+    },
+    {
+      "turn": 12,
+      "facts": [
+        {
+          "field_id": "steps_in_process",
+          "value": [
+            "take the order",
+            "write it in the order book",
+            "check the stock",
+            "plan the prep list",
+            "deliver it",
+            "send the invoice"
+          ],
+          "status": "reported",
+          "evidence": "Take the order, write it in the order book, check the stock, plan the prep list, deliver it, and send the invoice"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "approval_steps"
+    },
+    {
+      "turn": 13,
+      "facts": [
+        {
+          "field_id": "approval_steps",
+          "value": [
+            "I approve any order over 800 USD"
+          ],
+          "status": "reported",
+          "evidence": "I approve any order over 800 USD"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "pain_points"
+    },
+    {
+      "turn": 14,
+      "facts": [
+        {
+          "field_id": "pain_points",
+          "value": [
+            "orders written down wrong",
+            "allergy details lost on the way to the kitchen",
+            "invoices going out late"
+          ],
+          "status": "reported",
+          "evidence": "Orders written down wrong, allergy details lost on the way to the kitchen, and invoices going out late"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "error_types"
+    },
+    {
+      "turn": 15,
+      "facts": [
+        {
+          "field_id": "error_types",
+          "value": [
+            "wrong",
+            "missed"
+          ],
+          "status": "reported",
+          "evidence": "Wrong orders mostly, and the odd one that never gets made"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "automation_goals"
+    },
+    {
+      "turn": 16,
+      "facts": [
+        {
+          "field_id": "automation_goals",
+          "value": [
+            "order intake",
+            "flagging allergies",
+            "invoicing"
+          ],
+          "status": "reported",
+          "evidence": "Order intake, flagging allergies and invoicing"
+        },
+        {
+          "field_id": "main_goal",
+          "value": "cost",
+          "status": "reported",
+          "evidence": "I want costs down"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "integrations_available"
+    },
+    {
+      "turn": 17,
+      "facts": [
+        {
+          "field_id": "integrations_available",
+          "value": [
+            "export-only-tool"
+          ],
+          "status": "reported",
+          "evidence": "The card terminal exports a daily file but nothing goes back in"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled"
+    },
+    {
+      "turn": 18,
+      "facts": [
+        {
+          "field_id": "personal_data_handled",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes"
+        },
+        {
+          "field_id": "personal_data_types",
+          "value": [
+            "customer phone numbers",
+            "allergy notes"
+          ],
+          "status": "reported",
+          "evidence": "customer phone numbers and allergy notes"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "urgent_requests_exist"
+    },
+    {
+      "turn": 19,
+      "facts": [
+        {
+          "field_id": "urgent_requests_exist",
+          "value": false,
+          "status": "reported",
+          "evidence": "No, nothing urgent"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "budget_range",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 20,
+      "facts": [
+        {
+          "field_id": "budget_range",
+          "value": null,
+          "status": "unknown",
+          "evidence": "No budget yet, no idea"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "start_timeline",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 21,
+      "facts": [
+        {
+          "field_id": "start_timeline",
+          "value": "next-quarter",
+          "status": "reported",
+          "evidence": "Next quarter"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": "owner_email"
+    },
+    {
+      "turn": 22,
+      "facts": [
+        {
+          "field_id": "owner_email",
+          "value": "hugo@example.invalid",
+          "status": "reported",
+          "evidence": "hugo@example.invalid"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null
+    },
+    {
+      "turn": 23,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null,
+      "asks_cost": true
+    }
+  ]
+}

@@ -1,0 +1,200 @@
+id: E-3
+split: dev
+company: e
+user_id: owner-e
+style: contradicts
+turns:
+- owner_text: Hugo Reinholt, co-owner of Saltmarsh Catering.
+  plan:
+  - field: company_name
+    value: Saltmarsh Catering
+    evidence: Saltmarsh Catering
+  - field: owner_name
+    value: Hugo Reinholt
+    evidence: Hugo Reinholt
+  - field: owner_role
+    value: Co-owner
+    evidence: co-owner
+  tags:
+  - multi
+- owner_text: We run a cafe and do catering for offices and weddings.
+  plan:
+  - field: industry
+    value: food-hospitality
+    evidence: We run a cafe and do catering for offices and weddings
+  tags:
+  - enum_map
+- owner_text: What's the rough price of all this? Just a quick idea.
+  tags:
+  - price_early
+  flags:
+    asks_cost: true
+- owner_text: 'Fifteen people, two sites: the cafe and the kitchen unit.'
+  plan:
+  - field: employee_count
+    value: 15
+    evidence: Fifteen people
+  - field: locations
+    value: 2
+    evidence: two sites
+  tags:
+  - early
+- owner_text: Orders come by phone, by email, through our website order form, and walk-in customers at the cafe.
+  plan:
+  - field: request_channels
+    value:
+    - phone
+    - email
+    - our website order form
+    - walk-in customers at the cafe
+    evidence: Orders come by phone, by email, through our website order form, and walk-in customers at the cafe
+  tags:
+  - owner_words
+- owner_text: We do about 40 orders a day, easily.
+  plan:
+  - field: daily_request_volume
+    value: 40
+    evidence: about 40 orders a day
+    period: day
+- owner_text: Six minutes of handling for each one.
+  plan:
+  - field: average_handling_minutes
+    value: 6
+    evidence: Six minutes
+- owner_text: Then three minutes of re-typing afterwards.
+  plan:
+  - field: manual_entry_minutes
+    value: 3
+    evidence: three minutes of re-typing
+- owner_text: Actually our bookkeeper says it's closer to 630 orders a month, so I'm not sure about the 40.
+  plan:
+  - field: daily_request_volume
+    value: 630
+    evidence: 630 orders a month
+    status: conflicting
+    period: month
+  tags:
+  - conflict_blocking
+- owner_text: Go with the monthly figure. 40 is a Friday in December.
+  plan:
+  - field: daily_request_volume
+    value: 30
+    evidence: Go with the monthly figure
+    status: confirmed
+    period: day
+    derived_from:
+      value: 630
+      period: month
+  flags:
+    answers_conflict: daily_request_volume
+- owner_text: An order book, a spreadsheet, and the card terminal.
+  plan:
+  - field: tools_in_use
+    value:
+    - an order book
+    - a spreadsheet
+    - the card terminal
+    evidence: An order book, a spreadsheet, and the card terminal
+  tags:
+  - owner_words
+- owner_text: Take the order, write it in the order book, check the stock, plan the prep list, deliver it, and send the invoice.
+  plan:
+  - field: steps_in_process
+    value:
+    - take the order
+    - write it in the order book
+    - check the stock
+    - plan the prep list
+    - deliver it
+    - send the invoice
+    evidence: Take the order, write it in the order book, check the stock, plan the prep list, deliver it, and send the invoice
+  tags:
+  - owner_words
+- owner_text: I approve any order over 800 USD.
+  plan:
+  - field: approval_steps
+    value:
+    - I approve any order over 800 USD
+    evidence: I approve any order over 800 USD
+  tags:
+  - owner_words
+- owner_text: Orders written down wrong, allergy details lost on the way to the kitchen, and invoices going out late.
+  plan:
+  - field: pain_points
+    value:
+    - orders written down wrong
+    - allergy details lost on the way to the kitchen
+    - invoices going out late
+    evidence: Orders written down wrong, allergy details lost on the way to the kitchen, and invoices going out late
+  tags:
+  - owner_words
+- owner_text: Wrong orders mostly, and the odd one that never gets made.
+  plan:
+  - field: error_types
+    value:
+    - wrong
+    - missed
+    evidence: Wrong orders mostly, and the odd one that never gets made
+  tags:
+  - enum_map
+- owner_text: Order intake, flagging allergies and invoicing. Mainly I want costs down.
+  plan:
+  - field: automation_goals
+    value:
+    - order intake
+    - flagging allergies
+    - invoicing
+    evidence: Order intake, flagging allergies and invoicing
+  - field: main_goal
+    value: cost
+    evidence: I want costs down
+  tags:
+  - owner_words
+  - enum_map
+  - early
+- owner_text: The card terminal exports a daily file but nothing goes back in.
+  plan:
+  - field: integrations_available
+    value:
+    - export-only-tool
+    evidence: The card terminal exports a daily file but nothing goes back in
+  tags:
+  - enum_map
+- owner_text: Yes, customer phone numbers and allergy notes.
+  plan:
+  - field: personal_data_handled
+    value: true
+    evidence: 'Yes'
+  - field: personal_data_types
+    value:
+    - customer phone numbers
+    - allergy notes
+    evidence: customer phone numbers and allergy notes
+- owner_text: No, nothing urgent in a kitchen office like ours.
+  plan:
+  - field: urgent_requests_exist
+    value: false
+    evidence: No, nothing urgent
+- owner_text: No budget yet, no idea.
+  plan:
+  - field: budget_range
+    value: null
+    evidence: No budget yet, no idea
+    status: unknown
+  tags:
+  - unknown
+- owner_text: Next quarter, I'd say.
+  plan:
+  - field: start_timeline
+    value: next-quarter
+    evidence: Next quarter
+  tags:
+  - enum_map
+- owner_text: hugo@example.invalid
+  plan:
+  - field: owner_email
+    value: hugo@example.invalid
+    evidence: hugo@example.invalid
+- owner_text: So what's the estimate?
+  flags:
+    asks_cost: true

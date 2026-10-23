@@ -1,0 +1,71 @@
+# Demo company I (fictional, data-v2). Truth file: what the owner actually knows. Hand-written.
+company:
+  id: copperline-garage
+  display_name: Copperline Garage
+  owner:
+    name: Wendell Voss
+    role: Managing director
+    email: wendell@example.invalid
+  industry: retail
+  employee_count: 52
+  locations: 4
+consent:
+  given: true
+  version: consent-v1
+workflow:
+  request_channels:
+  - phone calls
+  - emails
+  - web chat
+  - shop counter
+  daily_request_volume: 210
+  average_handling_minutes: 3
+  manual_entry_minutes: 2
+  tools_in_use:
+  - web shop back office
+  - stock spreadsheet
+  - shared inbox
+  steps_in_process:
+  - enquiry arrives
+  - check stock
+  - quote delivery date
+  - take payment
+  - pass to warehouse
+  - send tracking
+  approval_steps:
+  - store manager approves refunds over 100 USD
+problems:
+  pain_points:
+  - outdated stock counts
+  - delivery date questions
+  - refund queue
+  error_types:
+  - wrong
+  - delayed
+  automation_goals:
+  - delivery date enquiries
+  - stock checks
+  - refund triage
+  main_goal: cost
+constraints:
+  integrations_available:
+  - api-connector
+  - csv-export
+  personal_data_handled: true
+  personal_data_types:
+  - customer addresses
+  - order histories
+  - payment references
+  urgent_requests_exist: false
+  budget_range: about 40000 USD
+  start_timeline: next-quarter
+conflicts: []
+upload:
+  file: null
+  conversation: null
+  injected_line: null
+traps:
+- name suggests a car workshop
+- I-3 owner pastes an email from a colleague
+- I-4 owner answers in fragments and tries an instruction
+expected_end_state: indicative estimate

@@ -1,0 +1,466 @@
+{
+  "changes": [],
+  "audit": "data/prompts/data-v2-audit.md",
+  "conversation_id": "F-4",
+  "split": "dev",
+  "company": "f.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-f",
+  "generated_by": "scripts/build_data.py",
+  "uploads": {
+    "12": "goldencrumb-dispatch-procedure.txt"
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Golden Crumb Bakery",
+          "status": "reported",
+          "evidence": "Golden Crumb Bakery"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Raimund Teague",
+          "status": "reported",
+          "evidence": "Raimund Teague"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Operations manager",
+          "status": "reported",
+          "evidence": "I'm the operations manager"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "logistics-delivery",
+          "status": "reported",
+          "evidence": "We move parcels and pallets between businesses"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 3,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 22,
+          "status": "reported",
+          "evidence": "22 of us"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "locations"
+    },
+    {
+      "turn": 4,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "locations"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "locations",
+          "value": 2,
+          "status": "reported",
+          "evidence": "two depots"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 6,
+      "facts": [
+        {
+          "field_id": "locations",
+          "value": [
+            2,
+            3
+          ],
+          "status": "conflicting",
+          "values": [
+            {
+              "value": 2
+            },
+            {
+              "value": 3
+            }
+          ],
+          "evidence": "three if you count the cross-dock"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "locations"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "locations",
+          "value": 2,
+          "status": "confirmed",
+          "evidence": "Two"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels",
+      "answers_conflict": "locations"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "request_channels",
+          "value": [
+            "phone",
+            "email",
+            "the customer portal",
+            "driver app messages"
+          ],
+          "status": "reported",
+          "evidence": "Bookings come by phone, by email, in the customer portal and in driver app messages"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "daily_request_volume"
+    },
+    {
+      "turn": 9,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": 180,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day",
+          "evidence": "Around 180 bookings a day"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes"
+    },
+    {
+      "turn": 10,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes"
+    },
+    {
+      "turn": 11,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": 3,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "Three minutes a booking"
+        },
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 2,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "two minutes to key it in"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use"
+    },
+    {
+      "turn": 12,
+      "facts": [
+        {
+          "field_id": "tools_in_use",
+          "value": [
+            "dispatch board",
+            "tracking app",
+            "spreadsheet"
+          ],
+          "status": "reported",
+          "evidence": "Assign a driver on the dispatch board and print the manifest for the van.\n3. Track the delivery in the tracking app"
+        },
+        {
+          "field_id": "steps_in_process",
+          "value": [
+            "receive the booking",
+            "assign a driver",
+            "print the manifest",
+            "track the delivery",
+            "collect proof of delivery",
+            "send the invoice"
+          ],
+          "status": "reported",
+          "evidence": "Receive the booking and check the pickup window with the customer.\n2. Assign a driver on the dispatch board and print the manifest for the van.\n3. Track the delivery in the tracking app until the driver reports the drop.\n4. Collect proof of delivery from the driver, with the signature, before the end of the shift.\n5. Send the invoice"
+        },
+        {
+          "field_id": "approval_steps",
+          "value": [
+            "rush surcharges must be approved by the dispatch manager"
+          ],
+          "status": "reported",
+          "evidence": "Rush surcharges must be approved by the dispatch manager"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "pain_points"
+    },
+    {
+      "turn": 13,
+      "facts": [
+        {
+          "field_id": "pain_points",
+          "value": [
+            "wrong addresses",
+            "pickups that miss their window",
+            "chasing proof of delivery"
+          ],
+          "status": "reported",
+          "evidence": "Wrong addresses are the worst, then pickups that miss their window, and chasing proof of delivery"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "error_types"
+    },
+    {
+      "turn": 14,
+      "facts": [
+        {
+          "field_id": "error_types",
+          "value": [
+            "wrong",
+            "delayed",
+            "missed"
+          ],
+          "status": "reported",
+          "evidence": "Drop-offs at the wrong place, late runs, and missed pickups"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "automation_goals"
+    },
+    {
+      "turn": 15,
+      "facts": [
+        {
+          "field_id": "automation_goals",
+          "value": [
+            "the booking intake",
+            "the driver assignment",
+            "chasing proof of delivery"
+          ],
+          "status": "reported",
+          "evidence": "The booking intake, the driver assignment, and chasing proof of delivery"
+        },
+        {
+          "field_id": "main_goal",
+          "value": "growth",
+          "status": "reported",
+          "evidence": "we want to grow"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "integrations_available"
+    },
+    {
+      "turn": 16,
+      "facts": [
+        {
+          "field_id": "integrations_available",
+          "value": [
+            "api-connector",
+            "csv-export"
+          ],
+          "status": "reported",
+          "evidence": "The tracking app has an API, and the spreadsheet can export CSV"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled"
+    },
+    {
+      "turn": 17,
+      "facts": [
+        {
+          "field_id": "personal_data_handled",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes"
+        },
+        {
+          "field_id": "personal_data_types",
+          "value": [
+            "recipients' names",
+            "delivery addresses",
+            "their signatures"
+          ],
+          "status": "reported",
+          "evidence": "Recipients' names, delivery addresses and their signatures"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "urgent_requests_exist"
+    },
+    {
+      "turn": 18,
+      "facts": [
+        {
+          "field_id": "urgent_requests_exist",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes"
+        },
+        {
+          "field_id": "urgent_request_types",
+          "value": [
+            "same-day rush parcels",
+            "medical deliveries that cannot wait"
+          ],
+          "status": "reported",
+          "evidence": "Same-day rush parcels, and medical deliveries that cannot wait"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "budget_range",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 19,
+      "facts": [
+        {
+          "field_id": "budget_range",
+          "value": "around 25000 USD",
+          "status": "reported",
+          "evidence": "Maybe 25000 USD"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "start_timeline",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 20,
+      "facts": [
+        {
+          "field_id": "start_timeline",
+          "value": null,
+          "status": "unknown",
+          "evidence": "Not sure when"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "owner_email",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 21,
+      "facts": [
+        {
+          "field_id": "owner_email",
+          "value": "raimund@example.invalid",
+          "status": "reported",
+          "evidence": "raimund@example.invalid"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": null,
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 22,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": null,
+      "assumptions": [
+        "start_timeline"
+      ],
+      "asks_cost": true
+    }
+  ]
+}

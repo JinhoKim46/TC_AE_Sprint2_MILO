@@ -1,0 +1,167 @@
+id: C-3
+split: dev
+company: c
+user_id: owner-c
+style: pastes_document
+turns:
+- owner_text: Hi, Ines Calloway here, I'm the owner of Pinewood Garden Services.
+  plan:
+  - field: company_name
+    value: Pinewood Garden Services
+    evidence: Pinewood Garden Services
+  - field: owner_name
+    value: Ines Calloway
+    evidence: Ines Calloway
+  - field: owner_role
+    value: Owner
+    evidence: I'm the owner
+  tags:
+  - multi
+- owner_text: Despite the name we don't do gardens. We clean offices and shops, evenings mostly.
+  plan:
+  - field: industry
+    value: cleaning
+    evidence: We clean offices and shops
+  tags:
+  - name_misleads
+  - enum_map
+- owner_text: Before we go any further, roughly what is this going to cost me?
+  tags:
+  - price_early
+  flags:
+    asks_cost: true
+- owner_text: Four of us including me, and one site by the ring road. I'm in the van most days so I may reply slowly.
+  plan:
+  - field: employee_count
+    value: 4
+    evidence: Four of us including me
+  - field: locations
+    value: 1
+    evidence: one site by the ring road
+  tags:
+  - early
+- owner_text: Clients phone us, send text messages, or fill in the website form. About 12 a day, and I spend roughly 7 minutes sorting out each one.
+  plan:
+  - field: request_channels
+    value:
+    - phone
+    - text messages
+    - website form
+    evidence: Clients phone us, send text messages, or fill in the website form
+  - field: daily_request_volume
+    value: 12
+    evidence: About 12 a day
+    period: day
+  - field: average_handling_minutes
+    value: 7
+    evidence: roughly 7 minutes
+  tags:
+  - multi
+  - owner_words
+  - early
+- owner_text: Then four minutes of typing per booking, on top.
+  plan:
+  - field: manual_entry_minutes
+    value: 4
+    evidence: four minutes of typing
+- owner_text: 'Here''s the checklist I paste into the email for new cleaners: ''Subject: How we run a booking. 1. Take the booking and write it in the paper diary. 2. Check the diary the evening before so nobody is double-booked. 3. Confirm the visit by text. 4. Send a cleaner to the site with the key. 5. Send the invoice at the end of the week. Every deep clean quote has to be approved by me before it goes out. Ines types finished jobs into the spreadsheet on Friday. Please never text clients after 8pm.'''
+  plan:
+  - field: tools_in_use
+    value:
+    - paper diary
+    - spreadsheet
+    evidence: Take the booking and write it in the paper diary. 2. Check the diary the evening before so nobody is double-booked. 3. Confirm the visit by text. 4. Send a cleaner to the site with the key. 5. Send the invoice at the end of the week. Every deep clean quote has to be approved by me before it goes out. Ines types finished jobs into the spreadsheet on Friday
+  - field: steps_in_process
+    value:
+    - take the booking
+    - check the diary the evening before
+    - confirm the visit by text
+    - send a cleaner to the site
+    - send the invoice
+    evidence: Take the booking and write it in the paper diary. 2. Check the diary the evening before so nobody is double-booked. 3. Confirm the visit by text. 4. Send a cleaner to the site with the key. 5. Send the invoice at the end of the week
+  - field: approval_steps
+    value:
+    - every deep clean quote has to be approved by me
+    evidence: Every deep clean quote has to be approved by me
+  tags:
+  - pasted
+  - owner_words
+  - multi
+- owner_text: Double bookings, mostly, and the key handovers get forgotten. Invoices go out late as well.
+  plan:
+  - field: pain_points
+    value:
+    - double bookings
+    - key handovers get forgotten
+    - invoices go out late
+    evidence: Double bookings, mostly, and the key handovers get forgotten. Invoices go out late as well.
+  tags:
+  - owner_words
+- owner_text: The same job booked twice, and things turning up late.
+  plan:
+  - field: error_types
+    value:
+    - duplicated
+    - delayed
+    evidence: The same job booked twice, and things turning up late.
+  tags:
+  - enum_map
+- owner_text: Confirmations that go out on their own, and invoice reminders. Honestly I want to save time, my evenings are gone. The spreadsheet can save a CSV file, nothing fancier.
+  plan:
+  - field: automation_goals
+    value:
+    - confirmations that go out on their own
+    - invoice reminders
+    evidence: Confirmations that go out on their own, and invoice reminders
+  - field: main_goal
+    value: time
+    evidence: I want to save time
+  - field: integrations_available
+    value:
+    - csv-export
+    evidence: The spreadsheet can save a CSV file
+  tags:
+  - multi
+  - owner_words
+  - enum_map
+  - early
+- owner_text: Yes, the addresses of our clients, and the door codes they give us.
+  plan:
+  - field: personal_data_handled
+    value: true
+    evidence: Yes, the addresses of our clients
+  - field: personal_data_types
+    value:
+    - addresses of our clients
+    - door codes they give us
+    evidence: the addresses of our clients, and the door codes they give us
+  tags:
+  - owner_words
+- owner_text: No, nobody needs a cleaner at 3 in the morning.
+  plan:
+  - field: urgent_requests_exist
+    value: false
+    evidence: No, nobody needs a cleaner at 3 in the morning
+- owner_text: No idea on budget, I haven't thought about it.
+  plan:
+  - field: budget_range
+    value: null
+    evidence: No idea on budget
+    status: unknown
+  tags:
+  - unknown
+- owner_text: Probably next month, once the spring rush is over.
+  plan:
+  - field: start_timeline
+    value: next-month
+    evidence: next month
+  tags:
+  - enum_map
+- owner_text: ines@example.invalid
+  plan:
+  - field: owner_email
+    value: ines@example.invalid
+    evidence: ines@example.invalid
+- owner_text: So what is the estimate looking like?
+  flags:
+    asks_cost: true

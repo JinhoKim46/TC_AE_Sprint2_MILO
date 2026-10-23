@@ -1,0 +1,210 @@
+id: F-4
+split: dev
+company: f
+user_id: owner-f
+style: off_topic_detours
+turns:
+- owner_text: Raimund Teague, Golden Crumb Bakery. I'm the operations manager.
+  plan:
+  - field: company_name
+    value: Golden Crumb Bakery
+    evidence: Golden Crumb Bakery
+  - field: owner_name
+    value: Raimund Teague
+    evidence: Raimund Teague
+  - field: owner_role
+    value: Operations manager
+    evidence: I'm the operations manager
+  tags:
+  - multi
+- owner_text: We move parcels and pallets between businesses, same-day and overnight.
+  plan:
+  - field: industry
+    value: logistics-delivery
+    evidence: We move parcels and pallets between businesses
+  tags:
+  - name_misleads
+  - enum_map
+- owner_text: 22 of us in total.
+  plan:
+  - field: employee_count
+    value: 22
+    evidence: 22 of us
+- owner_text: Sorry, one of the drivers just walked in with a cake. It's his birthday. Anyway.
+  tags:
+  - off_topic
+- owner_text: We run two depots.
+  plan:
+  - field: locations
+    value: 2
+    evidence: two depots
+- owner_text: Well, three if you count the cross-dock we rent, so three.
+  plan:
+  - field: locations
+    value: 3
+    evidence: three if you count the cross-dock
+    status: conflicting
+  tags:
+  - conflict_other
+- owner_text: Two. The cross-dock is rented space, not ours.
+  plan:
+  - field: locations
+    value: 2
+    evidence: Two
+    status: confirmed
+  flags:
+    answers_conflict: locations
+- owner_text: Bookings come by phone, by email, in the customer portal and in driver app messages. The portal is new.
+  plan:
+  - field: request_channels
+    value:
+    - phone
+    - email
+    - the customer portal
+    - driver app messages
+    evidence: Bookings come by phone, by email, in the customer portal and in driver app messages
+  tags:
+  - owner_words
+- owner_text: Around 180 bookings a day.
+  plan:
+  - field: daily_request_volume
+    value: 180
+    evidence: Around 180 bookings a day
+    period: day
+- owner_text: Rain again. The vans hate it and so do I.
+  tags:
+  - off_topic
+- owner_text: Three minutes a booking to handle, and two minutes to key it in afterwards.
+  plan:
+  - field: average_handling_minutes
+    value: 3
+    evidence: Three minutes a booking
+  - field: manual_entry_minutes
+    value: 2
+    evidence: two minutes to key it in
+- owner_text: I've attached our dispatch procedure, it shows the whole routine.
+  plan:
+  - field: tools_in_use
+    value:
+    - dispatch board
+    - tracking app
+    - spreadsheet
+    evidence: 'Assign a driver on the dispatch board and print the manifest for the van.
+
+      3. Track the delivery in the tracking app'
+  - field: steps_in_process
+    value:
+    - receive the booking
+    - assign a driver
+    - print the manifest
+    - track the delivery
+    - collect proof of delivery
+    - send the invoice
+    evidence: 'Receive the booking and check the pickup window with the customer.
+
+      2. Assign a driver on the dispatch board and print the manifest for the van.
+
+      3. Track the delivery in the tracking app until the driver reports the drop.
+
+      4. Collect proof of delivery from the driver, with the signature, before the end of the shift.
+
+      5. Send the invoice'
+  - field: approval_steps
+    value:
+    - rush surcharges must be approved by the dispatch manager
+    evidence: Rush surcharges must be approved by the dispatch manager
+  tags:
+  - upload_clean
+  - owner_words
+  - multi
+  upload: goldencrumb-dispatch-procedure.txt
+- owner_text: Wrong addresses are the worst, then pickups that miss their window, and chasing proof of delivery.
+  plan:
+  - field: pain_points
+    value:
+    - wrong addresses
+    - pickups that miss their window
+    - chasing proof of delivery
+    evidence: Wrong addresses are the worst, then pickups that miss their window, and chasing proof of delivery
+  tags:
+  - owner_words
+- owner_text: Drop-offs at the wrong place, late runs, and missed pickups.
+  plan:
+  - field: error_types
+    value:
+    - wrong
+    - delayed
+    - missed
+    evidence: Drop-offs at the wrong place, late runs, and missed pickups
+  tags:
+  - enum_map
+- owner_text: The booking intake, the driver assignment, and chasing proof of delivery. Mostly we want to grow without more office staff.
+  plan:
+  - field: automation_goals
+    value:
+    - the booking intake
+    - the driver assignment
+    - chasing proof of delivery
+    evidence: The booking intake, the driver assignment, and chasing proof of delivery
+  - field: main_goal
+    value: growth
+    evidence: we want to grow
+  tags:
+  - owner_words
+  - enum_map
+  - early
+- owner_text: The tracking app has an API, and the spreadsheet can export CSV.
+  plan:
+  - field: integrations_available
+    value:
+    - api-connector
+    - csv-export
+    evidence: The tracking app has an API, and the spreadsheet can export CSV
+  tags:
+  - enum_map
+- owner_text: Yes. Recipients' names, delivery addresses and their signatures.
+  plan:
+  - field: personal_data_handled
+    value: true
+    evidence: 'Yes'
+  - field: personal_data_types
+    value:
+    - recipients' names
+    - delivery addresses
+    - their signatures
+    evidence: Recipients' names, delivery addresses and their signatures
+  tags:
+  - owner_words
+- owner_text: Yes. Same-day rush parcels, and medical deliveries that cannot wait.
+  plan:
+  - field: urgent_requests_exist
+    value: true
+    evidence: 'Yes'
+  - field: urgent_request_types
+    value:
+    - same-day rush parcels
+    - medical deliveries that cannot wait
+    evidence: Same-day rush parcels, and medical deliveries that cannot wait
+  tags:
+  - owner_words
+- owner_text: Maybe 25000 USD.
+  plan:
+  - field: budget_range
+    value: around 25000 USD
+    evidence: Maybe 25000 USD
+- owner_text: Not sure when we'd start.
+  plan:
+  - field: start_timeline
+    value: null
+    evidence: Not sure when
+    status: unknown
+  tags:
+  - unknown
+- owner_text: raimund@example.invalid
+  plan:
+  - field: owner_email
+    value: raimund@example.invalid
+    evidence: raimund@example.invalid
+- owner_text: What is the estimate looking like?
+  flags:
+    asks_cost: true

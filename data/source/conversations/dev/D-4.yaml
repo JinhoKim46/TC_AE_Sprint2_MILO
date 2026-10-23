@@ -1,0 +1,214 @@
+id: D-4
+split: dev
+company: d
+user_id: owner-d
+style: off_topic_detours
+turns:
+- owner_text: Hello, Tomas Brandt, practice director at Aldermoor Physio Group.
+  plan:
+  - field: company_name
+    value: Aldermoor Physio Group
+    evidence: Aldermoor Physio Group
+  - field: owner_name
+    value: Tomas Brandt
+    evidence: Tomas Brandt
+  - field: owner_role
+    value: Practice director
+    evidence: practice director
+  tags:
+  - multi
+- owner_text: We're a physiotherapy and sports-injury practice, three sites.
+  plan:
+  - field: industry
+    value: health-wellness
+    evidence: a physiotherapy and sports-injury practice
+  - field: locations
+    value: 3
+    evidence: three sites
+  tags:
+  - enum_map
+  - early
+- owner_text: Forty-three of us, counting the front desk.
+  plan:
+  - field: employee_count
+    value: 43
+    evidence: Forty-three of us
+- owner_text: Sorry, the car park attendant is arguing with a delivery van outside. Never a dull morning here.
+  tags:
+  - off_topic
+- owner_text: Roughly what will this set me back? My partner wants a number before we start.
+  tags:
+  - price_early
+  flags:
+    asks_cost: true
+- owner_text: Patients phone calls come in at reception, through the portal, by email, and sometimes someone shows up at the front desk. About 90 a day, the week after a bank holiday is mad.
+  plan:
+  - field: request_channels
+    value:
+    - phone calls at reception
+    - the portal
+    - email
+    - someone shows up at the front desk
+    evidence: Patients phone calls come in at reception, through the portal, by email, and sometimes someone shows up at the front desk
+  - field: daily_request_volume
+    value: 90
+    evidence: About 90 a day
+    period: day
+  tags:
+  - owner_words
+  - early
+- owner_text: Actually, looking at the weekly diary we do around 350 a week, so that is a different figure.
+  plan:
+  - field: daily_request_volume
+    value: 350
+    evidence: around 350 a week
+    status: conflicting
+    period: week
+  tags:
+  - conflict_blocking
+- owner_text: Use the weekly one. The 90 was a bank holiday spike.
+  plan:
+  - field: daily_request_volume
+    value: 70
+    evidence: Use the weekly one
+    status: confirmed
+    period: day
+    derived_from:
+      value: 350
+      period: week
+  flags:
+    answers_conflict: daily_request_volume
+- owner_text: Did I mention it's our twentieth anniversary in the spring? We're doing a cake for the staff.
+  tags:
+  - off_topic
+- owner_text: About 5 minutes to find a therapist, then 3 minutes keying it in afterwards.
+  plan:
+  - field: average_handling_minutes
+    value: 5
+    evidence: About 5 minutes
+  - field: manual_entry_minutes
+    value: 3
+    evidence: 3 minutes keying it in
+- owner_text: The practice management system, the shared calendar, and a pile of paper referral forms.
+  plan:
+  - field: tools_in_use
+    value:
+    - the practice management system
+    - the shared calendar
+    - a pile of paper referral forms
+    evidence: The practice management system, the shared calendar, and a pile of paper referral forms
+  tags:
+  - owner_words
+- owner_text: Take the request, look for a free therapist, book the slot, send a confirmation, and chase the referral letter if there is one.
+  plan:
+  - field: steps_in_process
+    value:
+    - take the request
+    - look for a free therapist
+    - book the slot
+    - send a confirmation
+    - chase the referral letter
+    evidence: Take the request, look for a free therapist, book the slot, send a confirmation, and chase the referral letter
+  tags:
+  - owner_words
+- owner_text: The clinical lead approves any override of an urgent slot, and I sign off big refunds.
+  plan:
+  - field: approval_steps
+    value:
+    - clinical lead approves any override of an urgent slot
+    - I sign off big refunds
+    evidence: The clinical lead approves any override of an urgent slot, and I sign off big refunds
+  tags:
+  - owner_words
+- owner_text: Queues on the phones at opening, referral letters that go missing, and patients who don't show.
+  plan:
+  - field: pain_points
+    value:
+    - queues on the phones at opening
+    - referral letters that go missing
+    - patients who don't show
+    evidence: Queues on the phones at opening, referral letters that go missing, and patients who don't show
+  tags:
+  - owner_words
+- owner_text: Sorry, the cake lady is on the other line. Where were we?
+  tags:
+  - off_topic
+- owner_text: Referral letters that never arrive, or the wrong slot booked.
+  plan:
+  - field: error_types
+    value:
+    - missed
+    - wrong
+    evidence: Referral letters that never arrive, or the wrong slot booked
+  tags:
+  - enum_map
+- owner_text: Booking appointments, chasing referrals and sending reminders by themselves. Fewer mistakes is what I care about.
+  plan:
+  - field: automation_goals
+    value:
+    - booking appointments
+    - chasing referrals
+    - sending reminders by themselves
+    evidence: Booking appointments, chasing referrals and sending reminders by themselves
+  - field: main_goal
+    value: errors
+    evidence: Fewer mistakes
+  tags:
+  - owner_words
+  - enum_map
+  - early
+- owner_text: An API on the practice system, and CSV exports.
+  plan:
+  - field: integrations_available
+    value:
+    - api-connector
+    - csv-export
+    evidence: An API on the practice system, and CSV exports
+  tags:
+  - enum_map
+- owner_text: Yes, the patients' names, phone numbers and insurance numbers.
+  plan:
+  - field: personal_data_handled
+    value: true
+    evidence: 'Yes'
+  - field: personal_data_types
+    value:
+    - the patients' names
+    - phone numbers
+    - insurance numbers
+    evidence: the patients' names, phone numbers and insurance numbers
+  tags:
+  - owner_words
+- owner_text: Yes. Same-day injury slots mostly, and post-surgery patients phoning in worried.
+  plan:
+  - field: urgent_requests_exist
+    value: true
+    evidence: 'Yes'
+  - field: urgent_request_types
+    value:
+    - same-day injury slots
+    - post-surgery patients phoning in worried
+    evidence: Same-day injury slots mostly, and post-surgery patients phoning in worried
+  tags:
+  - owner_words
+- owner_text: About 10000 USD a year.
+  plan:
+  - field: budget_range
+    value: about 10000 USD a year
+    evidence: About 10000 USD a year
+- owner_text: Starting when? Not sure yet, to be honest.
+  plan:
+  - field: start_timeline
+    value: null
+    evidence: Not sure yet
+    status: unknown
+  tags:
+  - unknown
+- owner_text: tomas@example.invalid
+  plan:
+  - field: owner_email
+    value: tomas@example.invalid
+    evidence: tomas@example.invalid
+- owner_text: What is the estimate looking like?
+  flags:
+    asks_cost: true

@@ -1,0 +1,99 @@
+# Demo company F (fictional, data-v2). Truth file: what the owner actually knows. Hand-written.
+company:
+  id: golden-crumb-bakery
+  display_name: Golden Crumb Bakery
+  owner:
+    name: Raimund Teague
+    role: Operations manager
+    email: raimund@example.invalid
+  industry: logistics-delivery
+  employee_count: 22
+  locations: 2
+consent:
+  given: true
+  version: consent-v1
+workflow:
+  request_channels:
+  - phone calls
+  - emails
+  - customer portal
+  - driver app messages
+  daily_request_volume: 180
+  average_handling_minutes: 3
+  manual_entry_minutes: 2
+  tools_in_use:
+  - dispatch board
+  - spreadsheet
+  - tracking app
+  steps_in_process:
+  - receive booking
+  - assign driver
+  - print manifest
+  - track delivery
+  - collect proof of delivery
+  - send invoice
+  approval_steps:
+  - dispatch manager approves rush surcharges
+problems:
+  pain_points:
+  - wrong addresses
+  - missed pickup windows
+  - chasing proof of delivery
+  error_types:
+  - wrong
+  - delayed
+  - missed
+  automation_goals:
+  - booking intake
+  - driver assignment
+  - proof of delivery chasing
+  main_goal: growth
+constraints:
+  integrations_available:
+  - api-connector
+  - csv-export
+  personal_data_handled: true
+  personal_data_types:
+  - recipient names
+  - delivery addresses
+  - signatures
+  urgent_requests_exist: true
+  urgent_request_types:
+  - same-day rush parcels
+  - medical deliveries
+  budget_range: around 25000 USD
+  start_timeline: unknown
+conflicts:
+- conversation: F-3
+  field: daily_request_volume
+  statement_1:
+    value: 220
+    unit: requests
+    period: day
+    text: about 220 a day
+  statement_2:
+    value: 900
+    unit: requests
+    period: week
+    text: about 900 a week
+  truth: 180 per business day (900 a week); left open by the owner
+  must_be: raised with the owner, not overwritten
+- conversation: F-4
+  field: locations
+  statement_1:
+    value: 2
+    text: two depots
+  statement_2:
+    value: 3
+    text: three if you count the cross-dock
+  truth: '2'
+  must_be: asked with the field's own question
+upload:
+  file: data/demo/uploads/goldencrumb-dispatch-procedure.txt
+  conversation: F-4
+  injected_line: null
+traps:
+- name suggests a bakery
+- volume conflict left unresolved in F-3
+- owner drifts off topic in F-4
+expected_end_state: F-3 ends blocked on the volume conflict; F-4 scenario estimate, start unknown

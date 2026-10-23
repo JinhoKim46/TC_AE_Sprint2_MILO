@@ -1,0 +1,15 @@
+{"turn": 1, "owner_text": "Wendell Voss, managing director of Copperline Garage."}
+{"turn": 2, "owner_text": "Don't let the name fool you, we have no workshop. We sell furniture and homeware from four shops and online."}
+{"turn": 3, "owner_text": "52 people across the shops and the warehouse."}
+{"turn": 4, "owner_text": "Customers phone, email, use web chat, or ask at the shop counter. Roughly 210 enquiries a day across all four."}
+{"turn": 5, "owner_text": "Three minutes to answer one, then two minutes logging it."}
+{"turn": 6, "owner_text": "Here is the email our customer care lead sent me last week, pasted in: 'Hi Wendell, a quick summary of how enquiries run. We use the back office of the web shop, a stock spreadsheet that each shop updates at close, and the shared inbox. Steps: the enquiry arrives, we check stock, quote a delivery date, take payment, pass it to the warehouse and send tracking. Any refund over 100 USD needs the store manager to approve it. The three things that hurt are stock counts that are outdated, endless delivery date questions and the refund queue. Thanks, Marta.'"}
+{"turn": 7, "owner_text": "Wrong stock levels showing online, and deliveries turning up late."}
+{"turn": 8, "owner_text": "Delivery date enquiries, stock checks and refund triage. We need costs down, that's the real driver."}
+{"turn": 9, "owner_text": "Our back office offers an API, and stock counts can be saved as CSV."}
+{"turn": 10, "owner_text": "Yes, customer addresses, past order histories and payment references."}
+{"turn": 11, "owner_text": "No, nothing is that urgent when you sell sofas."}
+{"turn": 12, "owner_text": "About 40000 USD for the year."}
+{"turn": 13, "owner_text": "Probably next quarter."}
+{"turn": 14, "owner_text": "wendell@example.invalid"}
+{"turn": 15, "owner_text": "What does the estimate come to?"}

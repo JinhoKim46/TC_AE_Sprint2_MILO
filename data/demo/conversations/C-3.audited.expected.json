@@ -1,0 +1,358 @@
+{
+  "changes": [],
+  "audit": "data/prompts/data-v2-audit.md",
+  "conversation_id": "C-3",
+  "split": "dev",
+  "company": "c.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-c",
+  "generated_by": "scripts/build_data.py",
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Pinewood Garden Services",
+          "status": "reported",
+          "evidence": "Pinewood Garden Services"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Ines Calloway",
+          "status": "reported",
+          "evidence": "Ines Calloway"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Owner",
+          "status": "reported",
+          "evidence": "I'm the owner"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "cleaning",
+          "status": "reported",
+          "evidence": "We clean offices and shops"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 3,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count",
+      "asks_cost": true,
+      "premature_estimate_expected": false,
+      "note": "owner asked for a price before assessment_ready: no number may be shown"
+    },
+    {
+      "turn": 4,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 4,
+          "status": "reported",
+          "evidence": "Four of us including me"
+        },
+        {
+          "field_id": "locations",
+          "value": 1,
+          "status": "reported",
+          "evidence": "one site by the ring road"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "request_channels",
+          "value": [
+            "phone",
+            "text messages",
+            "website form"
+          ],
+          "status": "reported",
+          "evidence": "Clients phone us, send text messages, or fill in the website form"
+        },
+        {
+          "field_id": "daily_request_volume",
+          "value": 12,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day",
+          "evidence": "About 12 a day"
+        },
+        {
+          "field_id": "average_handling_minutes",
+          "value": 7,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "roughly 7 minutes"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "manual_entry_minutes"
+    },
+    {
+      "turn": 6,
+      "facts": [
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 4,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "four minutes of typing"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "tools_in_use",
+          "value": [
+            "paper diary",
+            "spreadsheet"
+          ],
+          "status": "reported",
+          "evidence": "Take the booking and write it in the paper diary. 2. Check the diary the evening before so nobody is double-booked. 3. Confirm the visit by text. 4. Send a cleaner to the site with the key. 5. Send the invoice at the end of the week. Every deep clean quote has to be approved by me before it goes out. Ines types finished jobs into the spreadsheet on Friday"
+        },
+        {
+          "field_id": "steps_in_process",
+          "value": [
+            "take the booking",
+            "check the diary the evening before",
+            "confirm the visit by text",
+            "send a cleaner to the site",
+            "send the invoice"
+          ],
+          "status": "reported",
+          "evidence": "Take the booking and write it in the paper diary. 2. Check the diary the evening before so nobody is double-booked. 3. Confirm the visit by text. 4. Send a cleaner to the site with the key. 5. Send the invoice at the end of the week"
+        },
+        {
+          "field_id": "approval_steps",
+          "value": [
+            "every deep clean quote has to be approved by me"
+          ],
+          "status": "reported",
+          "evidence": "Every deep clean quote has to be approved by me"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "pain_points"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "pain_points",
+          "value": [
+            "double bookings",
+            "key handovers get forgotten",
+            "invoices go out late"
+          ],
+          "status": "reported",
+          "evidence": "Double bookings, mostly, and the key handovers get forgotten. Invoices go out late as well."
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "error_types"
+    },
+    {
+      "turn": 9,
+      "facts": [
+        {
+          "field_id": "error_types",
+          "value": [
+            "duplicated",
+            "delayed"
+          ],
+          "status": "reported",
+          "evidence": "The same job booked twice, and things turning up late."
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "automation_goals"
+    },
+    {
+      "turn": 10,
+      "facts": [
+        {
+          "field_id": "automation_goals",
+          "value": [
+            "confirmations that go out on their own",
+            "invoice reminders"
+          ],
+          "status": "reported",
+          "evidence": "Confirmations that go out on their own, and invoice reminders"
+        },
+        {
+          "field_id": "main_goal",
+          "value": "time",
+          "status": "reported",
+          "evidence": "I want to save time"
+        },
+        {
+          "field_id": "integrations_available",
+          "value": [
+            "csv-export"
+          ],
+          "status": "reported",
+          "evidence": "The spreadsheet can save a CSV file"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled"
+    },
+    {
+      "turn": 11,
+      "facts": [
+        {
+          "field_id": "personal_data_handled",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes, the addresses of our clients"
+        },
+        {
+          "field_id": "personal_data_types",
+          "value": [
+            "addresses of our clients",
+            "door codes they give us"
+          ],
+          "status": "reported",
+          "evidence": "the addresses of our clients, and the door codes they give us"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "urgent_requests_exist"
+    },
+    {
+      "turn": 12,
+      "facts": [
+        {
+          "field_id": "urgent_requests_exist",
+          "value": false,
+          "status": "reported",
+          "evidence": "No, nobody needs a cleaner at 3 in the morning"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "budget_range",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 13,
+      "facts": [
+        {
+          "field_id": "budget_range",
+          "value": null,
+          "status": "unknown",
+          "evidence": "No idea on budget"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "start_timeline",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 14,
+      "facts": [
+        {
+          "field_id": "start_timeline",
+          "value": "next-month",
+          "status": "reported",
+          "evidence": "next month"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": "owner_email"
+    },
+    {
+      "turn": 15,
+      "facts": [
+        {
+          "field_id": "owner_email",
+          "value": "ines@example.invalid",
+          "status": "reported",
+          "evidence": "ines@example.invalid"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null
+    },
+    {
+      "turn": 16,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null,
+      "asks_cost": true
+    }
+  ]
+}

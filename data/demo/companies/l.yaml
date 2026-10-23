@@ -1,0 +1,84 @@
+# Demo company L (fictional, data-v2). Truth file: what the owner actually knows. Hand-written.
+company:
+  id: little-acorn-academy
+  display_name: Little Acorn Academy
+  owner:
+    name: Rosalind Adeyemi
+    role: Manager
+    email: rosalind@example.invalid
+  industry: education-childcare
+  employee_count: 18
+  locations: 2
+consent:
+  given: true
+  version: consent-v1
+workflow:
+  request_channels:
+  - phone calls
+  - emails
+  - parent app messages
+  - front desk
+  daily_request_volume: 40
+  average_handling_minutes: 4
+  manual_entry_minutes: 2
+  tools_in_use:
+  - parent app
+  - attendance spreadsheet
+  - paper sign-in sheets
+  steps_in_process:
+  - take message
+  - update attendance spreadsheet
+  - tell room leader
+  - confirm with parent
+  - file form
+  approval_steps:
+  - manager approves fee changes
+problems:
+  pain_points:
+  - missed pickup messages
+  - absence notes on scraps
+  - attendance typed twice
+  error_types:
+  - missed
+  - duplicated
+  automation_goals:
+  - absence notices
+  - pickup messages
+  - attendance entry
+  main_goal: growth
+constraints:
+  integrations_available:
+  - csv-export
+  personal_data_handled: true
+  personal_data_types:
+  - children's names
+  - parent contact details
+  - medical notes
+  urgent_requests_exist: true
+  urgent_request_types:
+  - sick child calls
+  - pickup changes
+  budget_range: unknown
+  start_timeline: next-quarter
+conflicts:
+- conversation: L-3
+  field: average_handling_minutes
+  statement_1:
+    value: 6
+    unit: minutes
+    text: about 6 minutes
+  statement_2:
+    value: 4
+    unit: minutes
+    text: 4 is nearer
+  truth: '4'
+  must_be: asked with the field's own question
+upload:
+  file: data/demo/uploads/littleacorn-front-desk-guide.txt
+  conversation: L-3
+  injected_line: null
+traps:
+- owner asks for a price early
+- owner drifts off topic
+- owner contradicts the handling minutes
+expected_end_state: scenario estimate; budget unknown

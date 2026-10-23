@@ -1,0 +1,214 @@
+id: L-3
+split: test
+company: l
+user_id: owner-l
+style: off_topic_detours
+turns:
+- owner_text: Rosalind Adeyemi, I'm the manager at Little Acorn Academy. Apologies if I get cut off, it's snack time.
+  plan:
+  - field: company_name
+    value: Little Acorn Academy
+    evidence: Little Acorn Academy
+  - field: owner_name
+    value: Rosalind Adeyemi
+    evidence: Rosalind Adeyemi
+  - field: owner_role
+    value: Manager
+    evidence: I'm the manager
+  tags:
+  - multi
+- owner_text: 'We look after children from babies to eight years old: a nursery and an after-school club.'
+  plan:
+  - field: industry
+    value: education-childcare
+    evidence: We look after children from babies to eight years old
+  tags:
+  - enum_map
+- owner_text: Sorry, someone has just spilled a whole jug of juice. Back in a second.
+  tags:
+  - off_topic
+- owner_text: While I think, can you tell me roughly what this costs?
+  tags:
+  - price_early
+  flags:
+    asks_cost: true
+- owner_text: Eighteen staff, two sites.
+  plan:
+  - field: employee_count
+    value: 18
+    evidence: Eighteen staff
+  - field: locations
+    value: 2
+    evidence: two sites
+  tags:
+  - early
+- owner_text: Parents phone, email, message us through the parent app, or catch us at the front desk. Roughly 40 a day.
+  plan:
+  - field: request_channels
+    value:
+    - phone
+    - email
+    - message us through the parent app
+    - catch us at the front desk
+    evidence: Parents phone, email, message us through the parent app, or catch us at the front desk
+  - field: daily_request_volume
+    value: 40
+    evidence: Roughly 40 a day
+    period: day
+  tags:
+  - owner_words
+  - early
+- owner_text: It takes me about 6 minutes to handle each one.
+  plan:
+  - field: average_handling_minutes
+    value: 6
+    evidence: about 6 minutes
+- owner_text: Actually no, 4 is nearer. The 6 is for the tricky ones.
+  plan:
+  - field: average_handling_minutes
+    value: 4
+    evidence: 4 is nearer
+    status: conflicting
+  tags:
+  - conflict_other
+- owner_text: Four. Six is only the tricky ones.
+  plan:
+  - field: average_handling_minutes
+    value: 4
+    evidence: Four
+    status: confirmed
+  flags:
+    answers_conflict: average_handling_minutes
+- owner_text: The rain has cancelled the garden session, so all the children are in the hall. Chaos.
+  tags:
+  - off_topic
+- owner_text: Then 2 minutes of typing it up afterwards.
+  plan:
+  - field: manual_entry_minutes
+    value: 2
+    evidence: 2 minutes of typing it up
+- owner_text: I'll send our front desk guide, it has the whole routine.
+  plan:
+  - field: tools_in_use
+    value:
+    - the parent app
+    - attendance spreadsheet
+    - paper sign-in sheets
+    evidence: 'the parent app.
+
+      2. Update the attendance spreadsheet straight away, and tick the paper sign-in sheets'
+  - field: steps_in_process
+    value:
+    - take the message
+    - update the attendance spreadsheet
+    - tell the room leader
+    - confirm with the parent
+    - file the form
+    evidence: 'Take the message, whether it comes by phone, email or the parent app.
+
+      2. Update the attendance spreadsheet straight away, and tick the paper sign-in sheets at pickup time.
+
+      3. Tell the room leader before the next session starts.
+
+      4. Confirm with the parent by message so they know it was received.
+
+      5. File the form'
+  - field: approval_steps
+    value:
+    - any change to fees is approved by the manager
+    evidence: Any change to fees is approved by the manager
+  tags:
+  - upload_clean
+  - owner_words
+  - multi
+  upload: littleacorn-front-desk-guide.txt
+- owner_text: Late pickup messages getting missed, absence notes on scraps of paper, and typing attendance twice.
+  plan:
+  - field: pain_points
+    value:
+    - late pickup messages getting missed
+    - absence notes on scraps of paper
+    - typing attendance twice
+    evidence: Late pickup messages getting missed, absence notes on scraps of paper, and typing attendance twice
+  tags:
+  - owner_words
+- owner_text: Messages that get missed, and attendance entered twice.
+  plan:
+  - field: error_types
+    value:
+    - missed
+    - duplicated
+    evidence: Messages that get missed, and attendance entered twice
+  tags:
+  - enum_map
+- owner_text: The absence notices, pickup messages and attendance entry. We'd like to grow the club, which means less admin.
+  plan:
+  - field: automation_goals
+    value:
+    - the absence notices
+    - pickup messages
+    - attendance entry
+    evidence: The absence notices, pickup messages and attendance entry
+  - field: main_goal
+    value: growth
+    evidence: We'd like to grow the club
+  tags:
+  - owner_words
+  - enum_map
+  - early
+- owner_text: The attendance spreadsheet saves as CSV.
+  plan:
+  - field: integrations_available
+    value:
+    - csv-export
+    evidence: saves as CSV
+  tags:
+  - enum_map
+- owner_text: Yes, the children's names, parents' contact details and medical notes.
+  plan:
+  - field: personal_data_handled
+    value: true
+    evidence: 'Yes'
+  - field: personal_data_types
+    value:
+    - the children's names
+    - parents' contact details
+    - medical notes
+    evidence: the children's names, parents' contact details and medical notes
+  tags:
+  - owner_words
+- owner_text: Yes. Calls about a sick child, and last-minute pickup changes.
+  plan:
+  - field: urgent_requests_exist
+    value: true
+    evidence: 'Yes'
+  - field: urgent_request_types
+    value:
+    - calls about a sick child
+    - last-minute pickup changes
+    evidence: Calls about a sick child, and last-minute pickup changes
+  tags:
+  - owner_words
+- owner_text: We haven't set any money aside, I can't say.
+  plan:
+  - field: budget_range
+    value: null
+    evidence: I can't say
+    status: unknown
+  tags:
+  - unknown
+- owner_text: Next quarter, when the new term begins.
+  plan:
+  - field: start_timeline
+    value: next-quarter
+    evidence: Next quarter
+  tags:
+  - enum_map
+- owner_text: rosalind@example.invalid
+  plan:
+  - field: owner_email
+    value: rosalind@example.invalid
+    evidence: rosalind@example.invalid
+- owner_text: Can you show me where the estimate stands?
+  flags:
+    asks_cost: true
