@@ -44,7 +44,21 @@ fields:
     question: What is your company called?
   - id: industry
     group: company
-    type: string
+    type: enum
+    values:
+      - trades
+      - home-services
+      - cleaning
+      - pet-care
+      - health-wellness
+      - beauty-personal-care
+      - food-hospitality
+      - retail
+      - professional-services
+      - automotive
+      - education-childcare
+      - logistics-delivery
+      - other
     required_for: [assessment]
     question: What kind of business is it? For example a trade, a shop, a clinic or a service.
   - id: employee_count
@@ -184,7 +198,8 @@ fields:
     question: Do you have a budget range in mind? It is fine to say you do not know yet.
   - id: start_timeline
     group: constraints
-    type: string
+    type: enum
+    values: [immediately, next-month, next-quarter, within-six-months, later, other]
     required_for: [quote]
     pricing: true
     allow_unknown: true

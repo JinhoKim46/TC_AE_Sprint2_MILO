@@ -26,7 +26,7 @@
     "facts": [
      {
       "field_id": "industry",
-      "value": "pet-services",
+      "value": "pet-care",
       "evidence_text": "We're a pet grooming business, dogs mostly."
      }
     ],
@@ -95,6 +95,13 @@
       "value": 2,
       "evidence_text": "Then about 2 minutes to type it into the spreadsheet.",
       "unit": "minutes"
+     },
+     {
+      "field_id": "tools_in_use",
+      "value": [
+       "spreadsheet"
+      ],
+      "evidence_text": "type it into the spreadsheet"
      }
     ],
     "asks_about": "none"
@@ -108,6 +115,13 @@
        "booking widget with CSV export"
       ],
       "evidence_text": "A shared spreadsheet, and a booking widget on the site that can export CSV."
+     },
+     {
+      "field_id": "integrations_available",
+      "value": [
+       "csv-export"
+      ],
+      "evidence_text": "export CSV"
      }
     ],
     "asks_about": "none"
@@ -301,7 +315,7 @@
     "facts": [
      {
       "field_id": "industry",
-      "value": "trades-plumbing",
+      "value": "trades",
       "evidence_text": "We're a plumbing and heating trade: boilers, pipes, gas work."
      }
     ],
@@ -404,6 +418,13 @@
        "field-service tool with export only"
       ],
       "evidence_text": "The shared inbox, paper job sheets, and a field-service tool that can export but not import."
+     },
+     {
+      "field_id": "integrations_available",
+      "value": [
+       "export-only-tool"
+      ],
+      "evidence_text": "can export but not import"
      }
     ],
     "asks_about": "none"
@@ -612,7 +633,7 @@
      },
      {
       "field_id": "industry",
-      "value": "pet-services",
+      "value": "pet-care",
       "evidence_text": "Lena Ortiz, owner of Maple & Paw Grooming, a pet grooming business."
      }
     ],

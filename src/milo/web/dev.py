@@ -47,7 +47,7 @@ DEMO_FACTS: dict[str, list[dict[str, Any]]] = {
     "Ada Lovelace": [
         _f("owner_name", "Ada Lovelace", "My name is Ada Lovelace"),
         _f("company_name", "Bright Cuts", "I run Bright Cuts"),
-        _f("industry", "hair salon", "a hair salon business"),
+        _f("industry", "beauty-personal-care", "a hair salon business"),
         _f("employee_count", 12, "12 staff", unit="people"),
         _f("locations", 2, "2 salons", unit="sites"),
     ],

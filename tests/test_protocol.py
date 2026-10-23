@@ -72,9 +72,9 @@ def test_condition_with_unknown_operand_is_false():
 
 
 def _expected(conv: str) -> list[dict[str, Any]]:
-    return json.loads((CONV / f"{conv}.expected.json").read_text(encoding="utf-8"))[
-        "turns"
-    ]
+    return json.loads(
+        (CONV / f"{conv}.audited.expected.json").read_text(encoding="utf-8")
+    )["turns"]
 
 
 @pytest.mark.parametrize("conv", DEV)
@@ -119,6 +119,8 @@ def test_conflict_question_comes_first_and_text_comes_from_yaml():
         ("daily_request_volume", 40, "requests", "fortnight", "unknown_period"),
         ("daily_request_volume", 3_000_000, "requests", "month", "above_max"),
         ("main_goal", "happiness", None, None, "not_in_values"),
+        ("industry", "pet-grooming", None, None, "not_in_values"),
+        ("start_timeline", "soon-ish", None, None, "not_in_values"),
         ("error_types", ["missed", "lost"], None, None, "not_in_values"),
         ("personal_data_handled", "perhaps", None, None, "expected_boolean"),
     ],
@@ -138,6 +140,10 @@ def test_check_value_normalises():
         "month",
     )
     assert check_value(PROTOCOL, f("main_goal"), "Time")[0] == "time"
+    assert check_value(PROTOCOL, f("industry"), "Pet-Care")[0] == "pet-care"
+    assert (
+        check_value(PROTOCOL, f("start_timeline"), "next-quarter")[0] == "next-quarter"
+    )
     assert check_value(PROTOCOL, f("personal_data_handled"), "yes")[0] is True
     assert check_value(PROTOCOL, f("tools_in_use"), "spreadsheet")[0] == ["spreadsheet"]
 
@@ -378,6 +384,12 @@ def test_reply_check_removes_money_and_keeps_scope():
 def test_prompts_are_files_and_hold_no_figures():
     for path in prompts.prompt_paths():
         assert path.exists() and not has_money(path.read_text(encoding="utf-8"))
+    for path in (
+        prompts.prompt_paths()
+    ):  # D164: no demo company's own label or name in a prompt
+        text = path.read_text(encoding="utf-8")
+        for leaked in ("pet-services", "trades-plumbing", "Maple", "Ironbridge"):
+            assert leaked not in text, (path.name, leaked)
     msgs = prompts.extract_messages(
         PROTOCOL, [], "Two salons.", last_question="How many?"
     )
@@ -385,6 +397,20 @@ def test_prompts_are_files_and_hold_no_figures():
         "daily_request_volume" in msgs[0]["content"]
         and "<owner_message>" in msgs[-1]["content"]
     )
+
+
+def test_industry_and_start_timeline_are_closed_vocabularies():
+    for fid in ("industry", "start_timeline"):
+        f = PROTOCOL.field_by_id(fid)
+        assert f.type == "enum" and "other" in f.values
+    # the dev truth uses only allowed values (D164, D165)
+    for conv in DEV:
+        for row in _expected(conv):
+            for fact in row["facts"]:
+                if fact["field_id"] in ("industry", "start_timeline") and fact["value"]:
+                    assert (
+                        fact["value"] in PROTOCOL.field_by_id(fact["field_id"]).values
+                    )
 
 
 def test_default_modules_follow_the_goals():
@@ -547,7 +573,7 @@ def test_eval_refuses_test_conversations_and_replays_the_dry_result(monkeypatch)
     with pytest.raises(PermissionError):
         rd.load_conversation("A-2")
     doc = json.loads(rd.DRY_PATH.read_text(encoding="utf-8"))
-    assert rd.compute_metrics(doc["rows"]) == doc["metrics"]
+    assert rd.compute_metrics(doc["rows"], doc["scorer"]) == doc["metrics"]
     assert doc["metrics"]["pooled"]["premature_estimate_rate"] == 0.0
     tampered = json.loads(json.dumps(doc["rows"]))
     tampered[0]["actual"]["answer"] = "That is $500 a month."
