@@ -1,6 +1,7 @@
 """Discovery evaluation (SPEC 10.4, 17 M5b; protocol `evals/protocols/m5b-discovery.md`).
 
-Runs the dev conversations A-1, B-1 and E-1 (D149) through `TurnRunner` and the discovery chain, one fresh
+Runs the dev conversations listed in `data/demo/conversations/splits.json` (A-1, B-1, E-1 when the manifest is
+absent; data-v2 protocol, D149, D166) through `TurnRunner` and the discovery chain, one fresh
 in-memory account per conversation, and scores every turn against `<id>.audited.expected.json` (D165) with scorer v2 (D161, D162).
 
 Modes
@@ -11,8 +12,20 @@ Modes
             with the stored metrics; exit 1 on a difference. Offline. `make eval-discovery` runs this.
   (none)    live: MILO_LIVE=1, --model, --price-in, --price-out, --max-cost and --reason (HARNESS rule 14). The run
             stops and writes nothing when the running cost passes --max-cost. Run by the integrator only.
-  --final   the live run on the test conversations A-2, B-2 and E-2, once (F2): also needs MILO_FINAL=1, refuses when
+  --final   the live run on the manifest's test conversations, once (F2): also needs MILO_FINAL=1, refuses when
             evals/results/discovery/discovery_test.json exists, and writes only that file.
+
+Per-conversation inputs. `<id>.audited.expected.json` may carry an optional header:
+    "company": "<file>.yaml"                      a file under data/demo/companies/ (a path ending in that file
+                                                  name, as A-1/B-1/E-1 carry, is accepted)
+    "uploads": {"<turn>": "<file>.txt", ...}      a file under data/demo/uploads/ per turn that sends an upload
+The legacy per-turn `"upload": "data/demo/uploads/<file>"` still works. Without a header nothing changes. Only the
+file name is used, so a header cannot point outside those two folders. Result rows store the upload as the
+repo-relative path, and scoring reads each row's own upload.
+
+Dry scripts. `dry_script.json` plus every `evals/discovery/dry_scripts/*.json` (same `{"conversations": {id:
+{turn: {facts, asks_about}}}}` format; an id in two files is an error) are merged. `--dry` runs the dev
+conversations that have an entry and prints a notice for each one without.
 """
 
 from __future__ import annotations
@@ -48,15 +61,19 @@ from milo.types import ChatReply, ToolCall, Usage  # noqa: E402
 
 CONV_DIR = ROOT / "data" / "demo" / "conversations"
 COMPANIES = ROOT / "data" / "demo" / "companies"
-UPLOAD = ROOT / "data" / "demo" / "uploads" / "ironbridge-procedure.txt"
+UPLOADS = ROOT / "data" / "demo" / "uploads"
 KB_DIR = ROOT / "data" / "kb"
 DRY_SCRIPT = Path(__file__).with_name("dry_script.json")
+DRY_SCRIPT_DIR = Path(__file__).with_name("dry_scripts")
 RESULTS_DIR = ROOT / "evals" / "results" / "discovery"
 DRY_PATH = RESULTS_DIR / "discovery_dry.json"
 LIVE_PATH = RESULTS_DIR / "discovery_live.json"
 TEST_PATH = RESULTS_DIR / "discovery_test.json"
-DEV = ("A-1", "B-1", "E-1")
-TEST = ("A-2", "B-2", "E-2")
+SPLITS_PATH = CONV_DIR / "splits.json"
+# Used only while the manifest is absent (before data-v2 lands): the original dev set, no test set.
+LEGACY_DEV = ("A-1", "B-1", "E-1")
+# D166: retired after their one F2 read. Kept byte-identical in the repository, never loaded, in no split.
+RETIRED = frozenset({"A-2", "B-2", "E-2"})
 RETRIEVAL_MIN_SCORE = (
     0.10  # hashed embedder in this eval; retrieval is measured by M1, not here
 )
@@ -83,21 +100,57 @@ class Abort(RuntimeError):
 # ---- data (sealed test conversations, D149) ----
 
 
+def load_splits(path: Path | None = None) -> dict[str, tuple[str, ...]]:
+    """The split manifest: `{"dev": [ids], "test": [ids], "retired": [ids]}` (a missing `retired` is fine; A-2, B-2
+    and E-2 are always retired, D166). Without the file: the legacy dev set and no test set. A conversation id in
+    two lists, or retired and in a split, is an error."""
+    path = SPLITS_PATH if path is None else path
+    if path.exists():
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        dev = tuple(str(c) for c in raw.get("dev", []))
+        test = tuple(str(c) for c in raw.get("test", []))
+        retired = RETIRED | {str(c) for c in raw.get("retired", [])}
+    else:
+        dev, test, retired = LEGACY_DEV, (), RETIRED
+    ids = dev + test
+    if len(set(ids)) != len(ids):
+        raise ValueError(f"{path.name}: a conversation id is listed twice")
+    if set(ids) & retired:
+        raise ValueError(
+            f"{path.name}: retired conversations cannot be in a split: {sorted(set(ids) & retired)}"
+        )
+    return {"dev": dev, "test": test, "retired": tuple(sorted(retired))}
+
+
+def dev_convs() -> tuple[str, ...]:
+    return load_splits()["dev"]
+
+
+def test_convs() -> tuple[str, ...]:
+    """The sealed test ids; reading them needs MILO_FINAL=1 (`load_conversation` enforces it)."""
+    return load_splits()["test"]
+
+
 def expected_path(conv: str) -> Path:
-    """The ground truth of a conversation: the audited file for a dev conversation (D165; the original
-    `<id>.expected.json` stays in place, unused), the original file for a test conversation."""
-    if conv in DEV:
-        return CONV_DIR / f"{conv}.audited.expected.json"
-    return CONV_DIR / f"{conv}.expected.json"
+    """The ground truth of a conversation: the audited file (D165). The original `<id>.expected.json` of the
+    first dev set stays in place, unused; retired conversations are never read."""
+    return CONV_DIR / f"{conv}.audited.expected.json"
 
 
 def load_conversation(conv: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
-    if conv in TEST and not final_mode():
-        raise PermissionError(
-            f"{conv} is a test conversation; only `make final-test` runs read it (D149)"
-        )
-    if conv not in DEV + TEST:
-        raise ValueError(conv)
+    splits = load_splits()
+    if conv in splits["retired"]:
+        raise PermissionError(f"{conv} is retired (D166) and is never loaded")
+    if conv in splits["test"]:
+        split = "test"
+        if not final_mode():
+            raise PermissionError(
+                f"{conv} is a test conversation; only `make final-test` runs read it (D149)"
+            )
+    elif conv in splits["dev"]:
+        split = "dev"
+    else:
+        raise ValueError(f"{conv} is in no split of {SPLITS_PATH.name}")
     msgs = [
         json.loads(line)
         for line in (CONV_DIR / f"{conv}.jsonl")
@@ -106,7 +159,64 @@ def load_conversation(conv: str) -> tuple[list[dict[str, Any]], dict[str, Any]]:
         if line.strip()
     ]
     expected = json.loads(expected_path(conv).read_text(encoding="utf-8"))
+    if "split" in expected and expected["split"] != split:
+        raise ValueError(
+            f"{conv}: file says split {expected['split']!r}, manifest says {split!r}"
+        )
     return msgs, expected
+
+
+def _under(name: str, base: Path, what: str) -> Path:
+    """`name` resolved inside `base` by file name only; it must exist."""
+    path = base / Path(str(name)).name
+    if not path.is_file():
+        raise FileNotFoundError(f"{what} {name!r}: no such file in {_rel(base)}")
+    return path
+
+
+def _rel(path: Path) -> str:
+    return str(path.relative_to(ROOT))
+
+
+def conversation_company(expected: dict[str, Any]) -> Path | None:
+    name = expected.get("company")
+    return _under(name, COMPANIES, "company") if name else None
+
+
+def conversation_uploads(expected: dict[str, Any]) -> dict[int, Path]:
+    """Upload file per turn: the `uploads` header, else the legacy per-turn `upload` field."""
+    out: dict[int, Path] = {}
+    for t in expected.get("turns", []):
+        if t.get("upload"):
+            out[int(t["turn"])] = _under(t["upload"], UPLOADS, "upload")
+    for turn, name in (expected.get("uploads") or {}).items():
+        out[int(turn)] = _under(name, UPLOADS, "upload")
+    return out
+
+
+def load_dry_script() -> dict[str, Any]:
+    script = json.loads(DRY_SCRIPT.read_text(encoding="utf-8"))
+    convs = script["conversations"]
+    for extra in sorted(DRY_SCRIPT_DIR.glob("*.json")):
+        more = json.loads(extra.read_text(encoding="utf-8"))["conversations"]
+        for cid in more:
+            if cid in convs:
+                raise ValueError(f"{extra.name}: dry script for {cid} is defined twice")
+        convs.update(more)
+    return script
+
+
+_UPLOAD_TEXT: dict[str, str] = {}
+
+
+def row_upload_text(row: dict[str, Any]) -> str:
+    """The text of the upload a stored row sent (its own file), empty when it sent none."""
+    path = row.get("upload")
+    if not path:
+        return ""
+    if path not in _UPLOAD_TEXT:
+        _UPLOAD_TEXT[path] = (ROOT / path).read_text(encoding="utf-8")
+    return _UPLOAD_TEXT[path]
 
 
 # ---- models ----
@@ -217,6 +327,8 @@ class RecordingChat:
 def run_conversation(conv: str, chat: Any) -> list[dict[str, Any]]:
     msgs, expected = load_conversation(conv)
     protocol = get_protocol()
+    conversation_company(expected)  # fails early on a header naming a missing file
+    uploads = conversation_uploads(expected)
     repos = memory_repositories()
     facts = SessionFacts(repos, protocol)
     backend = MiloBackend(retriever=None, store=facts)  # type: ignore[arg-type]
@@ -238,8 +350,9 @@ def run_conversation(conv: str, chat: Any) -> list[dict[str, Any]]:
         if hasattr(chat, "turn_key"):
             chat.turn_key = (conv, n)
         start = len(chat.calls)
-        upload_path = exp.get("upload")
-        upload = (ROOT / upload_path).read_bytes() if upload_path else None
+        up = uploads.get(n)
+        upload_path = _rel(up) if up else None
+        upload = up.read_bytes() if up else None
         clock.now += OWNER_PAUSE_S
         turn_id = runner.submit(user, session_id, msg["owner_text"], upload=upload)
         events = runner.events(user, turn_id)
@@ -741,9 +854,7 @@ def injection_checks(rows: list[dict[str, Any]], pricing: set[str]) -> dict[str,
     return out
 
 
-def _owner_numbers_by_row(
-    rows: list[dict[str, Any]], upload_text: str
-) -> list[frozenset[str]]:
+def _owner_numbers_by_row(rows: list[dict[str, Any]]) -> list[frozenset[str]]:
     """The owner's numbers so far in each row's conversation (messages and uploads), as the chain sees them."""
     seen: dict[str, list[str]] = {}
     out = []
@@ -751,7 +862,7 @@ def _owner_numbers_by_row(
         texts = seen.setdefault(r["conversation"], [])
         texts.append(r["owner_text"])
         if r.get("upload"):
-            texts.append(upload_text)
+            texts.append(row_upload_text(r))
         out.append(owner_numbers(texts))
     return out
 
@@ -762,12 +873,9 @@ def compute_metrics(
     protocol = get_protocol()
     counts = match_counts(rows, scorer)
     questions = {f.id: f.question for f in protocol.fields}
-    upload_text = UPLOAD.read_text(encoding="utf-8")
     scored = [
-        score_row(r, questions, upload_text, numbers, c)
-        for r, numbers, c in zip(
-            rows, _owner_numbers_by_row(rows, upload_text), counts, strict=True
-        )
+        score_row(r, questions, row_upload_text(r), numbers, c)
+        for r, numbers, c in zip(rows, _owner_numbers_by_row(rows), counts, strict=True)
     ]
     per_conv = {}
     for conv in sorted({r["conversation"] for r in rows}):
@@ -800,17 +908,24 @@ def compute_metrics(
 # ---- result files ----
 
 
-def _inputs(convs: tuple[str, ...] = DEV) -> dict[str, Path]:
+def _inputs(convs: tuple[str, ...]) -> dict[str, Path]:
     inputs: dict[str, Path] = {
         "protocol": DEFAULT_PROTOCOL_PATH,
-        "upload": UPLOAD,
         "dry_script": DRY_SCRIPT,
     }
+    for extra in sorted(DRY_SCRIPT_DIR.glob("*.json")):
+        inputs[f"dry_script_{extra.name}"] = extra
+    if SPLITS_PATH.exists():
+        inputs["splits.json"] = SPLITS_PATH
     for conv in convs:
         inputs[f"{conv}.jsonl"] = CONV_DIR / f"{conv}.jsonl"
         inputs[expected_path(conv).name] = expected_path(conv)
-    for company in ("a", "b"):
-        inputs[f"company_{company}"] = COMPANIES / f"{company}.yaml"
+        header = json.loads(expected_path(conv).read_text(encoding="utf-8"))
+        company = conversation_company(header)
+        if company:
+            inputs[f"company_{company.stem}"] = company
+        for up in conversation_uploads(header).values():
+            inputs[f"upload_{up.name}"] = up
     for path in prompt_paths():
         inputs[f"prompt_{path.name}"] = path
     return inputs
@@ -823,9 +938,10 @@ def build_result(
     model: str,
     command: str,
     reason: str,
-    convs: tuple[str, ...] = DEV,
+    convs: tuple[str, ...] | None = None,
     scorer: str = DEFAULT_SCORER,
 ) -> dict[str, Any]:
+    convs = dev_convs() if convs is None else convs
     doc = provenance(
         model=model, seed=SEED, temperature=0.0, command=command, inputs=_inputs(convs)
     )
@@ -849,9 +965,12 @@ def write(doc: dict[str, Any], path: Path) -> None:
 
 
 def run_dry(out: Path, scorer: str = DEFAULT_SCORER) -> dict[str, Any]:
-    script = json.loads(DRY_SCRIPT.read_text(encoding="utf-8"))
+    script = load_dry_script()
     rows: list[dict[str, Any]] = []
-    for conv in DEV:
+    for conv in dev_convs():
+        if conv not in script["conversations"]:
+            print(f"dry run: no dry script entry for {conv}; skipped", file=sys.stderr)
+            continue  # the dry script covers the original dev set only; it checks the harness, not the data
         rows += run_conversation(conv, DryChat(script))
     doc = build_result(
         rows,
@@ -860,6 +979,7 @@ def run_dry(out: Path, scorer: str = DEFAULT_SCORER) -> dict[str, Any]:
         command="uv run python evals/discovery/run_discovery.py --dry",
         reason="offline harness and code-gate check: a scripted model; no external model was needed",
         scorer=scorer,
+        convs=tuple(c for c in dev_convs() if c in script["conversations"]),
     )
     write(doc, out)
     return doc
@@ -881,7 +1001,7 @@ def run_live(args: argparse.Namespace) -> dict[str, Any]:
             + ", ".join("--" + m.replace("_", "-") for m in missing)
         )
     final = bool(getattr(args, "final", False))
-    convs = TEST if final else DEV
+    convs = test_convs() if final else dev_convs()
     out = args.out or (TEST_PATH if final else LIVE_PATH)
     if final:
         # The single test-split run (protocol: "the test conversations are run once in F2"; D149).
@@ -897,6 +1017,10 @@ def run_live(args: argparse.Namespace) -> dict[str, Any]:
             raise SystemExit(
                 "refusing to run: discovery_test.json exists; the test conversations are read once"
             )
+    if not convs:
+        raise SystemExit(
+            f"no {'test' if final else 'dev'} conversations in the split manifest"
+        )
     from milo.llm.client import build_chat
     from milo.settings import Settings
     from milo.spend import SpendLedger
@@ -966,13 +1090,14 @@ def replay(path: Path, scorer: str | None = None) -> int:
 def audited_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Copies of stored dev rows whose expected facts are replaced by the audited files (D165). Offline."""
     truth: dict[tuple[str, int], list[dict[str, Any]]] = {}
-    for conv in DEV:  # never a glob: the sealed test files sit in the same folder
+    dev = dev_convs()
+    for conv in dev:  # never a glob: the sealed test files sit in the same folder
         doc = json.loads(expected_path(conv).read_text(encoding="utf-8"))
         for t in doc["turns"]:
             truth[(conv, int(t["turn"]))] = t["facts"]
     out = []
     for r in rows:
-        if r["conversation"] not in DEV:
+        if r["conversation"] not in dev:
             raise ValueError("only dev rows can be re-scored against the audited files")
         copy = json.loads(json.dumps(r))
         copy["expected"]["facts"] = truth[(r["conversation"], r["turn"])]
@@ -1002,7 +1127,7 @@ def main(argv: list[str] | None = None) -> int:
     mode.add_argument(
         "--final",
         action="store_true",
-        help="the single test-split run (A-2, B-2, E-2); needs MILO_FINAL=1 and MILO_LIVE=1",
+        help="the single test-split run (the manifest's test ids); needs MILO_FINAL=1 and MILO_LIVE=1",
     )
     ap.add_argument(
         "--file", type=Path, help="result file to replay (default: the dry result)"
