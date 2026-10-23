@@ -19,6 +19,8 @@
   "data/demo/conversations/E-2.jsonl": "b23c2b2fc4fb29ccedcf6f58fc48262d8dd4e800515de492ce146093978a76da",
   "data/demo/uploads/ironbridge-procedure.txt": "663b6ca1549188fa34b0546f0081b3ddc4c21c67e82bca5380fac213e38b8d27",
   "data/gold.jsonl": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
+  "data/judge_pool/answers.jsonl": "c9869bfcef72f24f99f25600d1385538cffa8ad2eeb00199a21c660be130c82a",
+  "data/judge_pool/perturbations.jsonl": "91b5e72a4ac7873ccd134da4ead951fae554bb1d2ba32632a8cb07468609f246",
   "data/kb/cases/accounts-paperwork.md": "9cfb4e7853ac795624c3441de138365b2d91f8c4113688b967b302fe8518df24",
   "data/kb/cases/grooming-bookings.md": "e4b57ecbfe9841d52e34f160678f106d59ad07baf8ba423822549a0fbdef9eca",
   "data/kb/cases/trades-dispatch.md": "c73e9e8dc211b6b93d1a51a010017b034c758b7d0a53780bedaa2cc90031655e",
@@ -45,7 +47,7 @@
   "data/kb/solutions/ticket-creation.md": "0a1de3995af8ffbdb42e1820cf070f25b1dd44601151bdb15339992f43e14cc8",
   "data/pricing/rate_card.v1.yaml": "291f55d10830fb7b71064d19dee76a01c3a13be87c115b9236b52b068b3e4d12",
   "data/prompts/chatgpt-prompts.md": "c48b906e75aac0feb5de82e6739c61629c20d16c6d8c711062009d8f68093544",
-  "data/prompts/generation-record.md": "1ae27fa56a97706bc1bf4421b88f2a7a1d00de082bb8e9d17374ae95facc6a5b",
+  "data/prompts/generation-record.md": "3e3df59bbae57f6f8be68462c928705dbe7be681178cfc5c94a9cc177e8416b3",
   "data/prompts/gold-audit.md": "4748d00a179f74d88044bebb7b0e821472296288482598d84d42f32a91641ab3",
   "data/scope/README.md": "4da357d724ee240cab55036d059a968be5d2507ce37ffe9ddf8317a30dd7742f",
   "data/scope/lexicon.yaml": "385a85bf1ae7d5fc8a27e93973518cbcb6b5e65f5feca361193be1f02f41abfe",
@@ -56,5 +58,7 @@
   "data/scope/tools/stage1_sim.py": "0c0bcb77df00632556bec776eedd68ee1f275fee74c7e24ecc6b1f7d192f0055",
   "data/source/catalogue.yaml": "1d610bb0b2e672d753843432f7b236cded16094b190feb3ac426dc59481e6b5e",
   "data/source/gold_questions.yaml": "a264512d252520f8b6d0e0d20de4dd0067e1f151c4e1e1ca2b8611d18bd3e674",
-  "data/tool_cases.jsonl": "ae1b8aa3899bd99d28eaff18a96dc5f742be9f1bb8f3e9f355f345f4289703c2"
+  "data/source/judge_pool.yaml": "4f8231e75425045130f20e5c42d7560b200cee0db62eb5e689d52fe520bfa7f4",
+  "data/source/tool_cases.yaml": "f98adc9b7458d7f76be367ad3aaab5dafb6f0109bb3cbbab5157d2ec76d8728a",
+  "data/tool_cases.jsonl": "d4985b5a0555216f63b42404509ea88224954cdb52d542756ad4c0f4c6d8b6be"
 }
