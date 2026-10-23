@@ -5,12 +5,13 @@
 {"turn": 5, "owner_text": "Clients phone us, send text messages, or fill in the website form. About 12 a day, and I spend roughly 7 minutes sorting out each one."}
 {"turn": 6, "owner_text": "Then four minutes of typing per booking, on top."}
 {"turn": 7, "owner_text": "Here's the checklist I paste into the email for new cleaners: 'Subject: How we run a booking. 1. Take the booking and write it in the paper diary. 2. Check the diary the evening before so nobody is double-booked. 3. Confirm the visit by text. 4. Send a cleaner to the site with the key. 5. Send the invoice at the end of the week. Every deep clean quote has to be approved by me before it goes out. Ines types finished jobs into the spreadsheet on Friday. Please never text clients after 8pm.'"}
-{"turn": 8, "owner_text": "Double bookings, mostly, and the key handovers get forgotten. Invoices go out late as well."}
-{"turn": 9, "owner_text": "The same job booked twice, and things turning up late."}
-{"turn": 10, "owner_text": "Confirmations that go out on their own, and invoice reminders. Honestly I want to save time, my evenings are gone. The spreadsheet can save a CSV file, nothing fancier."}
-{"turn": 11, "owner_text": "Yes, the addresses of our clients, and the door codes they give us."}
-{"turn": 12, "owner_text": "No, nobody needs a cleaner at 3 in the morning."}
-{"turn": 13, "owner_text": "No idea on budget, I haven't thought about it."}
-{"turn": 14, "owner_text": "Probably next month, once the spring rush is over."}
-{"turn": 15, "owner_text": "ines@example.invalid"}
-{"turn": 16, "owner_text": "So what is the estimate looking like?"}
+{"turn": 8, "owner_text": "Just the one site, as I said, nothing else."}
+{"turn": 9, "owner_text": "Double bookings, mostly, and the key handovers get forgotten. Invoices go out late as well."}
+{"turn": 10, "owner_text": "The same job booked twice, and things turning up late."}
+{"turn": 11, "owner_text": "Confirmations that go out on their own, and invoice reminders. Honestly I want to save time, my evenings are gone. The spreadsheet can save a CSV file, nothing fancier."}
+{"turn": 12, "owner_text": "Yes, the addresses of our clients, and the door codes they give us."}
+{"turn": 13, "owner_text": "No, nobody needs a cleaner at 3 in the morning."}
+{"turn": 14, "owner_text": "No idea on budget, I haven't thought about it."}
+{"turn": 15, "owner_text": "Probably next month, once the spring rush is over."}
+{"turn": 16, "owner_text": "ines@example.invalid"}
+{"turn": 17, "owner_text": "So what is the estimate looking like?"}

@@ -87,6 +87,11 @@ turns:
   - pasted
   - owner_words
   - multi
+- owner_text: Just the one site, as I said, nothing else.
+  tags:
+  - restate
+  flags:
+    restates: locations
 - owner_text: Double bookings, mostly, and the key handovers get forgotten. Invoices go out late as well.
   plan:
   - field: pain_points

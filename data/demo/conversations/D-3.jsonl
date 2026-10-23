@@ -6,11 +6,12 @@
 {"turn": 6, "owner_text": "Patients phone reception, use the patient portal, or send an email, and a few walk up to the front desk. Probably 70 on a normal day, though the physios say it feels like more."}
 {"turn": 7, "owner_text": "Reception spends about 5 minutes per request finding a therapist who is free, and then roughly 3 minutes keying it in."}
 {"turn": 8, "owner_text": "I'll attach our referral handling sheet, it shows the whole routine."}
-{"turn": 9, "owner_text": "Phone queues at opening time are the killer, referral letters go missing, and patients who don't show up."}
-{"turn": 10, "owner_text": "When it goes wrong it's usually a referral that never arrived, or the wrong slot booked."}
-{"turn": 11, "owner_text": "I'd love appointment booking, chasing referrals and reminders handled automatically, because the biggest thing for me is fewer mistakes."}
-{"turn": 12, "owner_text": "The practice system has an API we've used before, and it exports CSV too. We hold patient names, their phone numbers and insurance numbers, obviously."}
-{"turn": 13, "owner_text": "Yes, urgent ones come in. Same-day injury slots, and post-surgery patients calling in worried."}
-{"turn": 14, "owner_text": "Budget, about 10000 USD a year. As for when we start, honestly we haven't decided, I can't say yet."}
-{"turn": 15, "owner_text": "tomas@example.invalid"}
-{"turn": 16, "owner_text": "Great. What does the estimate look like for three sites?"}
+{"turn": 9, "owner_text": "To repeat, mostly phone, the portal and email, nothing exotic."}
+{"turn": 10, "owner_text": "Phone queues at opening time are the killer, referral letters go missing, and patients who don't show up."}
+{"turn": 11, "owner_text": "When it goes wrong it's usually a referral that never arrived, or the wrong slot booked."}
+{"turn": 12, "owner_text": "I'd love appointment booking, chasing referrals and reminders handled automatically, because the biggest thing for me is fewer mistakes."}
+{"turn": 13, "owner_text": "The practice system has an API we've used before, and it exports CSV too. We hold patient names, their phone numbers and insurance numbers, obviously."}
+{"turn": 14, "owner_text": "Yes, urgent ones come in. Same-day injury slots, and post-surgery patients calling in worried."}
+{"turn": 15, "owner_text": "Budget, about 10000 USD a year. As for when we start, honestly we haven't decided, I can't say yet."}
+{"turn": 16, "owner_text": "tomas@example.invalid"}
+{"turn": 17, "owner_text": "Great. What does the estimate look like for three sites?"}

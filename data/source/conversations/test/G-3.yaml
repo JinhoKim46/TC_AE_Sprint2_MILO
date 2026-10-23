@@ -70,6 +70,11 @@ turns:
   - field: manual_entry_minutes
     value: 5
     evidence: Five minutes writing it up
+- owner_text: One yard only, like I said.
+  tags:
+  - restate
+  flags:
+    restates: locations
 - owner_text: My notebook. Contacts in my phone. Banking app.
   plan:
   - field: tools_in_use

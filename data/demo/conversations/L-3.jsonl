@@ -14,9 +14,10 @@
 {"turn": 14, "owner_text": "Messages that get missed, and attendance entered twice."}
 {"turn": 15, "owner_text": "The absence notices, pickup messages and attendance entry. We'd like to grow the club, which means less admin."}
 {"turn": 16, "owner_text": "The attendance spreadsheet saves as CSV."}
-{"turn": 17, "owner_text": "Yes, the children's names, parents' contact details and medical notes."}
-{"turn": 18, "owner_text": "Yes. Calls about a sick child, and last-minute pickup changes."}
-{"turn": 19, "owner_text": "We haven't set any money aside, I can't say."}
-{"turn": 20, "owner_text": "Next quarter, when the new term begins."}
-{"turn": 21, "owner_text": "rosalind@example.invalid"}
-{"turn": 22, "owner_text": "Can you show me where the estimate stands?"}
+{"turn": 17, "owner_text": "Growth for the club, as I said before."}
+{"turn": 18, "owner_text": "Yes, the children's names, parents' contact details and medical notes."}
+{"turn": 19, "owner_text": "Yes. Calls about a sick child, and last-minute pickup changes."}
+{"turn": 20, "owner_text": "We haven't set any money aside, I can't say."}
+{"turn": 21, "owner_text": "Next quarter, when the new term begins."}
+{"turn": 22, "owner_text": "rosalind@example.invalid"}
+{"turn": 23, "owner_text": "Can you show me where the estimate stands?"}

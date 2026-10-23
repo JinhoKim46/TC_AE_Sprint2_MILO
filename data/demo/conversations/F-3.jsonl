@@ -11,10 +11,11 @@
 {"turn": 11, "owner_text": "Wrong addresses, missed pickup windows, and chasing proof of delivery eats the afternoon."}
 {"turn": 12, "owner_text": "Wrong drop-offs, late runs, and pickups nobody does."}
 {"turn": 13, "owner_text": "Booking intake, driver assignment, and proof of delivery chasing. We want to grow without hiring more office staff."}
-{"turn": 14, "owner_text": "The tracking app has an API and the spreadsheet exports CSV."}
-{"turn": 15, "owner_text": "Yes, recipient names, the delivery addresses, and signatures."}
-{"turn": 16, "owner_text": "Yes, rush parcels the same day and medical deliveries."}
-{"turn": 17, "owner_text": "Around 25000 USD, give or take."}
-{"turn": 18, "owner_text": "Not decided when we'd start."}
-{"turn": 19, "owner_text": "raimund@example.invalid"}
-{"turn": 20, "owner_text": "So what's the estimate, then?"}
+{"turn": 14, "owner_text": "To repeat: growth is the aim, nothing else."}
+{"turn": 15, "owner_text": "The tracking app has an API and the spreadsheet exports CSV."}
+{"turn": 16, "owner_text": "Yes, recipient names, the delivery addresses, and signatures."}
+{"turn": 17, "owner_text": "Yes, rush parcels the same day and medical deliveries."}
+{"turn": 18, "owner_text": "Around 25000 USD, give or take."}
+{"turn": 19, "owner_text": "Not decided when we'd start."}
+{"turn": 20, "owner_text": "raimund@example.invalid"}
+{"turn": 21, "owner_text": "So what's the estimate, then?"}

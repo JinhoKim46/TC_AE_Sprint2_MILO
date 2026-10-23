@@ -141,6 +141,11 @@ turns:
   tags:
   - enum_map
   - early
+- owner_text: 'To repeat: growth is the aim, nothing else.'
+  tags:
+  - restate
+  flags:
+    restates: main_goal
 - owner_text: The tracking app has an API and the spreadsheet exports CSV.
   plan:
   - field: integrations_available

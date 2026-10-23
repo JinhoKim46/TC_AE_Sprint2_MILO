@@ -7,15 +7,16 @@
 {"turn": 7, "owner_text": "Seventy per week is correct. Twenty was one very busy day."}
 {"turn": 8, "owner_text": "Ten minutes to read and answer one request, and five minutes more to type it."}
 {"turn": 9, "owner_text": "We use practice software, the shared mailbox and spreadsheets."}
-{"turn": 10, "owner_text": "We log the request, assign it to one accountant, request missing documents, prepare the return, the partner reviews, and then file the return."}
-{"turn": 11, "owner_text": "Partner must review every return before we file."}
-{"turn": 12, "owner_text": "Chasing missing documents, the deadline crunch in January, and requests get lost in shared mailbox."}
-{"turn": 13, "owner_text": "Documents we forget to ask, deadline when we are late, and wrong numbers in the return."}
-{"turn": 14, "owner_text": "Chasing documents, logging requests, and deadline reminders. Main thing is fewer errors."}
-{"turn": 15, "owner_text": "Software can export to CSV."}
-{"turn": 16, "owner_text": "Yes. Tax numbers, bank details, home addresses of clients."}
-{"turn": 17, "owner_text": "Yes, sometimes. Filing deadline in two days, or letter from tax office."}
-{"turn": 18, "owner_text": "Budget? We have not discuss it."}
-{"turn": 19, "owner_text": "Maybe in six months, not earlier."}
-{"turn": 20, "owner_text": "henrietta@example.invalid"}
-{"turn": 21, "owner_text": "So what price now, please?"}
+{"turn": 10, "owner_text": "As I told you before, sixteen persons."}
+{"turn": 11, "owner_text": "We log the request, assign it to one accountant, request missing documents, prepare the return, the partner reviews, and then file the return."}
+{"turn": 12, "owner_text": "Partner must review every return before we file."}
+{"turn": 13, "owner_text": "Chasing missing documents, the deadline crunch in January, and requests get lost in shared mailbox."}
+{"turn": 14, "owner_text": "Documents we forget to ask, deadline when we are late, and wrong numbers in the return."}
+{"turn": 15, "owner_text": "Chasing documents, logging requests, and deadline reminders. Main thing is fewer errors."}
+{"turn": 16, "owner_text": "Software can export to CSV."}
+{"turn": 17, "owner_text": "Yes. Tax numbers, bank details, home addresses of clients."}
+{"turn": 18, "owner_text": "Yes, sometimes. Filing deadline in two days, or letter from tax office."}
+{"turn": 19, "owner_text": "Budget? We have not discuss it."}
+{"turn": 20, "owner_text": "Maybe in six months, not earlier."}
+{"turn": 21, "owner_text": "henrietta@example.invalid"}
+{"turn": 22, "owner_text": "So what price now, please?"}

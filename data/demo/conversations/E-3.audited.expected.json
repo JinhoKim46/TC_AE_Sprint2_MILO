@@ -144,6 +144,16 @@
     },
     {
       "turn": 8,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "manual_entry_minutes",
+      "restates_early_fact": "employee_count"
+    },
+    {
+      "turn": 9,
       "facts": [
         {
           "field_id": "manual_entry_minutes",
@@ -160,7 +170,7 @@
       "next_question_id": "tools_in_use"
     },
     {
-      "turn": 9,
+      "turn": 10,
       "facts": [
         {
           "field_id": "daily_request_volume",
@@ -191,7 +201,7 @@
       "next_question_id": "confirm_daily_request_volume"
     },
     {
-      "turn": 10,
+      "turn": 11,
       "facts": [
         {
           "field_id": "daily_request_volume",
@@ -215,7 +225,7 @@
       "answers_conflict": "daily_request_volume"
     },
     {
-      "turn": 11,
+      "turn": 12,
       "facts": [
         {
           "field_id": "tools_in_use",
@@ -235,7 +245,7 @@
       "next_question_id": "steps_in_process"
     },
     {
-      "turn": 12,
+      "turn": 13,
       "facts": [
         {
           "field_id": "steps_in_process",
@@ -258,7 +268,7 @@
       "next_question_id": "approval_steps"
     },
     {
-      "turn": 13,
+      "turn": 14,
       "facts": [
         {
           "field_id": "approval_steps",
@@ -276,7 +286,7 @@
       "next_question_id": "pain_points"
     },
     {
-      "turn": 14,
+      "turn": 15,
       "facts": [
         {
           "field_id": "pain_points",
@@ -296,7 +306,7 @@
       "next_question_id": "error_types"
     },
     {
-      "turn": 15,
+      "turn": 16,
       "facts": [
         {
           "field_id": "error_types",
@@ -315,7 +325,7 @@
       "next_question_id": "automation_goals"
     },
     {
-      "turn": 16,
+      "turn": 17,
       "facts": [
         {
           "field_id": "automation_goals",
@@ -341,7 +351,7 @@
       "next_question_id": "integrations_available"
     },
     {
-      "turn": 17,
+      "turn": 18,
       "facts": [
         {
           "field_id": "integrations_available",
@@ -359,7 +369,7 @@
       "next_question_id": "personal_data_handled"
     },
     {
-      "turn": 18,
+      "turn": 19,
       "facts": [
         {
           "field_id": "personal_data_handled",
@@ -384,7 +394,7 @@
       "next_question_id": "urgent_requests_exist"
     },
     {
-      "turn": 19,
+      "turn": 20,
       "facts": [
         {
           "field_id": "urgent_requests_exist",
@@ -403,7 +413,7 @@
       ]
     },
     {
-      "turn": 20,
+      "turn": 21,
       "facts": [
         {
           "field_id": "budget_range",
@@ -422,7 +432,7 @@
       ]
     },
     {
-      "turn": 21,
+      "turn": 22,
       "facts": [
         {
           "field_id": "start_timeline",
@@ -438,7 +448,7 @@
       "next_question_id": "owner_email"
     },
     {
-      "turn": 22,
+      "turn": 23,
       "facts": [
         {
           "field_id": "owner_email",
@@ -454,7 +464,7 @@
       "next_question_id": null
     },
     {
-      "turn": 23,
+      "turn": 24,
       "facts": [],
       "no_facts": true,
       "protocol_state": "quote_ready",

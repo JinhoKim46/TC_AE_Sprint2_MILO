@@ -104,6 +104,11 @@ turns:
     evidence: No-shows are the big one, then double bookings, and Instagram messages getting buried
   tags:
   - owner_words
+- owner_text: As mentioned, phones, Instagram and the site, that is all.
+  tags:
+  - restate
+  flags:
+    restates: request_channels
 - owner_text: Clients booked twice, and messages that never get answered.
   plan:
   - field: error_types

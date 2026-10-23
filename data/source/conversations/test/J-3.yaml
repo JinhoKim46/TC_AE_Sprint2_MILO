@@ -94,6 +94,11 @@ turns:
     evidence: We use practice software, the shared mailbox and spreadsheets
   tags:
   - owner_words
+- owner_text: As I told you before, sixteen persons.
+  tags:
+  - restate
+  flags:
+    restates: employee_count
 - owner_text: We log the request, assign it to one accountant, request missing documents, prepare the return, the partner reviews, and then file the return.
   plan:
   - field: steps_in_process

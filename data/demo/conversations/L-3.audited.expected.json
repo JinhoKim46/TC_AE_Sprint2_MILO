@@ -342,6 +342,16 @@
     },
     {
       "turn": 17,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled",
+      "restates_early_fact": "main_goal"
+    },
+    {
+      "turn": 18,
       "facts": [
         {
           "field_id": "personal_data_handled",
@@ -367,7 +377,7 @@
       "next_question_id": "urgent_requests_exist"
     },
     {
-      "turn": 18,
+      "turn": 19,
       "facts": [
         {
           "field_id": "urgent_requests_exist",
@@ -395,7 +405,7 @@
       ]
     },
     {
-      "turn": 19,
+      "turn": 20,
       "facts": [
         {
           "field_id": "budget_range",
@@ -414,7 +424,7 @@
       ]
     },
     {
-      "turn": 20,
+      "turn": 21,
       "facts": [
         {
           "field_id": "start_timeline",
@@ -430,7 +440,7 @@
       "next_question_id": "owner_email"
     },
     {
-      "turn": 21,
+      "turn": 22,
       "facts": [
         {
           "field_id": "owner_email",
@@ -446,7 +456,7 @@
       "next_question_id": null
     },
     {
-      "turn": 22,
+      "turn": 23,
       "facts": [],
       "no_facts": true,
       "protocol_state": "quote_ready",

@@ -164,6 +164,11 @@ turns:
     evidence: saves as CSV
   tags:
   - enum_map
+- owner_text: Growth for the club, as I said before.
+  tags:
+  - restate
+  flags:
+    restates: main_goal
 - owner_text: Yes, the children's names, parents' contact details and medical notes.
   plan:
   - field: personal_data_handled

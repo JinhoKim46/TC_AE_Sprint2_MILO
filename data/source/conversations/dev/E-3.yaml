@@ -61,6 +61,11 @@ turns:
   - field: average_handling_minutes
     value: 6
     evidence: Six minutes
+- owner_text: Fifteen on the payroll, like I said earlier.
+  tags:
+  - restate
+  flags:
+    restates: employee_count
 - owner_text: Then three minutes of re-typing afterwards.
   plan:
   - field: manual_entry_minutes
