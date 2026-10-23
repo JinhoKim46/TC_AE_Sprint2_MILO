@@ -1,0 +1,362 @@
+{
+  "changes": [],
+  "audit": "data/prompts/data-v2-audit.md",
+  "conversation_id": "H-4",
+  "split": "test",
+  "company": "h.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-h",
+  "generated_by": "scripts/build_data.py",
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "company_name",
+      "asks_cost": true,
+      "premature_estimate_expected": false,
+      "note": "owner asked for a price before assessment_ready: no number may be shown"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Quarry Lane Studio",
+          "status": "reported",
+          "evidence": "Quarry Lane Studio"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Odalys Ferreira",
+          "status": "reported",
+          "evidence": "Odalys Ferreira"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Owner",
+          "status": "reported",
+          "evidence": "I own it"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 3,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "beauty-personal-care",
+          "status": "reported",
+          "evidence": "hair, nails, facials"
+        },
+        {
+          "field_id": "locations",
+          "value": 2,
+          "status": "reported",
+          "evidence": "Two sites"
+        },
+        {
+          "field_id": "employee_count",
+          "value": 11,
+          "status": "reported",
+          "evidence": "eleven staff"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 4,
+      "facts": [
+        {
+          "field_id": "request_channels",
+          "value": [
+            "phone",
+            "the booking site",
+            "Instagram messages"
+          ],
+          "status": "reported",
+          "evidence": "Booked by phone, through the booking site, or Instagram messages"
+        },
+        {
+          "field_id": "daily_request_volume",
+          "value": 40,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day",
+          "evidence": "About 40 a day"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": [
+            40,
+            125
+          ],
+          "status": "conflicting",
+          "values": [
+            {
+              "value": 40,
+              "unit": "requests",
+              "period": "day"
+            },
+            {
+              "value": 125,
+              "unit": "requests",
+              "period": "week"
+            }
+          ],
+          "evidence": "125 a week"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_blocked",
+      "estimate_status": "blocked",
+      "number_allowed": false,
+      "next_question_id": "confirm_daily_request_volume"
+    },
+    {
+      "turn": 6,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": 25,
+          "status": "confirmed",
+          "unit": "requests",
+          "period": "day",
+          "derived_from": {
+            "value": 125,
+            "period": "week",
+            "business_days": 5
+          },
+          "evidence": "125 a week"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes",
+      "answers_conflict": "daily_request_volume"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": 4,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "Four minutes each"
+        },
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 2,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "two typing"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "tools_in_use",
+          "value": [
+            "the booking site",
+            "the appointment book",
+            "a shared spreadsheet"
+          ],
+          "status": "reported",
+          "evidence": "The booking site, the appointment book, a shared spreadsheet"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "steps_in_process"
+    },
+    {
+      "turn": 9,
+      "facts": [
+        {
+          "field_id": "steps_in_process",
+          "value": [
+            "take the booking",
+            "enter it in the book",
+            "send a reminder text",
+            "welcome the client",
+            "take payment"
+          ],
+          "status": "reported",
+          "evidence": "Take the booking, enter it in the book, send a reminder text, welcome the client, take payment"
+        },
+        {
+          "field_id": "approval_steps",
+          "value": [
+            "discounts over 15 percent need me"
+          ],
+          "status": "reported",
+          "evidence": "Discounts over 15 percent need me"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "pain_points"
+    },
+    {
+      "turn": 10,
+      "facts": [
+        {
+          "field_id": "pain_points",
+          "value": [
+            "no-shows",
+            "double bookings",
+            "buried Instagram messages"
+          ],
+          "status": "reported",
+          "evidence": "No-shows, double bookings, buried Instagram messages"
+        },
+        {
+          "field_id": "error_types",
+          "value": [
+            "duplicated",
+            "missed"
+          ],
+          "status": "reported",
+          "evidence": "clients booked twice, and messages unanswered"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "automation_goals"
+    },
+    {
+      "turn": 11,
+      "facts": [
+        {
+          "field_id": "automation_goals",
+          "value": [
+            "booking intake",
+            "reminder texts",
+            "message sorting"
+          ],
+          "status": "reported",
+          "evidence": "Booking intake, reminder texts, message sorting"
+        },
+        {
+          "field_id": "main_goal",
+          "value": "growth",
+          "status": "reported",
+          "evidence": "I want to grow"
+        },
+        {
+          "field_id": "integrations_available",
+          "value": [
+            "csv-export"
+          ],
+          "status": "reported",
+          "evidence": "CSV download"
+        },
+        {
+          "field_id": "personal_data_handled",
+          "value": true,
+          "status": "reported",
+          "evidence": "Client phone numbers and skin allergy notes, yes"
+        },
+        {
+          "field_id": "personal_data_types",
+          "value": [
+            "client phone numbers",
+            "skin allergy notes"
+          ],
+          "status": "reported",
+          "evidence": "Client phone numbers and skin allergy notes"
+        },
+        {
+          "field_id": "urgent_requests_exist",
+          "value": false,
+          "status": "reported",
+          "evidence": "Nothing urgent"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "budget_range",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 12,
+      "facts": [
+        {
+          "field_id": "budget_range",
+          "value": "about 3000 USD",
+          "status": "reported",
+          "evidence": "About 3000 USD"
+        },
+        {
+          "field_id": "start_timeline",
+          "value": null,
+          "status": "unknown",
+          "evidence": "No idea when to start"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "owner_email",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 13,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "owner_email",
+      "assumptions": [
+        "start_timeline"
+      ],
+      "asks_cost": true
+    }
+  ]
+}

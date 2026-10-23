@@ -1,0 +1,352 @@
+{
+  "changes": [],
+  "audit": "data/prompts/data-v2-audit.md",
+  "conversation_id": "I-3",
+  "split": "test",
+  "company": "i.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-i",
+  "generated_by": "scripts/build_data.py",
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Copperline Garage",
+          "status": "reported",
+          "evidence": "Copperline Garage"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Wendell Voss",
+          "status": "reported",
+          "evidence": "Wendell Voss"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Managing director",
+          "status": "reported",
+          "evidence": "managing director"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "retail",
+          "status": "reported",
+          "evidence": "We sell furniture and homeware from four shops and online"
+        },
+        {
+          "field_id": "locations",
+          "value": 4,
+          "status": "reported",
+          "evidence": "four shops"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 3,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 52,
+          "status": "reported",
+          "evidence": "52 people"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 4,
+      "facts": [
+        {
+          "field_id": "request_channels",
+          "value": [
+            "phone",
+            "email",
+            "web chat",
+            "ask at the shop counter"
+          ],
+          "status": "reported",
+          "evidence": "Customers phone, email, use web chat, or ask at the shop counter"
+        },
+        {
+          "field_id": "daily_request_volume",
+          "value": 210,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day",
+          "evidence": "Roughly 210 enquiries a day"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": 3,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "Three minutes to answer one"
+        },
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 2,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "two minutes logging it"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use"
+    },
+    {
+      "turn": 6,
+      "facts": [
+        {
+          "field_id": "tools_in_use",
+          "value": [
+            "the back office of the web shop",
+            "a stock spreadsheet",
+            "the shared inbox"
+          ],
+          "status": "reported",
+          "evidence": "the back office of the web shop, a stock spreadsheet that each shop updates at close, and the shared inbox"
+        },
+        {
+          "field_id": "steps_in_process",
+          "value": [
+            "the enquiry arrives",
+            "we check stock",
+            "quote a delivery date",
+            "take payment",
+            "pass it to the warehouse",
+            "send tracking"
+          ],
+          "status": "reported",
+          "evidence": "the enquiry arrives, we check stock, quote a delivery date, take payment, pass it to the warehouse and send tracking"
+        },
+        {
+          "field_id": "approval_steps",
+          "value": [
+            "any refund over 100 USD needs the store manager to approve it"
+          ],
+          "status": "reported",
+          "evidence": "Any refund over 100 USD needs the store manager to approve it"
+        },
+        {
+          "field_id": "pain_points",
+          "value": [
+            "stock counts that are outdated",
+            "endless delivery date questions",
+            "the refund queue"
+          ],
+          "status": "reported",
+          "evidence": "stock counts that are outdated, endless delivery date questions and the refund queue"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "error_types"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "error_types",
+          "value": [
+            "wrong",
+            "delayed"
+          ],
+          "status": "reported",
+          "evidence": "Wrong stock levels showing online, and deliveries turning up late"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "automation_goals"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "automation_goals",
+          "value": [
+            "delivery date enquiries",
+            "stock checks",
+            "refund triage"
+          ],
+          "status": "reported",
+          "evidence": "Delivery date enquiries, stock checks and refund triage"
+        },
+        {
+          "field_id": "main_goal",
+          "value": "cost",
+          "status": "reported",
+          "evidence": "We need costs down"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "integrations_available"
+    },
+    {
+      "turn": 9,
+      "facts": [
+        {
+          "field_id": "integrations_available",
+          "value": [
+            "api-connector",
+            "csv-export"
+          ],
+          "status": "reported",
+          "evidence": "Our back office offers an API, and stock counts can be saved as CSV"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled"
+    },
+    {
+      "turn": 10,
+      "facts": [
+        {
+          "field_id": "personal_data_handled",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes"
+        },
+        {
+          "field_id": "personal_data_types",
+          "value": [
+            "customer addresses",
+            "past order histories",
+            "payment references"
+          ],
+          "status": "reported",
+          "evidence": "customer addresses, past order histories and payment references"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "urgent_requests_exist"
+    },
+    {
+      "turn": 11,
+      "facts": [
+        {
+          "field_id": "urgent_requests_exist",
+          "value": false,
+          "status": "reported",
+          "evidence": "No, nothing is that urgent when you sell sofas"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "budget_range",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 12,
+      "facts": [
+        {
+          "field_id": "budget_range",
+          "value": "about 40000 USD",
+          "status": "reported",
+          "evidence": "About 40000 USD"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "start_timeline",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 13,
+      "facts": [
+        {
+          "field_id": "start_timeline",
+          "value": "next-quarter",
+          "status": "reported",
+          "evidence": "next quarter"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": "owner_email"
+    },
+    {
+      "turn": 14,
+      "facts": [
+        {
+          "field_id": "owner_email",
+          "value": "wendell@example.invalid",
+          "status": "reported",
+          "evidence": "wendell@example.invalid"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null
+    },
+    {
+      "turn": 15,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null,
+      "asks_cost": true
+    }
+  ]
+}

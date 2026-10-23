@@ -1,0 +1,3338 @@
+{
+ "what": "Blind pass (data-v2 conversations audit, pass 1): facts a careful interviewer would record per turn, from the owner messages and uploads only, written before opening the expected files, source YAML or truth files of these 8 conversations.",
+ "sample": {
+  "seed": 0,
+  "method": "random.Random(0).sample(sorted(18 new ids), 8)",
+  "ids": [
+   "C-4",
+   "E-3",
+   "F-3",
+   "F-4",
+   "G-3",
+   "I-3",
+   "I-4",
+   "J-3"
+  ]
+ },
+ "certainty": {
+  "clear": "stated; any careful interviewer records it",
+  "borderline": "implied or partial"
+ },
+ "conversations": {
+  "C-4": {
+   "turns": [
+    {
+     "turn": 1,
+     "facts": [
+      {
+       "field_id": "owner_name",
+       "value": "Ines Calloway",
+       "status": "reported",
+       "evidence_text": "Ines Calloway",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "company_name",
+       "value": "Pinewood Garden Services",
+       "status": "reported",
+       "evidence_text": "Pinewood Garden Services",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_role",
+       "value": "Owner",
+       "status": "reported",
+       "evidence_text": "Owner",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "facts": [
+      {
+       "field_id": "industry",
+       "value": "cleaning",
+       "status": "reported",
+       "evidence_text": "Offices. Shops. We clean them.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "facts": [
+      {
+       "field_id": "employee_count",
+       "value": 4,
+       "status": "reported",
+       "evidence_text": "Four",
+       "certainty": "clear",
+       "unit": "people"
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "facts": [
+      {
+       "field_id": "locations",
+       "value": 1,
+       "status": "reported",
+       "evidence_text": "One site",
+       "certainty": "clear",
+       "unit": "sites"
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "facts": [
+      {
+       "field_id": "request_channels",
+       "value": [
+        "phone",
+        "text",
+        "website form"
+       ],
+       "status": "reported",
+       "evidence_text": "Phone. Text. Website form.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": 12,
+       "status": "reported",
+       "evidence_text": "Twelve a day",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day"
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "facts": [
+      {
+       "field_id": "average_handling_minutes",
+       "value": 7,
+       "status": "reported",
+       "evidence_text": "Seven minutes",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "facts": [
+      {
+       "field_id": "manual_entry_minutes",
+       "value": 4,
+       "status": "reported",
+       "evidence_text": "Four minutes typing",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "facts": [
+      {
+       "field_id": "tools_in_use",
+       "value": [
+        "paper diary",
+        "spreadsheet",
+        "lockbox"
+       ],
+       "status": "reported",
+       "evidence_text": "write it in the paper diary kept at the office",
+       "certainty": "clear",
+       "note": "upload; lockbox borderline as a tool"
+      },
+      {
+       "field_id": "steps_in_process",
+       "value": [
+        "take the booking and write it in the paper diary",
+        "check the diary and text the client to confirm the visit",
+        "send a cleaner to the site",
+        "return the key and tick the job in the diary",
+        "type every finished job into the spreadsheet and send the invoice"
+       ],
+       "status": "reported",
+       "evidence_text": "Take the booking by phone or text and write it in the paper diary",
+       "certainty": "clear",
+       "note": "upload"
+      },
+      {
+       "field_id": "approval_steps",
+       "value": [
+        "any quote for a deep clean has to be approved by Ines"
+       ],
+       "status": "reported",
+       "evidence_text": "Any quote for a deep clean has to be approved by Ines",
+       "certainty": "clear",
+       "note": "upload"
+      }
+     ],
+     "upload": "pinewood-cleaner-checklist.txt"
+    },
+    {
+     "turn": 10,
+     "facts": [
+      {
+       "field_id": "pain_points",
+       "value": [
+        "double bookings",
+        "forgotten keys",
+        "late invoices"
+       ],
+       "status": "reported",
+       "evidence_text": "Double bookings. Forgotten keys. Late invoices.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 11,
+     "facts": [
+      {
+       "field_id": "error_types",
+       "value": [
+        "duplicated",
+        "delayed"
+       ],
+       "status": "reported",
+       "evidence_text": "Twice booked. Late sometimes.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "facts": [
+      {
+       "field_id": "automation_goals",
+       "value": [
+        "confirmations",
+        "invoice reminders"
+       ],
+       "status": "reported",
+       "evidence_text": "Confirmations. Invoice reminders.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 13,
+     "facts": [
+      {
+       "field_id": "main_goal",
+       "value": "time",
+       "status": "reported",
+       "evidence_text": "Saving time",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 14,
+     "facts": [
+      {
+       "field_id": "integrations_available",
+       "value": [
+        "csv-export"
+       ],
+       "status": "reported",
+       "evidence_text": "CSV from the spreadsheet",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 15,
+     "facts": [
+      {
+       "field_id": "personal_data_handled",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "personal_data_types",
+       "value": [
+        "addresses",
+        "door codes"
+       ],
+       "status": "reported",
+       "evidence_text": "Addresses. Door codes.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 16,
+     "facts": [
+      {
+       "field_id": "urgent_requests_exist",
+       "value": false,
+       "status": "reported",
+       "evidence_text": "No.",
+       "certainty": "borderline",
+       "note": "bare 'No.' only valid as the answer to the urgent question asked by protocol order"
+      }
+     ]
+    },
+    {
+     "turn": 17,
+     "facts": [
+      {
+       "field_id": "budget_range",
+       "value": null,
+       "status": "unknown",
+       "evidence_text": "Don't know.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 18,
+     "facts": [
+      {
+       "field_id": "start_timeline",
+       "value": "next-month",
+       "status": "reported",
+       "evidence_text": "Next month.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 19,
+     "facts": [
+      {
+       "field_id": "owner_email",
+       "value": "ines@example.invalid",
+       "status": "reported",
+       "evidence_text": "ines@example.invalid",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 20,
+     "facts": []
+    }
+   ]
+  },
+  "E-3": {
+   "turns": [
+    {
+     "turn": 1,
+     "facts": [
+      {
+       "field_id": "owner_name",
+       "value": "Hugo Reinholt",
+       "status": "reported",
+       "evidence_text": "Hugo Reinholt",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_role",
+       "value": "co-owner",
+       "status": "reported",
+       "evidence_text": "co-owner",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "company_name",
+       "value": "Saltmarsh Catering",
+       "status": "reported",
+       "evidence_text": "Saltmarsh Catering",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "facts": [
+      {
+       "field_id": "industry",
+       "value": "food-hospitality",
+       "status": "reported",
+       "evidence_text": "We run a cafe and do catering for offices and weddings.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "facts": []
+    },
+    {
+     "turn": 4,
+     "facts": [
+      {
+       "field_id": "employee_count",
+       "value": 15,
+       "status": "reported",
+       "evidence_text": "Fifteen people",
+       "certainty": "clear",
+       "unit": "people"
+      },
+      {
+       "field_id": "locations",
+       "value": 2,
+       "status": "reported",
+       "evidence_text": "two sites",
+       "certainty": "clear",
+       "unit": "sites"
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "facts": [
+      {
+       "field_id": "request_channels",
+       "value": [
+        "phone",
+        "email",
+        "website order form",
+        "walk-in customers at the cafe"
+       ],
+       "status": "reported",
+       "evidence_text": "Orders come by phone, by email, through our website order form, and walk-in customers at the cafe.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": 40,
+       "status": "reported",
+       "evidence_text": "about 40 orders a day",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day"
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "facts": [
+      {
+       "field_id": "average_handling_minutes",
+       "value": 6,
+       "status": "reported",
+       "evidence_text": "Six minutes of handling",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "facts": []
+    },
+    {
+     "turn": 9,
+     "facts": [
+      {
+       "field_id": "manual_entry_minutes",
+       "value": 3,
+       "status": "reported",
+       "evidence_text": "three minutes of re-typing",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": [
+        40,
+        630
+       ],
+       "status": "conflicting",
+       "evidence_text": "closer to 630 orders a month",
+       "certainty": "clear",
+       "values": [
+        {
+         "value": 40,
+         "unit": "requests",
+         "period": "day"
+        },
+        {
+         "value": 630,
+         "unit": "requests",
+         "period": "month"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "turn": 11,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": 30,
+       "status": "confirmed",
+       "evidence_text": "Go with the monthly figure.",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day",
+       "note": "630/21 = 30"
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "facts": [
+      {
+       "field_id": "tools_in_use",
+       "value": [
+        "order book",
+        "spreadsheet",
+        "card terminal"
+       ],
+       "status": "reported",
+       "evidence_text": "An order book, a spreadsheet, and the card terminal.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 13,
+     "facts": [
+      {
+       "field_id": "steps_in_process",
+       "value": [
+        "take the order",
+        "write it in the order book",
+        "check the stock",
+        "plan the prep list",
+        "deliver it",
+        "send the invoice"
+       ],
+       "status": "reported",
+       "evidence_text": "Take the order, write it in the order book, check the stock, plan the prep list, deliver it, and send the invoice.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 14,
+     "facts": [
+      {
+       "field_id": "approval_steps",
+       "value": [
+        "I approve any order over 800 USD"
+       ],
+       "status": "reported",
+       "evidence_text": "I approve any order over 800 USD.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 15,
+     "facts": [
+      {
+       "field_id": "pain_points",
+       "value": [
+        "orders written down wrong",
+        "allergy details lost on the way to the kitchen",
+        "invoices going out late"
+       ],
+       "status": "reported",
+       "evidence_text": "Orders written down wrong, allergy details lost on the way to the kitchen, and invoices going out late.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 16,
+     "facts": [
+      {
+       "field_id": "error_types",
+       "value": [
+        "wrong",
+        "missed"
+       ],
+       "status": "reported",
+       "evidence_text": "Wrong orders mostly, and the odd one that never gets made.",
+       "certainty": "clear",
+       "note": "'never gets made' = missed"
+      }
+     ]
+    },
+    {
+     "turn": 17,
+     "facts": [
+      {
+       "field_id": "automation_goals",
+       "value": [
+        "order intake",
+        "flagging allergies",
+        "invoicing"
+       ],
+       "status": "reported",
+       "evidence_text": "Order intake, flagging allergies and invoicing.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "main_goal",
+       "value": "cost",
+       "status": "reported",
+       "evidence_text": "I want costs down",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 18,
+     "facts": [
+      {
+       "field_id": "integrations_available",
+       "value": [
+        "export-only-tool"
+       ],
+       "status": "reported",
+       "evidence_text": "The card terminal exports a daily file but nothing goes back in.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 19,
+     "facts": [
+      {
+       "field_id": "personal_data_handled",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "personal_data_types",
+       "value": [
+        "customer phone numbers",
+        "allergy notes"
+       ],
+       "status": "reported",
+       "evidence_text": "customer phone numbers and allergy notes",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 20,
+     "facts": [
+      {
+       "field_id": "urgent_requests_exist",
+       "value": false,
+       "status": "reported",
+       "evidence_text": "No, nothing urgent",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 21,
+     "facts": [
+      {
+       "field_id": "budget_range",
+       "value": null,
+       "status": "unknown",
+       "evidence_text": "No budget yet, no idea.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 22,
+     "facts": [
+      {
+       "field_id": "start_timeline",
+       "value": "next-quarter",
+       "status": "reported",
+       "evidence_text": "Next quarter",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 23,
+     "facts": [
+      {
+       "field_id": "owner_email",
+       "value": "hugo@example.invalid",
+       "status": "reported",
+       "evidence_text": "hugo@example.invalid",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 24,
+     "facts": []
+    }
+   ]
+  },
+  "F-3": {
+   "turns": [
+    {
+     "turn": 1,
+     "facts": [
+      {
+       "field_id": "owner_name",
+       "value": "Raimund Teague",
+       "status": "reported",
+       "evidence_text": "Raimund Teague",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_role",
+       "value": "operations manager",
+       "status": "reported",
+       "evidence_text": "operations manager",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "company_name",
+       "value": "Golden Crumb Bakery",
+       "status": "reported",
+       "evidence_text": "Golden Crumb Bakery",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "facts": [
+      {
+       "field_id": "industry",
+       "value": "logistics-delivery",
+       "status": "reported",
+       "evidence_text": "we collect and deliver parcels and pallets for businesses across the region",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "employee_count",
+       "value": 22,
+       "status": "reported",
+       "evidence_text": "22 people including the drivers",
+       "certainty": "clear",
+       "unit": "people"
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "facts": [
+      {
+       "field_id": "locations",
+       "value": 2,
+       "status": "reported",
+       "evidence_text": "Two depots",
+       "certainty": "clear",
+       "unit": "sites"
+      },
+      {
+       "field_id": "request_channels",
+       "value": [
+        "phone",
+        "email",
+        "customer portal",
+        "messages in the driver app"
+       ],
+       "status": "reported",
+       "evidence_text": "Customers book by phone, email, our customer portal, or messages in the driver app",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "daily_request_volume",
+       "value": 220,
+       "status": "reported",
+       "evidence_text": "about 220 a day",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day"
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": [
+        220,
+        900
+       ],
+       "status": "conflicting",
+       "evidence_text": "about 900 a week",
+       "certainty": "clear",
+       "values": [
+        {
+         "value": 220,
+         "unit": "requests",
+         "period": "day"
+        },
+        {
+         "value": 900,
+         "unit": "requests",
+         "period": "week"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "facts": []
+    },
+    {
+     "turn": 6,
+     "facts": []
+    },
+    {
+     "turn": 7,
+     "facts": [
+      {
+       "field_id": "average_handling_minutes",
+       "value": 3,
+       "status": "reported",
+       "evidence_text": "about 3 minutes to handle",
+       "certainty": "clear",
+       "unit": "minutes"
+      },
+      {
+       "field_id": "manual_entry_minutes",
+       "value": 2,
+       "status": "reported",
+       "evidence_text": "2 minutes to key into the dispatch board",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "facts": [
+      {
+       "field_id": "tools_in_use",
+       "value": [
+        "dispatch board",
+        "spreadsheet",
+        "tracking app"
+       ],
+       "status": "reported",
+       "evidence_text": "The dispatch board, a spreadsheet, and the tracking app.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "facts": [
+      {
+       "field_id": "steps_in_process",
+       "value": [
+        "receive the booking",
+        "assign a driver",
+        "print the manifest",
+        "track the delivery",
+        "collect proof of delivery",
+        "send the invoice"
+       ],
+       "status": "reported",
+       "evidence_text": "We receive the booking, assign a driver, print the manifest, track the delivery, collect proof of delivery, and send the invoice.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "facts": [
+      {
+       "field_id": "approval_steps",
+       "value": [
+        "the dispatch manager approves any rush surcharge"
+       ],
+       "status": "reported",
+       "evidence_text": "The dispatch manager approves any rush surcharge.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 11,
+     "facts": [
+      {
+       "field_id": "pain_points",
+       "value": [
+        "wrong addresses",
+        "missed pickup windows",
+        "chasing proof of delivery"
+       ],
+       "status": "reported",
+       "evidence_text": "Wrong addresses, missed pickup windows, and chasing proof of delivery eats the afternoon.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "facts": [
+      {
+       "field_id": "error_types",
+       "value": [
+        "wrong",
+        "delayed",
+        "missed"
+       ],
+       "status": "reported",
+       "evidence_text": "Wrong drop-offs, late runs, and pickups nobody does.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 13,
+     "facts": [
+      {
+       "field_id": "automation_goals",
+       "value": [
+        "booking intake",
+        "driver assignment",
+        "proof of delivery chasing"
+       ],
+       "status": "reported",
+       "evidence_text": "Booking intake, driver assignment, and proof of delivery chasing.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "main_goal",
+       "value": "growth",
+       "status": "reported",
+       "evidence_text": "We want to grow without hiring more office staff.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 14,
+     "facts": []
+    },
+    {
+     "turn": 15,
+     "facts": [
+      {
+       "field_id": "integrations_available",
+       "value": [
+        "api-connector",
+        "csv-export"
+       ],
+       "status": "reported",
+       "evidence_text": "The tracking app has an API and the spreadsheet exports CSV.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 16,
+     "facts": [
+      {
+       "field_id": "personal_data_handled",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "personal_data_types",
+       "value": [
+        "recipient names",
+        "delivery addresses",
+        "signatures"
+       ],
+       "status": "reported",
+       "evidence_text": "recipient names, the delivery addresses, and signatures",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 17,
+     "facts": [
+      {
+       "field_id": "urgent_requests_exist",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "urgent_request_types",
+       "value": [
+        "rush parcels the same day",
+        "medical deliveries"
+       ],
+       "status": "reported",
+       "evidence_text": "rush parcels the same day and medical deliveries",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 18,
+     "facts": [
+      {
+       "field_id": "budget_range",
+       "value": "around 25000 USD",
+       "status": "reported",
+       "evidence_text": "Around 25000 USD",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 19,
+     "facts": [
+      {
+       "field_id": "start_timeline",
+       "value": null,
+       "status": "unknown",
+       "evidence_text": "Not decided when we'd start.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 20,
+     "facts": [
+      {
+       "field_id": "owner_email",
+       "value": "raimund@example.invalid",
+       "status": "reported",
+       "evidence_text": "raimund@example.invalid",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 21,
+     "facts": []
+    }
+   ]
+  },
+  "F-4": {
+   "turns": [
+    {
+     "turn": 1,
+     "facts": [
+      {
+       "field_id": "company_name",
+       "value": "Golden Crumb Bakery",
+       "status": "reported",
+       "evidence_text": "Golden Crumb Bakery",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_name",
+       "value": "Raimund Teague",
+       "status": "reported",
+       "evidence_text": "Raimund Teague",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_role",
+       "value": "operations manager",
+       "status": "reported",
+       "evidence_text": "operations manager",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "facts": [
+      {
+       "field_id": "industry",
+       "value": "logistics-delivery",
+       "status": "reported",
+       "evidence_text": "We move parcels and pallets between businesses",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "facts": [
+      {
+       "field_id": "employee_count",
+       "value": 22,
+       "status": "reported",
+       "evidence_text": "22 of us in total",
+       "certainty": "clear",
+       "unit": "people"
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "facts": []
+    },
+    {
+     "turn": 5,
+     "facts": [
+      {
+       "field_id": "locations",
+       "value": 2,
+       "status": "reported",
+       "evidence_text": "We run two depots.",
+       "certainty": "clear",
+       "unit": "sites"
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "facts": [
+      {
+       "field_id": "locations",
+       "value": [
+        2,
+        3
+       ],
+       "status": "conflicting",
+       "evidence_text": "three if you count the cross-dock we rent, so three",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "facts": [
+      {
+       "field_id": "locations",
+       "value": 2,
+       "status": "confirmed",
+       "evidence_text": "Two. The cross-dock is rented space, not ours.",
+       "certainty": "clear",
+       "unit": "sites"
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "facts": [
+      {
+       "field_id": "request_channels",
+       "value": [
+        "phone",
+        "email",
+        "customer portal",
+        "driver app messages"
+       ],
+       "status": "reported",
+       "evidence_text": "Bookings come by phone, by email, in the customer portal and in driver app messages.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": 180,
+       "status": "reported",
+       "evidence_text": "Around 180 bookings a day",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day"
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "facts": []
+    },
+    {
+     "turn": 11,
+     "facts": [
+      {
+       "field_id": "average_handling_minutes",
+       "value": 3,
+       "status": "reported",
+       "evidence_text": "Three minutes a booking to handle",
+       "certainty": "clear",
+       "unit": "minutes"
+      },
+      {
+       "field_id": "manual_entry_minutes",
+       "value": 2,
+       "status": "reported",
+       "evidence_text": "two minutes to key it in afterwards",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "facts": [
+      {
+       "field_id": "tools_in_use",
+       "value": [
+        "dispatch board",
+        "tracking app",
+        "spreadsheet"
+       ],
+       "status": "reported",
+       "evidence_text": "Assign a driver on the dispatch board",
+       "certainty": "clear",
+       "note": "upload"
+      },
+      {
+       "field_id": "steps_in_process",
+       "value": [
+        "receive the booking and check the pickup window",
+        "assign a driver and print the manifest",
+        "track the delivery",
+        "collect proof of delivery",
+        "send the invoice"
+       ],
+       "status": "reported",
+       "evidence_text": "Receive the booking and check the pickup window with the customer.",
+       "certainty": "clear",
+       "note": "upload"
+      },
+      {
+       "field_id": "approval_steps",
+       "value": [
+        "rush surcharges must be approved by the dispatch manager"
+       ],
+       "status": "reported",
+       "evidence_text": "Rush surcharges must be approved by the dispatch manager.",
+       "certainty": "clear",
+       "note": "upload"
+      },
+      {
+       "field_id": "urgent_requests_exist",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "If a customer asks for a medical delivery, tell the duty driver straight away.",
+       "certainty": "borderline",
+       "note": "upload implies urgent handling; not stated as 'urgent requests'; owner says so at turn 18"
+      }
+     ],
+     "upload": "goldencrumb-dispatch-procedure.txt"
+    },
+    {
+     "turn": 13,
+     "facts": [
+      {
+       "field_id": "pain_points",
+       "value": [
+        "wrong addresses",
+        "pickups that miss their window",
+        "chasing proof of delivery"
+       ],
+       "status": "reported",
+       "evidence_text": "Wrong addresses are the worst, then pickups that miss their window, and chasing proof of delivery.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 14,
+     "facts": [
+      {
+       "field_id": "error_types",
+       "value": [
+        "wrong",
+        "delayed",
+        "missed"
+       ],
+       "status": "reported",
+       "evidence_text": "Drop-offs at the wrong place, late runs, and missed pickups.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 15,
+     "facts": [
+      {
+       "field_id": "automation_goals",
+       "value": [
+        "the booking intake",
+        "the driver assignment",
+        "chasing proof of delivery"
+       ],
+       "status": "reported",
+       "evidence_text": "The booking intake, the driver assignment, and chasing proof of delivery.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "main_goal",
+       "value": "growth",
+       "status": "reported",
+       "evidence_text": "Mostly we want to grow without more office staff.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 16,
+     "facts": [
+      {
+       "field_id": "integrations_available",
+       "value": [
+        "api-connector",
+        "csv-export"
+       ],
+       "status": "reported",
+       "evidence_text": "The tracking app has an API, and the spreadsheet can export CSV.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 17,
+     "facts": [
+      {
+       "field_id": "personal_data_handled",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "personal_data_types",
+       "value": [
+        "recipients' names",
+        "delivery addresses",
+        "their signatures"
+       ],
+       "status": "reported",
+       "evidence_text": "Recipients' names, delivery addresses and their signatures.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 18,
+     "facts": [
+      {
+       "field_id": "urgent_requests_exist",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "urgent_request_types",
+       "value": [
+        "same-day rush parcels",
+        "medical deliveries that cannot wait"
+       ],
+       "status": "reported",
+       "evidence_text": "Same-day rush parcels, and medical deliveries that cannot wait.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 19,
+     "facts": [
+      {
+       "field_id": "budget_range",
+       "value": "maybe 25000 USD",
+       "status": "reported",
+       "evidence_text": "Maybe 25000 USD.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 20,
+     "facts": [
+      {
+       "field_id": "start_timeline",
+       "value": null,
+       "status": "unknown",
+       "evidence_text": "Not sure when we'd start.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 21,
+     "facts": [
+      {
+       "field_id": "owner_email",
+       "value": "raimund@example.invalid",
+       "status": "reported",
+       "evidence_text": "raimund@example.invalid",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 22,
+     "facts": []
+    }
+   ]
+  },
+  "G-3": {
+   "turns": [
+    {
+     "turn": 1,
+     "facts": [
+      {
+       "field_id": "owner_name",
+       "value": "Marlon Pike",
+       "status": "reported",
+       "evidence_text": "Marlon Pike",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "company_name",
+       "value": "Larkspur Fixers",
+       "status": "reported",
+       "evidence_text": "Larkspur Fixers",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_role",
+       "value": "owner",
+       "status": "reported",
+       "evidence_text": "I'm the owner",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "facts": [
+      {
+       "field_id": "industry",
+       "value": "home-services",
+       "status": "reported",
+       "evidence_text": "Odd jobs. Leaks, locks, shelves. People's houses.",
+       "certainty": "borderline",
+       "note": "handyman work in homes: home-services vs trades (leaks, locks) is a judgement call"
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "facts": []
+    },
+    {
+     "turn": 4,
+     "facts": [
+      {
+       "field_id": "employee_count",
+       "value": 3,
+       "status": "reported",
+       "evidence_text": "Three of us",
+       "certainty": "clear",
+       "unit": "people"
+      },
+      {
+       "field_id": "locations",
+       "value": 1,
+       "status": "reported",
+       "evidence_text": "One yard",
+       "certainty": "clear",
+       "unit": "sites"
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "facts": [
+      {
+       "field_id": "request_channels",
+       "value": [
+        "calls",
+        "texts",
+        "posts in the street group"
+       ],
+       "status": "reported",
+       "evidence_text": "Calls. Texts. Posts in the street group.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": 9,
+       "status": "reported",
+       "evidence_text": "Nine a day",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day"
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "facts": [
+      {
+       "field_id": "average_handling_minutes",
+       "value": 8,
+       "status": "reported",
+       "evidence_text": "Eight minutes",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "facts": []
+    },
+    {
+     "turn": 9,
+     "facts": [
+      {
+       "field_id": "manual_entry_minutes",
+       "value": 5,
+       "status": "reported",
+       "evidence_text": "Five minutes writing it up",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "facts": []
+    },
+    {
+     "turn": 11,
+     "facts": [
+      {
+       "field_id": "tools_in_use",
+       "value": [
+        "my notebook",
+        "contacts in my phone",
+        "banking app"
+       ],
+       "status": "reported",
+       "evidence_text": "My notebook. Contacts in my phone. Banking app.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "facts": [
+      {
+       "field_id": "steps_in_process",
+       "value": [
+        "take the call",
+        "note it in the notebook",
+        "book a day",
+        "do the job",
+        "text the invoice"
+       ],
+       "status": "reported",
+       "evidence_text": "Take the call. Note it in the notebook. Book a day. Do the job. Text the invoice.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 13,
+     "facts": [
+      {
+       "field_id": "approval_steps",
+       "value": [
+        "any job over 500 USD, I approve it first"
+       ],
+       "status": "reported",
+       "evidence_text": "Any job over 500 USD, I approve it first.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 14,
+     "facts": [
+      {
+       "field_id": "pain_points",
+       "value": [
+        "forgotten call-backs",
+        "jobs written on scraps of paper",
+        "chasing payments"
+       ],
+       "status": "reported",
+       "evidence_text": "Forgotten call-backs, mostly. Jobs written on scraps of paper. Chasing payments.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 15,
+     "facts": [
+      {
+       "field_id": "error_types",
+       "value": [
+        "missed",
+        "delayed"
+       ],
+       "status": "reported",
+       "evidence_text": "Calls I never return. Jobs that start late.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 16,
+     "facts": [
+      {
+       "field_id": "automation_goals",
+       "value": [
+        "reminders for call-backs",
+        "logging the jobs",
+        "chasing payments"
+       ],
+       "status": "reported",
+       "evidence_text": "Reminders for call-backs. Logging the jobs. Chasing payments for me.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "main_goal",
+       "value": "time",
+       "status": "reported",
+       "evidence_text": "All I want is my time back.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 17,
+     "facts": [
+      {
+       "field_id": "integrations_available",
+       "value": [
+        "csv-export"
+       ],
+       "status": "reported",
+       "evidence_text": "My banking app saves CSV statements.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 18,
+     "facts": [
+      {
+       "field_id": "personal_data_handled",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "personal_data_types",
+       "value": [
+        "addresses",
+        "phone numbers"
+       ],
+       "status": "reported",
+       "evidence_text": "Addresses. Phone numbers.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 19,
+     "facts": [
+      {
+       "field_id": "urgent_requests_exist",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "urgent_request_types",
+       "value": [
+        "burst pipes",
+        "people locked out at night"
+       ],
+       "status": "reported",
+       "evidence_text": "Burst pipes. People locked out at night.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 20,
+     "facts": [
+      {
+       "field_id": "budget_range",
+       "value": null,
+       "status": "unknown",
+       "evidence_text": "No idea on money.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 21,
+     "facts": [
+      {
+       "field_id": "start_timeline",
+       "value": "immediately",
+       "status": "reported",
+       "evidence_text": "As soon as possible.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 22,
+     "facts": [
+      {
+       "field_id": "owner_email",
+       "value": "marlon@example.invalid",
+       "status": "reported",
+       "evidence_text": "marlon@example.invalid",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 23,
+     "facts": []
+    }
+   ]
+  },
+  "I-3": {
+   "turns": [
+    {
+     "turn": 1,
+     "facts": [
+      {
+       "field_id": "owner_name",
+       "value": "Wendell Voss",
+       "status": "reported",
+       "evidence_text": "Wendell Voss",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_role",
+       "value": "managing director",
+       "status": "reported",
+       "evidence_text": "managing director",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "company_name",
+       "value": "Copperline Garage",
+       "status": "reported",
+       "evidence_text": "Copperline Garage",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "facts": [
+      {
+       "field_id": "industry",
+       "value": "retail",
+       "status": "reported",
+       "evidence_text": "We sell furniture and homeware from four shops and online.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "locations",
+       "value": 4,
+       "status": "reported",
+       "evidence_text": "four shops",
+       "certainty": "borderline",
+       "unit": "sites",
+       "note": "turn 3 adds 'the warehouse': sites could be 4 or 5"
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "facts": [
+      {
+       "field_id": "employee_count",
+       "value": 52,
+       "status": "reported",
+       "evidence_text": "52 people",
+       "certainty": "clear",
+       "unit": "people"
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "facts": [
+      {
+       "field_id": "request_channels",
+       "value": [
+        "phone",
+        "email",
+        "web chat",
+        "shop counter"
+       ],
+       "status": "reported",
+       "evidence_text": "Customers phone, email, use web chat, or ask at the shop counter.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "daily_request_volume",
+       "value": 210,
+       "status": "reported",
+       "evidence_text": "Roughly 210 enquiries a day",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day"
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "facts": [
+      {
+       "field_id": "average_handling_minutes",
+       "value": 3,
+       "status": "reported",
+       "evidence_text": "Three minutes to answer one",
+       "certainty": "clear",
+       "unit": "minutes"
+      },
+      {
+       "field_id": "manual_entry_minutes",
+       "value": 2,
+       "status": "reported",
+       "evidence_text": "two minutes logging it",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "facts": [
+      {
+       "field_id": "tools_in_use",
+       "value": [
+        "back office of the web shop",
+        "stock spreadsheet",
+        "shared inbox"
+       ],
+       "status": "reported",
+       "evidence_text": "We use the back office of the web shop, a stock spreadsheet that each shop updates at close, and the shared inbox.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "steps_in_process",
+       "value": [
+        "the enquiry arrives",
+        "check stock",
+        "quote a delivery date",
+        "take payment",
+        "pass it to the warehouse",
+        "send tracking"
+       ],
+       "status": "reported",
+       "evidence_text": "the enquiry arrives, we check stock, quote a delivery date, take payment, pass it to the warehouse and send tracking",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "approval_steps",
+       "value": [
+        "any refund over 100 USD needs the store manager to approve it"
+       ],
+       "status": "reported",
+       "evidence_text": "Any refund over 100 USD needs the store manager to approve it.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "pain_points",
+       "value": [
+        "stock counts that are outdated",
+        "endless delivery date questions",
+        "the refund queue"
+       ],
+       "status": "reported",
+       "evidence_text": "The three things that hurt are stock counts that are outdated, endless delivery date questions and the refund queue.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "facts": [
+      {
+       "field_id": "error_types",
+       "value": [
+        "wrong",
+        "delayed"
+       ],
+       "status": "reported",
+       "evidence_text": "Wrong stock levels showing online, and deliveries turning up late.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "facts": [
+      {
+       "field_id": "automation_goals",
+       "value": [
+        "delivery date enquiries",
+        "stock checks",
+        "refund triage"
+       ],
+       "status": "reported",
+       "evidence_text": "Delivery date enquiries, stock checks and refund triage.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "main_goal",
+       "value": "cost",
+       "status": "reported",
+       "evidence_text": "We need costs down",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "facts": [
+      {
+       "field_id": "integrations_available",
+       "value": [
+        "api-connector",
+        "csv-export"
+       ],
+       "status": "reported",
+       "evidence_text": "Our back office offers an API, and stock counts can be saved as CSV.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "facts": [
+      {
+       "field_id": "personal_data_handled",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "personal_data_types",
+       "value": [
+        "customer addresses",
+        "past order histories",
+        "payment references"
+       ],
+       "status": "reported",
+       "evidence_text": "customer addresses, past order histories and payment references",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 11,
+     "facts": [
+      {
+       "field_id": "urgent_requests_exist",
+       "value": false,
+       "status": "reported",
+       "evidence_text": "No, nothing is that urgent",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "facts": [
+      {
+       "field_id": "budget_range",
+       "value": "about 40000 USD for the year",
+       "status": "reported",
+       "evidence_text": "About 40000 USD for the year.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 13,
+     "facts": [
+      {
+       "field_id": "start_timeline",
+       "value": "next-quarter",
+       "status": "reported",
+       "evidence_text": "Probably next quarter.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 14,
+     "facts": [
+      {
+       "field_id": "owner_email",
+       "value": "wendell@example.invalid",
+       "status": "reported",
+       "evidence_text": "wendell@example.invalid",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 15,
+     "facts": []
+    }
+   ]
+  },
+  "I-4": {
+   "turns": [
+    {
+     "turn": 1,
+     "facts": [
+      {
+       "field_id": "owner_name",
+       "value": "Wendell Voss",
+       "status": "reported",
+       "evidence_text": "Wendell Voss",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "company_name",
+       "value": "Copperline Garage",
+       "status": "reported",
+       "evidence_text": "Copperline Garage",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_role",
+       "value": "managing director",
+       "status": "reported",
+       "evidence_text": "Managing director",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "facts": [
+      {
+       "field_id": "industry",
+       "value": "retail",
+       "status": "reported",
+       "evidence_text": "Furniture. Homeware. Four shops.",
+       "certainty": "borderline",
+       "note": "'four shops' of furniture says retail; no verb"
+      },
+      {
+       "field_id": "locations",
+       "value": 4,
+       "status": "reported",
+       "evidence_text": "Four shops",
+       "certainty": "borderline",
+       "unit": "sites"
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "facts": [
+      {
+       "field_id": "employee_count",
+       "value": 52,
+       "status": "reported",
+       "evidence_text": "Fifty-two",
+       "certainty": "clear",
+       "unit": "people"
+      }
+     ]
+    },
+    {
+     "turn": 4,
+     "facts": [
+      {
+       "field_id": "request_channels",
+       "value": [
+        "phone",
+        "email",
+        "web chat",
+        "shop counter"
+       ],
+       "status": "reported",
+       "evidence_text": "Phone. Email. Web chat. Shop counter.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": 210,
+       "status": "reported",
+       "evidence_text": "210 a day",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day"
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "facts": [
+      {
+       "field_id": "average_handling_minutes",
+       "value": 3,
+       "status": "reported",
+       "evidence_text": "Three minutes",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "facts": [
+      {
+       "field_id": "manual_entry_minutes",
+       "value": 2,
+       "status": "reported",
+       "evidence_text": "Two minutes logging",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "facts": []
+    },
+    {
+     "turn": 9,
+     "facts": [
+      {
+       "field_id": "tools_in_use",
+       "value": [
+        "web shop back office",
+        "stock spreadsheet",
+        "shared inbox"
+       ],
+       "status": "reported",
+       "evidence_text": "Web shop back office. Stock spreadsheet. Shared inbox.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "facts": [
+      {
+       "field_id": "steps_in_process",
+       "value": [
+        "enquiry arrives",
+        "check stock",
+        "quote delivery date",
+        "take payment",
+        "pass to warehouse",
+        "send tracking"
+       ],
+       "status": "reported",
+       "evidence_text": "Enquiry arrives. Check stock. Quote delivery date. Take payment. Pass to warehouse. Send tracking.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 11,
+     "facts": [
+      {
+       "field_id": "approval_steps",
+       "value": [
+        "refunds over 100 USD, store manager"
+       ],
+       "status": "reported",
+       "evidence_text": "Refunds over 100 USD. Store manager.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "facts": [
+      {
+       "field_id": "pain_points",
+       "value": [
+        "outdated stock counts",
+        "delivery date questions",
+        "refund queue"
+       ],
+       "status": "reported",
+       "evidence_text": "Outdated stock counts. Delivery date questions. Refund queue.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 13,
+     "facts": [
+      {
+       "field_id": "error_types",
+       "value": [
+        "wrong",
+        "delayed"
+       ],
+       "status": "reported",
+       "evidence_text": "Wrong. Late.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 14,
+     "facts": [
+      {
+       "field_id": "automation_goals",
+       "value": [
+        "delivery date enquiries",
+        "stock checks",
+        "refund triage"
+       ],
+       "status": "reported",
+       "evidence_text": "Delivery date enquiries. Stock checks. Refund triage.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 15,
+     "facts": [
+      {
+       "field_id": "main_goal",
+       "value": "cost",
+       "status": "reported",
+       "evidence_text": "Lower cost.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 16,
+     "facts": [
+      {
+       "field_id": "integrations_available",
+       "value": [
+        "api-connector",
+        "csv-export"
+       ],
+       "status": "reported",
+       "evidence_text": "API. CSV.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 17,
+     "facts": [
+      {
+       "field_id": "personal_data_handled",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "personal_data_types",
+       "value": [
+        "addresses",
+        "order histories",
+        "payment references"
+       ],
+       "status": "reported",
+       "evidence_text": "Addresses. Order histories. Payment references.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 18,
+     "facts": [
+      {
+       "field_id": "urgent_requests_exist",
+       "value": false,
+       "status": "reported",
+       "evidence_text": "No.",
+       "certainty": "borderline",
+       "note": "bare 'No.'"
+      }
+     ]
+    },
+    {
+     "turn": 19,
+     "facts": [
+      {
+       "field_id": "budget_range",
+       "value": "about 40000 USD",
+       "status": "reported",
+       "evidence_text": "About 40000 USD.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 20,
+     "facts": [
+      {
+       "field_id": "start_timeline",
+       "value": "next-quarter",
+       "status": "reported",
+       "evidence_text": "Next quarter.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 21,
+     "facts": [
+      {
+       "field_id": "owner_email",
+       "value": "wendell@example.invalid",
+       "status": "reported",
+       "evidence_text": "wendell@example.invalid",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 22,
+     "facts": []
+    }
+   ]
+  },
+  "J-3": {
+   "turns": [
+    {
+     "turn": 1,
+     "facts": [
+      {
+       "field_id": "owner_name",
+       "value": "Henrietta Vance",
+       "status": "reported",
+       "evidence_text": "Henrietta Vance",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "owner_role",
+       "value": "senior partner",
+       "status": "reported",
+       "evidence_text": "senior partner",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "company_name",
+       "value": "Kestrel Fitness Partners",
+       "status": "reported",
+       "evidence_text": "Kestrel Fitness Partners",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 2,
+     "facts": [
+      {
+       "field_id": "industry",
+       "value": "professional-services",
+       "status": "reported",
+       "evidence_text": "We are accountants, we do tax returns and books for small firms.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 3,
+     "facts": []
+    },
+    {
+     "turn": 4,
+     "facts": [
+      {
+       "field_id": "employee_count",
+       "value": 16,
+       "status": "reported",
+       "evidence_text": "Sixteen persons work here",
+       "certainty": "clear",
+       "unit": "people"
+      },
+      {
+       "field_id": "locations",
+       "value": 1,
+       "status": "reported",
+       "evidence_text": "all in one office",
+       "certainty": "clear",
+       "unit": "sites"
+      }
+     ]
+    },
+    {
+     "turn": 5,
+     "facts": [
+      {
+       "field_id": "request_channels",
+       "value": [
+        "email",
+        "phone",
+        "portal for clients"
+       ],
+       "status": "reported",
+       "evidence_text": "Clients write email, call on phone, or use portal for clients.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "daily_request_volume",
+       "value": 20,
+       "status": "reported",
+       "evidence_text": "About 20 requests per day",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day"
+      }
+     ]
+    },
+    {
+     "turn": 6,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": [
+        20,
+        70
+       ],
+       "status": "conflicting",
+       "evidence_text": "seventy per week",
+       "certainty": "clear",
+       "values": [
+        {
+         "value": 20,
+         "unit": "requests",
+         "period": "day"
+        },
+        {
+         "value": 70,
+         "unit": "requests",
+         "period": "week"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "turn": 7,
+     "facts": [
+      {
+       "field_id": "daily_request_volume",
+       "value": 14,
+       "status": "confirmed",
+       "evidence_text": "Seventy per week is correct.",
+       "certainty": "clear",
+       "unit": "requests",
+       "period": "day",
+       "note": "70/5 = 14"
+      }
+     ]
+    },
+    {
+     "turn": 8,
+     "facts": [
+      {
+       "field_id": "average_handling_minutes",
+       "value": 10,
+       "status": "reported",
+       "evidence_text": "Ten minutes to read and answer one request",
+       "certainty": "clear",
+       "unit": "minutes"
+      },
+      {
+       "field_id": "manual_entry_minutes",
+       "value": 5,
+       "status": "reported",
+       "evidence_text": "five minutes more to type it",
+       "certainty": "clear",
+       "unit": "minutes"
+      }
+     ]
+    },
+    {
+     "turn": 9,
+     "facts": [
+      {
+       "field_id": "tools_in_use",
+       "value": [
+        "practice software",
+        "the shared mailbox",
+        "spreadsheets"
+       ],
+       "status": "reported",
+       "evidence_text": "We use practice software, the shared mailbox and spreadsheets.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 10,
+     "facts": []
+    },
+    {
+     "turn": 11,
+     "facts": [
+      {
+       "field_id": "steps_in_process",
+       "value": [
+        "log the request",
+        "assign it to one accountant",
+        "request missing documents",
+        "prepare the return",
+        "the partner reviews",
+        "file the return"
+       ],
+       "status": "reported",
+       "evidence_text": "We log the request, assign it to one accountant, request missing documents, prepare the return, the partner reviews, and then file the return.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 12,
+     "facts": [
+      {
+       "field_id": "approval_steps",
+       "value": [
+        "partner must review every return before we file"
+       ],
+       "status": "reported",
+       "evidence_text": "Partner must review every return before we file.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 13,
+     "facts": [
+      {
+       "field_id": "pain_points",
+       "value": [
+        "chasing missing documents",
+        "the deadline crunch in January",
+        "requests get lost in shared mailbox"
+       ],
+       "status": "reported",
+       "evidence_text": "Chasing missing documents, the deadline crunch in January, and requests get lost in shared mailbox.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 14,
+     "facts": [
+      {
+       "field_id": "error_types",
+       "value": [
+        "missed",
+        "delayed",
+        "wrong"
+       ],
+       "status": "reported",
+       "evidence_text": "Documents we forget to ask, deadline when we are late, and wrong numbers in the return.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 15,
+     "facts": [
+      {
+       "field_id": "automation_goals",
+       "value": [
+        "chasing documents",
+        "logging requests",
+        "deadline reminders"
+       ],
+       "status": "reported",
+       "evidence_text": "Chasing documents, logging requests, and deadline reminders.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "main_goal",
+       "value": "errors",
+       "status": "reported",
+       "evidence_text": "Main thing is fewer errors.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 16,
+     "facts": [
+      {
+       "field_id": "integrations_available",
+       "value": [
+        "csv-export"
+       ],
+       "status": "reported",
+       "evidence_text": "Software can export to CSV.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 17,
+     "facts": [
+      {
+       "field_id": "personal_data_handled",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "personal_data_types",
+       "value": [
+        "tax numbers",
+        "bank details",
+        "home addresses of clients"
+       ],
+       "status": "reported",
+       "evidence_text": "Tax numbers, bank details, home addresses of clients.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 18,
+     "facts": [
+      {
+       "field_id": "urgent_requests_exist",
+       "value": true,
+       "status": "reported",
+       "evidence_text": "Yes, sometimes.",
+       "certainty": "clear"
+      },
+      {
+       "field_id": "urgent_request_types",
+       "value": [
+        "filing deadline in two days",
+        "letter from tax office"
+       ],
+       "status": "reported",
+       "evidence_text": "Filing deadline in two days, or letter from tax office.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 19,
+     "facts": [
+      {
+       "field_id": "budget_range",
+       "value": null,
+       "status": "unknown",
+       "evidence_text": "We have not discuss it.",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 20,
+     "facts": [
+      {
+       "field_id": "start_timeline",
+       "value": "within-six-months",
+       "status": "reported",
+       "evidence_text": "Maybe in six months, not earlier.",
+       "certainty": "borderline",
+       "note": "'in six months, not earlier' sits on the boundary of within-six-months and later"
+      }
+     ]
+    },
+    {
+     "turn": 21,
+     "facts": [
+      {
+       "field_id": "owner_email",
+       "value": "henrietta@example.invalid",
+       "status": "reported",
+       "evidence_text": "henrietta@example.invalid",
+       "certainty": "clear"
+      }
+     ]
+    },
+    {
+     "turn": 22,
+     "facts": []
+    }
+   ]
+  }
+ },
+ "pass2": {
+  "what": "Blind pass 2 on two rewritten -4 conversations (random.Random(0).choice of dev -4 then test -4), written before opening their expected or source files.",
+  "ids": [
+   "F-4",
+   "J-4"
+  ],
+  "conversations": {
+   "F-4": {
+    "turns": [
+     {
+      "turn": 1,
+      "facts": [
+       {
+        "field_id": "owner_name",
+        "value": "Raimund Teague",
+        "status": "reported",
+        "evidence_text": "Raimund Teague",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "company_name",
+        "value": "Golden Crumb Bakery",
+        "status": "reported",
+        "evidence_text": "Golden Crumb Bakery",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "owner_role",
+        "value": "Operations manager",
+        "status": "reported",
+        "evidence_text": "Operations manager",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 2,
+      "facts": []
+     },
+     {
+      "turn": 3,
+      "facts": [
+       {
+        "field_id": "tools_in_use",
+        "value": [
+         "dispatch board",
+         "tracking app",
+         "spreadsheet"
+        ],
+        "status": "reported",
+        "evidence_text": "Assign a driver on the dispatch board",
+        "certainty": "clear",
+        "note": "upload, early"
+       },
+       {
+        "field_id": "steps_in_process",
+        "value": [
+         "receive the booking and check the pickup window",
+         "assign a driver",
+         "print the manifest",
+         "track the delivery",
+         "collect proof of delivery",
+         "send the invoice"
+        ],
+        "status": "reported",
+        "evidence_text": "Receive the booking and check the pickup window with the customer.",
+        "certainty": "clear",
+        "note": "upload, early"
+       },
+       {
+        "field_id": "approval_steps",
+        "value": [
+         "rush surcharges must be approved by the dispatch manager"
+        ],
+        "status": "reported",
+        "evidence_text": "Rush surcharges must be approved by the dispatch manager.",
+        "certainty": "clear",
+        "note": "upload, early"
+       }
+      ],
+      "upload": "goldencrumb-dispatch-procedure.txt"
+     },
+     {
+      "turn": 4,
+      "facts": [
+       {
+        "field_id": "industry",
+        "value": "logistics-delivery",
+        "status": "reported",
+        "evidence_text": "We move parcels and pallets for other businesses.",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 5,
+      "facts": [
+       {
+        "field_id": "locations",
+        "value": 2,
+        "status": "reported",
+        "evidence_text": "Two depots.",
+        "certainty": "clear",
+        "unit": "sites"
+       }
+      ]
+     },
+     {
+      "turn": 6,
+      "facts": [
+       {
+        "field_id": "locations",
+        "value": [
+         2,
+         3
+        ],
+        "status": "conflicting",
+        "evidence_text": "three sites",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 7,
+      "facts": [
+       {
+        "field_id": "locations",
+        "value": 2,
+        "status": "confirmed",
+        "evidence_text": "Two. The cross-dock is rented space only.",
+        "certainty": "clear",
+        "unit": "sites"
+       }
+      ]
+     },
+     {
+      "turn": 8,
+      "facts": []
+     },
+     {
+      "turn": 9,
+      "facts": [
+       {
+        "field_id": "employee_count",
+        "value": 22,
+        "status": "reported",
+        "evidence_text": "22 staff",
+        "certainty": "clear",
+        "unit": "people"
+       }
+      ]
+     },
+     {
+      "turn": 10,
+      "facts": [
+       {
+        "field_id": "request_channels",
+        "value": [
+         "phone",
+         "email",
+         "customer portal",
+         "driver app messages"
+        ],
+        "status": "reported",
+        "evidence_text": "Bookings arrive by phone, email, the customer portal and driver app messages.",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "daily_request_volume",
+        "value": 180,
+        "status": "reported",
+        "evidence_text": "About 180 a day",
+        "certainty": "clear",
+        "unit": "requests",
+        "period": "day"
+       },
+       {
+        "field_id": "average_handling_minutes",
+        "value": 3,
+        "status": "reported",
+        "evidence_text": "three minutes to handle",
+        "certainty": "clear",
+        "unit": "minutes"
+       },
+       {
+        "field_id": "manual_entry_minutes",
+        "value": 2,
+        "status": "reported",
+        "evidence_text": "two to key in",
+        "certainty": "clear",
+        "unit": "minutes"
+       }
+      ]
+     },
+     {
+      "turn": 11,
+      "facts": [
+       {
+        "field_id": "pain_points",
+        "value": [
+         "wrong addresses",
+         "missed pickup windows",
+         "chasing proof of delivery"
+        ],
+        "status": "reported",
+        "evidence_text": "Wrong addresses, missed pickup windows, chasing proof of delivery.",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "error_types",
+        "value": [
+         "wrong",
+         "delayed",
+         "missed"
+        ],
+        "status": "reported",
+        "evidence_text": "Wrong drop-offs, late runs, pickups nobody does.",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 12,
+      "facts": [
+       {
+        "field_id": "automation_goals",
+        "value": [
+         "booking intake",
+         "driver assignment",
+         "proof of delivery chasing"
+        ],
+        "status": "reported",
+        "evidence_text": "booking intake, driver assignment and proof of delivery chasing",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "main_goal",
+        "value": "growth",
+        "status": "reported",
+        "evidence_text": "so we can grow",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 13,
+      "facts": [
+       {
+        "field_id": "integrations_available",
+        "value": [
+         "api-connector",
+         "csv-export"
+        ],
+        "status": "reported",
+        "evidence_text": "The tracking app has an API, the spreadsheet saves CSV.",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "personal_data_handled",
+        "value": true,
+        "status": "reported",
+        "evidence_text": "We keep recipient names, delivery addresses and signatures.",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "personal_data_types",
+        "value": [
+         "recipient names",
+         "delivery addresses",
+         "signatures"
+        ],
+        "status": "reported",
+        "evidence_text": "recipient names, delivery addresses and signatures",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "urgent_requests_exist",
+        "value": true,
+        "status": "reported",
+        "evidence_text": "Rush parcels the same day and medical deliveries are urgent.",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "urgent_request_types",
+        "value": [
+         "rush parcels the same day",
+         "medical deliveries"
+        ],
+        "status": "reported",
+        "evidence_text": "Rush parcels the same day and medical deliveries",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 14,
+      "facts": [
+       {
+        "field_id": "budget_range",
+        "value": "around 25000 USD",
+        "status": "reported",
+        "evidence_text": "Around 25000 USD",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "start_timeline",
+        "value": null,
+        "status": "unknown",
+        "evidence_text": "When we start, no idea.",
+        "certainty": "clear"
+       }
+      ]
+     }
+    ]
+   },
+   "J-4": {
+    "turns": [
+     {
+      "turn": 1,
+      "facts": [
+       {
+        "field_id": "owner_name",
+        "value": "Henrietta Vance",
+        "status": "reported",
+        "evidence_text": "Henrietta Vance",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "owner_role",
+        "value": "senior partner",
+        "status": "reported",
+        "evidence_text": "senior partner",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "company_name",
+        "value": "Kestrel Fitness Partners",
+        "status": "reported",
+        "evidence_text": "Kestrel Fitness Partners",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "pain_points",
+        "value": [
+         "the deadline crunch in January",
+         "chasing missing documents"
+        ],
+        "status": "reported",
+        "evidence_text": "the deadline crunch in January and chasing missing documents",
+        "certainty": "clear",
+        "note": "early"
+       }
+      ]
+     },
+     {
+      "turn": 2,
+      "facts": [
+       {
+        "field_id": "tools_in_use",
+        "value": [
+         "practice software",
+         "shared mailbox",
+         "spreadsheets"
+        ],
+        "status": "reported",
+        "evidence_text": "Prepare the return in the practice software",
+        "certainty": "clear",
+        "note": "upload"
+       },
+       {
+        "field_id": "steps_in_process",
+        "value": [
+         "log the request",
+         "assign it to an accountant",
+         "request missing documents",
+         "prepare the return",
+         "a partner reviews every return",
+         "file the return and send the client a copy"
+        ],
+        "status": "reported",
+        "evidence_text": "Log the request the same day.",
+        "certainty": "clear",
+        "note": "upload"
+       },
+       {
+        "field_id": "approval_steps",
+        "value": [
+         "a partner reviews every return before it is filed"
+        ],
+        "status": "reported",
+        "evidence_text": "A partner reviews every return before it is filed.",
+        "certainty": "clear",
+        "note": "upload"
+       }
+      ],
+      "upload": "kestrel-engagement-checklist.txt"
+     },
+     {
+      "turn": 3,
+      "facts": [
+       {
+        "field_id": "industry",
+        "value": "professional-services",
+        "status": "reported",
+        "evidence_text": "We're accountants",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "locations",
+        "value": 1,
+        "status": "reported",
+        "evidence_text": "One office.",
+        "certainty": "clear",
+        "unit": "sites"
+       }
+      ]
+     },
+     {
+      "turn": 4,
+      "facts": [
+       {
+        "field_id": "employee_count",
+        "value": 16,
+        "status": "reported",
+        "evidence_text": "Sixteen staff",
+        "certainty": "clear",
+        "unit": "people"
+       }
+      ]
+     },
+     {
+      "turn": 5,
+      "facts": [
+       {
+        "field_id": "request_channels",
+        "value": [
+         "email",
+         "phone",
+         "client portal"
+        ],
+        "status": "reported",
+        "evidence_text": "People email mostly, phone sometimes, and some use the client portal.",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "daily_request_volume",
+        "value": 14,
+        "status": "reported",
+        "evidence_text": "Roughly 14 a day",
+        "certainty": "clear",
+        "unit": "requests",
+        "period": "day"
+       },
+       {
+        "field_id": "average_handling_minutes",
+        "value": 10,
+        "status": "reported",
+        "evidence_text": "ten minutes to read and answer each",
+        "certainty": "clear",
+        "unit": "minutes"
+       },
+       {
+        "field_id": "manual_entry_minutes",
+        "value": 5,
+        "status": "reported",
+        "evidence_text": "five more to type it up",
+        "certainty": "clear",
+        "unit": "minutes"
+       }
+      ]
+     },
+     {
+      "turn": 6,
+      "facts": [
+       {
+        "field_id": "employee_count",
+        "value": [
+         16,
+         18
+        ],
+        "status": "conflicting",
+        "evidence_text": "eighteen with the trainees",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 7,
+      "facts": [
+       {
+        "field_id": "employee_count",
+        "value": 16,
+        "status": "confirmed",
+        "evidence_text": "Sixteen.",
+        "certainty": "clear",
+        "unit": "people"
+       }
+      ]
+     },
+     {
+      "turn": 8,
+      "facts": [
+       {
+        "field_id": "pain_points",
+        "value": [
+         "requests get lost in the shared mailbox"
+        ],
+        "status": "reported",
+        "evidence_text": "requests get lost in the shared mailbox",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "error_types",
+        "value": [
+         "missed",
+         "delayed",
+         "wrong"
+        ],
+        "status": "reported",
+        "evidence_text": "we miss things, run late or file a wrong figure",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 9,
+      "facts": [
+       {
+        "field_id": "automation_goals",
+        "value": [
+         "document chasing",
+         "request logging",
+         "deadline reminders"
+        ],
+        "status": "reported",
+        "evidence_text": "Document chasing, request logging, deadline reminders",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "main_goal",
+        "value": "errors",
+        "status": "reported",
+        "evidence_text": "fewer errors is the point",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "integrations_available",
+        "value": [
+         "csv-export"
+        ],
+        "status": "reported",
+        "evidence_text": "Our software exports CSV.",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 10,
+      "facts": [
+       {
+        "field_id": "personal_data_handled",
+        "value": true,
+        "status": "reported",
+        "evidence_text": "We hold tax numbers, bank details and clients' home addresses.",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "personal_data_types",
+        "value": [
+         "tax numbers",
+         "bank details",
+         "clients' home addresses"
+        ],
+        "status": "reported",
+        "evidence_text": "tax numbers, bank details and clients' home addresses",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "urgent_requests_exist",
+        "value": true,
+        "status": "reported",
+        "evidence_text": "are urgent",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "urgent_request_types",
+        "value": [
+         "filing deadlines two days out",
+         "tax office letters"
+        ],
+        "status": "reported",
+        "evidence_text": "Filing deadlines two days out and tax office letters",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 11,
+      "facts": [
+       {
+        "field_id": "budget_range",
+        "value": null,
+        "status": "unknown",
+        "evidence_text": "No budget yet.",
+        "certainty": "clear"
+       },
+       {
+        "field_id": "start_timeline",
+        "value": "within-six-months",
+        "status": "reported",
+        "evidence_text": "Within six months",
+        "certainty": "clear"
+       }
+      ]
+     },
+     {
+      "turn": 12,
+      "facts": []
+     }
+    ]
+   }
+  }
+ }
+}

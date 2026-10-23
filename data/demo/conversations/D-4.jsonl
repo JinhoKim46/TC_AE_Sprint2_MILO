@@ -1,0 +1,26 @@
+{"turn": 1, "owner_text": "Tomas Brandt."}
+{"turn": 2, "owner_text": "Before I answer anything: is this going to cost us a fortune? The board wants a figure."}
+{"turn": 3, "owner_text": "The practice is Aldermoor Physio Group."}
+{"turn": 4, "owner_text": "Sorry, I'm in the car park and the barrier has jammed again."}
+{"turn": 5, "owner_text": "We're physiotherapists: sports injuries, bad backs, a lot of post-op rehab."}
+{"turn": 6, "owner_text": "Practice director, for my sins. Forty-three on the payroll."}
+{"turn": 7, "owner_text": "Three sites, if that matters."}
+{"turn": 8, "owner_text": "Everything runs on a practice management system, a shared calendar and a stack of paper referral forms."}
+{"turn": 9, "owner_text": "Someone takes the request, then finds a free therapist."}
+{"turn": 10, "owner_text": "Did I mention the physio team won the five-a-side? Unbearable."}
+{"turn": 11, "owner_text": "After that they book the slot, send a confirmation and chase the referral letter."}
+{"turn": 12, "owner_text": "Patients phone in, use the patient portal, send emails, and a few turn up at the front desk. A bad week is 90 a day."}
+{"turn": 13, "owner_text": "Reception spends five minutes on each, then about three minutes keying it in."}
+{"turn": 14, "owner_text": "Phone queues at opening, referral letters going missing, patients who don't show."}
+{"turn": 15, "owner_text": "Mostly referrals that never arrive, and wrong slots."}
+{"turn": 16, "owner_text": "Odd, the weekly report says 350 a week, not 90 a day."}
+{"turn": 17, "owner_text": "Go with the weekly report. The 90 was an outlier."}
+{"turn": 18, "owner_text": "The clinical lead approves any urgent slot override, and I sign off the big refunds."}
+{"turn": 19, "owner_text": "Appointment booking, referral chasing and reminders."}
+{"turn": 20, "owner_text": "What matters most is fewer mistakes."}
+{"turn": 21, "owner_text": "The practice system has an API, and it can export CSV."}
+{"turn": 22, "owner_text": "Yes: patient names, phone numbers, insurance numbers."}
+{"turn": 23, "owner_text": "Yes: same-day injury slots, and post-surgery patients ringing in."}
+{"turn": 24, "owner_text": "Somewhere near 10000 USD a year."}
+{"turn": 25, "owner_text": "No idea on the start date."}
+{"turn": 26, "owner_text": "tomas@example.invalid"}

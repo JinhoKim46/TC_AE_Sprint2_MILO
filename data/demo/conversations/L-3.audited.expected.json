@@ -1,0 +1,469 @@
+{
+  "changes": [],
+  "audit": "data/prompts/data-v2-audit.md",
+  "conversation_id": "L-3",
+  "split": "test",
+  "company": "l.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-l",
+  "generated_by": "scripts/build_data.py",
+  "uploads": {
+    "12": "littleacorn-front-desk-guide.txt"
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Little Acorn Academy",
+          "status": "reported",
+          "evidence": "Little Acorn Academy"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Rosalind Adeyemi",
+          "status": "reported",
+          "evidence": "Rosalind Adeyemi"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Manager",
+          "status": "reported",
+          "evidence": "I'm the manager"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "education-childcare",
+          "status": "reported",
+          "evidence": "We look after children from babies to eight years old"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 3,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 4,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count",
+      "asks_cost": true,
+      "premature_estimate_expected": false,
+      "note": "owner asked for a price before assessment_ready: no number may be shown"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 18,
+          "status": "reported",
+          "evidence": "Eighteen staff"
+        },
+        {
+          "field_id": "locations",
+          "value": 2,
+          "status": "reported",
+          "evidence": "two sites"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 6,
+      "facts": [
+        {
+          "field_id": "request_channels",
+          "value": [
+            "phone",
+            "email",
+            "message us through the parent app",
+            "catch us at the front desk"
+          ],
+          "status": "reported",
+          "evidence": "Parents phone, email, message us through the parent app, or catch us at the front desk"
+        },
+        {
+          "field_id": "daily_request_volume",
+          "value": 40,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day",
+          "evidence": "Roughly 40 a day"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": 6,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "about 6 minutes"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "manual_entry_minutes"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": [
+            6,
+            4
+          ],
+          "status": "conflicting",
+          "values": [
+            {
+              "value": 6,
+              "unit": "minutes"
+            },
+            {
+              "value": 4,
+              "unit": "minutes"
+            }
+          ],
+          "evidence": "4 is nearer"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "confirm_average_handling_minutes"
+    },
+    {
+      "turn": 9,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": 4,
+          "status": "confirmed",
+          "unit": "minutes",
+          "evidence": "Four"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "manual_entry_minutes",
+      "answers_conflict": "average_handling_minutes"
+    },
+    {
+      "turn": 10,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "manual_entry_minutes"
+    },
+    {
+      "turn": 11,
+      "facts": [
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 2,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "2 minutes of typing it up"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use"
+    },
+    {
+      "turn": 12,
+      "facts": [
+        {
+          "field_id": "tools_in_use",
+          "value": [
+            "the parent app",
+            "attendance spreadsheet",
+            "paper sign-in sheets"
+          ],
+          "status": "reported",
+          "evidence": "the parent app.\n2. Update the attendance spreadsheet straight away, and tick the paper sign-in sheets"
+        },
+        {
+          "field_id": "steps_in_process",
+          "value": [
+            "take the message",
+            "update the attendance spreadsheet",
+            "tell the room leader",
+            "confirm with the parent",
+            "file the form"
+          ],
+          "status": "reported",
+          "evidence": "Take the message, whether it comes by phone, email or the parent app.\n2. Update the attendance spreadsheet straight away, and tick the paper sign-in sheets at pickup time.\n3. Tell the room leader before the next session starts.\n4. Confirm with the parent by message so they know it was received.\n5. File the form"
+        },
+        {
+          "field_id": "approval_steps",
+          "value": [
+            "any change to fees is approved by the manager"
+          ],
+          "status": "reported",
+          "evidence": "Any change to fees is approved by the manager"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "pain_points"
+    },
+    {
+      "turn": 13,
+      "facts": [
+        {
+          "field_id": "pain_points",
+          "value": [
+            "late pickup messages getting missed",
+            "absence notes on scraps of paper",
+            "typing attendance twice"
+          ],
+          "status": "reported",
+          "evidence": "Late pickup messages getting missed, absence notes on scraps of paper, and typing attendance twice"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "error_types"
+    },
+    {
+      "turn": 14,
+      "facts": [
+        {
+          "field_id": "error_types",
+          "value": [
+            "missed",
+            "duplicated"
+          ],
+          "status": "reported",
+          "evidence": "Messages that get missed, and attendance entered twice"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "automation_goals"
+    },
+    {
+      "turn": 15,
+      "facts": [
+        {
+          "field_id": "automation_goals",
+          "value": [
+            "the absence notices",
+            "pickup messages",
+            "attendance entry"
+          ],
+          "status": "reported",
+          "evidence": "The absence notices, pickup messages and attendance entry"
+        },
+        {
+          "field_id": "main_goal",
+          "value": "growth",
+          "status": "reported",
+          "evidence": "We'd like to grow the club"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "integrations_available"
+    },
+    {
+      "turn": 16,
+      "facts": [
+        {
+          "field_id": "integrations_available",
+          "value": [
+            "csv-export"
+          ],
+          "status": "reported",
+          "evidence": "saves as CSV"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled"
+    },
+    {
+      "turn": 17,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled",
+      "restates_early_fact": "main_goal"
+    },
+    {
+      "turn": 18,
+      "facts": [
+        {
+          "field_id": "personal_data_handled",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes"
+        },
+        {
+          "field_id": "personal_data_types",
+          "value": [
+            "the children's names",
+            "parents' contact details",
+            "medical notes"
+          ],
+          "status": "reported",
+          "evidence": "the children's names, parents' contact details and medical notes"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "urgent_requests_exist"
+    },
+    {
+      "turn": 19,
+      "facts": [
+        {
+          "field_id": "urgent_requests_exist",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes"
+        },
+        {
+          "field_id": "urgent_request_types",
+          "value": [
+            "calls about a sick child",
+            "last-minute pickup changes"
+          ],
+          "status": "reported",
+          "evidence": "Calls about a sick child, and last-minute pickup changes"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "budget_range",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 20,
+      "facts": [
+        {
+          "field_id": "budget_range",
+          "value": null,
+          "status": "unknown",
+          "evidence": "I can't say"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "start_timeline",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 21,
+      "facts": [
+        {
+          "field_id": "start_timeline",
+          "value": "next-quarter",
+          "status": "reported",
+          "evidence": "Next quarter"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": "owner_email"
+    },
+    {
+      "turn": 22,
+      "facts": [
+        {
+          "field_id": "owner_email",
+          "value": "rosalind@example.invalid",
+          "status": "reported",
+          "evidence": "rosalind@example.invalid"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null
+    },
+    {
+      "turn": 23,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null,
+      "asks_cost": true
+    }
+  ]
+}

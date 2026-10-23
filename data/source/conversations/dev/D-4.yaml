@@ -1,0 +1,215 @@
+id: D-4
+split: dev
+company: d
+user_id: owner-d
+style: off_topic_detours
+turns:
+- owner_text: Tomas Brandt.
+  plan:
+  - field: owner_name
+    value: Tomas Brandt
+    evidence: Tomas Brandt
+- owner_text: 'Before I answer anything: is this going to cost us a fortune? The board wants a figure.'
+  tags:
+  - price_early
+  flags:
+    asks_cost: true
+- owner_text: The practice is Aldermoor Physio Group.
+  plan:
+  - field: company_name
+    value: Aldermoor Physio Group
+    evidence: Aldermoor Physio Group
+- owner_text: Sorry, I'm in the car park and the barrier has jammed again.
+  tags:
+  - off_topic
+- owner_text: 'We''re physiotherapists: sports injuries, bad backs, a lot of post-op rehab.'
+  plan:
+  - field: industry
+    value: health-wellness
+    evidence: 'We''re physiotherapists: sports injuries, bad backs, a lot of post-op rehab'
+  tags:
+  - enum_map
+- owner_text: Practice director, for my sins. Forty-three on the payroll.
+  plan:
+  - field: owner_role
+    value: Practice director
+    evidence: Practice director
+  - field: employee_count
+    value: 43
+    evidence: Forty-three on the payroll
+- owner_text: Three sites, if that matters.
+  plan:
+  - field: locations
+    value: 3
+    evidence: Three sites
+- owner_text: Everything runs on a practice management system, a shared calendar and a stack of paper referral forms.
+  plan:
+  - field: tools_in_use
+    value:
+    - a practice management system
+    - a shared calendar
+    - a stack of paper referral forms
+    evidence: a practice management system, a shared calendar and a stack of paper referral forms
+  tags:
+  - owner_words
+  - early
+- owner_text: Someone takes the request, then finds a free therapist.
+  plan:
+  - field: steps_in_process
+    value:
+    - takes the request
+    - finds a free therapist
+    evidence: Someone takes the request, then finds a free therapist
+  tags:
+  - owner_words
+- owner_text: Did I mention the physio team won the five-a-side? Unbearable.
+  tags:
+  - off_topic
+- owner_text: After that they book the slot, send a confirmation and chase the referral letter.
+  plan:
+  - field: steps_in_process
+    value:
+    - book the slot
+    - send a confirmation
+    - chase the referral letter
+    evidence: book the slot, send a confirmation and chase the referral letter
+  tags:
+  - owner_words
+- owner_text: Patients phone in, use the patient portal, send emails, and a few turn up at the front desk. A bad week is 90 a day.
+  plan:
+  - field: request_channels
+    value:
+    - phone in
+    - use the patient portal
+    - send emails
+    - turn up at the front desk
+    evidence: Patients phone in, use the patient portal, send emails, and a few turn up at the front desk
+  - field: daily_request_volume
+    value: 90
+    evidence: 90 a day
+    period: day
+  tags:
+  - owner_words
+  - early
+- owner_text: Reception spends five minutes on each, then about three minutes keying it in.
+  plan:
+  - field: average_handling_minutes
+    value: 5
+    evidence: five minutes on each
+  - field: manual_entry_minutes
+    value: 3
+    evidence: three minutes keying it in
+- owner_text: Phone queues at opening, referral letters going missing, patients who don't show.
+  plan:
+  - field: pain_points
+    value:
+    - phone queues at opening
+    - referral letters going missing
+    - patients who don't show
+    evidence: Phone queues at opening, referral letters going missing, patients who don't show
+  tags:
+  - owner_words
+- owner_text: Mostly referrals that never arrive, and wrong slots.
+  plan:
+  - field: error_types
+    value:
+    - missed
+    - wrong
+    evidence: Mostly referrals that never arrive, and wrong slots
+  tags:
+  - enum_map
+- owner_text: Odd, the weekly report says 350 a week, not 90 a day.
+  plan:
+  - field: daily_request_volume
+    value: 350
+    evidence: 350 a week
+    status: conflicting
+    period: week
+  tags:
+  - conflict_blocking
+- owner_text: Go with the weekly report. The 90 was an outlier.
+  plan:
+  - field: daily_request_volume
+    value: 70
+    evidence: Go with the weekly report
+    status: confirmed
+    period: day
+    derived_from:
+      value: 350
+      period: week
+  flags:
+    answers_conflict: daily_request_volume
+- owner_text: The clinical lead approves any urgent slot override, and I sign off the big refunds.
+  plan:
+  - field: approval_steps
+    value:
+    - clinical lead approves any urgent slot override
+    - I sign off the big refunds
+    evidence: The clinical lead approves any urgent slot override, and I sign off the big refunds
+  tags:
+  - owner_words
+- owner_text: Appointment booking, referral chasing and reminders.
+  plan:
+  - field: automation_goals
+    value:
+    - appointment booking
+    - referral chasing
+    - reminders
+    evidence: Appointment booking, referral chasing and reminders
+- owner_text: What matters most is fewer mistakes.
+  plan:
+  - field: main_goal
+    value: errors
+    evidence: fewer mistakes
+  tags:
+  - enum_map
+- owner_text: The practice system has an API, and it can export CSV.
+  plan:
+  - field: integrations_available
+    value:
+    - api-connector
+    - csv-export
+    evidence: has an API, and it can export CSV
+  tags:
+  - enum_map
+- owner_text: 'Yes: patient names, phone numbers, insurance numbers.'
+  plan:
+  - field: personal_data_handled
+    value: true
+    evidence: 'Yes'
+  - field: personal_data_types
+    value:
+    - patient names
+    - phone numbers
+    - insurance numbers
+    evidence: patient names, phone numbers, insurance numbers
+- owner_text: 'Yes: same-day injury slots, and post-surgery patients ringing in.'
+  plan:
+  - field: urgent_requests_exist
+    value: true
+    evidence: 'Yes'
+  - field: urgent_request_types
+    value:
+    - same-day injury slots
+    - post-surgery patients ringing in
+    evidence: same-day injury slots, and post-surgery patients ringing in
+  tags:
+  - owner_words
+- owner_text: Somewhere near 10000 USD a year.
+  plan:
+  - field: budget_range
+    value: about 10000 USD a year
+    evidence: near 10000 USD a year
+- owner_text: No idea on the start date.
+  plan:
+  - field: start_timeline
+    value: null
+    evidence: No idea on the start date
+    status: unknown
+  tags:
+  - unknown
+- owner_text: tomas@example.invalid
+  plan:
+  - field: owner_email
+    value: tomas@example.invalid
+    evidence: tomas@example.invalid

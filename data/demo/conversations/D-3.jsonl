@@ -1,0 +1,17 @@
+{"turn": 1, "owner_text": "Morning! Tomas Brandt here, practice director at Aldermoor Physio Group. Lovely weather for the time of year, though I'm stuck indoors with the rota."}
+{"turn": 2, "owner_text": "We treat patients with sports injuries, back pain and post-surgery rehab, across three sites. We've been going about twelve years."}
+{"turn": 3, "owner_text": "We have 43 people on the books, clinicians and front desk together."}
+{"turn": 4, "owner_text": "Oh, and our accountant says forty-seven if you add the two locums. I never know which to quote."}
+{"turn": 5, "owner_text": "Forty-three. The locums aren't ours, they come through an agency."}
+{"turn": 6, "owner_text": "Patients phone reception, use the patient portal, or send an email, and a few walk up to the front desk. Probably 70 on a normal day, though the physios say it feels like more."}
+{"turn": 7, "owner_text": "Reception spends about 5 minutes per request finding a therapist who is free, and then roughly 3 minutes keying it in."}
+{"turn": 8, "owner_text": "I'll attach our referral handling sheet, it shows the whole routine."}
+{"turn": 9, "owner_text": "To repeat, mostly phone, the portal and email, nothing exotic."}
+{"turn": 10, "owner_text": "Phone queues at opening time are the killer, referral letters go missing, and patients who don't show up."}
+{"turn": 11, "owner_text": "When it goes wrong it's usually a referral that never arrived, or the wrong slot booked."}
+{"turn": 12, "owner_text": "I'd love appointment booking, chasing referrals and reminders handled automatically, because the biggest thing for me is fewer mistakes."}
+{"turn": 13, "owner_text": "The practice system has an API we've used before, and it exports CSV too. We hold patient names, their phone numbers and insurance numbers, obviously."}
+{"turn": 14, "owner_text": "Yes, urgent ones come in. Same-day injury slots, and post-surgery patients calling in worried."}
+{"turn": 15, "owner_text": "Budget, about 10000 USD a year. As for when we start, honestly we haven't decided, I can't say yet."}
+{"turn": 16, "owner_text": "tomas@example.invalid"}
+{"turn": 17, "owner_text": "Great. What does the estimate look like for three sites?"}

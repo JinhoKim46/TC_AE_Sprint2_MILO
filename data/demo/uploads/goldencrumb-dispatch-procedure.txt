@@ -1,0 +1,11 @@
+Golden Crumb Bakery: dispatch procedure (office copy)
+
+This sheet is for new office staff. It covers a booking from first contact to the invoice.
+
+1. Receive the booking and check the pickup window with the customer.
+2. Assign a driver on the dispatch board and print the manifest for the van.
+3. Track the delivery in the tracking app until the driver reports the drop.
+4. Collect proof of delivery from the driver, with the signature, before the end of the shift.
+5. Send the invoice from the spreadsheet on the first working day of the following month.
+
+Rush surcharges must be approved by the dispatch manager. Never change a delivery address without a written note from the customer.

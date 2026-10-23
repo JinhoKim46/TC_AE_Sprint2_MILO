@@ -159,6 +159,22 @@ P1–P3 require additional input: P1 requires `data/source/catalogue.yaml` and `
 - check command: `uv run python scripts/build_data.py`, `uv run python scripts/build_data.py --check`,
   `uv run python scripts/check_project_data.py data`, `uv run pytest tests/test_checker.py tests/test_leakage.py`
 
+## data-v2 conversations
+
+- files: `data/demo/companies/{c..l}.yaml` (10 fictional companies), `data/source/conversations/{dev,test}/<id>.yaml`
+  (8 dev: C-3, C-4, D-3, D-4, E-3, E-4, F-3, F-4; 10 test: G-3, G-4, H-3, H-4, I-3, I-4, J-3, J-4, K-3, L-3),
+  `data/demo/uploads/*.txt` (9 uploads: 4 dev, 5 test), and, written by `scripts/build_data.py`,
+  `data/demo/conversations/<id>.jsonl`, `<id>.audited.expected.json` and `splits.json`
+- drafted-by: data-v2 generator (Claude Opus 5.5 session agent), 2026-10-23; no model API, no network, no `.env`,
+  no `MILO_LIVE` (D126, HARNESS 14). Owner text, truth files and expected facts were written by hand, truth files first.
+- brief: `evals/protocols/data-v2.md` section Data 1 (counts, phenomena, styles, lengths, leakage rules, format)
+- sources read: that protocol, `protocols/discovery.v1.yaml`, `data/demo/companies/{a,b}.yaml`,
+  `data/demo/conversations/{A-1,B-1,E-1}.*`, `data/demo/uploads/`, `docs/data-audit/conversations-dev.md`, SPEC D161 to D166.
+  The retired conversations A-2, B-2 and E-2 were not opened.
+- rules applied: list items written in the owner's own words so scorer v2 matches them (checked with the scorer's item
+  rule in `build_data.py`); early mentions recorded at the turn they happen; every fact carries a verbatim evidence span;
+  the industry label never appears in the owner text; upload facts are fields not yet recorded at the upload turn.
+- checked by: `scripts/build_data.py --check` (counts, tag minimums, evidence, truth values, enums, leakage, names).
 ## data-v2 tool cases and label pool
 
 - date: 2026-10-23; written by the data-v2 generator (Sonnet session agent, branch `agent/gen-tools`), protocol
@@ -188,3 +204,12 @@ P1–P3 require additional input: P1 requires `data/source/catalogue.yaml` and `
   90 in the pool and 41 of 120 with the 30 real dev labels (one unfaithful, q107).
 - check command: `uv run python scripts/build_data.py`, `uv run python scripts/build_data.py --check`,
   `uv run python scripts/check_project_data.py data`, `uv run pytest tests/test_checker.py`
+
+## data-v2 conversations, fix cycle 1
+
+- changes: the eight `-4` conversations were rewritten (different voice, turn order, length and placement of phenomena;
+  partial lists spread over turns; uploads and injected lines early; several end without the e-mail turn); C-4 and G-4
+  uploads reduced to the five listed steps; D-3 and F-4 uploads no longer hint at urgent requests; G-3, G-4 and I-3
+  industry and site wording made clear, J-3 start timeline reworded; evidence spans widened in F-4 and K-3;
+  `next_question_id` is `confirm_<field>` for every conflict; the `taint` flag was dropped from chat-injection rows (D167).
+- no model API, no network, no `.env`; written by hand by the same generator session.

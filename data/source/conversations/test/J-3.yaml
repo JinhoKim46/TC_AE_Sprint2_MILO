@@ -1,0 +1,213 @@
+id: J-3
+split: test
+company: j
+user_id: owner-j
+style: non_native
+turns:
+- owner_text: Good day. I am Henrietta Vance, senior partner of Kestrel Fitness Partners.
+  plan:
+  - field: company_name
+    value: Kestrel Fitness Partners
+    evidence: Kestrel Fitness Partners
+  - field: owner_name
+    value: Henrietta Vance
+    evidence: Henrietta Vance
+  - field: owner_role
+    value: Senior partner
+    evidence: senior partner
+  tags:
+  - multi
+- owner_text: Despite name, we are not about gym. We are accountants, we do tax returns and books for small firms.
+  plan:
+  - field: industry
+    value: professional-services
+    evidence: We are accountants, we do tax returns and books for small firms
+  tags:
+  - name_misleads
+  - enum_map
+- owner_text: Please, how much is price? My partners ask me.
+  tags:
+  - price_early
+  flags:
+    asks_cost: true
+- owner_text: Sixteen persons work here, all in one office.
+  plan:
+  - field: employee_count
+    value: 16
+    evidence: Sixteen persons
+  - field: locations
+    value: 1
+    evidence: one office
+  tags:
+  - early
+- owner_text: Clients write email, call on phone, or use portal for clients. About 20 requests per day.
+  plan:
+  - field: request_channels
+    value:
+    - write email
+    - call on phone
+    - portal for clients
+    evidence: Clients write email, call on phone, or use portal for clients
+  - field: daily_request_volume
+    value: 20
+    evidence: About 20 requests per day
+    period: day
+  tags:
+  - owner_words
+  - early
+- owner_text: But my assistant say is seventy per week, so maybe I am wrong.
+  plan:
+  - field: daily_request_volume
+    value: 70
+    evidence: seventy per week
+    status: conflicting
+    period: week
+  tags:
+  - conflict_blocking
+- owner_text: Seventy per week is correct. Twenty was one very busy day.
+  plan:
+  - field: daily_request_volume
+    value: 14
+    evidence: Seventy per week is correct
+    status: confirmed
+    period: day
+    derived_from:
+      value: 70
+      period: week
+  flags:
+    answers_conflict: daily_request_volume
+- owner_text: Ten minutes to read and answer one request, and five minutes more to type it.
+  plan:
+  - field: average_handling_minutes
+    value: 10
+    evidence: Ten minutes to read and answer one request
+  - field: manual_entry_minutes
+    value: 5
+    evidence: five minutes more to type it
+- owner_text: We use practice software, the shared mailbox and spreadsheets.
+  plan:
+  - field: tools_in_use
+    value:
+    - practice software
+    - the shared mailbox
+    - spreadsheets
+    evidence: We use practice software, the shared mailbox and spreadsheets
+  tags:
+  - owner_words
+- owner_text: As I told you before, sixteen persons.
+  tags:
+  - restate
+  flags:
+    restates: employee_count
+- owner_text: We log the request, assign it to one accountant, request missing documents, prepare the return, the partner reviews, and then file the return.
+  plan:
+  - field: steps_in_process
+    value:
+    - log the request
+    - assign it to one accountant
+    - request missing documents
+    - prepare the return
+    - the partner reviews
+    - file the return
+    evidence: We log the request, assign it to one accountant, request missing documents, prepare the return, the partner reviews, and then file the return
+  tags:
+  - owner_words
+- owner_text: Partner must review every return before we file.
+  plan:
+  - field: approval_steps
+    value:
+    - partner must review every return before we file
+    evidence: Partner must review every return before we file
+  tags:
+  - owner_words
+- owner_text: Chasing missing documents, the deadline crunch in January, and requests get lost in shared mailbox.
+  plan:
+  - field: pain_points
+    value:
+    - chasing missing documents
+    - the deadline crunch in January
+    - requests get lost in shared mailbox
+    evidence: Chasing missing documents, the deadline crunch in January, and requests get lost in shared mailbox
+  tags:
+  - owner_words
+- owner_text: Documents we forget to ask, deadline when we are late, and wrong numbers in the return.
+  plan:
+  - field: error_types
+    value:
+    - missed
+    - delayed
+    - wrong
+    evidence: Documents we forget to ask, deadline when we are late, and wrong numbers in the return
+  tags:
+  - enum_map
+- owner_text: Chasing documents, logging requests, and deadline reminders. Main thing is fewer errors.
+  plan:
+  - field: automation_goals
+    value:
+    - chasing documents
+    - logging requests
+    - deadline reminders
+    evidence: Chasing documents, logging requests, and deadline reminders
+  - field: main_goal
+    value: errors
+    evidence: fewer errors
+  tags:
+  - owner_words
+  - enum_map
+  - early
+- owner_text: Software can export to CSV.
+  plan:
+  - field: integrations_available
+    value:
+    - csv-export
+    evidence: export to CSV
+  tags:
+  - enum_map
+- owner_text: Yes. Tax numbers, bank details, home addresses of clients.
+  plan:
+  - field: personal_data_handled
+    value: true
+    evidence: 'Yes'
+  - field: personal_data_types
+    value:
+    - tax numbers
+    - bank details
+    - home addresses of clients
+    evidence: Tax numbers, bank details, home addresses of clients
+  tags:
+  - owner_words
+- owner_text: Yes, sometimes. Filing deadline in two days, or letter from tax office.
+  plan:
+  - field: urgent_requests_exist
+    value: true
+    evidence: Yes, sometimes
+  - field: urgent_request_types
+    value:
+    - filing deadline in two days
+    - letter from tax office
+    evidence: Filing deadline in two days, or letter from tax office
+  tags:
+  - owner_words
+- owner_text: Budget? We have not discuss it.
+  plan:
+  - field: budget_range
+    value: null
+    evidence: We have not discuss it
+    status: unknown
+  tags:
+  - unknown
+- owner_text: Some time in the next six months.
+  plan:
+  - field: start_timeline
+    value: within-six-months
+    evidence: in the next six months
+  tags:
+  - enum_map
+- owner_text: henrietta@example.invalid
+  plan:
+  - field: owner_email
+    value: henrietta@example.invalid
+    evidence: henrietta@example.invalid
+- owner_text: So what price now, please?
+  flags:
+    asks_cost: true

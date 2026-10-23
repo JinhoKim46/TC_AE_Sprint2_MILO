@@ -1,0 +1,467 @@
+{
+  "changes": [],
+  "audit": "data/prompts/data-v2-audit.md",
+  "conversation_id": "J-3",
+  "split": "test",
+  "company": "j.yaml",
+  "protocol": "protocols/discovery.v1.yaml",
+  "user_id": "owner-j",
+  "generated_by": "scripts/build_data.py",
+  "turns": [
+    {
+      "turn": 1,
+      "facts": [
+        {
+          "field_id": "company_name",
+          "value": "Kestrel Fitness Partners",
+          "status": "reported",
+          "evidence": "Kestrel Fitness Partners"
+        },
+        {
+          "field_id": "owner_name",
+          "value": "Henrietta Vance",
+          "status": "reported",
+          "evidence": "Henrietta Vance"
+        },
+        {
+          "field_id": "owner_role",
+          "value": "Senior partner",
+          "status": "reported",
+          "evidence": "senior partner"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "industry"
+    },
+    {
+      "turn": 2,
+      "facts": [
+        {
+          "field_id": "industry",
+          "value": "professional-services",
+          "status": "reported",
+          "evidence": "We are accountants, we do tax returns and books for small firms"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 3,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count",
+      "asks_cost": true,
+      "premature_estimate_expected": false,
+      "note": "owner asked for a price before assessment_ready: no number may be shown"
+    },
+    {
+      "turn": 4,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 16,
+          "status": "reported",
+          "evidence": "Sixteen persons"
+        },
+        {
+          "field_id": "locations",
+          "value": 1,
+          "status": "reported",
+          "evidence": "one office"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "request_channels",
+          "value": [
+            "write email",
+            "call on phone",
+            "portal for clients"
+          ],
+          "status": "reported",
+          "evidence": "Clients write email, call on phone, or use portal for clients"
+        },
+        {
+          "field_id": "daily_request_volume",
+          "value": 20,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day",
+          "evidence": "About 20 requests per day"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes"
+    },
+    {
+      "turn": 6,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": [
+            20,
+            70
+          ],
+          "status": "conflicting",
+          "values": [
+            {
+              "value": 20,
+              "unit": "requests",
+              "period": "day"
+            },
+            {
+              "value": 70,
+              "unit": "requests",
+              "period": "week"
+            }
+          ],
+          "evidence": "seventy per week"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_blocked",
+      "estimate_status": "blocked",
+      "number_allowed": false,
+      "next_question_id": "confirm_daily_request_volume"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "daily_request_volume",
+          "value": 14,
+          "status": "confirmed",
+          "unit": "requests",
+          "period": "day",
+          "derived_from": {
+            "value": 70,
+            "period": "week",
+            "business_days": 5
+          },
+          "evidence": "Seventy per week is correct"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "average_handling_minutes",
+      "answers_conflict": "daily_request_volume"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "average_handling_minutes",
+          "value": 10,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "Ten minutes to read and answer one request"
+        },
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 5,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "five minutes more to type it"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "tools_in_use"
+    },
+    {
+      "turn": 9,
+      "facts": [
+        {
+          "field_id": "tools_in_use",
+          "value": [
+            "practice software",
+            "the shared mailbox",
+            "spreadsheets"
+          ],
+          "status": "reported",
+          "evidence": "We use practice software, the shared mailbox and spreadsheets"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "steps_in_process"
+    },
+    {
+      "turn": 10,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "steps_in_process",
+      "restates_early_fact": "employee_count"
+    },
+    {
+      "turn": 11,
+      "facts": [
+        {
+          "field_id": "steps_in_process",
+          "value": [
+            "log the request",
+            "assign it to one accountant",
+            "request missing documents",
+            "prepare the return",
+            "the partner reviews",
+            "file the return"
+          ],
+          "status": "reported",
+          "evidence": "We log the request, assign it to one accountant, request missing documents, prepare the return, the partner reviews, and then file the return"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "approval_steps"
+    },
+    {
+      "turn": 12,
+      "facts": [
+        {
+          "field_id": "approval_steps",
+          "value": [
+            "partner must review every return before we file"
+          ],
+          "status": "reported",
+          "evidence": "Partner must review every return before we file"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "pain_points"
+    },
+    {
+      "turn": 13,
+      "facts": [
+        {
+          "field_id": "pain_points",
+          "value": [
+            "chasing missing documents",
+            "the deadline crunch in January",
+            "requests get lost in shared mailbox"
+          ],
+          "status": "reported",
+          "evidence": "Chasing missing documents, the deadline crunch in January, and requests get lost in shared mailbox"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "error_types"
+    },
+    {
+      "turn": 14,
+      "facts": [
+        {
+          "field_id": "error_types",
+          "value": [
+            "missed",
+            "delayed",
+            "wrong"
+          ],
+          "status": "reported",
+          "evidence": "Documents we forget to ask, deadline when we are late, and wrong numbers in the return"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "automation_goals"
+    },
+    {
+      "turn": 15,
+      "facts": [
+        {
+          "field_id": "automation_goals",
+          "value": [
+            "chasing documents",
+            "logging requests",
+            "deadline reminders"
+          ],
+          "status": "reported",
+          "evidence": "Chasing documents, logging requests, and deadline reminders"
+        },
+        {
+          "field_id": "main_goal",
+          "value": "errors",
+          "status": "reported",
+          "evidence": "fewer errors"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "integrations_available"
+    },
+    {
+      "turn": 16,
+      "facts": [
+        {
+          "field_id": "integrations_available",
+          "value": [
+            "csv-export"
+          ],
+          "status": "reported",
+          "evidence": "export to CSV"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "personal_data_handled"
+    },
+    {
+      "turn": 17,
+      "facts": [
+        {
+          "field_id": "personal_data_handled",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes"
+        },
+        {
+          "field_id": "personal_data_types",
+          "value": [
+            "tax numbers",
+            "bank details",
+            "home addresses of clients"
+          ],
+          "status": "reported",
+          "evidence": "Tax numbers, bank details, home addresses of clients"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "urgent_requests_exist"
+    },
+    {
+      "turn": 18,
+      "facts": [
+        {
+          "field_id": "urgent_requests_exist",
+          "value": true,
+          "status": "reported",
+          "evidence": "Yes, sometimes"
+        },
+        {
+          "field_id": "urgent_request_types",
+          "value": [
+            "filing deadline in two days",
+            "letter from tax office"
+          ],
+          "status": "reported",
+          "evidence": "Filing deadline in two days, or letter from tax office"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "budget_range",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 19,
+      "facts": [
+        {
+          "field_id": "budget_range",
+          "value": null,
+          "status": "unknown",
+          "evidence": "We have not discuss it"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "assessment_ready",
+      "estimate_status": "scenario",
+      "number_allowed": true,
+      "next_question_id": "start_timeline",
+      "assumptions": [
+        "start_timeline"
+      ]
+    },
+    {
+      "turn": 20,
+      "facts": [
+        {
+          "field_id": "start_timeline",
+          "value": "within-six-months",
+          "status": "reported",
+          "evidence": "in the next six months"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": "owner_email"
+    },
+    {
+      "turn": 21,
+      "facts": [
+        {
+          "field_id": "owner_email",
+          "value": "henrietta@example.invalid",
+          "status": "reported",
+          "evidence": "henrietta@example.invalid"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null
+    },
+    {
+      "turn": 22,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "quote_ready",
+      "estimate_status": "indicative",
+      "number_allowed": true,
+      "next_question_id": null,
+      "asks_cost": true
+    }
+  ]
+}
