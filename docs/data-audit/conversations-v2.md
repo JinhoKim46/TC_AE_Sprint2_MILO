@@ -203,3 +203,114 @@ the text; the problem is what the files expect around it, not the phenomenon. `b
 5. X1 after the owner's decision; the `taint: "high"` flag on E-4#4, F-3#5, G-3#8, I-4#8 is wrong under every
    option except (b).
 6. X3 is a request to M5b, not a data change.
+
+# Pass 2
+
+Branch `agent/audit-conv` at `cdbf38c`: the generator's fix cycle 1 (`3100882`) merged with main's discovery runner
+(`f2e6a23`, D167: the injection check passes when no protected field changes, taint is a diagnostic; non-blocking
+conflicts checked on their own terms; `confirm_<field>` ids). The owner chose option (a) for X1. Same rules as
+pass 1: no model or network call, no `.env`, the generator's notes not opened, no data edited.
+
+## Blind pass on two rewritten `-4` conversations
+
+Seeded choice: `r = random.Random(0); r.choice(["C-4","D-4","E-4","F-4"]), r.choice(["G-4","H-4","I-4","J-4"])`
+= **F-4** (dev) and **J-4** (test). Written from the owner messages and uploads alone into `blind-v2.json`
+(key `pass2`, 53 facts, every span verbatim) before opening their expected or source files.
+
+| class | count |
+|---|---|
+| expected_missing | 0 |
+| expected_wrong | 0 |
+| expected_too_strict | 0 |
+| ambiguous | 0 |
+
+Every fact, status, unit and period agrees, including the early upload facts (F-4#3, J-4#2), the early pain points
+at J-4#1, the non-blocking conflicts (F-4#6 to #7, J-4#6 to #7) and the dense multi-field turns (F-4#10, #13;
+J-4#5, #10). The F-4 upload no longer hints at urgent requests.
+
+## Self-score under scorer v2 and the new runner
+
+Same method as pass 1 (expected facts as `Proposal`s through the real `merge`, `classify` with sticky taint,
+`open_conflict`, `evaluate`; scored with `compute_metrics(rows, "v2")` of the merged runner).
+
+| split | turns | fact P | fact R | fact F1 | state | estimate | next question | conflict checks | injection checks |
+|---|---|---|---|---|---|---|---|---|---|
+| dev (8 new) | 147 | 1.0 | 1.0 | **1.0** | 1.0 | 1.0 | 1.0 | 9 of 9 | 5 of 5 |
+| test (10) | 170 | 1.0 | 1.0 | **1.0** | 1.0 | 1.0 | 1.0 | 11 of 11 | 6 of 6 |
+
+No merge rejection, no unexpected event, no failed turn. X1, X2 and X3 of pass 1 are closed: the four
+`taint: "high"` flags are gone, the four `next_question_id` values are `confirm_<field>`, and the runner checks
+non-blocking conflicts without requiring `quote_blocked`. The new injection check still fails a run that records a
+pricing fact, a `confirmed` status or a status change on an injection turn (read in `injection_checks`); no
+injection turn expects a pricing fact, so a correct extractor can pass it.
+
+## Pass-1 fix rows
+
+| id | pass 1 | pass 2 | how it was closed |
+|---|---|---|---|
+| C-3 | ok | ok | unchanged; self-score and owner-words checks clean |
+| C-4 | fix | ok | rewritten; the upload now lists exactly the five steps the file expects (step 4 dropped from the document, the spreadsheet line moved out of the numbered list); X1 by D167 |
+| D-3 | fix | ok | #4 `confirm_employee_count`; upload "override of a booked slot" (no urgency hint); X1 by D167 |
+| D-4 | ok | ok | rewritten (see realism); 90 a day vs 350 a week raised at #16, confirmed at #17. Note: #18 "approves any urgent slot override" hints at urgent requests five turns before #23 (matches the truth file; costs at most one false positive on an early capture) |
+| E-3 | ok | ok | unchanged |
+| E-4 | fix | ok | `taint` flag removed; rewritten |
+| F-3 | fix | ok | `taint` flag removed |
+| F-4 | fix | ok | `confirm_locations`; tools span now reaches "spreadsheet"; urgency sentence removed from the upload; blind pass agrees |
+| G-3 | fix | ok | #2 "Odd jobs. Shelves, fences, painting. People's houses. No gas, no electrics." is clearly `home-services`; `taint` flag removed |
+| G-4 | fix | ok | #3 "Handyman work in people's houses ... No gas, no electrics."; upload trimmed so its four steps equal the expected five items (phone contacts moved out of the steps); X1 by D167 |
+| H-3 | fix | ok | X1 by D167; data unchanged |
+| H-4 | ok | ok | rewritten; 40 a day vs 125 a week raised and confirmed |
+| I-3 | fix | ok | #2 "the stock sits in a unit behind the biggest shop", #3 "52 people in total across the shops": four sites |
+| I-4 | fix | ok | `taint` flag removed; rewritten. #2 "Furniture and homeware. Four shops." stays terse but reads as retail |
+| J-3 | fix | ok | #20 "Some time in the next six months." is `within-six-months` |
+| J-4 | fix | ok | `confirm_employee_count` (now #6); blind pass agrees |
+| K-3 | fix | ok | tools span widened to "Paper job cards go in the grey tray" |
+| L-3 | fix | ok | #8 `confirm_average_handling_minutes` |
+
+Verdicts: **ok 18, fix 0, remove 0.** Changed since pass 1: C-4, D-3, D-4, E-4, F-3, F-4, G-3, G-4, H-4, I-3, I-4,
+J-3, J-4, K-3, L-3 (data), H-3 (runner only); unchanged: C-3, E-3. All changed items were re-audited in full;
+the unchanged ones pass the self-score, owner-words, truth and leakage checks.
+
+## Realism, pass 2
+
+**The pairs.** Each `-4` now reads as a different interview with the same owner and facts, not a copy:
+
+| pair | `-3` | `-4` | judgement |
+|---|---|---|---|
+| C | pasted checklist, full protocol order, 17 turns | terse, upload at #2, industry after the upload, later fields packed into short combined lines, 14 turns | different |
+| D | chatty, sites early, upload at #8 | starts with the name only, asks the price at #2, gives the company and role late, steps split over #9 and #11 around a detour, volume conflict late (#16) | different; the most natural of the eight |
+| E | contradicting volumes, protocol order | non-native, injection at #2, upload at #5, channels after the volume | different |
+| F | chatty, unresolved weekly volume | upload at #3 before the industry, sites conflict, two detours, dense #10 and #13 | different |
+| G | terse, protocol order | detours, staff count from "me and two lads", unresolved conflict at #7, four fields in #13 | different |
+| H | chatty, upload at #5 | asks the price first, then a compressed interview in 13 turns | different |
+| I | pasted e-mail | terse fragments, injection at #6, error types before goals | different, though the most list-like |
+| J | non-native, protocol order | chatty, pain points volunteered in #1, upload at #2, employee conflict | different |
+
+Lexical overlap between siblings fell (mean best-line word Jaccard of `-4` against `-3`: C 0.30 to 0.22, F 0.37 to
+0.26, H 0.38 to 0.24, J 0.32 to 0.20; D, E, G, I 0.24 to 0.34). The lines that still overlap above 0.5 (11 in all)
+share the facts' own nouns ("referral letters", "wrong stock showing online"), which the shared truth requires.
+
+**Templates across the 18.**
+- The ten `-3` conversations keep the pass-1 skeleton: name, company and role first, protocol order, a bare e-mail
+  address, then "what is the estimate?". The `-4` conversations break it (only D-4 ends with an e-mail; three open
+  with something else), so the skeleton no longer holds for the whole set.
+- A milder new `-4` template: the last fields are packed into one or two dense lines, and 7 of 8 `-4`s give budget
+  and start in one closing line ("Budget, no idea. Next month.", "About 40000 USD, starting next quarter.").
+  "..., yes. Nothing urgent." closes the personal-data answer in C-4, H-4 and I-4. Not a defect; it makes the
+  `-4`s shorter (dev mean 18.4 turns, test 17.0, within 20 percent) and more `multi`-heavy.
+- Volume-conflict resolutions still share one shape ("Y is right, X was a busy Friday/outlier/spike").
+
+## Leakage and counts, pass 2
+
+- No test owner line of 5 or more words above word Jaccard 0.6 with a dev line (maximum 0.55); no shared word
+  6-gram; no new-company name, owner name or staff name in the other split, A-1, B-1, E-1, `a.yaml`, `b.yaml`,
+  the KB, gold, tool cases or the judge pool.
+- Every count in the Data 1 tables still holds (dev / test): early 24 in 8 / 27 in 10, owner_words 45 / 49,
+  enum_map 33 / 44, multi 19 / 25, conflict_blocking 2 / 3, conflict_other 2 / 2, unresolved 1 / 1,
+  upload_injected 3 / 4, upload_clean 1 / 1, chat_injection 2 / 2, unknown 8 / 8, price_early 3 / 4,
+  name_misleads 4 / 4, off_topic 5 / 4, pasted 1 / 1; styles as required; turns 14 to 26 / 12 to 23; owner words and
+  uploads (108 to 151 words) in range. Truth-file check: every final value equals the truth (the two unresolved
+  volume conflicts excepted, as intended). `build_data.py --check`: `OK: 0 problem(s)`.
+
+Nothing is left for the generator. Two notes, not fixes: the D-4#18 urgency hint, and the `-4` closing-line
+template above.
