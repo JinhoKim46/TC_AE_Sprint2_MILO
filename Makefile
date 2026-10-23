@@ -92,6 +92,7 @@ eval-retrieval:
 eval-retrieval-replay:
 	$(call need,evals/retrieval/run_retrieval.py,M1)
 	uv run python evals/retrieval/run_retrieval.py --replay
+	uv run python evals/retrieval/compare_title.py --check
 
 eval:
 	$(call need,evals/run_all_replay.py,M7)

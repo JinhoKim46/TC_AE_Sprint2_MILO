@@ -25,7 +25,7 @@ from typing import Any
 
 SETTINGS: tuple[tuple[int, int], ...] = ((800, 100), (400, 50), (1500, 150))
 DEFAULT_SIZE, DEFAULT_OVERLAP = SETTINGS[0]
-TITLE_PREFIX = True  # D168; the kb-edit-v1 protocol measures it against no prefix
+TITLE_PREFIX = False  # D168: measured in kb-edit-v1, no gain on dev, so off
 
 _HEADING = re.compile(r"^#{1,6}\s")
 _DATE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})$")

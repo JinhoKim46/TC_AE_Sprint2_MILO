@@ -3,6 +3,7 @@
     MILO_LIVE=1 python evals/retrieval/run_retrieval.py            live: embeds the KB and the dev questions
     python evals/retrieval/run_retrieval.py --dry                  offline: fake embedder on a committed fixture
     python evals/retrieval/run_retrieval.py --replay [--result F]  recompute every metric from a stored result
+    MILO_LIVE=1 python evals/retrieval/run_retrieval.py --title    kb-edit-v1 arm B: chunks with the title prefix
 
 Live mode refuses without MILO_LIVE=1 (the integrator runs it once under evals/protocols/e01-rerun.md, HARNESS
 rule 14). It reads the key from the process environment only. Rows come from `evals/common.py`, which returns
@@ -54,9 +55,8 @@ RESULTS = ROOT / "evals" / "results" / "retrieval"
 FIXTURE = ROOT / "evals" / "retrieval" / "fixtures" / "retrieval_dry_fixture.json"
 KB = ROOT / "data" / "kb"
 LIVE_RESULT = RESULTS / "retrieval_dev.json"
-NOTITLE_RESULT = (
-    RESULTS / "retrieval_dev_notitle.json"
-)  # kb-edit-v1 arm A (no title prefix)
+# kb-edit-v1 arm B: title prefix, not adopted
+TITLE_RESULT = RESULTS / "retrieval_dev_title.json"
 DRY_RESULT = RESULTS / "retrieval_dry.json"
 K = 5
 BOOT, SEED = 2000, 0
@@ -405,7 +405,7 @@ def cost_note(embedder: Any) -> str:
 
 def run(args: argparse.Namespace) -> int:
     size, overlap = (int(x) for x in args.chunk.split("/"))
-    title_prefix = not getattr(args, "no_title", False)
+    title_prefix = getattr(args, "title", False)
     if not args.dry and os.environ.get("MILO_LIVE") != "1":
         print(LIVE_REFUSAL, file=sys.stderr)
         return 2
@@ -429,7 +429,7 @@ def run(args: argparse.Namespace) -> int:
             return 2
         model = str(embedder.model)
         split = getattr(args, "split", "dev")
-        tag = "" if title_prefix else "_notitle"
+        tag = "_title" if title_prefix else ""
         out = RESULTS / f"retrieval_{split}{tag}.json"
         emb_out = RESULTS / f"retrieval_{split}{tag}_query_embeddings.json"
         index_path = INDEX_ROOT / f"{model.replace('/', '_')}-{size}-{overlap}{tag}"
@@ -561,11 +561,11 @@ def rerank_check(stored: dict[str, Any], emb_path: Path, bad: list[str]) -> str:
         tol = 1e-6
     else:
         title_prefix = stored.get("title_prefix", False)  # results before D168 had none
-        tag = "" if title_prefix else "_notitle"
-        idx = INDEX_ROOT / f"{str(stored['model']).replace('/', '_')}-{size}-{overlap}"
-        if not title_prefix and not (idx.parent / (idx.name + tag)).exists():
-            tag = ""  # a pre-D168 index sits under the plain name
-        idx = idx.parent / (idx.name + tag)
+        tag = "_title" if title_prefix else ""
+        idx = (
+            INDEX_ROOT
+            / f"{str(stored['model']).replace('/', '_')}-{size}-{overlap}{tag}"
+        )
         manifest = VectorStore(idx).read_manifest() if idx.exists() else None
         if not manifest or manifest.get("chunk_sha256") != stored["chunk_sha256"]:
             return "index not on disk (data/index/), query-embedding re-rank skipped"
@@ -617,7 +617,7 @@ def replay(args: argparse.Namespace) -> int:
     paths = (
         [Path(args.result)]
         if args.result
-        else [p for p in (LIVE_RESULT, NOTITLE_RESULT, DRY_RESULT) if p.exists()]
+        else [p for p in (LIVE_RESULT, TITLE_RESULT, DRY_RESULT) if p.exists()]
     )
     if not paths:
         print(
@@ -642,9 +642,9 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument("--result", help="result file to replay")
     ap.add_argument(
-        "--no-title",
+        "--title",
         action="store_true",
-        help="chunks without the article-title prefix (kb-edit-v1 arm A)",
+        help="chunks with the article-title prefix (kb-edit-v1 arm B, not adopted)",
     )
     ap.add_argument(
         "--chunk",

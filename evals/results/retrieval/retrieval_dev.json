@@ -1,24 +1,28 @@
 {
-  "git_commit": "7ead44f9a2c27429b38811759c02ce240efef046",
+  "reasoning": {
+    "google/gemini-embedding-2": "off"
+  },
+  "git_commit": "bff0f240add9e444438ae9ecafecb5008f09d1ae",
   "model": "google/gemini-embedding-2",
   "seed": 0,
   "temperature": null,
   "command": "MILO_LIVE=1 python evals/retrieval/run_retrieval.py",
-  "timestamp": "2026-10-22T17:29:41Z",
+  "timestamp": "2026-10-23T15:48:25Z",
   "inputs": {
     "gold": "6141c7e3e1a42066128b5a0323c032a5f44d704e670c7f07f8a58cb79aa37a72",
-    "kb/cases/accounts-paperwork.md": "9cfb4e7853ac795624c3441de138365b2d91f8c4113688b967b302fe8518df24",
-    "kb/cases/grooming-bookings.md": "e4b57ecbfe9841d52e34f160678f106d59ad07baf8ba423822549a0fbdef9eca",
-    "kb/cases/trades-dispatch.md": "c73e9e8dc211b6b93d1a51a010017b034c758b7d0a53780bedaa2cc90031655e",
+    "gold_alt": "eea1858463150004f90f93130f513987a882d27e8d33a927e36c0cd51da73826",
+    "kb/cases/accounts-paperwork.md": "d0d624c151af25e79e06387da979ab4b5c39333bfce840ed5420fbf5eeef6ec0",
+    "kb/cases/grooming-bookings.md": "bc9f874476d51be805632f5ed2bd57f540cff037745ba9a53d7fb46a656a2815",
+    "kb/cases/trades-dispatch.md": "58a8d9825e676df5f86506657c59a56d5aacc1b35b7da66999bca3c44cf0b64a",
     "kb/consultation/first-questions.md": "ffaedb91b392429819353e1be7c719821b40d8551d346da3aa55d37357b18180",
     "kb/consultation/urgent-requests.md": "a7343974f707554bcb162b52466e5c47c2c7d012cea6470c01a774cd2a554d1c",
     "kb/consultation/volume-and-timing.md": "8dcf4f50fcac41a6e535557df9f6365ac737306876c7fe8b3b46b48147347404",
     "kb/implementation/api-connector.md": "5c91228c51474f4d17879e19490ca10680edace6e015b509b83b1f26967abe9b",
     "kb/implementation/crm-connector.md": "08064b9bb43c67cd1d24c7051b1a368ee8ebe3e0e45bf93fecd60dbc735e2f41",
     "kb/implementation/csv-export.md": "18a096ea7f174cf5ce9e7e9dd1d204fa696ff4c966c095b160982f44abd2a93f",
-    "kb/implementation/export-only-tools.md": "b327d5c2ab994a61a4179c2a1c804650f73fe47711258ed5aef26b0e886a5b58",
+    "kb/implementation/export-only-tools.md": "2112c09e693940464a5aa99852814711dae2aeba0b7da0b62ea723074eeea8d4",
     "kb/policies/approvals.md": "8c6368434555323e7c7a24b7a4faddc385cb65c9a87ce9c7038953493dd1c019",
-    "kb/policies/personal-data.md": "6a722204de649ad937c7f8cdd27141bc7696de4ec195a016ce0dff555812db02",
+    "kb/policies/personal-data.md": "56b9b2f979de857c98896954a3f791aff49b8b64872228f5c949d6dc8b9f1a2a",
     "kb/policies/security.md": "eaa7535f41bf48d52d7cb5de9d879ea459ca8ca4276f4947b49bfdada0e7b41e",
     "kb/pricing/how-we-price.md": "2d9b3821ba0e64b14772c2aa9f620bad3ed6cd9ee567a7ce1c1a83a84ac6424a",
     "kb/pricing/range-and-estimates.md": "33feb2e5988248e72eb4384778d8614f6d6a3c9261c4b8c2ca53fac2e4b2ed04",
@@ -31,7 +35,7 @@
     "kb/solutions/phone-intake.md": "8ff38aa615b782d8b51a4c21c054250d1affbf165a6a0cd7088212e816d09491",
     "kb/solutions/staff-assignment.md": "f021a53ccce5c28a21497a2d8a967c94b40b5269bf3123dec3828980fb5e3511",
     "kb/solutions/ticket-creation.md": "0a1de3995af8ffbdb42e1820cf070f25b1dd44601151bdb15339992f43e14cc8",
-    "script": "de80401b12739637256a9cd0f8d0250cc23b60a227b7bf059d3556a79c95f524"
+    "script": "d71310e11807ca7550c04295250c35d087dcf5543e327fa1d9ab62fb56b80d44"
   },
   "temperature_note": "embeddings have no temperature",
   "dry": false,
@@ -41,12 +45,13 @@
   "query_prefix": "none",
   "chunk_size": 800,
   "overlap": 100,
+  "title_prefix": false,
   "chunk_count": 167,
-  "chunk_sha256": "2e039419865c305c62eb5347103f38773f550ca68261ef1a1cd4568d4e4a6660",
+  "chunk_sha256": "9badcc2013f1d386caf630b43e1d287752613b683526c6e55ba912c8e0f245e1",
   "embedding_dim": 3072,
   "embedding_requests": 4,
-  "total_cost_usd": 0.00225,
-  "total_tokens": 11248,
+  "total_cost_usd": 0.00228,
+  "total_tokens": 11398,
   "cost_note": "from the usage field of each embedding response (provider cost when returned, else tokens times the listed price of 0.2 USD per million)",
   "spend_reason": "dense retrieval baseline needs the product embedding model's vectors for the KB and the dev questions (D126)",
   "queries_without_chunk": [],
@@ -60,17 +65,17 @@
       ]
     },
     "ndcg5": {
-      "mean": 0.7608,
+      "mean": 0.7617,
       "ci": [
-        0.6604,
-        0.8482
+        0.6611,
+        0.8491
       ]
     },
     "mrr": {
-      "mean": 0.7164,
+      "mean": 0.7175,
       "ci": [
-        0.6091,
-        0.8148
+        0.6107,
+        0.8154
       ]
     },
     "p5": {
@@ -81,10 +86,10 @@
       ]
     },
     "ap": {
-      "mean": 0.7164,
+      "mean": 0.7175,
       "ci": [
-        0.6091,
-        0.8148
+        0.6107,
+        0.8154
       ]
     }
   },
@@ -98,17 +103,17 @@
       ]
     },
     "ndcg5": {
-      "mean": 0.7608,
+      "mean": 0.7617,
       "ci": [
-        0.6604,
-        0.8482
+        0.6611,
+        0.8491
       ]
     },
     "mrr": {
-      "mean": 0.7164,
+      "mean": 0.7175,
       "ci": [
-        0.6091,
-        0.8148
+        0.6107,
+        0.8154
       ]
     },
     "p5": {
@@ -119,10 +124,10 @@
       ]
     },
     "ap": {
-      "mean": 0.7164,
+      "mean": 0.7175,
       "ci": [
-        0.6091,
-        0.8148
+        0.6107,
+        0.8154
       ]
     }
   },
@@ -175,17 +180,17 @@
         ]
       },
       "ndcg5": {
-        "mean": 0.7488,
+        "mean": 0.7501,
         "ci": [
-          0.6356,
+          0.6374,
           0.8531
         ]
       },
       "mrr": {
-        "mean": 0.6995,
+        "mean": 0.7008,
         "ci": [
-          0.5745,
-          0.817
+          0.5772,
+          0.818
         ]
       },
       "p5": {
@@ -196,17 +201,17 @@
         ]
       },
       "ap": {
-        "mean": 0.6995,
+        "mean": 0.7008,
         "ci": [
-          0.5745,
-          0.817
+          0.5772,
+          0.818
         ]
       }
     }
   },
   "weakest_type": {
     "type": "paraphrase",
-    "ndcg5": 0.7488
+    "ndcg5": 0.7501
   },
   "filtered": {
     "n": 22,
@@ -304,6 +309,94 @@
     },
     "separable": false
   },
+  "summary_accepted": {
+    "n": 48,
+    "recall5": {
+      "mean": 0.9375,
+      "ci": [
+        0.8542,
+        1.0
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.8034,
+      "ci": [
+        0.713,
+        0.8845
+      ]
+    },
+    "mrr": {
+      "mean": 0.7647,
+      "ci": [
+        0.6614,
+        0.8574
+      ]
+    },
+    "p5": {
+      "mean": 0.1875,
+      "ci": [
+        0.1708,
+        0.2
+      ]
+    },
+    "ap": {
+      "mean": 0.7647,
+      "ci": [
+        0.6614,
+        0.8574
+      ]
+    }
+  },
+  "filtered_summary_accepted": {
+    "n": 22,
+    "recall5": {
+      "mean": 0.9545,
+      "ci": [
+        0.8636,
+        1.0
+      ]
+    },
+    "ndcg5": {
+      "mean": 0.8238,
+      "ci": [
+        0.6951,
+        0.9346
+      ]
+    },
+    "mrr": {
+      "mean": 0.7844,
+      "ci": [
+        0.6412,
+        0.9132
+      ]
+    },
+    "p5": {
+      "mean": 0.1909,
+      "ci": [
+        0.1727,
+        0.2
+      ]
+    },
+    "ap": {
+      "mean": 0.7844,
+      "ci": [
+        0.6412,
+        0.9132
+      ]
+    }
+  },
+  "accepted_rows": [
+    "q003",
+    "q009",
+    "q010",
+    "q012",
+    "q018",
+    "q058",
+    "q075",
+    "q090",
+    "q100",
+    "q104"
+  ],
   "rows": [
     {
       "qid": "q001",
@@ -334,6 +427,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "solutions/phone-intake#3",
@@ -352,7 +449,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -362,6 +470,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -397,7 +513,22 @@
       "relevant_ranks": [
         2
       ],
+      "accepted": [
+        "pricing/what-is-included#4"
+      ],
+      "accepted_ranks": [
+        2,
+        54
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.6309297535714575,
         "mrr": 0.5,
@@ -435,6 +566,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "solutions/document-data-entry#3",
@@ -453,7 +588,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -463,6 +609,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -498,7 +652,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -534,7 +700,22 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [
+        "pricing/how-we-price#3"
+      ],
+      "accepted_ranks": [
+        1,
+        2
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -570,6 +751,13 @@
       "relevant_ranks": [
         15
       ],
+      "accepted": [
+        "solutions/ticket-creation#1"
+      ],
+      "accepted_ranks": [
+        4,
+        15
+      ],
       "metrics": {
         "recall5": 0.0,
         "ndcg5": 0.0,
@@ -577,6 +765,14 @@
         "p5": 0.0,
         "ap": 0.06666666666666667,
         "first_relevant_rank": 15
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
       }
     },
     {
@@ -606,6 +802,13 @@
       "relevant_ranks": [
         3
       ],
+      "accepted": [
+        "pricing/how-we-price#3"
+      ],
+      "accepted_ranks": [
+        2,
+        3
+      ],
       "metrics": {
         "recall5": 1.0,
         "ndcg5": 0.5,
@@ -613,6 +816,14 @@
         "p5": 0.2,
         "ap": 0.3333333333333333,
         "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
       }
     },
     {
@@ -642,7 +853,19 @@
       "relevant_ranks": [
         2
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        2
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.6309297535714575,
         "mrr": 0.5,
@@ -680,6 +903,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "pricing/volume-tiers#3",
@@ -698,7 +925,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -708,6 +946,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -743,6 +989,13 @@
       "relevant_ranks": [
         2
       ],
+      "accepted": [
+        "implementation/api-connector#4"
+      ],
+      "accepted_ranks": [
+        1,
+        2
+      ],
       "metrics": {
         "recall5": 1.0,
         "ndcg5": 0.6309297535714575,
@@ -750,6 +1003,14 @@
         "p5": 0.2,
         "ap": 0.5,
         "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
       }
     },
     {
@@ -779,7 +1040,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -817,6 +1090,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "implementation/csv-export#1",
@@ -835,7 +1112,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -845,6 +1133,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -867,19 +1163,23 @@
       "top5": [
         "implementation/crm-connector#2",
         "implementation/api-connector#2",
-        "policies/personal-data#2",
         "implementation/csv-export#2",
-        "solutions/customer-status-updates#5"
+        "solutions/customer-status-updates#5",
+        "implementation/csv-export#1"
       ],
       "top5_scores": [
         0.782265,
         0.766075,
-        0.691342,
         0.686019,
-        0.684725
+        0.684725,
+        0.678468
       ],
       "top1_score": 0.782265,
       "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
         1
       ],
       "filtered": {
@@ -900,7 +1200,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -910,6 +1221,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -945,7 +1264,19 @@
       "relevant_ranks": [
         2
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        2
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.6309297535714575,
+        "mrr": 0.5,
+        "p5": 0.2,
+        "ap": 0.5,
+        "first_relevant_rank": 2
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.6309297535714575,
         "mrr": 0.5,
@@ -981,7 +1312,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1017,7 +1360,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1068,7 +1423,7 @@
         0.747441,
         0.6951,
         0.690497,
-        0.678057,
+        0.680341,
         0.677974
       ],
       "top1_score": 0.747441,
@@ -1151,6 +1506,10 @@
       "relevant_ranks": [
         3
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        3
+      ],
       "filtered": {
         "top5": [
           "solutions/email-triage#0",
@@ -1169,7 +1528,18 @@
         "relevant_ranks": [
           3
         ],
+        "accepted_ranks": [
+          3
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.5,
+          "mrr": 0.3333333333333333,
+          "p5": 0.2,
+          "ap": 0.3333333333333333,
+          "first_relevant_rank": 3
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 0.5,
           "mrr": 0.3333333333333333,
@@ -1179,6 +1549,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.5,
         "mrr": 0.3333333333333333,
@@ -1216,6 +1594,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "solutions/staff-assignment#5",
@@ -1234,7 +1616,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -1244,6 +1637,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1279,7 +1680,19 @@
       "relevant_ranks": [
         8
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        8
+      ],
       "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.125,
+        "p5": 0.0,
+        "ap": 0.125,
+        "first_relevant_rank": 8
+      },
+      "metrics_accepted": {
         "recall5": 0.0,
         "ndcg5": 0.0,
         "mrr": 0.125,
@@ -1317,6 +1730,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "implementation/api-connector#5",
@@ -1335,7 +1752,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -1345,6 +1773,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1367,37 +1803,44 @@
       "top5": [
         "implementation/export-only-tools#3",
         "solutions/document-data-entry#4",
+        "implementation/export-only-tools#6",
         "implementation/export-only-tools#0",
-        "implementation/export-only-tools#1",
-        "implementation/export-only-tools#4"
+        "implementation/export-only-tools#1"
       ],
       "top5_scores": [
         0.809441,
         0.791684,
+        0.759636,
         0.758694,
-        0.741155,
-        0.734363
+        0.741155
       ],
       "top1_score": 0.809441,
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "implementation/export-only-tools#3",
+          "implementation/export-only-tools#6",
           "implementation/export-only-tools#0",
           "implementation/export-only-tools#1",
-          "implementation/export-only-tools#4",
-          "implementation/export-only-tools#6"
+          "implementation/export-only-tools#4"
         ],
         "top5_scores": [
           0.809441,
+          0.759636,
           0.758694,
           0.741155,
-          0.734363,
-          0.733109
+          0.734363
         ],
         "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
           1
         ],
         "metrics": {
@@ -1407,9 +1850,25 @@
           "p5": 0.2,
           "ap": 1.0,
           "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1435,17 +1894,29 @@
         "implementation/export-only-tools#4"
       ],
       "top5_scores": [
-        0.693264,
+        0.683709,
         0.679442,
         0.679111,
         0.671755,
         0.661572
       ],
-      "top1_score": 0.693264,
+      "top1_score": 0.683709,
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1483,6 +1954,10 @@
       "relevant_ranks": [
         4
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        4
+      ],
       "filtered": {
         "top5": [
           "cases/grooming-bookings#1",
@@ -1501,7 +1976,18 @@
         "relevant_ranks": [
           4
         ],
+        "accepted_ranks": [
+          4
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.43067655807339306,
+          "mrr": 0.25,
+          "p5": 0.2,
+          "ap": 0.25,
+          "first_relevant_rank": 4
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 0.43067655807339306,
           "mrr": 0.25,
@@ -1511,6 +1997,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.43067655807339306,
         "mrr": 0.25,
@@ -1533,20 +2027,32 @@
         "solutions/email-triage#0",
         "consultation/urgent-requests#2",
         "consultation/urgent-requests#1",
-        "consultation/urgent-requests#0"
+        "cases/trades-dispatch#4"
       ],
       "top5_scores": [
         0.751269,
         0.739732,
         0.712455,
         0.706444,
-        0.680584
+        0.695058
       ],
       "top1_score": 0.751269,
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1584,6 +2090,13 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [
+        "consultation/urgent-requests#3"
+      ],
+      "accepted_ranks": [
+        1,
+        2
+      ],
       "filtered": {
         "top5": [
           "solutions/email-triage#1",
@@ -1602,7 +2115,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -1612,6 +2136,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1649,6 +2181,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "solutions/staff-assignment#1",
@@ -1667,7 +2203,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -1677,6 +2224,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1697,21 +2252,25 @@
         "solutions/document-data-entry#2"
       ],
       "top5": [
-        "cases/trades-dispatch#4",
         "solutions/document-data-entry#6",
         "cases/accounts-paperwork#4",
+        "cases/trades-dispatch#4",
         "solutions/document-data-entry#0",
         "cases/accounts-paperwork#1"
       ],
       "top5_scores": [
-        0.73279,
         0.730532,
         0.723567,
+        0.714288,
         0.711265,
         0.706488
       ],
-      "top1_score": 0.73279,
+      "top1_score": 0.730532,
       "relevant_ranks": [
+        33
+      ],
+      "accepted": [],
+      "accepted_ranks": [
         33
       ],
       "filtered": {
@@ -1732,7 +2291,18 @@
         "relevant_ranks": [
           11
         ],
+        "accepted_ranks": [
+          11
+        ],
         "metrics": {
+          "recall5": 0.0,
+          "ndcg5": 0.0,
+          "mrr": 0.09090909090909091,
+          "p5": 0.0,
+          "ap": 0.09090909090909091,
+          "first_relevant_rank": 11
+        },
+        "metrics_accepted": {
           "recall5": 0.0,
           "ndcg5": 0.0,
           "mrr": 0.09090909090909091,
@@ -1742,6 +2312,14 @@
         }
       },
       "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.030303030303030304,
+        "p5": 0.0,
+        "ap": 0.030303030303030304,
+        "first_relevant_rank": 33
+      },
+      "metrics_accepted": {
         "recall5": 0.0,
         "ndcg5": 0.0,
         "mrr": 0.030303030303030304,
@@ -1769,14 +2347,18 @@
         "solutions/ticket-creation#6"
       ],
       "top5_scores": [
-        0.728779,
+        0.709158,
         0.698103,
         0.69757,
         0.680224,
         0.677057
       ],
-      "top1_score": 0.728779,
+      "top1_score": 0.709158,
       "relevant_ranks": [
+        10
+      ],
+      "accepted": [],
+      "accepted_ranks": [
         10
       ],
       "filtered": {
@@ -1797,7 +2379,18 @@
         "relevant_ranks": [
           3
         ],
+        "accepted_ranks": [
+          3
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.5,
+          "mrr": 0.3333333333333333,
+          "p5": 0.2,
+          "ap": 0.3333333333333333,
+          "first_relevant_rank": 3
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 0.5,
           "mrr": 0.3333333333333333,
@@ -1807,6 +2400,14 @@
         }
       },
       "metrics": {
+        "recall5": 0.0,
+        "ndcg5": 0.0,
+        "mrr": 0.1,
+        "p5": 0.0,
+        "ap": 0.1,
+        "first_relevant_rank": 10
+      },
+      "metrics_accepted": {
         "recall5": 0.0,
         "ndcg5": 0.0,
         "mrr": 0.1,
@@ -1842,7 +2443,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1878,7 +2491,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -1916,6 +2541,10 @@
       "relevant_ranks": [
         5
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        5
+      ],
       "filtered": {
         "top5": [
           "pricing/range-and-estimates#3",
@@ -1934,7 +2563,18 @@
         "relevant_ranks": [
           2
         ],
+        "accepted_ranks": [
+          2
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 0.6309297535714575,
           "mrr": 0.5,
@@ -1944,6 +2584,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.38685280723454163,
+        "mrr": 0.2,
+        "p5": 0.2,
+        "ap": 0.2,
+        "first_relevant_rank": 5
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.38685280723454163,
         "mrr": 0.2,
@@ -1979,7 +2627,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2015,7 +2675,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2053,6 +2725,13 @@
       "relevant_ranks": [
         3
       ],
+      "accepted": [
+        "pricing/volume-tiers#1"
+      ],
+      "accepted_ranks": [
+        1,
+        3
+      ],
       "filtered": {
         "top5": [
           "pricing/volume-tiers#1",
@@ -2071,6 +2750,10 @@
         "relevant_ranks": [
           2
         ],
+        "accepted_ranks": [
+          1,
+          2
+        ],
         "metrics": {
           "recall5": 1.0,
           "ndcg5": 0.6309297535714575,
@@ -2078,6 +2761,14 @@
           "p5": 0.2,
           "ap": 0.5,
           "first_relevant_rank": 2
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
         }
       },
       "metrics": {
@@ -2087,6 +2778,14 @@
         "p5": 0.2,
         "ap": 0.3333333333333333,
         "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
       }
     },
     {
@@ -2118,6 +2817,10 @@
       "relevant_ranks": [
         4
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        4
+      ],
       "filtered": {
         "top5": [
           "pricing/setup-fees#1",
@@ -2136,7 +2839,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -2146,6 +2860,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.43067655807339306,
         "mrr": 0.25,
@@ -2183,6 +2905,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "pricing/range-and-estimates#2",
@@ -2201,7 +2927,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -2211,6 +2948,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2241,11 +2986,15 @@
         0.755357,
         0.728912,
         0.725186,
-        0.718796,
+        0.724589,
         0.717794
       ],
       "top1_score": 0.755357,
       "relevant_ranks": [
+        4
+      ],
+      "accepted": [],
+      "accepted_ranks": [
         4
       ],
       "filtered": {
@@ -2258,12 +3007,15 @@
         ],
         "top5_scores": [
           0.755357,
-          0.718796,
+          0.724589,
           0.708047,
-          0.692186,
+          0.680203,
           0.669923
         ],
         "relevant_ranks": [
+          2
+        ],
+        "accepted_ranks": [
           2
         ],
         "metrics": {
@@ -2273,9 +3025,25 @@
           "p5": 0.2,
           "ap": 0.5,
           "first_relevant_rank": 2
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 0.6309297535714575,
+          "mrr": 0.5,
+          "p5": 0.2,
+          "ap": 0.5,
+          "first_relevant_rank": 2
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.43067655807339306,
         "mrr": 0.25,
@@ -2311,7 +3079,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2341,12 +3121,16 @@
       "top5_scores": [
         0.742897,
         0.730325,
-        0.694391,
+        0.688145,
         0.68642,
         0.66827
       ],
       "top1_score": 0.742897,
       "relevant_ranks": [
+        4
+      ],
+      "accepted": [],
+      "accepted_ranks": [
         4
       ],
       "filtered": {
@@ -2360,11 +3144,14 @@
         "top5_scores": [
           0.742897,
           0.730325,
-          0.694391,
+          0.688145,
           0.68642,
           0.650154
         ],
         "relevant_ranks": [
+          4
+        ],
+        "accepted_ranks": [
           4
         ],
         "metrics": {
@@ -2374,9 +3161,25 @@
           "p5": 0.2,
           "ap": 0.25,
           "first_relevant_rank": 4
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 0.43067655807339306,
+          "mrr": 0.25,
+          "p5": 0.2,
+          "ap": 0.25,
+          "first_relevant_rank": 4
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
+        "p5": 0.2,
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.43067655807339306,
         "mrr": 0.25,
@@ -2412,7 +3215,19 @@
       "relevant_ranks": [
         3
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        3
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.5,
         "mrr": 0.3333333333333333,
@@ -2448,7 +3263,22 @@
       "relevant_ranks": [
         3
       ],
+      "accepted": [
+        "consultation/volume-and-timing#1"
+      ],
+      "accepted_ranks": [
+        3,
+        8
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 0.5,
+        "mrr": 0.3333333333333333,
+        "p5": 0.2,
+        "ap": 0.3333333333333333,
+        "first_relevant_rank": 3
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 0.5,
         "mrr": 0.3333333333333333,
@@ -2484,7 +3314,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2520,7 +3362,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2548,14 +3402,18 @@
         "implementation/csv-export#1"
       ],
       "top5_scores": [
-        0.755968,
+        0.734948,
         0.722661,
         0.693085,
         0.692036,
         0.676226
       ],
-      "top1_score": 0.755968,
+      "top1_score": 0.734948,
       "relevant_ranks": [
+        1
+      ],
+      "accepted": [],
+      "accepted_ranks": [
         1
       ],
       "filtered": {
@@ -2567,13 +3425,16 @@
           "policies/personal-data#4"
         ],
         "top5_scores": [
-          0.755968,
+          0.734948,
           0.693085,
           0.692036,
-          0.675245,
+          0.675106,
           0.663727
         ],
         "relevant_ranks": [
+          1
+        ],
+        "accepted_ranks": [
           1
         ],
         "metrics": {
@@ -2583,9 +3444,25 @@
           "p5": 0.2,
           "ap": 1.0,
           "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2605,15 +3482,15 @@
       ],
       "top5": [
         "policies/personal-data#1",
-        "policies/personal-data#2",
         "consultation/first-questions#5",
+        "policies/personal-data#2",
         "policies/personal-data#0",
         "policies/security#1"
       ],
       "top5_scores": [
         0.732341,
-        0.661018,
         0.647687,
+        0.647651,
         0.645459,
         0.641907
       ],
@@ -2621,7 +3498,19 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2648,7 +3537,7 @@
       ],
       "top5_scores": [
         0.762703,
-        0.755479,
+        0.748025,
         0.730644,
         0.7176,
         0.70964
@@ -2657,7 +3546,22 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [
+        "policies/security#4"
+      ],
+      "accepted_ranks": [
+        1,
+        11
+      ],
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2695,6 +3599,10 @@
       "relevant_ranks": [
         1
       ],
+      "accepted": [],
+      "accepted_ranks": [
+        1
+      ],
       "filtered": {
         "top5": [
           "policies/security#1",
@@ -2713,7 +3621,18 @@
         "relevant_ranks": [
           1
         ],
+        "accepted_ranks": [
+          1
+        ],
         "metrics": {
+          "recall5": 1.0,
+          "ndcg5": 1.0,
+          "mrr": 1.0,
+          "p5": 0.2,
+          "ap": 1.0,
+          "first_relevant_rank": 1
+        },
+        "metrics_accepted": {
           "recall5": 1.0,
           "ndcg5": 1.0,
           "mrr": 1.0,
@@ -2723,6 +3642,14 @@
         }
       },
       "metrics": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
+      },
+      "metrics_accepted": {
         "recall5": 1.0,
         "ndcg5": 1.0,
         "mrr": 1.0,
@@ -2744,27 +3671,42 @@
         "policies/personal-data#4",
         "policies/personal-data#1",
         "policies/security#1",
-        "policies/personal-data#2",
-        "policies/security#2"
+        "policies/security#2",
+        "policies/security#0"
       ],
       "top5_scores": [
         0.727612,
         0.695297,
         0.690599,
-        0.689125,
-        0.675908
+        0.675908,
+        0.665781
       ],
       "top1_score": 0.727612,
       "relevant_ranks": [
-        5
+        4
+      ],
+      "accepted": [
+        "policies/personal-data#4"
+      ],
+      "accepted_ranks": [
+        1,
+        4
       ],
       "metrics": {
         "recall5": 1.0,
-        "ndcg5": 0.38685280723454163,
-        "mrr": 0.2,
+        "ndcg5": 0.43067655807339306,
+        "mrr": 0.25,
         "p5": 0.2,
-        "ap": 0.2,
-        "first_relevant_rank": 5
+        "ap": 0.25,
+        "first_relevant_rank": 4
+      },
+      "metrics_accepted": {
+        "recall5": 1.0,
+        "ndcg5": 1.0,
+        "mrr": 1.0,
+        "p5": 0.2,
+        "ap": 1.0,
+        "first_relevant_rank": 1
       }
     },
     {

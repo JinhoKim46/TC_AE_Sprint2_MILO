@@ -1,0 +1,78 @@
+{
+  "arm_a": "retrieval_dev.json",
+  "arm_b": "retrieval_dev_title.json",
+  "accepted": {
+    "n": 48,
+    "ndcg5": {
+      "a": 0.8034,
+      "b": 0.796,
+      "mean_diff": -0.0074,
+      "ci": [
+        -0.0681,
+        0.055
+      ],
+      "better": 8,
+      "worse": 9
+    },
+    "recall5": {
+      "a": 0.9375,
+      "b": 0.9167,
+      "mean_diff": -0.0208,
+      "ci": [
+        -0.1042,
+        0.0417
+      ],
+      "better": 1,
+      "worse": 2
+    },
+    "mrr": {
+      "a": 0.7647,
+      "b": 0.7632,
+      "mean_diff": -0.0015,
+      "ci": [
+        -0.075,
+        0.0705
+      ],
+      "better": 9,
+      "worse": 10
+    }
+  },
+  "strict": {
+    "n": 48,
+    "ndcg5": {
+      "a": 0.7617,
+      "b": 0.7516,
+      "mean_diff": -0.0101,
+      "ci": [
+        -0.0784,
+        0.0558
+      ],
+      "better": 9,
+      "worse": 9
+    },
+    "recall5": {
+      "a": 0.9167,
+      "b": 0.875,
+      "mean_diff": -0.0417,
+      "ci": [
+        -0.125,
+        0.0417
+      ],
+      "better": 1,
+      "worse": 3
+    },
+    "mrr": {
+      "a": 0.7175,
+      "b": 0.7212,
+      "mean_diff": 0.0038,
+      "ci": [
+        -0.0731,
+        0.0796
+      ],
+      "better": 10,
+      "worse": 11
+    }
+  },
+  "decision": "drop_title_prefix",
+  "rule": "keep only when the paired CI lower bound of accepted nDCG@5 (B minus A) is above 0 (D24)"
+}

@@ -82,7 +82,7 @@ def test_chunk_ids_metadata_and_hash() -> None:
 
 
 def test_title_prefix_after_splitting() -> None:
-    chunks = chunk_document("kb/x", DOC, {"title": "A title"})
+    chunks = chunk_document("kb/x", DOC, {"title": "A title"}, title_prefix=True)
     # chunk 0 already opens with the article heading
     assert chunks[0].text.startswith("# Title")
     assert chunks[1].text == "A title\n\n## One\n\nFirst section text."
