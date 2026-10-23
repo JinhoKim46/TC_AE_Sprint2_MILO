@@ -10,6 +10,18 @@
   "turns": [
     {
       "turn": 1,
+      "facts": [],
+      "no_facts": true,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "company_name",
+      "asks_cost": true,
+      "premature_estimate_expected": false,
+      "note": "owner asked for a price before assessment_ready: no number may be shown"
+    },
+    {
+      "turn": 2,
       "facts": [
         {
           "field_id": "company_name",
@@ -27,7 +39,7 @@
           "field_id": "owner_role",
           "value": "Owner",
           "status": "reported",
-          "evidence": "owner"
+          "evidence": "I own it"
         }
       ],
       "no_facts": false,
@@ -37,7 +49,7 @@
       "next_question_id": "industry"
     },
     {
-      "turn": 2,
+      "turn": 3,
       "facts": [
         {
           "field_id": "industry",
@@ -50,34 +62,12 @@
           "value": 2,
           "status": "reported",
           "evidence": "Two sites"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "employee_count"
-    },
-    {
-      "turn": 3,
-      "facts": [],
-      "no_facts": true,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "employee_count",
-      "asks_cost": true,
-      "premature_estimate_expected": false,
-      "note": "owner asked for a price before assessment_ready: no number may be shown"
-    },
-    {
-      "turn": 4,
-      "facts": [
+        },
         {
           "field_id": "employee_count",
           "value": 11,
           "status": "reported",
-          "evidence": "Eleven staff"
+          "evidence": "eleven staff"
         }
       ],
       "no_facts": false,
@@ -87,17 +77,17 @@
       "next_question_id": "request_channels"
     },
     {
-      "turn": 5,
+      "turn": 4,
       "facts": [
         {
           "field_id": "request_channels",
           "value": [
             "phone",
-            "book through the booking site",
-            "message us on Instagram"
+            "the booking site",
+            "Instagram messages"
           ],
           "status": "reported",
-          "evidence": "People phone, book through the booking site, or message us on Instagram"
+          "evidence": "Booked by phone, through the booking site, or Instagram messages"
         },
         {
           "field_id": "daily_request_volume",
@@ -115,7 +105,7 @@
       "next_question_id": "average_handling_minutes"
     },
     {
-      "turn": 6,
+      "turn": 5,
       "facts": [
         {
           "field_id": "daily_request_volume",
@@ -146,7 +136,7 @@
       "next_question_id": "confirm_daily_request_volume"
     },
     {
-      "turn": 7,
+      "turn": 6,
       "facts": [
         {
           "field_id": "daily_request_volume",
@@ -159,7 +149,7 @@
             "period": "week",
             "business_days": 5
           },
-          "evidence": "125 a week is right"
+          "evidence": "125 a week"
         }
       ],
       "no_facts": false,
@@ -170,21 +160,21 @@
       "answers_conflict": "daily_request_volume"
     },
     {
-      "turn": 8,
+      "turn": 7,
       "facts": [
         {
           "field_id": "average_handling_minutes",
           "value": 4,
           "status": "reported",
           "unit": "minutes",
-          "evidence": "About 4 minutes each"
+          "evidence": "Four minutes each"
         },
         {
           "field_id": "manual_entry_minutes",
           "value": 2,
           "status": "reported",
           "unit": "minutes",
-          "evidence": "2 minutes of retyping"
+          "evidence": "two typing"
         }
       ],
       "no_facts": false,
@@ -194,17 +184,17 @@
       "next_question_id": "tools_in_use"
     },
     {
-      "turn": 9,
+      "turn": 8,
       "facts": [
         {
           "field_id": "tools_in_use",
           "value": [
             "the booking site",
-            "a paper appointment book",
+            "the appointment book",
             "a shared spreadsheet"
           ],
           "status": "reported",
-          "evidence": "The booking site, a paper appointment book, a shared spreadsheet"
+          "evidence": "The booking site, the appointment book, a shared spreadsheet"
         }
       ],
       "no_facts": false,
@@ -214,37 +204,27 @@
       "next_question_id": "steps_in_process"
     },
     {
-      "turn": 10,
+      "turn": 9,
       "facts": [
         {
           "field_id": "steps_in_process",
           "value": [
             "take the booking",
-            "enter it in the appointment book",
-            "text a reminder",
+            "enter it in the book",
+            "send a reminder text",
             "welcome the client",
             "take payment"
           ],
           "status": "reported",
-          "evidence": "We take the booking, enter it in the appointment book, text a reminder, welcome the client, and take payment"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "approval_steps"
-    },
-    {
-      "turn": 11,
-      "facts": [
+          "evidence": "Take the booking, enter it in the book, send a reminder text, welcome the client, take payment"
+        },
         {
           "field_id": "approval_steps",
           "value": [
-            "I approve discounts over 15 percent, nobody else"
+            "discounts over 15 percent need me"
           ],
           "status": "reported",
-          "evidence": "I approve discounts over 15 percent, nobody else"
+          "evidence": "Discounts over 15 percent need me"
         }
       ],
       "no_facts": false,
@@ -254,28 +234,18 @@
       "next_question_id": "pain_points"
     },
     {
-      "turn": 12,
+      "turn": 10,
       "facts": [
         {
           "field_id": "pain_points",
           "value": [
-            "clients who are no-shows",
-            "double bookings every week",
-            "Instagram messages getting buried"
+            "no-shows",
+            "double bookings",
+            "buried Instagram messages"
           ],
           "status": "reported",
-          "evidence": "Clients who are no-shows, double bookings every week, and Instagram messages getting buried"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "error_types"
-    },
-    {
-      "turn": 13,
-      "facts": [
+          "evidence": "No-shows, double bookings, buried Instagram messages"
+        },
         {
           "field_id": "error_types",
           "value": [
@@ -283,7 +253,7 @@
             "missed"
           ],
           "status": "reported",
-          "evidence": "Booked twice, and the odd message never answered"
+          "evidence": "clients booked twice, and messages unanswered"
         }
       ],
       "no_facts": false,
@@ -293,82 +263,52 @@
       "next_question_id": "automation_goals"
     },
     {
-      "turn": 14,
+      "turn": 11,
       "facts": [
         {
           "field_id": "automation_goals",
           "value": [
             "booking intake",
             "reminder texts",
-            "sorting the messages"
+            "message sorting"
           ],
           "status": "reported",
-          "evidence": "Booking intake, reminder texts and sorting the messages"
+          "evidence": "Booking intake, reminder texts, message sorting"
         },
         {
           "field_id": "main_goal",
           "value": "growth",
           "status": "reported",
-          "evidence": "I want a third studio"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "integrations_available"
-    },
-    {
-      "turn": 15,
-      "facts": [
+          "evidence": "I want to grow"
+        },
         {
           "field_id": "integrations_available",
           "value": [
             "csv-export"
           ],
           "status": "reported",
-          "evidence": "A CSV download"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "personal_data_handled"
-    },
-    {
-      "turn": 16,
-      "facts": [
+          "evidence": "CSV download"
+        },
         {
           "field_id": "personal_data_handled",
           "value": true,
           "status": "reported",
-          "evidence": "Yes"
+          "evidence": "Client phone numbers and skin allergy notes, yes"
         },
         {
           "field_id": "personal_data_types",
           "value": [
-            "phone numbers for clients",
-            "notes on skin allergies"
+            "client phone numbers",
+            "skin allergy notes"
           ],
           "status": "reported",
-          "evidence": "phone numbers for clients, plus notes on skin allergies"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "urgent_requests_exist"
-    },
-    {
-      "turn": 17,
-      "facts": [
+          "evidence": "Client phone numbers and skin allergy notes"
+        },
         {
           "field_id": "urgent_requests_exist",
           "value": false,
           "status": "reported",
-          "evidence": "No"
+          "evidence": "Nothing urgent"
         }
       ],
       "no_facts": false,
@@ -381,27 +321,14 @@
       ]
     },
     {
-      "turn": 18,
+      "turn": 12,
       "facts": [
         {
           "field_id": "budget_range",
           "value": "about 3000 USD",
           "status": "reported",
           "evidence": "About 3000 USD"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "assessment_ready",
-      "estimate_status": "scenario",
-      "number_allowed": true,
-      "next_question_id": "start_timeline",
-      "assumptions": [
-        "start_timeline"
-      ]
-    },
-    {
-      "turn": 19,
-      "facts": [
+        },
         {
           "field_id": "start_timeline",
           "value": null,
@@ -419,32 +346,13 @@
       ]
     },
     {
-      "turn": 20,
-      "facts": [
-        {
-          "field_id": "owner_email",
-          "value": "odalys@example.invalid",
-          "status": "reported",
-          "evidence": "odalys@example.invalid"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "assessment_ready",
-      "estimate_status": "scenario",
-      "number_allowed": true,
-      "next_question_id": null,
-      "assumptions": [
-        "start_timeline"
-      ]
-    },
-    {
-      "turn": 21,
+      "turn": 13,
       "facts": [],
       "no_facts": true,
       "protocol_state": "assessment_ready",
       "estimate_status": "scenario",
       "number_allowed": true,
-      "next_question_id": null,
+      "next_question_id": "owner_email",
       "assumptions": [
         "start_timeline"
       ],

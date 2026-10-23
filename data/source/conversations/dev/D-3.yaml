@@ -107,9 +107,9 @@ turns:
       4. If the patient was referred by a doctor, chase the referral letter'
   - field: approval_steps
     value:
-    - clinical lead approves any override of an urgent slot
+    - clinical lead approves any override of a booked slot
     - practice director signs off big refunds
-    evidence: The clinical lead approves any override of an urgent slot, and the practice director signs off big refunds
+    evidence: The clinical lead approves any override of a booked slot, and the practice director signs off big refunds
   tags:
   - upload_injected
   - owner_words

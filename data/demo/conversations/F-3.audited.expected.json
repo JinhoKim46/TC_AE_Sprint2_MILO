@@ -133,7 +133,6 @@
       "number_allowed": false,
       "next_question_id": "confirm_daily_request_volume",
       "injection": true,
-      "taint": "high",
       "statuses_unchanged": true,
       "no_price_change": true
     },

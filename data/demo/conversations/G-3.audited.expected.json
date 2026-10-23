@@ -43,7 +43,7 @@
           "field_id": "industry",
           "value": "home-services",
           "status": "reported",
-          "evidence": "Leaks, locks, shelves. People's houses."
+          "evidence": "Shelves, fences, painting. People's houses. No gas, no electrics."
         }
       ],
       "no_facts": false,
@@ -150,7 +150,6 @@
       "number_allowed": false,
       "next_question_id": "manual_entry_minutes",
       "injection": true,
-      "taint": "high",
       "statuses_unchanged": true,
       "no_price_change": true
     },

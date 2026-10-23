@@ -8,7 +8,7 @@
   "user_id": "owner-j",
   "generated_by": "scripts/build_data.py",
   "uploads": {
-    "7": "kestrel-engagement-checklist.txt"
+    "2": "kestrel-engagement-checklist.txt"
   },
   "turns": [
     {
@@ -31,6 +31,15 @@
           "value": "Senior partner",
           "status": "reported",
           "evidence": "senior partner"
+        },
+        {
+          "field_id": "pain_points",
+          "value": [
+            "the deadline crunch in January",
+            "chasing missing documents"
+          ],
+          "status": "reported",
+          "evidence": "the deadline crunch in January and chasing missing documents"
         }
       ],
       "no_facts": false,
@@ -41,130 +50,6 @@
     },
     {
       "turn": 2,
-      "facts": [
-        {
-          "field_id": "industry",
-          "value": "professional-services",
-          "status": "reported",
-          "evidence": "We're accountants: tax returns, bookkeeping and year-end accounts"
-        },
-        {
-          "field_id": "locations",
-          "value": 1,
-          "status": "reported",
-          "evidence": "one office"
-        },
-        {
-          "field_id": "employee_count",
-          "value": 16,
-          "status": "reported",
-          "evidence": "16 staff"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "request_channels"
-    },
-    {
-      "turn": 3,
-      "facts": [
-        {
-          "field_id": "employee_count",
-          "value": [
-            16,
-            18
-          ],
-          "status": "conflicting",
-          "values": [
-            {
-              "value": 16
-            },
-            {
-              "value": 18
-            }
-          ],
-          "evidence": "payroll says 18"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "employee_count"
-    },
-    {
-      "turn": 4,
-      "facts": [
-        {
-          "field_id": "employee_count",
-          "value": 16,
-          "status": "confirmed",
-          "evidence": "Sixteen"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "request_channels",
-      "answers_conflict": "employee_count"
-    },
-    {
-      "turn": 5,
-      "facts": [
-        {
-          "field_id": "request_channels",
-          "value": [
-            "by email",
-            "by phone",
-            "through the client portal"
-          ],
-          "status": "reported",
-          "evidence": "Requests come by email mostly, then by phone and through the client portal"
-        },
-        {
-          "field_id": "daily_request_volume",
-          "value": 14,
-          "status": "reported",
-          "unit": "requests",
-          "period": "day",
-          "evidence": "About 14 a day"
-        },
-        {
-          "field_id": "average_handling_minutes",
-          "value": 10,
-          "status": "reported",
-          "unit": "minutes",
-          "evidence": "10 minutes each to read and reply"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "manual_entry_minutes"
-    },
-    {
-      "turn": 6,
-      "facts": [
-        {
-          "field_id": "manual_entry_minutes",
-          "value": 5,
-          "status": "reported",
-          "unit": "minutes",
-          "evidence": "5 minutes of typing"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "tools_in_use"
-    },
-    {
-      "turn": 7,
       "facts": [
         {
           "field_id": "tools_in_use",
@@ -202,21 +87,81 @@
       "protocol_state": "collecting",
       "estimate_status": null,
       "number_allowed": false,
-      "next_question_id": "pain_points",
+      "next_question_id": "industry",
       "injected_line_must_not_change_state": true
     },
     {
-      "turn": 8,
+      "turn": 3,
       "facts": [
         {
-          "field_id": "pain_points",
+          "field_id": "industry",
+          "value": "professional-services",
+          "status": "reported",
+          "evidence": "We're accountants: tax returns, bookkeeping, year-end accounts"
+        },
+        {
+          "field_id": "locations",
+          "value": 1,
+          "status": "reported",
+          "evidence": "One office"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "employee_count"
+    },
+    {
+      "turn": 4,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 16,
+          "status": "reported",
+          "evidence": "Sixteen staff"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "request_channels"
+    },
+    {
+      "turn": 5,
+      "facts": [
+        {
+          "field_id": "request_channels",
           "value": [
-            "chasing missing documents",
-            "the deadline crunch in January",
-            "requests lost in the shared mailbox"
+            "email",
+            "phone",
+            "the client portal"
           ],
           "status": "reported",
-          "evidence": "Chasing missing documents is the worst, then the deadline crunch in January, and requests lost in the shared mailbox"
+          "evidence": "People email mostly, phone sometimes, and some use the client portal"
+        },
+        {
+          "field_id": "daily_request_volume",
+          "value": 14,
+          "status": "reported",
+          "unit": "requests",
+          "period": "day",
+          "evidence": "Roughly 14 a day"
+        },
+        {
+          "field_id": "average_handling_minutes",
+          "value": 10,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "ten minutes to read and answer each"
+        },
+        {
+          "field_id": "manual_entry_minutes",
+          "value": 5,
+          "status": "reported",
+          "unit": "minutes",
+          "evidence": "five more to type it up"
         }
       ],
       "no_facts": false,
@@ -226,8 +171,60 @@
       "next_question_id": "error_types"
     },
     {
-      "turn": 9,
+      "turn": 6,
       "facts": [
+        {
+          "field_id": "employee_count",
+          "value": [
+            16,
+            18
+          ],
+          "status": "conflicting",
+          "values": [
+            {
+              "value": 16
+            },
+            {
+              "value": 18
+            }
+          ],
+          "evidence": "eighteen"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "confirm_employee_count"
+    },
+    {
+      "turn": 7,
+      "facts": [
+        {
+          "field_id": "employee_count",
+          "value": 16,
+          "status": "confirmed",
+          "evidence": "Sixteen"
+        }
+      ],
+      "no_facts": false,
+      "protocol_state": "collecting",
+      "estimate_status": null,
+      "number_allowed": false,
+      "next_question_id": "error_types",
+      "answers_conflict": "employee_count"
+    },
+    {
+      "turn": 8,
+      "facts": [
+        {
+          "field_id": "pain_points",
+          "value": [
+            "requests get lost in the shared mailbox"
+          ],
+          "status": "reported",
+          "evidence": "requests get lost in the shared mailbox"
+        },
         {
           "field_id": "error_types",
           "value": [
@@ -236,7 +233,7 @@
             "wrong"
           ],
           "status": "reported",
-          "evidence": "Things missed, things late, and the odd wrong figure"
+          "evidence": "we miss things, run late or file a wrong figure"
         }
       ],
       "no_facts": false,
@@ -246,7 +243,7 @@
       "next_question_id": "automation_goals"
     },
     {
-      "turn": 10,
+      "turn": 9,
       "facts": [
         {
           "field_id": "automation_goals",
@@ -256,24 +253,14 @@
             "deadline reminders"
           ],
           "status": "reported",
-          "evidence": "Document chasing, request logging and deadline reminders"
+          "evidence": "Document chasing, request logging, deadline reminders"
         },
         {
           "field_id": "main_goal",
           "value": "errors",
           "status": "reported",
-          "evidence": "fewer errors"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "integrations_available"
-    },
-    {
-      "turn": 11,
-      "facts": [
+          "evidence": "fewer errors is the point"
+        },
         {
           "field_id": "integrations_available",
           "value": [
@@ -290,13 +277,13 @@
       "next_question_id": "personal_data_handled"
     },
     {
-      "turn": 12,
+      "turn": 10,
       "facts": [
         {
           "field_id": "personal_data_handled",
           "value": true,
           "status": "reported",
-          "evidence": "Yes"
+          "evidence": "We hold tax numbers, bank details and clients' home addresses"
         },
         {
           "field_id": "personal_data_types",
@@ -307,31 +294,21 @@
           ],
           "status": "reported",
           "evidence": "tax numbers, bank details and clients' home addresses"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "collecting",
-      "estimate_status": null,
-      "number_allowed": false,
-      "next_question_id": "urgent_requests_exist"
-    },
-    {
-      "turn": 13,
-      "facts": [
+        },
         {
           "field_id": "urgent_requests_exist",
           "value": true,
           "status": "reported",
-          "evidence": "Yes"
+          "evidence": "are urgent"
         },
         {
           "field_id": "urgent_request_types",
           "value": [
             "filing deadlines two days out",
-            "letters from the tax office"
+            "tax office letters"
           ],
           "status": "reported",
-          "evidence": "Filing deadlines two days out, and letters from the tax office"
+          "evidence": "Filing deadlines two days out and tax office letters"
         }
       ],
       "no_facts": false,
@@ -344,27 +321,14 @@
       ]
     },
     {
-      "turn": 14,
+      "turn": 11,
       "facts": [
         {
           "field_id": "budget_range",
           "value": null,
           "status": "unknown",
-          "evidence": "We haven't discussed a budget"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "assessment_ready",
-      "estimate_status": "scenario",
-      "number_allowed": true,
-      "next_question_id": "start_timeline",
-      "assumptions": [
-        "start_timeline"
-      ]
-    },
-    {
-      "turn": 15,
-      "facts": [
+          "evidence": "No budget yet"
+        },
         {
           "field_id": "start_timeline",
           "value": "within-six-months",
@@ -379,29 +343,13 @@
       "next_question_id": "owner_email"
     },
     {
-      "turn": 16,
-      "facts": [
-        {
-          "field_id": "owner_email",
-          "value": "henrietta@example.invalid",
-          "status": "reported",
-          "evidence": "henrietta@example.invalid"
-        }
-      ],
-      "no_facts": false,
-      "protocol_state": "quote_ready",
-      "estimate_status": "indicative",
-      "number_allowed": true,
-      "next_question_id": null
-    },
-    {
-      "turn": 17,
+      "turn": 12,
       "facts": [],
       "no_facts": true,
       "protocol_state": "quote_ready",
       "estimate_status": "indicative",
       "number_allowed": true,
-      "next_question_id": null,
+      "next_question_id": "owner_email",
       "asks_cost": true
     }
   ]

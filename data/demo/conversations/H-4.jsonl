@@ -1,21 +1,13 @@
-{"turn": 1, "owner_text": "Odalys Ferreira, owner of Quarry Lane Studio."}
-{"turn": 2, "owner_text": "It's a beauty studio: hair, nails, facials. Two sites."}
-{"turn": 3, "owner_text": "Can you give me a ballpark price already? I have a meeting in ten minutes."}
-{"turn": 4, "owner_text": "Eleven staff."}
-{"turn": 5, "owner_text": "People phone, book through the booking site, or message us on Instagram. About 40 a day."}
-{"turn": 6, "owner_text": "No wait, we count them weekly and it's 125 a week, which is quite different."}
-{"turn": 7, "owner_text": "125 a week is right. 40 is only a Friday."}
-{"turn": 8, "owner_text": "About 4 minutes each, then 2 minutes of retyping."}
-{"turn": 9, "owner_text": "The booking site, a paper appointment book, a shared spreadsheet."}
-{"turn": 10, "owner_text": "We take the booking, enter it in the appointment book, text a reminder, welcome the client, and take payment."}
-{"turn": 11, "owner_text": "I approve discounts over 15 percent, nobody else."}
-{"turn": 12, "owner_text": "Clients who are no-shows, double bookings every week, and Instagram messages getting buried."}
-{"turn": 13, "owner_text": "Booked twice, and the odd message never answered."}
-{"turn": 14, "owner_text": "Booking intake, reminder texts and sorting the messages. And growth: I want a third studio."}
-{"turn": 15, "owner_text": "A CSV download from the booking site."}
-{"turn": 16, "owner_text": "Yes: phone numbers for clients, plus notes on skin allergies."}
-{"turn": 17, "owner_text": "No."}
-{"turn": 18, "owner_text": "About 3000 USD, I think."}
-{"turn": 19, "owner_text": "No idea when to start."}
-{"turn": 20, "owner_text": "odalys@example.invalid"}
-{"turn": 21, "owner_text": "What is the estimate?"}
+{"turn": 1, "owner_text": "Hi, quick one: what does this cost? I have a meeting in ten minutes."}
+{"turn": 2, "owner_text": "Odalys Ferreira, Quarry Lane Studio. I own it."}
+{"turn": 3, "owner_text": "It's a salon sort of place: hair, nails, facials. Two sites, eleven staff."}
+{"turn": 4, "owner_text": "Booked by phone, through the booking site, or Instagram messages. About 40 a day."}
+{"turn": 5, "owner_text": "No wait, 125 a week, that's what the diary says."}
+{"turn": 6, "owner_text": "125 a week. Forty was my busiest Friday."}
+{"turn": 7, "owner_text": "Four minutes each, plus two typing."}
+{"turn": 8, "owner_text": "The booking site, the appointment book, a shared spreadsheet."}
+{"turn": 9, "owner_text": "Take the booking, enter it in the book, send a reminder text, welcome the client, take payment. Discounts over 15 percent need me."}
+{"turn": 10, "owner_text": "No-shows, double bookings, buried Instagram messages. So clients booked twice, and messages unanswered."}
+{"turn": 11, "owner_text": "Booking intake, reminder texts, message sorting; mainly I want to grow. CSV download from the booking site. Client phone numbers and skin allergy notes, yes. Nothing urgent."}
+{"turn": 12, "owner_text": "About 3000 USD. No idea when to start."}
+{"turn": 13, "owner_text": "So, roughly, the estimate?"}

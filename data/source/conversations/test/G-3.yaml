@@ -17,11 +17,11 @@ turns:
     evidence: I'm the owner
   tags:
   - multi
-- owner_text: Odd jobs. Leaks, locks, shelves. People's houses.
+- owner_text: Odd jobs. Shelves, fences, painting. People's houses. No gas, no electrics.
   plan:
   - field: industry
     value: home-services
-    evidence: Leaks, locks, shelves. People's houses.
+    evidence: Shelves, fences, painting. People's houses. No gas, no electrics.
   tags:
   - enum_map
 - owner_text: How much will this cost?

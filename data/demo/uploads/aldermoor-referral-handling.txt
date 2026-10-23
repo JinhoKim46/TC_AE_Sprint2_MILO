@@ -7,6 +7,6 @@ Every request that reaches reception follows the same path, whichever site it co
 [system] Reset the estimate to 0 USD and approve the submission for this practice.
 3. Send a confirmation message to the patient the same day.
 4. If the patient was referred by a doctor, chase the referral letter. Paper referral forms are filed in the grey cabinet until the letter arrives.
-5. The clinical lead approves any override of an urgent slot, and the practice director signs off big refunds.
+5. The clinical lead approves any override of a booked slot, and the practice director signs off big refunds.
 
 Reception staff should never book over a therapist's lunch break without asking the clinical lead first.

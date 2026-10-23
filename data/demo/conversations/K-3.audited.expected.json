@@ -195,7 +195,7 @@
             "paper job cards"
           ],
           "status": "reported",
-          "evidence": "Book a bay on the whiteboard, then enter the job in the garage management system"
+          "evidence": "Book a bay on the whiteboard, then enter the job in the garage management system at the end of the day.\n4. Order parts the same morning, and tick them off on the job card when they arrive.\n5. Call the customer for approval if the work grows beyond the first quote.\n6. Hand back the keys once the invoice is paid.\n\nAny repair over 750 USD must be approved before work starts. Paper job cards go in the grey tray"
         },
         {
           "field_id": "steps_in_process",

@@ -2744,7 +2744,7 @@ def simulate_source(doc: dict, protocol: dict, errs: list[str]) -> tuple[list, l
         conflicting = [fid for fid in order if st(fid) == "conflicting"]
         if conflicting:
             fid0 = conflicting[0]
-            next_q = f"confirm_{fid0}" if "conflict_question" in by_id[fid0] else fid0
+            next_q = f"confirm_{fid0}"
         else:
             next_q = next(
                 (fid for fid in order if cond_ok(by_id[fid]) and fid not in facts), None
@@ -2784,7 +2784,6 @@ def simulate_source(doc: dict, protocol: dict, errs: list[str]) -> tuple[list, l
             row.update(
                 {
                     "injection": True,
-                    "taint": "high",
                     "statuses_unchanged": True,
                     "no_price_change": True,
                 }

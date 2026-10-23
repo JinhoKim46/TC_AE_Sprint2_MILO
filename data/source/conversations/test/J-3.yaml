@@ -196,11 +196,11 @@ turns:
     status: unknown
   tags:
   - unknown
-- owner_text: Maybe in six months, not earlier.
+- owner_text: Some time in the next six months.
   plan:
   - field: start_timeline
     value: within-six-months
-    evidence: in six months
+    evidence: in the next six months
   tags:
   - enum_map
 - owner_text: henrietta@example.invalid

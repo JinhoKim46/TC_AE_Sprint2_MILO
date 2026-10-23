@@ -4,7 +4,12 @@ company: h
 user_id: owner-h
 style: contradicts
 turns:
-- owner_text: Odalys Ferreira, owner of Quarry Lane Studio.
+- owner_text: 'Hi, quick one: what does this cost? I have a meeting in ten minutes.'
+  tags:
+  - price_early
+  flags:
+    asks_cost: true
+- owner_text: Odalys Ferreira, Quarry Lane Studio. I own it.
   plan:
   - field: company_name
     value: Quarry Lane Studio
@@ -14,10 +19,10 @@ turns:
     evidence: Odalys Ferreira
   - field: owner_role
     value: Owner
-    evidence: owner
+    evidence: I own it
   tags:
   - multi
-- owner_text: 'It''s a beauty studio: hair, nails, facials. Two sites.'
+- owner_text: 'It''s a salon sort of place: hair, nails, facials. Two sites, eleven staff.'
   plan:
   - field: industry
     value: beauty-personal-care
@@ -25,27 +30,21 @@ turns:
   - field: locations
     value: 2
     evidence: Two sites
-  tags:
-  - enum_map
-  - early
-- owner_text: Can you give me a ballpark price already? I have a meeting in ten minutes.
-  tags:
-  - price_early
-  flags:
-    asks_cost: true
-- owner_text: Eleven staff.
-  plan:
   - field: employee_count
     value: 11
-    evidence: Eleven staff
-- owner_text: People phone, book through the booking site, or message us on Instagram. About 40 a day.
+    evidence: eleven staff
+  tags:
+  - multi
+  - enum_map
+  - early
+- owner_text: Booked by phone, through the booking site, or Instagram messages. About 40 a day.
   plan:
   - field: request_channels
     value:
     - phone
-    - book through the booking site
-    - message us on Instagram
-    evidence: People phone, book through the booking site, or message us on Instagram
+    - the booking site
+    - Instagram messages
+    evidence: Booked by phone, through the booking site, or Instagram messages
   - field: daily_request_volume
     value: 40
     evidence: About 40 a day
@@ -53,7 +52,7 @@ turns:
   tags:
   - owner_words
   - early
-- owner_text: No wait, we count them weekly and it's 125 a week, which is quite different.
+- owner_text: No wait, 125 a week, that's what the diary says.
   plan:
   - field: daily_request_volume
     value: 125
@@ -62,11 +61,11 @@ turns:
     period: week
   tags:
   - conflict_blocking
-- owner_text: 125 a week is right. 40 is only a Friday.
+- owner_text: 125 a week. Forty was my busiest Friday.
   plan:
   - field: daily_request_volume
     value: 25
-    evidence: 125 a week is right
+    evidence: 125 a week
     status: confirmed
     period: day
     derived_from:
@@ -74,121 +73,95 @@ turns:
       period: week
   flags:
     answers_conflict: daily_request_volume
-- owner_text: About 4 minutes each, then 2 minutes of retyping.
+- owner_text: Four minutes each, plus two typing.
   plan:
   - field: average_handling_minutes
     value: 4
-    evidence: About 4 minutes each
+    evidence: Four minutes each
   - field: manual_entry_minutes
     value: 2
-    evidence: 2 minutes of retyping
-- owner_text: The booking site, a paper appointment book, a shared spreadsheet.
+    evidence: two typing
+- owner_text: The booking site, the appointment book, a shared spreadsheet.
   plan:
   - field: tools_in_use
     value:
     - the booking site
-    - a paper appointment book
+    - the appointment book
     - a shared spreadsheet
-    evidence: The booking site, a paper appointment book, a shared spreadsheet
+    evidence: The booking site, the appointment book, a shared spreadsheet
   tags:
   - owner_words
-- owner_text: We take the booking, enter it in the appointment book, text a reminder, welcome the client, and take payment.
+- owner_text: Take the booking, enter it in the book, send a reminder text, welcome the client, take payment. Discounts over 15 percent need me.
   plan:
   - field: steps_in_process
     value:
     - take the booking
-    - enter it in the appointment book
-    - text a reminder
+    - enter it in the book
+    - send a reminder text
     - welcome the client
     - take payment
-    evidence: We take the booking, enter it in the appointment book, text a reminder, welcome the client, and take payment
-  tags:
-  - owner_words
-- owner_text: I approve discounts over 15 percent, nobody else.
-  plan:
+    evidence: Take the booking, enter it in the book, send a reminder text, welcome the client, take payment
   - field: approval_steps
     value:
-    - I approve discounts over 15 percent, nobody else
-    evidence: I approve discounts over 15 percent, nobody else
+    - discounts over 15 percent need me
+    evidence: Discounts over 15 percent need me
   tags:
   - owner_words
-- owner_text: Clients who are no-shows, double bookings every week, and Instagram messages getting buried.
+- owner_text: No-shows, double bookings, buried Instagram messages. So clients booked twice, and messages unanswered.
   plan:
   - field: pain_points
     value:
-    - clients who are no-shows
-    - double bookings every week
-    - Instagram messages getting buried
-    evidence: Clients who are no-shows, double bookings every week, and Instagram messages getting buried
-  tags:
-  - owner_words
-- owner_text: Booked twice, and the odd message never answered.
-  plan:
+    - no-shows
+    - double bookings
+    - buried Instagram messages
+    evidence: No-shows, double bookings, buried Instagram messages
   - field: error_types
     value:
     - duplicated
     - missed
-    evidence: Booked twice, and the odd message never answered
+    evidence: clients booked twice, and messages unanswered
   tags:
   - enum_map
-- owner_text: 'Booking intake, reminder texts and sorting the messages. And growth: I want a third studio.'
+- owner_text: Booking intake, reminder texts, message sorting; mainly I want to grow. CSV download from the booking site. Client phone numbers and skin allergy notes, yes. Nothing urgent.
   plan:
   - field: automation_goals
     value:
     - booking intake
     - reminder texts
-    - sorting the messages
-    evidence: Booking intake, reminder texts and sorting the messages
+    - message sorting
+    evidence: Booking intake, reminder texts, message sorting
   - field: main_goal
     value: growth
-    evidence: I want a third studio
-  tags:
-  - owner_words
-  - enum_map
-  - early
-- owner_text: A CSV download from the booking site.
-  plan:
+    evidence: I want to grow
   - field: integrations_available
     value:
     - csv-export
-    evidence: A CSV download
-  tags:
-  - enum_map
-- owner_text: 'Yes: phone numbers for clients, plus notes on skin allergies.'
-  plan:
+    evidence: CSV download
   - field: personal_data_handled
     value: true
-    evidence: 'Yes'
+    evidence: Client phone numbers and skin allergy notes, yes
   - field: personal_data_types
     value:
-    - phone numbers for clients
-    - notes on skin allergies
-    evidence: phone numbers for clients, plus notes on skin allergies
-  tags:
-  - owner_words
-- owner_text: No.
-  plan:
+    - client phone numbers
+    - skin allergy notes
+    evidence: Client phone numbers and skin allergy notes
   - field: urgent_requests_exist
     value: false
-    evidence: 'No'
-- owner_text: About 3000 USD, I think.
+    evidence: Nothing urgent
+  tags:
+  - multi
+  - enum_map
+- owner_text: About 3000 USD. No idea when to start.
   plan:
   - field: budget_range
     value: about 3000 USD
     evidence: About 3000 USD
-- owner_text: No idea when to start.
-  plan:
   - field: start_timeline
     value: null
     evidence: No idea when to start
     status: unknown
   tags:
   - unknown
-- owner_text: odalys@example.invalid
-  plan:
-  - field: owner_email
-    value: odalys@example.invalid
-    evidence: odalys@example.invalid
-- owner_text: What is the estimate?
+- owner_text: So, roughly, the estimate?
   flags:
     asks_cost: true

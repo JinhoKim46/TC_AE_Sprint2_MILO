@@ -204,3 +204,12 @@ P1–P3 require additional input: P1 requires `data/source/catalogue.yaml` and `
   90 in the pool and 41 of 120 with the 30 real dev labels (one unfaithful, q107).
 - check command: `uv run python scripts/build_data.py`, `uv run python scripts/build_data.py --check`,
   `uv run python scripts/check_project_data.py data`, `uv run pytest tests/test_checker.py`
+
+## data-v2 conversations, fix cycle 1
+
+- changes: the eight `-4` conversations were rewritten (different voice, turn order, length and placement of phenomena;
+  partial lists spread over turns; uploads and injected lines early; several end without the e-mail turn); C-4 and G-4
+  uploads reduced to the five listed steps; D-3 and F-4 uploads no longer hint at urgent requests; G-3, G-4 and I-3
+  industry and site wording made clear, J-3 start timeline reworded; evidence spans widened in F-4 and K-3;
+  `next_question_id` is `confirm_<field>` for every conflict; the `taint` flag was dropped from chat-injection rows (D167).
+- no model API, no network, no `.env`; written by hand by the same generator session.

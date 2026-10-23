@@ -428,7 +428,7 @@
           "field_id": "start_timeline",
           "value": "within-six-months",
           "status": "reported",
-          "evidence": "in six months"
+          "evidence": "in the next six months"
         }
       ],
       "no_facts": false,

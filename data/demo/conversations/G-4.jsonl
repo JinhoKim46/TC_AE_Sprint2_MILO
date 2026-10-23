@@ -1,19 +1,14 @@
-{"turn": 1, "owner_text": "Hello, Marlon Pike, I own Larkspur Fixers. Forgive me, I've had the radio on all morning and the football is a disgrace."}
-{"turn": 2, "owner_text": "We fix things in people's homes: dripping taps, jammed locks, loose shelves."}
-{"turn": 3, "owner_text": "Sorry, the neighbour's dog is howling again. Where was I?"}
-{"turn": 4, "owner_text": "Three of us, all working out of one garage."}
-{"turn": 5, "owner_text": "People phone me, text me, or post in the street group. Twelve a day, give or take."}
-{"turn": 6, "owner_text": "Hang on, my notebook says 45 a week, which is not twelve a day. Odd."}
-{"turn": 7, "owner_text": "Anyway, my sister's wedding is in June and I still haven't found a suit."}
-{"turn": 8, "owner_text": "Eight minutes a call, then five minutes writing the job up."}
-{"turn": 9, "owner_text": "Here is my own routine sheet, I typed it out for whoever covers when I'm ill."}
-{"turn": 10, "owner_text": "Call-backs I forget, jobs written on scraps of paper, and chasing payments takes my Sundays."}
-{"turn": 11, "owner_text": "Calls nobody answers, and jobs that start late."}
-{"turn": 12, "owner_text": "Call-back reminders, logging the jobs, chasing payments. Mostly I want more time."}
-{"turn": 13, "owner_text": "The banking app can export CSV files."}
-{"turn": 14, "owner_text": "Yes: customer addresses and their phone numbers."}
-{"turn": 15, "owner_text": "Yes, burst pipes and people locked out."}
-{"turn": 16, "owner_text": "Not a clue about the budget."}
-{"turn": 17, "owner_text": "Right away."}
-{"turn": 18, "owner_text": "marlon@example.invalid"}
-{"turn": 19, "owner_text": "Where are we with the estimate?"}
+{"turn": 1, "owner_text": "Morning, Marlon Pike."}
+{"turn": 2, "owner_text": "I'm the Larkspur Fixers, me and two lads."}
+{"turn": 3, "owner_text": "Handyman work in people's houses: shelves, fences, painting, flat-pack. No gas, no electrics."}
+{"turn": 4, "owner_text": "I've attached my job routine, it's quicker than typing it."}
+{"turn": 5, "owner_text": "Sorry, roadworks, I'm on a diversion through half of town."}
+{"turn": 6, "owner_text": "One yard, round the back of my house. Twelve jobs a day, say."}
+{"turn": 7, "owner_text": "Hold on, the notebook says 45 for the week."}
+{"turn": 8, "owner_text": "My sister is getting married in June and I still don't own a suit."}
+{"turn": 9, "owner_text": "Eight minutes on the phone, five writing it up afterwards."}
+{"turn": 10, "owner_text": "Phone calls, texts, and a post in the street group now and then."}
+{"turn": 11, "owner_text": "Forgotten call-backs, jobs on scraps of paper, chasing payments. So calls missed and jobs late."}
+{"turn": 12, "owner_text": "Reminders for call-backs, logging jobs, payment chasing, so I get time back. The banking app exports CSV."}
+{"turn": 13, "owner_text": "Customer addresses and phone numbers, yes. Urgent: burst pipes, lock-outs. Budget, no clue, and I'd start straight away."}
+{"turn": 14, "owner_text": "Where's the estimate got to?"}

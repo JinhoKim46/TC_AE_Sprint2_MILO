@@ -17,7 +17,7 @@ turns:
     evidence: managing director
   tags:
   - multi
-- owner_text: Don't let the name fool you, we have no workshop. We sell furniture and homeware from four shops and online.
+- owner_text: Don't let the name fool you, we have no workshop. We sell furniture and homeware from four shops and online, and the stock sits in a unit behind the biggest shop.
   plan:
   - field: industry
     value: retail
@@ -29,7 +29,7 @@ turns:
   - name_misleads
   - enum_map
   - early
-- owner_text: 52 people across the shops and the warehouse.
+- owner_text: 52 people in total across the shops.
   plan:
   - field: employee_count
     value: 52

@@ -1,22 +1,14 @@
-{"turn": 1, "owner_text": "Raimund Teague, Golden Crumb Bakery. I'm the operations manager."}
-{"turn": 2, "owner_text": "We move parcels and pallets between businesses, same-day and overnight."}
-{"turn": 3, "owner_text": "22 of us in total."}
-{"turn": 4, "owner_text": "Sorry, one of the drivers just walked in with a cake. It's his birthday. Anyway."}
-{"turn": 5, "owner_text": "We run two depots."}
-{"turn": 6, "owner_text": "Well, three if you count the cross-dock we rent, so three."}
-{"turn": 7, "owner_text": "Two. The cross-dock is rented space, not ours."}
-{"turn": 8, "owner_text": "Bookings come by phone, by email, in the customer portal and in driver app messages. The portal is new."}
-{"turn": 9, "owner_text": "Around 180 bookings a day."}
-{"turn": 10, "owner_text": "Rain again. The vans hate it and so do I."}
-{"turn": 11, "owner_text": "Three minutes a booking to handle, and two minutes to key it in afterwards."}
-{"turn": 12, "owner_text": "I've attached our dispatch procedure, it shows the whole routine."}
-{"turn": 13, "owner_text": "Wrong addresses are the worst, then pickups that miss their window, and chasing proof of delivery."}
-{"turn": 14, "owner_text": "Drop-offs at the wrong place, late runs, and missed pickups."}
-{"turn": 15, "owner_text": "The booking intake, the driver assignment, and chasing proof of delivery. Mostly we want to grow without more office staff."}
-{"turn": 16, "owner_text": "The tracking app has an API, and the spreadsheet can export CSV."}
-{"turn": 17, "owner_text": "Yes. Recipients' names, delivery addresses and their signatures."}
-{"turn": 18, "owner_text": "Yes. Same-day rush parcels, and medical deliveries that cannot wait."}
-{"turn": 19, "owner_text": "Maybe 25000 USD."}
-{"turn": 20, "owner_text": "Not sure when we'd start."}
-{"turn": 21, "owner_text": "raimund@example.invalid"}
-{"turn": 22, "owner_text": "What is the estimate looking like?"}
+{"turn": 1, "owner_text": "Raimund Teague at Golden Crumb Bakery. Operations manager, if the title matters."}
+{"turn": 2, "owner_text": "Ignore that, the van wash has broken again."}
+{"turn": 3, "owner_text": "I'll attach the dispatch procedure, it's easiest."}
+{"turn": 4, "owner_text": "We move parcels and pallets for other businesses."}
+{"turn": 5, "owner_text": "Two depots."}
+{"turn": 6, "owner_text": "Our planner says three sites, mind, counting the cross-dock."}
+{"turn": 7, "owner_text": "Two. The cross-dock is rented space only."}
+{"turn": 8, "owner_text": "Never mind me, my daughter's recital is tonight and I'll be leaving early."}
+{"turn": 9, "owner_text": "22 staff."}
+{"turn": 10, "owner_text": "Bookings arrive by phone, email, the customer portal and driver app messages. About 180 a day, three minutes to handle and two to key in."}
+{"turn": 11, "owner_text": "Wrong addresses, missed pickup windows, chasing proof of delivery. Wrong drop-offs, late runs, pickups nobody does."}
+{"turn": 12, "owner_text": "We want booking intake, driver assignment and proof of delivery chasing handled for us, so we can grow."}
+{"turn": 13, "owner_text": "The tracking app has an API, the spreadsheet saves CSV. We keep recipient names, delivery addresses and signatures. Rush parcels the same day and medical deliveries are urgent."}
+{"turn": 14, "owner_text": "Around 25000 USD. When we start, no idea."}
