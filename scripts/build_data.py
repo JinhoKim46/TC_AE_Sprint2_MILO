@@ -1789,7 +1789,16 @@ def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
     tools_by_split: dict[str, set[str]] = {"dev": set(), "test": set()}
     for r in rows:
         extra = set(r) - set(TOOL_ROW_KEYS)
-        missing = {"id", "user_id", "query", "expected_calls", "match", "split", "category", "rationale"} - set(r)
+        missing = {
+            "id",
+            "user_id",
+            "query",
+            "expected_calls",
+            "match",
+            "split",
+            "category",
+            "rationale",
+        } - set(r)
         if extra or missing:
             e(r, f"fields extra {sorted(extra)} missing {sorted(missing)}")
             continue
@@ -1806,7 +1815,12 @@ def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
             continue
         table[cat][0 if r["split"] == "dev" else 1] += 1
         rat = r["rationale"]
-        if not isinstance(rat, str) or not rat.strip() or len(rat) > TOOL_RATIONALE_MAX or "\n" in rat:
+        if (
+            not isinstance(rat, str)
+            or not rat.strip()
+            or len(rat) > TOOL_RATIONALE_MAX
+            or "\n" in rat
+        ):
             e(r, "rationale missing, over 160 characters or not one line")
         calls = r["expected_calls"]
         if (cat == "no_tool") != (calls == []):
@@ -1834,7 +1848,11 @@ def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
                     e(r, "record_fact evidence_text is not verbatim in the query")
             if c["name"] == "estimate_cost":
                 ms = a["module_ids"]
-                if len(ms) > 6 or not set(ms) <= set(modules) or set(a) != {"module_ids"}:
+                if (
+                    len(ms) > 6
+                    or not set(ms) <= set(modules)
+                    or set(a) != {"module_ids"}
+                ):
                     e(r, "estimate_cost module ids")
             if c["name"] == "withdraw_submission":
                 sub = objects["submissions"].get(str(a["submission_id"]))
@@ -1842,11 +1860,16 @@ def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
                 if oc == "not_found" and owns:
                     e(r, "not_found row withdraws the caller's own submission")
                 if oc != "not_found" and not owns:
-                    e(r, "withdraw row does not match the submission owner in objects.json")
+                    e(
+                        r,
+                        "withdraw row does not match the submission owner in objects.json",
+                    )
                 want = "needs_approval" if owns else "not_found"
                 if oc != want:
                     e(r, f"withdraw outcome {oc}, expected {want}")
-        if cat == "approval" and (len(calls) != 1 or calls[0]["name"] != "withdraw_submission"):
+        if cat == "approval" and (
+            len(calls) != 1 or calls[0]["name"] != "withdraw_submission"
+        ):
             e(r, "approval row must expect one withdraw_submission")
         if cat == "cross_owner":
             ok = calls and (
@@ -1854,7 +1877,10 @@ def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
                 or (calls[0]["name"] == "get_session_spec" and calls[0]["args"] == {})
             )
             if not ok:
-                e(r, "cross_owner row must be a not_found withdraw or get_session_spec {}")
+                e(
+                    r,
+                    "cross_owner row must be a not_found withdraw or get_session_spec {}",
+                )
         if cat == "schema_rejection":
             ti = r.get("tempting_invalid")
             if not isinstance(ti, dict) or ti.get("name") not in specs:
@@ -1869,7 +1895,9 @@ def check_tool_cases(rows: list[dict], errs: list[str], protocol: dict) -> None:
             e(r, "tempting_invalid only on schema_rejection rows")
     for cat, (d, t) in TOOL_TABLE.items():
         if table[cat] != [d, t]:
-            errs.append(f"tool_cases: category {cat} has dev/test {table[cat]}, expected {[d, t]}")
+            errs.append(
+                f"tool_cases: category {cat} has dev/test {table[cat]}, expected {[d, t]}"
+            )
     for s, got in tools_by_split.items():
         if got != TOOLS:
             errs.append(f"tool_cases: split {s} lacks tools {sorted(TOOLS - got)}")
@@ -2082,7 +2110,10 @@ def gen_pool(errs: list[str]) -> tuple[list[dict], list[dict], dict]:
     answers: list[dict] = []
     perts: list[dict] = []
     by_key: dict[str, dict] = {}
-    stats = {"unfaithful": 0, "real_unfaithful": sum(1 for r in m7_rows if r["faithfulness"] == 0)}
+    stats = {
+        "unfaithful": 0,
+        "real_unfaithful": sum(1 for r in m7_rows if r["faithfulness"] == 0),
+    }
     items = src["items"]
     if len(items) != 90:
         errs.append(f"judge_pool: {len(items)} items, expected 90")
@@ -2112,13 +2143,17 @@ def gen_pool(errs: list[str]) -> tuple[list[dict], list[dict], dict]:
         else:
             ctx_rel = list(src["bm25_context_relevance"].get(qid, []))
         if len(ctx_rel) != len(ids):
-            errs.append(f"{where}: context_relevance length {len(ctx_rel)} != {len(ids)} contexts")
+            errs.append(
+                f"{where}: context_relevance length {len(ctx_rel)} != {len(ids)} contexts"
+            )
         sw = it.get("swap")
         swap_id = None
         if sw:
             swap_id = sw["chunk_id"]
             if swap_id not in chunks or swap_id in ids:
-                errs.append(f"{where}: swap chunk {swap_id} unknown or already retrieved")
+                errs.append(
+                    f"{where}: swap chunk {swap_id} unknown or already retrieved"
+                )
             else:
                 ids.insert(sw["position"], swap_id)
                 ctx_rel.insert(sw["position"], 0)
@@ -2136,7 +2171,9 @@ def gen_pool(errs: list[str]) -> tuple[list[dict], list[dict], dict]:
             if "edit" in it:
                 old, new = it["edit"]["old"], it["edit"]["new"]
                 if base_answer.count(old) != 1:
-                    errs.append(f"{where}: edit old text occurs {base_answer.count(old)} times in the base")
+                    errs.append(
+                        f"{where}: edit old text occurs {base_answer.count(old)} times in the base"
+                    )
                 answer = base_answer.replace(old, new, 1)
                 span = new
             else:
@@ -2191,10 +2228,14 @@ def gen_pool(errs: list[str]) -> tuple[list[dict], list[dict], dict]:
     return answers, perts, stats
 
 
-def check_pool(answers: list[dict], perts: list[dict], stats: dict, errs: list[str]) -> None:
+def check_pool(
+    answers: list[dict], perts: list[dict], stats: dict, errs: list[str]
+) -> None:
     schema = _schema_module()
     if len(answers) != 90 or len(perts) != 90:
-        errs.append(f"judge_pool: {len(answers)} answers and {len(perts)} perturbation rows, expected 90")
+        errs.append(
+            f"judge_pool: {len(answers)} answers and {len(perts)} perturbation rows, expected 90"
+        )
     pids = [a["pid"] for a in answers]
     if len(set(pids)) != len(pids):
         errs.append("judge_pool: duplicate pid")
@@ -2205,20 +2246,33 @@ def check_pool(answers: list[dict], perts: list[dict], stats: dict, errs: list[s
         errs.append(f"judge_pool: kind counts {kinds}, expected {POOL_KINDS}")
     ptypes = {p["perturbation_type"] for p in perts if p["kind"] == "unfaithful"}
     if ptypes != set(POOL_PTYPES):
-        errs.append(f"judge_pool: perturbation types {sorted(ptypes)} differ from the seven required")
+        errs.append(
+            f"judge_pool: perturbation types {sorted(ptypes)} differ from the seven required"
+        )
     n_swap = sum(1 for p in perts if p["swap_chunk_id"])
     if n_swap != POOL_SWAP_ITEMS:
-        errs.append(f"judge_pool: {n_swap} context-swap items, expected {POOL_SWAP_ITEMS}")
+        errs.append(
+            f"judge_pool: {n_swap} context-swap items, expected {POOL_SWAP_ITEMS}"
+        )
     rel0 = sum(1 for p in perts if p["intended"]["relevance"] == 0)
     if rel0 < POOL_MIN_REL0:
-        errs.append(f"judge_pool: {rel0} items with relevance 0, need at least {POOL_MIN_REL0}")
-    rel_kinds = {k: sum(1 for p in perts if p["relevance_kind"] == k) for k in ("off_topic", "partial")}
+        errs.append(
+            f"judge_pool: {rel0} items with relevance 0, need at least {POOL_MIN_REL0}"
+        )
+    rel_kinds = {
+        k: sum(1 for p in perts if p["relevance_kind"] == k)
+        for k in ("off_topic", "partial")
+    }
     if sum(rel_kinds.values()) != 15:
         errs.append(f"judge_pool: relevance items {rel_kinds}")
     for a, p in zip(answers, perts):
         where = f"judge_pool:{a['pid']}"
         if p["kind"] == "unfaithful":
-            if not p["changed_span"] or not p["base_answer"] or p["intended"]["faithfulness"] != 0:
+            if (
+                not p["changed_span"]
+                or not p["base_answer"]
+                or p["intended"]["faithfulness"] != 0
+            ):
                 errs.append(f"{where}: unfaithful item lacks a perturbation record")
         elif p["intended"]["faithfulness"] != 1:
             errs.append(f"{where}: non-unfaithful item with faithfulness 0")
@@ -2242,7 +2296,9 @@ def check_pool(answers: list[dict], perts: list[dict], stats: dict, errs: list[s
                 errs.append(f"{where}: names {name}")
     total_unf = stats["unfaithful"] + stats["real_unfaithful"]
     if total_unf / (len(answers) + 30) < POOL_UNFAITHFUL_FLOOR:
-        errs.append(f"judge_pool: unfaithful share {total_unf}/{len(answers) + 30} below 25 percent")
+        errs.append(
+            f"judge_pool: unfaithful share {total_unf}/{len(answers) + 30} below 25 percent"
+        )
     labels = POOL_DIR / "labels.jsonl"
     if labels.exists():  # the auditor's blind labels, once committed
         rows, probs = schema.load_rows(labels)
@@ -2250,7 +2306,9 @@ def check_pool(answers: list[dict], perts: list[dict], stats: dict, errs: list[s
         by = {a["pid"]: len(a["contexts"]) for a in answers}
         seen = set()
         for r in rows:
-            errs += schema.validate_row(r, by.get(r.get("qid")), f"labels {r.get('qid')}")
+            errs += schema.validate_row(
+                r, by.get(r.get("qid")), f"labels {r.get('qid')}"
+            )
             seen.add(r.get("qid"))
         if seen != set(by):
             errs.append("judge_pool/labels.jsonl: pids differ from answers.jsonl")
