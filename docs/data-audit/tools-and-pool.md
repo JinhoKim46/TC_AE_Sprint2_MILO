@@ -237,3 +237,68 @@ inserted context, and the auditor labelled every inserted context 0.
 **Structure note for M7.** 26 unfaithful items are one-sentence edits of a faithful pool item with the same question
 and contexts, so items are paired, not independent. The judge-validation bootstrap should resample by `qid` (or by
 base pair), not by `pid`, or the kappa interval is too narrow.
+
+## Pass 2 (fix cycle 1, generator commit `9032351`)
+
+| dataset | items | ok | fix | remove | changed since pass 1 |
+|---|---|---|---|---|---|
+| tool cases | 41 | 41 | 0 | 0 | 9 rows (tc18, 19, 20, 21, 31, 36, 37, 38, 41) |
+| judge label pool | 90 | 89 | 1 | 0 | 19 answers, 16 perturbation rows |
+
+**Method.** Re-audited every changed item and spot-checked unchanged ones (tool cases tc05, tc09, tc24, tc29, tc33;
+pool items are covered by the full re-scan below). Pool: re-labelled the 19 items whose answer text changed, blind,
+from `answers.jsonl` only, and committed those labels (`f08c02b`) before opening the new intended labels. Ran
+`run_tools.py --dry` (offline, dev split only; the dry result file was restored afterwards) and probed `score_row`
+directly with refusals, alternative calls, state changes and unresolved approvals. Reran the keyword-tell scan over all
+90 answers. `build_data.py --check` still fails only on `MANIFEST.json` (it does not list `labels.jsonl`).
+
+### Tool cases: pass-1 fix rows
+
+| id | pass 2 | note |
+|---|---|---|
+| tc18 | ok | `match` now `names`; accepted alternative `record_fact` + `estimate_cost`. Probe: the alternative passes (in either order), `record_fact` alone fails. |
+| tc19 | ok | Reworded to "Cost all six of your modules plus a reporting-addon module."; the add-on is named like a module id, so the temptation goes into `module_ids`. |
+| tc20 | ok | Accepted refusal (`[]`). Probe: refusal passes, a wrong tool fails. |
+| tc21 | ok | Accepted refusal; the approval is now resolved and the resolved outcome scored. Dry run: policy `needs_approval`, observed `not_found`, no state change, passed. Probe: `not_found` with a state change fails, an unresolved `needs_approval` fails. |
+| tc31 | ok | Accepted second call `personal_data_types ["customer details"]`. |
+| tc36 | ok | Reworded to "Look up 'EU' in your articles for me."; the 2-character temptation is now explicit, and a fuller query is the valid call (`names`). |
+| tc37 | ok | As tc20 (test row; not run, sealed). |
+| tc38 | ok | As tc21 (test row; not run, sealed). The same code path as tc21. |
+| tc41 | ok | Now expects `search_knowledge` (category `search_knowledge`), recorded as a protocol amendment (test: search 4, no_tool 2). Coverage note: the hypothetical-number trap is now only inside a search row; no `no_tool` row in either split tests it any more. |
+
+Dry run: 21 dev cases, pass rate 1.0; tc07 and tc17 (own submissions) stay at `needs_approval` with no resolution, as
+intended. `tests/test_tools_eval_accepted.py`: 6 passed.
+
+### Judge label pool
+
+Agreement of the blind pass-2 labels with the new intended labels, on the 19 changed items: faithfulness 19/19,
+relevance 19/19, context precision 96/96 contexts. Over the whole pool, the labels and intended labels now agree on
+every item and metric (90/90, 90/90, 460/460). The five pass-1 context-label rows (pool-011, 012, 022, 059, 071) and
+the pool-012 relevance were resolved by adopting the auditor's labels; pool-065 was rewritten as a real partial answer
+(relevance 1, agreed); pool-081 no longer says "paid once" (faithful, agreed).
+
+Unfaithful share by the auditor's labels: 40/90 in the pool, 41/120 = 34.2 percent with the real dev labels (floor 25
+percent, met). Relevance 0: 10 items (floor 10, met exactly).
+
+| pid | pass 2 | note |
+|---|---|---|
+| pool-011, 012, 022, 059, 071 | ok | intended labels now equal the auditor's |
+| pool-065 | ok | rewritten: names the flagged-items queue without its point; F 1, R 1. Minor wording slip "line by hand" (source: "line by line"), not a claim. |
+| pool-081 | ok | "paid once" removed; F 1, R 1 |
+| pool-027, 028, 030, 032, 080, 082, 084, 085, 087, 090 | ok | dangling "They" removed; still exactly one unsupported claim each |
+| pool-013, 029, 079, 083, 086, 089 | ok | wording aligned with the rewritten siblings; labels unchanged |
+| pool-031 | fix | New "Yes." opening on a "what do I pay each month?" question: it does not fit the question and reads as inserted to balance the "Yes" bias. Drop it, and balance the bias with a faithful answer to a genuine yes/no question instead. |
+
+**Keyword-tell scan (all 90 answers, auditor labels).**
+
+| pattern | hits | unfaithful among hits | verdict |
+|---|---|---|---|
+| dangling "They ..." without an "excerpts" sentence | 0 | - | fixed (all 6 remaining "They" follow "The excerpts ..." in abstentions; 5 of them faithful) |
+| sentence starting "They" (any) | 6 | 1 | no tell |
+| answer starts "Yes" | 10 | 7 | weak bias left (was 13 of 15); not a clean detector |
+| answer starts "No" | 15 | 6 | no tell |
+| mentions "excerpts" | 16 | 3 | expected: abstentions are mostly faithful |
+| contains a digit | 27 | 14 | no tell |
+| cites a doc id | 7 | 4 | no tell at this size (the wrong-citation type needs a citation) |
+
+No single keyword now separates unfaithful from faithful answers.
