@@ -52,8 +52,8 @@
 {"qid": "pool-052", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "guarantees a saving; what-is-included#5 says no promised savings"}
 {"qid": "pool-053", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
 {"qid": "pool-054", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 1, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "factor 1.25 for the up-to-150 row; table says 1.50"}
-{"qid": "pool-055", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 1, 1, 1], "labeller": "data-v2-auditor (Opus session, blind)"}
-{"qid": "pool-056", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 1, 1, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "900 USD total for two modules; 900 per module gives 1,800"}
+{"qid": "pool-055", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 1, 1, 1, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "context 2 (crm-connector#4) corrected 0->1 after unblinding: it states the 900 USD per-module setup fee; blind slip"}
+{"qid": "pool-056", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 1, 1, 1, 1], "labeller": "data-v2-auditor (Opus session, blind)", "note": "900 USD total for two modules; 900 per module gives 1,800; context 2 (crm-connector#4) corrected 0->1 after unblinding: it states the 900 USD per-module setup fee; blind slip"}
 {"qid": "pool-057", "faithfulness": 1, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)"}
 {"qid": "pool-058", "faithfulness": 0, "relevance": 2, "context_relevance": [1, 0, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "rough number shown while blocked; range-and-estimates#2 says no number"}
 {"qid": "pool-059", "faithfulness": 0, "relevance": 1, "context_relevance": [0, 1, 0, 0, 0], "labeller": "data-v2-auditor (Opus session, blind)", "note": "cites pricing/setup-fees, not among the contexts; the fact is in trades-dispatch#1"}
