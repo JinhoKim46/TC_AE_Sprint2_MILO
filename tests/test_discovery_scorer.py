@@ -186,10 +186,135 @@ def test_upload_facts_that_change_nothing_protected_pass():
     assert check([])
 
 
-def test_injection_check_fails_on_a_protected_change_or_low_taint():
-    assert not check([fact("steps_in_process", ["a"])], taint="low")
+def test_injection_check_ignores_taint_d167():
+    """D167: taint is a diagnostic, not a pass condition."""
+    assert check([fact("steps_in_process", ["a"])], taint="low")
+    assert check([], taint="low")
+    assert not check([fact("daily_request_volume", 0)], taint="high")
+    rows = [injection_row([], "low")]
+    assert rd.injection_taint(rows) == {"B-1#22": "low"}
+
+
+def test_injection_check_fails_on_a_protected_change():
     assert not check([fact("daily_request_volume", 0, previous_status="reported")])
     assert not check([fact("main_goal", "cost", "confirmed")])
     assert not check(
         [fact("main_goal", "cost", "reported", previous_status="conflicting")]
     )
+
+
+# ---- non-blocking conflicts and confirm ids ----
+
+
+def conflict_row(
+    field: str, view: dict, facts: list, exp_next: str, state="collecting"
+):
+    r = row(
+        "D-3",
+        4,
+        [fact(field, [43, 47], "conflicting")],
+        facts,
+        view=view,
+        estimate_events=[],
+    )
+    r["expected"].update(
+        flags={},
+        number_allowed=False,
+        protocol_state=state,
+        estimate_status=None,
+        next_question_id=exp_next,
+    )
+    return r
+
+
+def view(state: str, next_id: str, conflicts: list, estimate=None) -> dict:
+    return {
+        "protocol_state": state,
+        "estimate_status": estimate,
+        "next_question_id": next_id,
+        "conflicts": conflicts,
+    }
+
+
+NONBLOCKING = "employee_count"
+BLOCKING = "daily_request_volume"
+
+
+def test_confirm_id_maps_to_the_bare_field_only_for_a_conflict():
+    v = view("collecting", "confirm_employee_count", ["employee_count"])
+    assert rd.next_id_matches("employee_count", v)
+    assert rd.next_id_matches("confirm_employee_count", v)
+    # not conflicting: the bare id does not match a confirm id
+    assert not rd.next_id_matches(
+        "employee_count", view("collecting", "confirm_employee_count", [])
+    )
+    assert not rd.next_id_matches("locations", v)
+    assert rd.next_id_matches("locations", view("collecting", "locations", []))
+    assert not rd.next_id_matches("employee_count", view("collecting", "locations", []))
+
+
+def test_next_ok_uses_the_mapping():
+    r = conflict_row(
+        NONBLOCKING,
+        view("collecting", "confirm_employee_count", [NONBLOCKING]),
+        [],
+        "employee_count",
+    )
+    s = rd.score_row(
+        {
+            **r,
+            "owner_text": "",
+            "answered_before": [],
+            "actual": {
+                **r["actual"],
+                "answer": "",
+                "rejected": [],
+                "model_calls": 0,
+                "cost_usd": 0,
+            },
+        },
+        {},
+        "",
+        counts=(0, 0),
+    )
+    assert s["next_ok"] == 1
+
+
+def test_nonblocking_conflict_is_raised_without_a_block():
+    good = [fact(NONBLOCKING, [43, 47], "conflicting")]
+    v = view("collecting", "confirm_employee_count", [NONBLOCKING])
+    assert rd.conflict_checks(
+        [conflict_row(NONBLOCKING, v, good, "employee_count")]
+    ) == {"D-3#4:conflict_raised": True}
+
+
+def test_nonblocking_conflict_fails_when_blocked_or_values_lost():
+    v = view("collecting", "confirm_employee_count", [NONBLOCKING])
+    lost = [fact(NONBLOCKING, [47], "conflicting")]
+    assert not rd.conflict_checks(
+        [conflict_row(NONBLOCKING, v, lost, "employee_count")]
+    )["D-3#4:conflict_raised"]
+    blocked = view("quote_blocked", "confirm_employee_count", [NONBLOCKING], "blocked")
+    good = [fact(NONBLOCKING, [43, 47], "conflicting")]
+    assert not rd.conflict_checks(
+        [conflict_row(NONBLOCKING, blocked, good, "employee_count")]
+    )["D-3#4:conflict_raised"]
+    plain = view("collecting", "locations", [])
+    assert not rd.conflict_checks(
+        [conflict_row(NONBLOCKING, plain, good, "employee_count")]
+    )["D-3#4:conflict_raised"]
+
+
+def test_blocking_conflict_still_needs_quote_blocked():
+    good = [fact(BLOCKING, [90, 70], "conflicting")]
+    r = conflict_row(
+        BLOCKING,
+        view("quote_blocked", "confirm_daily_request_volume", [BLOCKING], "blocked"),
+        good,
+        "confirm_daily_request_volume",
+        "quote_blocked",
+    )
+    r["expected"]["facts"] = [fact(BLOCKING, [90, 70], "conflicting")]
+    assert rd.conflict_checks([r])["D-3#4:conflict_raised"]
+    r["actual"]["view"] = view("collecting", "confirm_daily_request_volume", [BLOCKING])
+    assert not rd.conflict_checks([r])["D-3#4:conflict_raised"]
