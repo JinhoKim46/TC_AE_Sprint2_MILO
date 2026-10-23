@@ -1,5 +1,13 @@
 {
- "changes": [],
+ "changes": [
+  {
+   "turn": 1,
+   "change": "relabelled value",
+   "field_id": "industry",
+   "value": "pet-care",
+   "reason": "D164: industry is a closed vocabulary; pet-services became pet-care"
+  }
+ ],
  "audit": "docs/data-audit/conversations-dev.md; derived from E-1.expected.json; only expected_missing and expected_wrong items are changed (none found for this conversation)",
  "conversation_id": "E-1",
  "company": "data/demo/companies/a.yaml",
@@ -27,7 +35,7 @@
     },
     {
      "field_id": "industry",
-     "value": "pet-services",
+     "value": "pet-care",
      "status": "reported"
     }
    ],

@@ -13,10 +13,9 @@ Rules:
 - evidence_text: copy the owner's exact words, character for character, from the latest message or the
   document excerpt. Never paraphrase, never shorten words, never add words. A whole sentence is fine.
 - value: numbers as numbers ("nine" is 9); booleans as true or false; list fields as arrays of short phrases
-  in the owner's terms; enum and list_enum fields only with the allowed values; string fields as a short
-  phrase. For industry use a short lowercase hyphenated label such as "pet-services" or "trades-plumbing".
-  For start_timeline use a short lowercase hyphenated label such as "next-month" or "next-quarter".
-- Volumes: give the number and the period the owner used ("day", "week" or "month"). Never convert.
+  in the owner's terms; enum and list_enum fields only with the allowed values, copied exactly from the list
+  (industry and start_timeline are enum fields: pick the closest allowed value, or "other" when none fits, and
+  never invent a label); string fields as a short phrase.
 - When the owner says they do not know, have not decided, or have nothing set, give the field with value null.
 - When the assistant's last question asked the owner to choose between two figures, give one fact for that
   field: the figure the owner chose, with the period the owner used for it.

@@ -27,6 +27,13 @@
    "turn": 16,
    "change": "next_question_id: integrations_available -> personal_data_handled",
    "reason": "expected_wrong (follows from the added integrations_available fact at turn 9): the field is filled, so the next question in protocol order is personal_data_handled; the live chain agrees"
+  },
+  {
+   "turn": 2,
+   "change": "relabelled value",
+   "field_id": "industry",
+   "value": "pet-care",
+   "reason": "D164: industry is a closed vocabulary; pet-services became pet-care"
   }
  ],
  "audit": "docs/data-audit/conversations-dev.md; derived from A-1.expected.json; only expected_missing and expected_wrong items are changed",
@@ -66,7 +73,7 @@
    "facts": [
     {
      "field_id": "industry",
-     "value": "pet-services",
+     "value": "pet-care",
      "status": "reported"
     }
    ],
